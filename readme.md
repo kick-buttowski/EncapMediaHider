@@ -1,1 +1,1 @@
-This is a win forms application which has calculator on top which will grant access to secret Media Player with secret code.
+This is a win forms application which is calculator app on top of secret Media Player which will grant access to it with a secret code.
