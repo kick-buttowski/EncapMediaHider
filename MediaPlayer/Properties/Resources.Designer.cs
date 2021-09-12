@@ -63,6 +63,16 @@ namespace MediaPlayer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _314481_lock_icon {
+            get {
+                object obj = ResourceManager.GetObject("314481_lock_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap exit_icon_4600_Windows {
             get {
                 object obj = ResourceManager.GetObject("exit-icon-4600-Windows", resourceCulture);
@@ -86,6 +96,16 @@ namespace MediaPlayer.Properties {
         internal static System.Drawing.Bitmap Graphicloads_Android_Settings_Cross {
             get {
                 object obj = ResourceManager.GetObject("Graphicloads-Android-Settings-Cross", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_lock_48 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-lock-48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

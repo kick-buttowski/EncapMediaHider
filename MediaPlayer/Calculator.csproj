@@ -340,5 +340,11 @@
   <ItemGroup>
     <None Include="Resources\up-down %281%29.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-lock-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\314481_lock_icon1.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

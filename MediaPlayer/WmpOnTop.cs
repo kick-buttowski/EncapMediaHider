@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,6 +13,17 @@ namespace MediaPlayer
 {
     public partial class WmpOnTop : Form
     {
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn
+        (
+            int nLeftRect,     // x-coordinate of upper-left corner
+            int nTopRect,      // y-coordinate of upper-left corner
+            int nRightRect,    // x-coordinate of lower-right corner
+            int nBottomRect,   // y-coordinate of lower-right corner
+            int nWidthEllipse, // height of ellipse
+            int nHeightEllipse // width of ellipse
+        );
+
         Boolean closeIt = false, clicked = false;
         int x = 0, y=0;
         double x1 = 0, changesPos, currPos, clickedPos;
@@ -57,6 +69,7 @@ namespace MediaPlayer
         public WmpOnTop()
         {
             InitializeComponent();
+            this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 20, 20));
             this.FormBorderStyle = FormBorderStyle.None;
             this.SetStyle(ControlStyles.ResizeRedraw, true);
             this.DoubleBuffered = true;

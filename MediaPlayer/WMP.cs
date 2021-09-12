@@ -9,6 +9,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ namespace MediaPlayer
 
     public partial class WMP : Form, IMessageFilter
     {
+
         public Boolean hoveredOver = true, hoveredOver2 = true, toggleFullScreen = true, 
             keyLock = false, playStatus = true, toMute = true, toRepeat = false;
         String directoryPath;
@@ -76,6 +78,8 @@ namespace MediaPlayer
         public WMP(PictureBox refPb)
         {
             InitializeComponent();
+
+            //this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 20, 20));
             this.refPb = refPb;
             mouseClickColor = Explorer.globColor;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

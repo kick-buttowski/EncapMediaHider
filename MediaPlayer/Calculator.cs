@@ -47,6 +47,7 @@ namespace MediaPlayer
             this.backgroundWorker1.RunWorkerAsync(100);
 
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 20, 20));
             txtDisplay.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, txtDisplay.Width, txtDisplay.Height, 20, 20));
             button1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button1.Width, button1.Height, 25, 25));
             btnReset.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnReset.Width, btnReset.Height, 25, 25));

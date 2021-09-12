@@ -38,7 +38,9 @@ namespace MediaPlayer
             int nHeightEllipse // width of ellipse
         );
 
-        public Boolean enter = false, ctrl = false, scrollZero = true, hoveredOver = true, hoveredOver2 = true, toggleFullScreen = true, playStatus = true, toMute = true, toRepeat = false, loadAll = false;
+        public Boolean enter = false, ctrl = false, scrollZero = true, hoveredOver = true, hoveredOver2 = true, toggleFullScreen = true,
+            playStatus = true, toMute = true, toRepeat = false, loadAll = false, enlargeImage = false, isFirst = true, isRefresh = false, tipForFirstTime = true;
+        public Dictionary<String, Boolean> isEnlarged = new Dictionary<string, bool>();
         String directoryPath;
         public static Boolean toRefresh = false, toChangeTheme = false; 
         bool isChecked = false, isGlobalChecked = false;
@@ -67,6 +69,7 @@ namespace MediaPlayer
         List<Image> disposePb = new List<Image>();
         List<FileInfo> imagesFi = new List<FileInfo>();
         List<String> gpbList = new List<String>();
+        Dictionary<String, Image> miniImages = new Dictionary<String, Image>(), largeImages = new Dictionary<string, Image>();
         DirectoryInfo _4kdir = null;
         Button globalBtn = null;
         int ind = 1, whereAt = 0, noOfStackImg = 25, vertScrollValue = 0, noOfTimerRuns = 0;
@@ -79,6 +82,7 @@ namespace MediaPlayer
         miniVideoPlayer miniVideoPlayer = null;
         DirectoryInfo prevfi = null, nextFi = null;
         Engine engine = new Engine();
+        int popUpY = 270;
 
         NewProgressBar newProgressBar = null;
         checkBox checkBox = new checkBox();
@@ -113,19 +117,18 @@ namespace MediaPlayer
             Application.AddMessageFilter(this);
             checkBox.Size = new Size(50, 50);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            picturesBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, picturesBtn.Width, picturesBtn.Height, 20, 20));
-            videosBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, videosBtn.Width, videosBtn.Height, 20, 20));
-            expBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, expBtn.Width, expBtn.Height, 20, 20));
-            shortVideosBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, picturesBtn.Width, picturesBtn.Height, 20, 20));
-            fourKBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, videosBtn.Width, videosBtn.Height, 20, 20));
-            gifsBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, videosBtn.Width, videosBtn.Height, 20, 20));
-            button3.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button3.Width, button3.Height, 20, 20));
-            button4.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button4.Width, button4.Height, 20, 20));
-            button5.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button5.Width, button5.Height, 20, 20));
-            textBox1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, textBox1.Width, textBox1.Height, 20, 20));
+            picturesBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, picturesBtn.Width, picturesBtn.Height, 25, 25));
+            videosBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, videosBtn.Width, videosBtn.Height, 25, 25));
+            expBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, expBtn.Width, expBtn.Height, 25, 25));
+            shortVideosBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, picturesBtn.Width, picturesBtn.Height, 25, 25));
+            fourKBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, videosBtn.Width, videosBtn.Height, 25, 25));
+            gifsBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, videosBtn.Width, videosBtn.Height, 25, 25));
+            button3.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button3.Width, button3.Height, 10, 10));
+            button4.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button4.Width, button4.Height, 10, 10));
+            button5.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button5.Width, button5.Height, 10, 10));
+            //textBox1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, textBox1.Width, textBox1.Height, 20, 20));
             trackBar1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, trackBar1.Width, trackBar1.Height, 20, 20));
-            button9.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button9.Width, button9.Height, 20, 20));
-            button10.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button10.Width, button10.Height, 20, 20));
+            button2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button2.Width, button2.Height, 5, 5));
             mainDi = new DirectoryInfo(directoryPath);
             button5.Text = mainDi.Name;
             this.folders = folders;
@@ -140,7 +143,7 @@ namespace MediaPlayer
             if (!Directory.Exists(mainDi + "\\Pics\\" + "imgPB")) { Directory.CreateDirectory(mainDi + "\\Pics\\" + "imgPB"); }
             if (!Directory.Exists(mainDi + "\\Pics\\" + "kkkk")) { Directory.CreateDirectory(mainDi + "\\Pics\\" + "kkkk"); }
             if (!Directory.Exists(mainDi + "\\Pics\\" + "kkkk\\imgPB")) { Directory.CreateDirectory(mainDi + "\\Pics\\" + "kkkk\\imgPB"); }
-            if (!Directory.Exists(mainDi + "\\Pics\\" + "GifVideos")) { Directory.CreateDirectory(mainDi + "\\Pics\\" + "GifVideos"); }
+            if (!Directory.Exists(mainDi + "\\Pics\\" + "Gif Vid")) { Directory.CreateDirectory(mainDi + "\\Pics\\" + "Gif Vid"); }
             if (!Directory.Exists(mainDi + "\\Pics\\" + "GifVideos\\imgPB")) { Directory.CreateDirectory(mainDi + "\\Pics\\" + "GifVideos\\imgPB"); }
             if (!File.Exists(mainDi + "\\links.txt")) {
                 FileStream fi = File.Create(mainDi.FullName + "\\links.txt");
@@ -157,6 +160,12 @@ namespace MediaPlayer
             typeButtons.Add(fourKBtn);
             typeButtons.Add(shortVideosBtn);
             typeButtons.Add(gifsBtn);
+            isEnlarged.Add("Videos", false);
+            isEnlarged.Add("Pictures", false);
+            isEnlarged.Add("Gifs", false);
+            isEnlarged.Add("Gif Vid", false);
+            isEnlarged.Add("4K", false);
+            isEnlarged.Add("Stack", false);
             if (File.ReadAllText(prevfi.FullName + "\\disPic.txt") != "")
             {
                 try
@@ -169,7 +178,8 @@ namespace MediaPlayer
                         tip = new CustomToolTip(300, 450);
                     disposePb.Add(img1);
                     tip.SetToolTip(button3, prevfi.Name);
-                    myPictureBox1.Image = Image.FromFile(prevfi.FullName + "\\imgPB\\smallRes.png");
+
+                    myPictureBox1.Image = resizedImage(img1, 0, 0, 0, 89);
                 }
                 catch
                 {
@@ -190,7 +200,7 @@ namespace MediaPlayer
                     button4.Tag = img2;
                     disposePb.Add(img2);
                     tip.SetToolTip(button4, nextFi.Name);
-                    myPictureBox2.Image = Image.FromFile(nextFi.FullName + "\\imgPB\\smallRes.png");
+                    myPictureBox2.Image = resizedImage(img2, 0, 0, 0, 89);
                 }
                 catch { }
             }
@@ -213,11 +223,347 @@ namespace MediaPlayer
             //flowLayoutPanel1.BackColor = mainBackColor;
             //flowLayoutPanel2.BackColor = sideBackColor;
             newProgressBar = new NewProgressBar();
-            newProgressBar.Size = new Size(1643, 25);
+            newProgressBar.Size = new Size(1442, 25);
             newProgressBar.Location = new Point(276, -3);
             newProgressBar.Value = 0;
             newProgressBar.Margin = new Padding(0);
             setTheme();
+            loadMiniImages();
+            enlargeImage = true;
+        }
+
+        private int correctFit(int width, int height)
+        {
+            double ratio = (double)width / (double)height;
+            if (ratio >= 1.7)
+                return enlargeImage?140:123;
+            else if (ratio >= 1.60)
+                return enlargeImage ? 150 : 133;
+            else if (ratio >= 1.50)
+                return enlargeImage ? 160 : 143;
+            else if (ratio >= 1.40)
+                return enlargeImage ? 170 : 153;
+            else if (ratio >= 1.30)
+                return enlargeImage ? 180 : 163;
+            else if (ratio >= 1.20)
+                return enlargeImage ? 191 : 173;
+
+            return 133;
+        }
+
+
+        private void setToolTip(String keyName, Image img, Button tipBtn)
+        {
+                Image img1 = resizedImage(img, 0, 0, 0, popUpY);
+                largeImages.Add(keyName, img1);
+                tipBtn.Tag = img1;
+            if (tipForFirstTime)
+            {
+                int yLoc = tipBtn.Location.Y + (tipBtn.Height / 2) - (popUpY / 2);
+                if (1080 - tipBtn.Location.Y <= (popUpY / 2))
+                {
+                    yLoc = yLoc - (popUpY / 2) + 10;
+                }
+                else if (tipBtn.Location.Y - (popUpY / 2) < 0)
+                {
+                    tip = new CustomToolTip(img1.Width, popUpY, tipBtn.Location.X + tipBtn.Size.Width + 15, tipBtn.Location.Y);
+                }
+                else
+                {
+                    if (img.Width > img.Height)
+                        tip = new CustomToolTip(img1.Width, popUpY, tipBtn.Location.X + tipBtn.Size.Width + 15, yLoc);
+                    else
+                        tip = new CustomToolTip(300, 450, 10, yLoc);
+                }
+
+                tip.SetToolTip(tipBtn, tipBtn.Text);
+            }
+        }
+
+        private void loadMiniImages()
+        {
+            foreach (Image img in miniImages.Values)
+            {
+                img.Dispose();
+            }
+            foreach (Image img in largeImages.Values)
+            {
+                img.Dispose();
+            }
+            foreach (Button str in typeButtons)
+                isEnlarged[str.Text] = false;
+            miniImages.Clear();
+            largeImages.Clear();
+            List<FileInfo> sfi = mainDi.GetFiles().SkipWhile(s => s.FullName.EndsWith(".txt")).ToList();
+            Random r = new Random();
+            String fileName = ".txt";
+            int[] res = new int[] { 1080, 1920 };
+            int pick = 0,i=0;
+            if (sfi.Count > 0)
+            {
+                while (fileName.EndsWith(".txt"))
+                {
+                    pick = r.Next(0, sfi.Count);
+                    fileName = sfi[pick].Extension;
+                    if (fileName.EndsWith(".txt"))
+                        sfi.RemoveAt(pick);
+                }
+                Image img = setDefaultPic(sfi[pick]);
+                enlargeImage = false;
+                miniImages.Add("Videos", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
+                videosBtn.Image = miniImages["Videos"];
+                enlargeImage = true;
+                largeImages.Add("Videos", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
+                try
+                {
+                    setToolTip("LargeVideos", img, videosBtn);
+                }
+                catch { }
+
+                img.Dispose();
+            }
+            else
+                videosBtn.Image = global::MediaPlayer.Properties.Resources.up_down__1_;
+
+
+            DirectoryInfo prevDir = new DirectoryInfo(prevfi.FullName);
+            sfi = prevDir.GetFiles().SkipWhile(s => s.FullName.EndsWith(".txt")).ToList();
+            fileName = ".txt";
+            pick = 0;
+            if (sfi.Count > 0)
+            {
+                while (fileName.EndsWith(".txt"))
+                {
+                    pick = r.Next(0, sfi.Count);
+                    fileName = sfi[pick].Extension;
+                    if (fileName.EndsWith(".txt"))
+                        sfi.RemoveAt(pick);
+                }
+                Image img = setDefaultPic(sfi[pick]);
+                miniImages.Add("Prev", resizedImage(img, 0, 0, 0, 90));
+                button3.Image = miniImages["Prev"];
+
+                img.Dispose();
+            }
+            else
+                button3.Image = global::MediaPlayer.Properties.Resources.left_right__2_;
+
+
+            prevDir = new DirectoryInfo(nextFi.FullName);
+            sfi = prevDir.GetFiles().SkipWhile(s => s.FullName.EndsWith(".txt")).ToList();
+            fileName = ".txt";
+            pick = 0;
+            if (sfi.Count > 0)
+            {
+                while (fileName.EndsWith(".txt"))
+                {
+                    pick = r.Next(0, sfi.Count);
+                    fileName = sfi[pick].Extension;
+                    if (fileName.EndsWith(".txt"))
+                        sfi.RemoveAt(pick);
+                }
+                Image img = setDefaultPic(sfi[pick]);
+                miniImages.Add("Next", resizedImage(img, 0, 0, 0, 90));
+                button4.Image = miniImages["Next"];
+                img.Dispose();
+            }
+            else
+                button4.Image = global::MediaPlayer.Properties.Resources.left_right__2_;
+
+
+            DirectoryInfo picsDir = new DirectoryInfo(mainDi.FullName + "\\Pics");
+            sfi = picsDir.GetFiles().SkipWhile(s => s.FullName.EndsWith(".txt")).ToList();
+            /*            SkipWhile(k => int.TryParse(k.Name.Substring(k.Name.IndexOf("^^") + 2).Substring(0, k.Name.IndexOf("placeholdderr")).Split('x')[0].ToString(), )
+                        > int.Parse(k.Name.Substring(k.Name.IndexOf("^^") + 2).Substring(0, k.Name.IndexOf("placeholdderr")).Split('x')[1].ToString())).ToList();*/
+            fileName = ".txt";
+            pick = 0;
+
+            if (sfi.Count > 0)
+            {
+                while (fileName.EndsWith(".txt") || res[1] > res[0])
+                {
+                    pick = r.Next(0, sfi.Count);
+                    fileName = sfi[pick].Name;
+
+                    if (fileName.EndsWith(".txt") || !fileName.Contains("placeholdderr")) continue;
+                    String temp = fileName.Substring(fileName.IndexOf("^^") + 2);
+                    temp = temp.Substring(0, temp.IndexOf("placeholdderr"));
+                    res[0] = int.Parse(temp.Split('x')[0]);
+                    res[1] = int.Parse(temp.Split('x')[1]);
+
+                    if (fileName.EndsWith(".txt") || res[1] > res[0])
+                    {
+                        sfi.RemoveAt(pick);
+                        if (sfi.Count == 0)
+                            break;
+                    }
+                }
+
+                if(res[1] < res[0])
+                {
+                    Image img = Image.FromFile(sfi[pick].FullName);
+
+                    enlargeImage = false;
+                    miniImages.Add("Pictures", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
+                        picturesBtn.Image = miniImages["Pictures"];
+                    enlargeImage = true;
+                    largeImages.Add("Pictures", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
+                    try { 
+                    setToolTip("LargePictures", img, picturesBtn);
+
+                    }
+                    catch { }
+                    img.Dispose();
+                }
+
+            }
+            else
+                picturesBtn.Image = global::MediaPlayer.Properties.Resources.up_down__1_;
+
+
+
+            DirectoryInfo fourkDir = new DirectoryInfo(mainDi.FullName + "\\Pics\\kkkk");
+            res = new int[] { 1080, 1920 };
+            sfi = fourkDir.GetFiles().SkipWhile(s => s.FullName.EndsWith(".txt")).ToList();
+            /*            SkipWhile(k => int.TryParse(k.Name.Substring(k.Name.IndexOf("^^") + 2).Substring(0, k.Name.IndexOf("placeholdderr")).Split('x')[0].ToString(), )
+                        > int.Parse(k.Name.Substring(k.Name.IndexOf("^^") + 2).Substring(0, k.Name.IndexOf("placeholdderr")).Split('x')[1].ToString())).ToList();*/
+            fileName = ".txt";
+            pick = 0;
+
+            if (sfi.Count > 0)
+            {
+                while (fileName.EndsWith(".txt") || res[1] > res[0])
+                {
+                    pick = r.Next(0, sfi.Count);
+                    fileName = sfi[pick].Name;
+
+                    if (fileName.EndsWith(".txt") || !fileName.Contains("placeholdderr")) continue;
+                    String temp = fileName.Substring(fileName.IndexOf("^^") + 2);
+                    temp = temp.Substring(0, temp.IndexOf("placeholdderr"));
+                    res[0] = int.Parse(temp.Split('x')[0]);
+                    res[1] = int.Parse(temp.Split('x')[1]);
+
+                    if (fileName.EndsWith(".txt") || res[1] > res[0])
+                    {
+                        sfi.RemoveAt(pick);
+                        if (sfi.Count == 0)
+                            break;
+                    }
+                }
+
+                if (res[1] < res[0])
+                {
+                    Image img = Image.FromFile(sfi[pick].FullName);
+                    enlargeImage = false;
+                    miniImages.Add("4K", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
+                        fourKBtn.Image = miniImages["4K"];
+                    enlargeImage = true;
+                    largeImages.Add("4K", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
+                    try { 
+                    setToolTip("Large4K", img, fourKBtn);
+
+                    }
+                    catch { }
+                    img.Dispose();
+                }
+
+            }
+            else
+                fourKBtn.Image = global::MediaPlayer.Properties.Resources.up_down__1_;
+
+
+            DirectoryInfo gifVid = new DirectoryInfo(mainDi.FullName + "\\Pics\\GifVideos");
+            sfi = gifVid.GetFiles().SkipWhile(s => s.FullName.EndsWith(".txt")).ToList();
+            fileName = ".txt";
+            pick = 0; i = 0;
+            if (sfi.Count > 0)
+            {
+                while (fileName.EndsWith(".txt"))
+                {
+                    pick = r.Next(0, sfi.Count);
+                    fileName = sfi[pick].Extension;
+                    if (fileName.EndsWith(".txt"))
+                        sfi.RemoveAt(pick);
+                }
+                Image img = setDefaultPic(sfi[pick]);
+                enlargeImage = false;
+                miniImages.Add("Gif Vid", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
+                    shortVideosBtn.Image = miniImages["Gif Vid"];
+                enlargeImage = true;
+                largeImages.Add("Gif Vid", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
+                try
+                {
+                    setToolTip("LargeGif Vid", img, shortVideosBtn);
+
+                }
+                catch { }
+                img.Dispose();
+            }
+            else
+                shortVideosBtn.Image = global::MediaPlayer.Properties.Resources.up_down__1_;
+
+
+            DirectoryInfo gifsDir = new DirectoryInfo(mainDi.FullName + "\\Pics\\Gifs");
+            res = new int[] { 1080, 1920 };
+            sfi = gifsDir.GetFiles().SkipWhile(s => s.FullName.EndsWith(".txt")).ToList();
+            /*            SkipWhile(k => int.TryParse(k.Name.Substring(k.Name.IndexOf("^^") + 2).Substring(0, k.Name.IndexOf("placeholdderr")).Split('x')[0].ToString(), )
+                        > int.Parse(k.Name.Substring(k.Name.IndexOf("^^") + 2).Substring(0, k.Name.IndexOf("placeholdderr")).Split('x')[1].ToString())).ToList();*/
+            fileName = ".txt";
+            pick = 0;
+
+            if (sfi.Count > 0)
+            {
+                while (fileName.EndsWith(".txt") || res[1] > res[0])
+                {
+                    pick = r.Next(0, sfi.Count);
+                    fileName = sfi[pick].Name;
+
+                    if (fileName.EndsWith(".txt") || !fileName.Contains("placeholdderr")) continue;
+                    String temp = fileName.Substring(fileName.IndexOf("^^") + 2);
+                    temp = temp.Substring(0, temp.IndexOf("placeholdderr"));
+                    res[0] = int.Parse(temp.Split('x')[0]);
+                    res[1] = int.Parse(temp.Split('x')[1]);
+
+                    if (fileName.EndsWith(".txt") || res[1] > res[0])
+                    {
+                        sfi.RemoveAt(pick);
+                        if (sfi.Count == 0)
+                            break;
+                    }
+                }
+
+                if (res[1] < res[0])
+                {
+                    Image img = Image.FromFile(sfi[pick].FullName);
+                    enlargeImage = false;
+                    miniImages.Add("Gifs", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
+                        gifsBtn.Image = miniImages["Gifs"];
+                    enlargeImage = true;
+                    largeImages.Add("Gifs", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
+                    try { 
+                    setToolTip("LargeGifs", img, gifsBtn);
+
+                    }
+                    catch { }
+                    img.Dispose();
+                }
+
+            }
+            else
+                gifsBtn.Image = global::MediaPlayer.Properties.Resources.up_down__1_;
+
+
+
+            if (File.Exists(Explorer.pardirectory[1].FullName + "\\Stack.jpg"))
+            {
+                Image img = Image.FromFile(Explorer.pardirectory[1].FullName + "\\Stack.jpg");
+                miniImages.Add("Stack", resizedImage(img, 0, 0, 0, 124));
+                largeImages.Add("Stack", resizedImage(img, 0, 0, 0, 134));
+                expBtn.Image = miniImages["Stack"];
+                setToolTip("LargeStack", img, expBtn);
+                img.Dispose();
+            }
+            tipForFirstTime = false;
 
         }
 
@@ -248,24 +594,24 @@ namespace MediaPlayer
             expBtn.FlatAppearance.MouseDownBackColor = mouseClickColor;
             videosBtn.BackColor = lightBackColor;
             videosBtn.ForeColor = Color.White;
-            videosBtn.FlatAppearance.MouseOverBackColor = mouseHoverColor;
-            videosBtn.FlatAppearance.MouseDownBackColor = mouseClickColor;
+            videosBtn.FlatAppearance.MouseOverBackColor = lightBackColor;
+            videosBtn.FlatAppearance.MouseDownBackColor = lightBackColor;
             picturesBtn.BackColor = lightBackColor;
             picturesBtn.ForeColor = Color.White;
-            picturesBtn.FlatAppearance.MouseOverBackColor = mouseHoverColor;
-            picturesBtn.FlatAppearance.MouseDownBackColor = mouseClickColor;
+            picturesBtn.FlatAppearance.MouseOverBackColor = lightBackColor;
+            picturesBtn.FlatAppearance.MouseDownBackColor = lightBackColor;
             fourKBtn.BackColor = lightBackColor;
             fourKBtn.ForeColor = Color.White;
-            fourKBtn.FlatAppearance.MouseOverBackColor = mouseHoverColor;
-            fourKBtn.FlatAppearance.MouseDownBackColor = mouseClickColor;
+            fourKBtn.FlatAppearance.MouseOverBackColor = lightBackColor;
+            fourKBtn.FlatAppearance.MouseDownBackColor = lightBackColor;
             shortVideosBtn.BackColor = lightBackColor;
             shortVideosBtn.ForeColor = Color.White;
-            shortVideosBtn.FlatAppearance.MouseOverBackColor = mouseHoverColor;
-            shortVideosBtn.FlatAppearance.MouseDownBackColor = mouseClickColor;
+            shortVideosBtn.FlatAppearance.MouseOverBackColor = lightBackColor;
+            shortVideosBtn.FlatAppearance.MouseDownBackColor = lightBackColor;
             gifsBtn.BackColor = lightBackColor;
             gifsBtn.ForeColor = Color.White;
-            gifsBtn.FlatAppearance.MouseOverBackColor = mouseHoverColor;
-            gifsBtn.FlatAppearance.MouseDownBackColor = mouseClickColor;
+            gifsBtn.FlatAppearance.MouseOverBackColor = lightBackColor;
+            gifsBtn.FlatAppearance.MouseDownBackColor = lightBackColor;
             button3.BackColor = lightBackColor;
             button3.ForeColor = Color.White;
             button3.FlatAppearance.MouseOverBackColor = mouseHoverColor;
@@ -278,8 +624,8 @@ namespace MediaPlayer
             button5.ForeColor = Color.White;
             button5.FlatAppearance.MouseOverBackColor = mouseHoverColor;
             button5.FlatAppearance.MouseDownBackColor = mouseClickColor;
-            textBox1.BackColor = lightBackColor;
-            textBox1.ForeColor = Color.White;
+            //textBox1.BackColor = lightBackColor;
+            //textBox1.ForeColor = Color.White;
             trackBar1.BackColor = lightBackColor;
             button2.FlatAppearance.MouseOverBackColor = mouseClickColor;
             button2.FlatAppearance.MouseDownBackColor = mouseClickColor;
@@ -293,7 +639,7 @@ namespace MediaPlayer
 
 
             if (globalBtn != null)
-                globalBtn.BackColor = mouseClickColor;
+                globalBtn.ForeColor = mouseClickColor;
 
             if (prevPB != null)
             {
@@ -397,7 +743,7 @@ namespace MediaPlayer
                 miniVideoPlayer.Close();
                 GC.Collect();
             }
-            button1.Text = "Global Vol: " + trackBar1.Value.ToString() + "\nMultselect: " + (mutltiSelect == true ? "On" : "Off");
+            button1.Text = trackBar1.Value.ToString();
             if (deletePb.Count > 0)
             {
                 foreach (PictureBox pb in deletePb)
@@ -529,7 +875,7 @@ namespace MediaPlayer
             }
             if (globalPb.Image != null) globalPb.Image.Dispose();
 
-            if(type == "Videos" || type == " Short Videos")
+            if(type == "Videos" || type == "Gif Vid")
             {
                 flowLayoutPanel1.ContextMenuStrip = contextMenuStrip1;
             }
@@ -641,7 +987,7 @@ namespace MediaPlayer
                 Calculator.disCef = true;
                 disCef = true;
             }*/
-            else if (type == " Short Videos")
+            else if (type == "Gif Vid")
             {
                 Application.RemoveMessageFilter(this);
                 WMP wmp = null;
@@ -791,6 +1137,85 @@ namespace MediaPlayer
                     }
                     catch { }
             }
+        }
+
+        private Bitmap resizedImage(Image img, params int[] numbers)
+        {
+            int width = img.Width, destWidth;
+            int height = img.Height, destHeight;
+            if (width > height)
+            {
+                Double ratio = (Double)width / (Double)height;
+                /*destHeight = (int)(numbers.Length == 4 ? numbers[3] == 0 ? (int)((Double)numbers[2] / ratio) : numbers[3] : (int)(390 / ratio));
+                destWidth = (int)(numbers.Length == 4 ? numbers[2] : 390);*/
+
+                if (numbers.Length == 4 && numbers[3] != 0 && numbers[2] == 0)
+                {
+                    destWidth = (int)((double)numbers[3] * ratio);
+                    destHeight = (int)((double)numbers[3]);
+                }
+                else if (numbers.Length == 4 && numbers[2] != 0 && numbers[3] == 0)
+                {
+                    destWidth = (int)((double)numbers[2]);
+                    destHeight = (int)((double)numbers[2] / ratio);
+                }
+                else if (numbers.Length == 4 && numbers[2] != 0 && numbers[3] != 0)
+                {
+                    destWidth = (int)((double)numbers[2]);
+                    destHeight = (int)((double)numbers[3]);
+                }
+                else
+                {
+                    destWidth = 262;
+                    destHeight = (int)((double)195 / ratio);
+                }
+            }
+            else
+            {
+                Double ratio = (Double)width / (Double)height;
+
+                if (numbers.Length == 4 && numbers[1] != 0 && numbers[0] == 0)
+                {
+                    destWidth = (int)((double)numbers[1] * ratio);
+                    destHeight = (int)((double)numbers[1]);
+                }
+                else if (numbers.Length == 4 && numbers[1] == 0 && numbers[0] != 0)
+                {
+                    destWidth = (int)((double)numbers[0]);
+                    destHeight = (int)((double)numbers[0] / ratio);
+                }
+                else if (numbers.Length == 4 && numbers[1] != 0 && numbers[0] != 0)
+                {
+                    destWidth = (int)((double)numbers[0]);
+                    destHeight = (int)((double)numbers[1]);
+                }
+                else
+                {
+                    destWidth = 195;
+                    destHeight = (int)((double)195 / ratio);
+                }
+            }
+
+            var destRect = new Rectangle(0, 0, destWidth, destHeight);
+            var destImage = new Bitmap(destWidth, destHeight);
+
+            destImage.SetResolution(img.HorizontalResolution, img.VerticalResolution);
+
+            using (var graphics = Graphics.FromImage(destImage))
+            {
+                graphics.CompositingMode = CompositingMode.SourceCopy;
+                graphics.CompositingQuality = CompositingQuality.HighQuality;
+                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphics.SmoothingMode = SmoothingMode.HighQuality;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                using (var wrapMode = new ImageAttributes())
+                {
+                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+                    graphics.DrawImage(img, destRect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, wrapMode);
+                }
+            }
+            return destImage;
         }
 
         private List<String> GetRandomFiles()
@@ -946,12 +1371,14 @@ namespace MediaPlayer
                 pb.Image = setDefaultPic(fileInfo, pb);
                 pb.Margin = new Padding(5, 10, 17, 0);
 
+
                 videoUrls.Add(fileInfo.Name);
                 videosPb.Add(pb);
                 flowLayoutPanel1.Controls.Add(videosPb.ElementAt(videosPb.Count - 1));
                 newProgressBar.PerformStep();
 
-                String vidDetText = fileInfo.Name.Contains("placeholdeerr") ?fileInfo.Name.Replace("placeholdeerr", "\n").Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:").Substring(fileInfo.Name.IndexOf("Reso")):"";
+                String vidDetText = fileInfo.Name.Contains("placeholdeerr") ?fileInfo.Name.Replace("placeholdeerr00", "\n").Replace("placeholdeerr0", "\n")
+                    .Replace("placeholdeerr", "\n").Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:").Substring(fileInfo.Name.IndexOf("Reso")):"";
                 //int hours = (int)(duration / 3600);
                 //int min = (int)((duration / 60) - (60 * hours));
 
@@ -1042,7 +1469,9 @@ namespace MediaPlayer
                 stackDi = new DirectoryInfo(mainDi.FullName + "\\ImgPB");
                 foreach (FileInfo fi in stackDi.GetFiles())
                     try { fi.Delete(); } catch { }
+                isRefresh = true;
                 videosBtn_Click(null, null);
+                isRefresh = false;
             }
         }
 
@@ -1058,12 +1487,17 @@ namespace MediaPlayer
 
         private void picturesBtn_Click(object sender, EventArgs e)
         {
-            if (globalBtn != null)
-                globalBtn.BackColor = lightBackColor;
+            if (!isRefresh && globalBtn != null && globalBtn.Text != "Pictures")
+            {
+                globalBtn.ForeColor = Color.White;
+                isEnlarged[type] = false;
+                enlargeLeave(globalBtn, type);
+            }
             scrollZero = false;
             type = "Pictures";
+            isEnlarged[type] = true;
             globalBtn = picturesBtn;
-            picturesBtn.BackColor = mouseClickColor;
+            picturesBtn.ForeColor = mouseClickColor;
             deletePb.Clear();
             controlDisposer();
             GC.Collect();
@@ -1763,16 +2197,19 @@ namespace MediaPlayer
 
         private void videosBtn_Click(object sender, EventArgs e)
         {
-
-            if (globalBtn != null)
-                globalBtn.BackColor = lightBackColor;
+            if (!isRefresh && globalBtn != null && globalBtn.Text!="Videos")
+            {
+                globalBtn.ForeColor = Color.White;
+                isEnlarged[type] = false;
+                enlargeLeave(globalBtn, type);
+            }
 
             type = "Videos";
+            isEnlarged[type] = true;
             scrollZero = true;
             globalBtn = videosBtn;
-            videosBtn.BackColor = mouseClickColor;
+            videosBtn.ForeColor = mouseClickColor;
             deletePb.Clear();
-
             controlDisposer();
             this.Controls.Add(newProgressBar);
             flowLayoutPanel1.Padding = new Padding(16, 0, 0, 0);
@@ -2061,12 +2498,17 @@ namespace MediaPlayer
 
         private void fourKBtn_Click(object sender, EventArgs e)
         {
-            if (globalBtn != null)
-                globalBtn.BackColor = lightBackColor;
+            if (!isRefresh && globalBtn != null && globalBtn.Text != "4K")
+            {
+                globalBtn.ForeColor = Color.White;
+                isEnlarged[type] = false;
+                enlargeLeave(globalBtn, type);
+            }
             scrollZero = false;
             type = "4K";
+            isEnlarged[type] = true;
             globalBtn = fourKBtn;
-            fourKBtn.BackColor = mouseClickColor;
+            fourKBtn.ForeColor = mouseClickColor;
             deletePb.Clear();
             controlDisposer();
             flowLayoutPanel1.Padding = new Padding(5, 0, 0, 0);
@@ -2089,7 +2531,7 @@ namespace MediaPlayer
                 filePath = mainDi.FullName + "\\Pics";
                 files = Directory.GetFiles(filePath).Count();
             }
-            else if (globalBtn.Text.Equals(" Short Videos"))
+            else if (globalBtn.Text.Equals("Gif Vid"))
             {
                 filePath = mainDi.FullName + "\\Pics\\GifVideos";
                 files = Directory.GetFiles(filePath).Count();
@@ -2139,7 +2581,7 @@ namespace MediaPlayer
 
         public void refreshFolder()
         {
-
+            isRefresh = true;
             if (globalBtn.Text.Equals("Videos"))
             {
                 videosBtn_Click(null, null);
@@ -2148,7 +2590,7 @@ namespace MediaPlayer
             {
                 picturesBtn_Click(null, null);
             }
-            else if (globalBtn.Text.Equals(" Short Videos"))
+            else if (globalBtn.Text.Equals("Gif Vid"))
             {
                 shortVideosBtn_Click(null, null);
             }
@@ -2160,6 +2602,7 @@ namespace MediaPlayer
             {
                 gifsBtn_Click(null, null);
             }
+            isRefresh = true;
         }
 
         private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -2219,7 +2662,9 @@ namespace MediaPlayer
                 stackDi = new DirectoryInfo(mainDi.FullName + "\\Pics\\kkkk\\ImgPB");
                 foreach (FileInfo fi in stackDi.GetFiles())
                     try { fi.Delete(); } catch { }
+                isRefresh = true;
                 fourKBtn_Click(null, null);
+                isRefresh = false;
             }
         }
 
@@ -2235,7 +2680,9 @@ namespace MediaPlayer
                 stackDi = new DirectoryInfo(mainDi.FullName + "\\Pics\\GifVideos\\ImgPB");
                 foreach (FileInfo fi in stackDi.GetFiles())
                     try { fi.Delete(); } catch { }
+                isRefresh = true;
                 shortVideosBtn_Click(null, null);
+                isRefresh = false;
             }
         }
 
@@ -2251,7 +2698,9 @@ namespace MediaPlayer
                 stackDi = new DirectoryInfo(mainDi.FullName + "\\Pics\\Gifs\\ImgPB");
                 foreach (FileInfo fi in stackDi.GetFiles())
                     try { fi.Delete(); } catch { }
+                isRefresh = true;
                 gifsBtn_Click(null, null);
+                isRefresh = false;
             }
         }
 
@@ -2267,7 +2716,9 @@ namespace MediaPlayer
                 stackDi = new DirectoryInfo(mainDi.FullName + "\\Pics\\ImgPB");
                 foreach (FileInfo fi in stackDi.GetFiles())
                     try { fi.Delete(); } catch { }
+                isRefresh = true; 
                 picturesBtn_Click(null, null);
+                isRefresh = false;
             }
         }
 
@@ -2355,7 +2806,7 @@ namespace MediaPlayer
                 flowLayoutPanel1.Controls.Add(shortVideosPb.ElementAt(shortVideosPb.Count - 1));
 
                 Label vidDetails = new Label();
-                vidDetails.Text = fileInfo.Name.Replace("placeholdeerr", "\n\n").Replace("Reso^ ", "\nReso:").Replace("Dura^ ", "\nDura:").Replace("Size^ ", "\nSize:").Substring(fileInfo.Name.IndexOf("Reso"));
+                vidDetails.Text = fileInfo.Name.Replace("placeholdeerr00", "\n\n").Replace("placeholdeerr0", "\n\n").Replace("placeholdeerr", "\n\n").Replace("Reso^ ", "\nReso:").Replace("Dura^ ", "\nDura:").Replace("Size^ ", "\nSize:").Substring(fileInfo.Name.IndexOf("Reso"));
                 vidDetails.Font = new Font("Consolas", 9, FontStyle.Regular);
                 vidDetails.BackColor = lightBackColor;
                 vidDetails.Size = new Size(123, 200);
@@ -2382,13 +2833,18 @@ namespace MediaPlayer
 
         private void shortVideosBtn_Click(object sender, EventArgs e)
         {
-            if (globalBtn != null)
-                globalBtn.BackColor = lightBackColor;
+            if (!isRefresh && globalBtn != null && globalBtn.Text != "Gif Vid")
+            {
+                globalBtn.ForeColor = Color.White;
+                isEnlarged[type] = false;
+                enlargeLeave(globalBtn, type);
+            }
             scrollZero = true;
             globalBtn = shortVideosBtn;
-            shortVideosBtn.BackColor = mouseClickColor;
+            shortVideosBtn.ForeColor = mouseClickColor;
 
-            type = " Short Videos";
+            type = "Gif Vid";
+            isEnlarged[type] = true;
             controlDisposer();
             deletePb.Clear();
             GC.Collect();
@@ -2401,38 +2857,41 @@ namespace MediaPlayer
         {
             if (type.Equals("Videos"))
             {
-                videosBtn.BackColor = mouseClickColor;
-                globalBtn = videosBtn;
+                videosBtn.ForeColor = mouseClickColor;
                 videosBtn_Click(null, null);
             }
             else if (type.Equals("Pictures"))
             {
-                picturesBtn.BackColor = mouseClickColor;
-                globalBtn = picturesBtn;
+                picturesBtn.ForeColor = mouseClickColor;
                 picturesBtn_Click(null, null);
             }
             else if (type.Equals("4K"))
             {
-                fourKBtn.BackColor = mouseClickColor;
-                globalBtn = fourKBtn;
+                fourKBtn.ForeColor = mouseClickColor;
                 fourKBtn_Click(null, null);
             }
-            else if (type.Equals(" Short Videos"))
+            else if (type.Equals("Gif Vid"))
             {
-                shortVideosBtn.BackColor = mouseClickColor;
-                globalBtn = shortVideosBtn;
+                shortVideosBtn.ForeColor = mouseClickColor;
                 shortVideosBtn_Click(null, null);
             }
             else if (type.Equals("Gifs"))
             {
-                gifsBtn.BackColor = mouseClickColor;
-                globalBtn = gifsBtn;
+                gifsBtn.ForeColor = mouseClickColor;
                 gifsBtn_Click(null, null);
+            }
+            if(isFirst)
+            {
+                isEnlarged[globalBtn.Text] = false;
+                enlargeEnter(globalBtn);
+                isEnlarged[globalBtn.Text] = true;
+                isFirst = false;
             }
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            isRefresh = true;
             if (globalBtn.Text.Equals("Videos"))
             {
                 videosBtn_Click(null, null);
@@ -2441,7 +2900,7 @@ namespace MediaPlayer
             {
                 picturesBtn_Click(null, null);
             }
-            else if (globalBtn.Text.Equals(" Short Videos"))
+            else if (globalBtn.Text.Equals("Gif Vid"))
             {
                 shortVideosBtn_Click(null, null);
             }
@@ -2453,6 +2912,7 @@ namespace MediaPlayer
             {
                 gifsBtn_Click(null, null);
             }
+            isRefresh = false;
         }
 
         public void uiReload()
@@ -2607,13 +3067,18 @@ namespace MediaPlayer
 
         private void gifsBtn_Click(object sender, EventArgs e)
         {
-            if (globalBtn != null)
-                globalBtn.BackColor = lightBackColor;
+            if (!isRefresh && globalBtn != null && globalBtn.Text != "Gifs")
+            {
+                globalBtn.ForeColor = Color.White;
+                isEnlarged[type] = false;
+                enlargeLeave(globalBtn, type);
+            }
             scrollZero = true;
             globalBtn = gifsBtn;
-            gifsBtn.BackColor = mouseClickColor;
+            gifsBtn.ForeColor = mouseClickColor;
 
             type = "Gifs";
+            isEnlarged[type] = true;
             deletePb.Clear();
             controlDisposer();
             GC.Collect();
@@ -2673,7 +3138,7 @@ namespace MediaPlayer
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             Explorer.globalVol = trackBar1.Value;
-            button1.Text = "Global Vol: " + trackBar1.Value.ToString() + "\nMultselect: " + (mutltiSelect == true ? "On" : "Off");
+            button1.Text = trackBar1.Value.ToString();
         }
 
         private void worker_DoWork(object sender, DoWorkEventArgs e)
@@ -2681,31 +3146,31 @@ namespace MediaPlayer
 
             if (type.Equals("Videos"))
             {
-                videosBtn.BackColor = mouseClickColor;
+                videosBtn.ForeColor = mouseClickColor;
                 globalBtn = videosBtn;
                 videosBtn_Click(null, null);
             }
             else if (type.Equals("Pictures"))
             {
-                picturesBtn.BackColor = mouseClickColor;
+                picturesBtn.ForeColor = mouseClickColor;
                 globalBtn = picturesBtn;
                 picturesBtn_Click(null, null);
             }
             else if (type.Equals("4K"))
             {
-                fourKBtn.BackColor = mouseClickColor;
+                fourKBtn.ForeColor = mouseClickColor;
                 globalBtn = fourKBtn;
                 fourKBtn_Click(null, null);
             }
-            else if (type.Equals(" Short Videos"))
+            else if (type.Equals("Gif Vid"))
             {
-                shortVideosBtn.BackColor = mouseClickColor;
+                shortVideosBtn.ForeColor = mouseClickColor;
                 globalBtn = shortVideosBtn;
                 shortVideosBtn_Click(null, null);
             }
             else if (type.Equals("Gifs"))
             {
-                gifsBtn.BackColor = mouseClickColor;
+                gifsBtn.ForeColor = mouseClickColor;
                 globalBtn = gifsBtn;
                 gifsBtn_Click(null, null);
             }
@@ -2715,7 +3180,7 @@ namespace MediaPlayer
         {
             mutltiSelect = !mutltiSelect;
 
-            button1.Text = "Global Vol: " + trackBar1.Value.ToString() + "\nMultselect: " + (mutltiSelect == true ? "On" : "Off");
+            button1.Text = trackBar1.Value.ToString();
         }
 
         private void flowLayoutPanel1_MouseClick(object sender, MouseEventArgs e)
@@ -2729,12 +3194,13 @@ namespace MediaPlayer
                 }
             }
 
-            button1.Text = "Global Vol: " + trackBar1.Value.ToString() + "\nMultselect: " + (mutltiSelect == true ? "On" : "Off");
+            button1.Text = trackBar1.Value.ToString();
         }
 
         private void toolStripMenuItem10_Click(object sender, EventArgs e)
         {
             String filePath = "";
+            isRefresh = true;
             if (globalBtn.Text.Equals("Videos"))
             {
                 filePath = mainDi.FullName;
@@ -2747,7 +3213,7 @@ namespace MediaPlayer
                 loadFiles(filePath);
                 picturesBtn_Click(null, null);
             }
-            else if (globalBtn.Text.Equals(" Short Videos"))
+            else if (globalBtn.Text.Equals("Gif Vid"))
             {
                 filePath = mainDi.FullName + "\\Pics\\GifVideos";
                 loadFiles(filePath);
@@ -2765,6 +3231,7 @@ namespace MediaPlayer
                 loadFiles(filePath);
                 gifsBtn_Click(null, null);
             }
+            isRefresh = false;
         }
 
         private void VideoPlayer_Deactivate(object sender, EventArgs e)
@@ -2930,14 +3397,16 @@ namespace MediaPlayer
             sortBySize = false;
             sortByDate = true;
             bySort = true;
+            isRefresh = true;
             if (type == "Pictures")
                 picturesBtn_Click(null, null);
             else if (type == "4K")
                 fourKBtn_Click(null, null);
-            else if (type == " Short Videos")
+            else if (type == "Gif Vid")
                 shortVideosBtn_Click(null, null);
             else if (type == "Gifs")
                 gifsBtn_Click(null, null);
+            isRefresh = false;
         }
 
         private void toolStripMenuItem42_Click(object sender, EventArgs e)
@@ -2972,6 +3441,154 @@ namespace MediaPlayer
             isGlobalChecked = !isGlobalChecked;
             button10.BackColor = (isGlobalChecked == true ? mouseClickColor : lightBackColor);
             refreshFolder();
+        }
+
+        private void enlargeEnter(Button b)
+        {
+            if (largeImages.Count==0 || isEnlarged[b.Text])
+                return;
+            try
+            {
+                b.Image = largeImages[b.Text];
+                b.ForeColor = mouseClickColor;
+                Padding p = b.Margin;
+                b.Region = null;
+                b.Size = new Size(b.Width + 30, b.Height + 15);
+                b.Margin = new Padding(p.Left - 15, p.Top - 8, p.Right, p.Bottom);
+                b.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, b.Width, b.Height, 25, 25));
+                //label1.Margin = new Padding(label1.Margin.Left, label1.Margin.Top - 10, label1.Margin.Right, label1.Margin.Bottom);
+            }
+            catch { }
+        }
+
+        private void enlargeLeave(Button b, String typee)
+        {
+            if (miniImages.Count ==0 || isEnlarged[b.Text])
+                return;
+            try
+            {
+                b.Image = miniImages[typee];
+                Padding p = b.Margin;
+                b.Region = null;
+                b.Margin = new Padding(p.Left + 15, p.Top, p.Right, p.Bottom);
+                b.Size = new Size(b.Width - 30, b.Height - 15);
+                b.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, b.Width, b.Height, 25, 25));
+                //label1.Margin = new Padding(label1.Margin.Left, label1.Margin.Top + 10, label1.Margin.Right, label1.Margin.Bottom);
+            }
+            catch { }
+        }
+
+        private void videosBtn_MouseEnter(object sender, EventArgs e)
+        {
+            enlargeEnter((Button)sender);
+        }
+
+        private void picturesBtn_MouseEnter(object sender, EventArgs e)
+        {
+            enlargeEnter((Button)sender);
+        }
+
+        private void fourKBtn_MouseEnter(object sender, EventArgs e)
+        {
+            enlargeEnter((Button)sender);
+        }
+
+        private void shortVideosBtn_MouseEnter(object sender, EventArgs e)
+        {
+            enlargeEnter((Button)sender);
+        }
+
+        private void gifsBtn_MouseEnter(object sender, EventArgs e)
+        {
+            enlargeEnter((Button)sender);
+        }
+
+        private void videosBtn_MouseLeave(object sender, EventArgs e)
+        {
+            if (globalBtn != null && !globalBtn.Text.Equals("Videos"))
+                videosBtn.ForeColor = Color.White;
+            enlargeLeave((Button)sender, "Videos");
+        }
+
+        private void picturesBtn_MouseLeave(object sender, EventArgs e)
+        {
+            if (globalBtn != null && !globalBtn.Text.Equals("Pictures"))
+                picturesBtn.ForeColor = Color.White;
+            enlargeLeave((Button)sender, "Pictures");
+        }
+
+        private void expBtn_MouseEnter(object sender, EventArgs e)
+        {
+            expBtn.ForeColor = mouseClickColor;
+            try
+            {
+                expBtn.Image = largeImages[expBtn.Text];
+                expBtn.ForeColor = mouseClickColor;
+                Padding p = expBtn.Margin;
+                expBtn.Region = null;
+                expBtn.Size = new Size(expBtn.Width + 16, expBtn.Height + 8);
+                expBtn.Margin = new Padding(p.Left - 8, p.Top - 4, p.Right, p.Bottom);
+                expBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, expBtn.Width, expBtn.Height, 25, 25));
+            }
+            catch { }
+        }
+
+        private void expBtn_MouseLeave(object sender, EventArgs e)
+        {
+            expBtn.ForeColor = Color.White; try
+            {
+                expBtn.Image = miniImages[expBtn.Text];
+                Padding p = expBtn.Margin;
+                expBtn.Region = null;
+                expBtn.Margin = new Padding(p.Left + 8, p.Top, p.Right, p.Bottom);
+                expBtn.Size = new Size(expBtn.Width - 16, expBtn.Height - 8);
+                expBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, expBtn.Width, expBtn.Height, 25, 25));
+            }
+            catch { }
+        }
+
+        private void fourKBtn_MouseLeave(object sender, EventArgs e)
+        {
+            if (globalBtn != null && !globalBtn.Text.Equals("4K"))
+                fourKBtn.ForeColor = Color.White;
+            enlargeLeave((Button)sender, "4K");
+        }
+
+        private void shortVideosBtn_MouseLeave(object sender, EventArgs e)
+        {
+            if (globalBtn!=null && !globalBtn.Text.Equals("Gif Vid"))
+                shortVideosBtn.ForeColor = Color.White;
+            enlargeLeave((Button)sender, "Gif Vid");
+        }
+
+        private void gifsBtn_MouseLeave(object sender, EventArgs e)
+        {
+            if (globalBtn != null && !globalBtn.Text.Equals("Gifs"))
+                gifsBtn.ForeColor = Color.White;
+            enlargeLeave((Button)sender, "Gifs");
+            /*Button btn = (Button)sender;
+            int width = btn.Size.Width;
+            int height = btn.Size.Height;
+            btn.Size = new Size(width - 20, height - 12);
+            btn.Location = new Point(btn.Location.X + 10, btn.Location.Y + 6);
+            btn.Update();*/
+
+            /*Padding p = gifsBtn.Margin;
+            gifsBtn.Size = new Size(217,117);
+            gifsBtn.Margin = new Padding(p.Left + 7, p.Top, p.Right + 7, p.Bottom);*/
+        }
+
+        private void gifsBtn_MouseHover(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            int width = btn.Size.Width;
+            int height = btn.Size.Height;
+            btn.Size = new Size(width + 20, height + 12);
+            btn.Update();
+            btn.Location = new Point(btn.Location.X - 10, btn.Location.Y - 6);
+            Padding p = gifsBtn.Margin;
+            //gifsBtn.Size = new Size(231, 123);
+            //gifsBtn.Margin = new Padding(p.Left - 20, p.Top, p.Right, p.Bottom);
         }
 
         private void toolStripMenuItem44_Click(object sender, EventArgs e)
@@ -3059,7 +3676,9 @@ namespace MediaPlayer
 
                     button3.Tag = img1;
                     disposePb.Add(img1);
-                    myPictureBox1.Image = Image.FromFile(prevfi.FullName + "\\imgPB\\smallRes.png");
+                    if (myPictureBox1.Image != null)
+                        myPictureBox1.Image.Dispose();
+                    myPictureBox1.Image = resizedImage(img1, 0, 0, 0, 89);
                 }
                 catch { }
             }
@@ -3070,7 +3689,10 @@ namespace MediaPlayer
                     Image img2 = Image.FromFile(File.ReadAllText(nextFi.FullName + "\\disPic.txt").Trim());
                     button4.Tag = img2;
                     disposePb.Add(img2);
-                    myPictureBox2.Image = Image.FromFile(nextFi.FullName + "\\imgPB\\smallRes.png");
+
+                    if (myPictureBox2.Image != null)
+                        myPictureBox2.Image.Dispose();
+                    myPictureBox2.Image = resizedImage(img2, 0, 0, 0, 89);
                 }
                 catch { }
             }
@@ -3085,7 +3707,11 @@ namespace MediaPlayer
                 catch { }
             }
             globalBtn.BackColor = darkBackColor;
+            isRefresh = true;
+            if (globalBtn != null) globalBtn.BackColor = lightBackColor;
+            loadMiniImages();
             VideoPlayer_Load(null, null);
+            isRefresh = false;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -3120,7 +3746,10 @@ namespace MediaPlayer
                     button3.Tag = img1;
                     disposePb.Add(img1);
 
-                    myPictureBox1.Image = Image.FromFile(prevfi.FullName + "\\imgPB\\smallRes.png");
+
+                    if (myPictureBox1.Image != null)
+                        myPictureBox1.Image.Dispose();
+                    myPictureBox1.Image = resizedImage(img1, 0, 0, 0, 89);
                 }
                 catch { }
             }
@@ -3131,13 +3760,16 @@ namespace MediaPlayer
                     Image img2 = Image.FromFile(File.ReadAllText(nextFi.FullName + "\\disPic.txt").Trim());
                     button4.Tag = img2;
                     disposePb.Add(img2);
-                    myPictureBox2.Image = Image.FromFile(nextFi.FullName + "\\imgPB\\smallRes.png");
+
+                    if (myPictureBox2.Image != null)
+                        myPictureBox2.Image.Dispose();
+                    myPictureBox2.Image = resizedImage(img2, 0, 0, 0, 89);
                 }
                 catch { }
             }
             if (File.ReadAllText(mainDi.FullName + "\\disPic.txt") != "")
             {
-                try
+                try 
                 {
                     Image img3 = Image.FromFile(File.ReadAllText(mainDi.FullName + "\\disPic.txt").Trim());
                     button5.Tag = img3;
@@ -3145,7 +3777,14 @@ namespace MediaPlayer
                 }
                 catch { }
             }
+            isRefresh = true;
+            loadMiniImages();
             VideoPlayer_Load(null, null);
+            if (globalBtn != null)
+            {
+                globalBtn.BackColor = lightBackColor;
+            }
+            isRefresh = false;
         }
 
         private void flowLayoutPanel1_MouseEnter(object sender, EventArgs e)
@@ -3160,14 +3799,16 @@ namespace MediaPlayer
             sortBySize = true;
             sortByDate = false;
             bySort = true;
+            isRefresh = true;
             if (type == "Pictures")
                 picturesBtn_Click(null, null);
             else if (type == "4K")
                 fourKBtn_Click(null, null);
-            else if (type == " Short Videos")
+            else if (type == "Gif Vid")
                 shortVideosBtn_Click(null, null);
             else if (type == "Gifs")
                 gifsBtn_Click(null, null);
+            isRefresh = false;
         }
 
         private void toolStripMenuItem19_Click(object sender, EventArgs e)
@@ -3210,7 +3851,9 @@ namespace MediaPlayer
             }
             else
                 return;
+            isRefresh = true;
             fourKBtn_Click(null, null);
+            isRefresh = false;
         }
 
         private void toolStripMenuItem13_Click(object sender, EventArgs e)
@@ -3222,7 +3865,7 @@ namespace MediaPlayer
                 fi = new FileInfo(mainDi.FullName);
             }
 
-            try { if (fi != null) { File.Delete(fi.FullName + "\\priority.txt"); videosBtn_Click(null, null); } } catch { }
+            try { if (fi != null) { File.Delete(fi.FullName + "\\priority.txt"); isRefresh = true;  videosBtn_Click(null, null); isRefresh = false; } } catch { }
         }
 
         private void convertToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3278,6 +3921,18 @@ namespace MediaPlayer
 
         public void exitForm()
         {
+            foreach(Image img in miniImages.Values)
+            {
+                img.Dispose();
+            }
+            foreach (Image img in largeImages.Values)
+            {
+                img.Dispose();
+            }
+            if (myPictureBox1.Image != null)
+                myPictureBox1.Image.Dispose();
+            if (myPictureBox2.Image != null)
+                myPictureBox2.Image.Dispose();
             Controls.Clear();
             controlDisposer();
             this.Dispose();
@@ -3341,6 +3996,7 @@ namespace MediaPlayer
 
             if (File.Exists(di.FullName + "\\resized_" + fi.Name + ".jpg"))
             {
+                if(picBox.Length>0)
                 picBox[0].ImageLocation = di.FullName + "\\resized_" + fi.Name + ".jpg";
                 return Image.FromFile(di.FullName + "\\resized_" + fi.Name + ".jpg");
             }
@@ -3359,7 +4015,7 @@ namespace MediaPlayer
                     }
                     else
                     {
-                        if (type == " Short Videos")
+                        if (type == "Gif Vid")
                             ResizeImage(file.FullName, di.FullName + "\\resized_" + fileName + ".jpg", 0, 228, 402, 0);
                         else
                             ResizeImage(file.FullName, di.FullName + "\\resized_" + fileName + ".jpg", 0, 292, 515, 0);
@@ -3452,23 +4108,35 @@ namespace MediaPlayer
                         }
                     }
                     mutltiSelect = !mutltiSelect;
-                    button1.Text = "Global Vol: " + trackBar1.Value.ToString() + "\nMultselect: " + (mutltiSelect == true ? "On" : "Off");
+                    button1.Text = trackBar1.Value.ToString();
                 }
                 else if (ctrl && keyCode == Keys.Up)
                 {
                     int idx = typeButtons.IndexOf(globalBtn);
-                    globalBtn.BackColor = lightBackColor;
+                    isEnlarged[globalBtn.Text] = false;
+                    enlargeLeave(globalBtn, type);
+                    globalBtn.ForeColor = Color.White;
+                    globalBtn = null;
                     idx = idx - 1 < 0 ? typeButtons.Count - 1 : idx - 1;
                     type = typeButtons.ElementAt(idx).Text;
                     VideoPlayer_Load(null, null);
+                    isEnlarged[globalBtn.Text] = false;
+                    enlargeEnter(globalBtn);
+                    isEnlarged[globalBtn.Text] = true;
                 }
                 else if (ctrl && keyCode == Keys.Down)
                 {
                     int idx = typeButtons.IndexOf(globalBtn);
-                    globalBtn.BackColor = lightBackColor;
+                    isEnlarged[globalBtn.Text] = false;
+                    enlargeLeave(globalBtn, type);
+                    globalBtn.ForeColor = Color.White;
+                    globalBtn = null;
                     idx = idx + 1 >= typeButtons.Count ? 0 : idx + 1;
                     type = typeButtons.ElementAt(idx).Text;
                     VideoPlayer_Load(null, null);
+                    isEnlarged[globalBtn.Text] = false;
+                    enlargeEnter(globalBtn);
+                    isEnlarged[globalBtn.Text] = true;
                 }
                 else if (ctrl && keyCode == Keys.Left)
                 {
@@ -3522,57 +4190,68 @@ namespace MediaPlayer
                 {
                     trackBar1.Value = trackBar1.Value + 2 > 100 ? 100 : trackBar1.Value + 2;
                     Explorer.globalVol = trackBar1.Value;
-                    button1.Text = "Global Vol: " + trackBar1.Value.ToString() + "\nMultselect: " + (mutltiSelect == true ? "On" : "Off");
+                    button1.Text = trackBar1.Value.ToString();
                 }
                 else if (keyCode == Keys.Subtract)
                 {
                     trackBar1.Value = trackBar1.Value - 2 < 0 ? 0 : trackBar1.Value - 2;
                     Explorer.globalVol = trackBar1.Value;
-                    button1.Text = "Global Vol: " + trackBar1.Value.ToString() + "\nMultselect: " + (mutltiSelect == true ? "On" : "Off");
+                    button1.Text = trackBar1.Value.ToString();
                 }
                 else if (keyCode == Keys.M)
                 {
                     trackBar1.Value = 0;
                     Explorer.globalVol = trackBar1.Value;
-                    button1.Text = "Global Vol: " + 0 + "\nMultselect: " + (mutltiSelect == true ? "On" : "Off");
+                    button1.Text = 0 + "";
                 }
                 else if (keyCode == Keys.NumPad1 || keyCode == Keys.NumPad2 || keyCode == Keys.NumPad3 || keyCode == Keys.NumPad4 || keyCode == Keys.NumPad5)
                 {
+                    isEnlarged[globalBtn.Text] = false;
+                    enlargeLeave(globalBtn, type);
                     if (keyCode == Keys.NumPad1)
                     {
                         int idx = 0;
-                        globalBtn.BackColor = lightBackColor;
+                        globalBtn.ForeColor = Color.White;
+                        globalBtn = null;
                         type = typeButtons.ElementAt(idx).Text;
                         VideoPlayer_Load(null, null);
                     }
                     else if (keyCode == Keys.NumPad2)
                     {
                         int idx = 1;
-                        globalBtn.BackColor = lightBackColor;
+                        globalBtn.ForeColor = Color.White;
+                        globalBtn = null;
                         type = typeButtons.ElementAt(idx).Text;
                         VideoPlayer_Load(null, null);
                     }
                     else if (keyCode == Keys.NumPad3)
                     {
                         int idx = 2;
-                        globalBtn.BackColor = lightBackColor;
+                        globalBtn.ForeColor = Color.White;
+                        globalBtn = null;
                         type = typeButtons.ElementAt(idx).Text;
                         VideoPlayer_Load(null, null);
                     }
                     else if (keyCode == Keys.NumPad4)
                     {
                         int idx = 3;
-                        globalBtn.BackColor = lightBackColor;
+                        globalBtn.ForeColor = Color.White;
+                        globalBtn = null;
                         type = typeButtons.ElementAt(idx).Text;
                         VideoPlayer_Load(null, null);
                     }
                     else if (keyCode == Keys.NumPad5)
                     {
                         int idx = 4;
-                        globalBtn.BackColor = lightBackColor;
+                        globalBtn.ForeColor = Color.White;
+                        globalBtn = null;
                         type = typeButtons.ElementAt(idx).Text;
                         VideoPlayer_Load(null, null);
                     }
+
+                    isEnlarged[globalBtn.Text] = false;
+                    enlargeEnter(globalBtn);
+                    isEnlarged[globalBtn.Text] = true;
                 }
 
                 return true;

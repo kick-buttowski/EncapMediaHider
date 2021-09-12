@@ -34,8 +34,10 @@ namespace MediaPlayer
         );
         public String searchText = "";
 
+        CustomToolTip tip = null;
         public static DirectoryInfo[] pardirectory = new DirectoryInfo[2];
         List<Button> folderButt = new List<Button>(), typeButtons = new List<Button>();
+        Label countFiles = new Label();
         Calculator calc;
         public Button butt1 = new Button(), globalTypeButton = null;
         public List<String> typeList = new List<String>();
@@ -58,7 +60,7 @@ namespace MediaPlayer
         //public static Random rr = new Random();
         //static int rand1 = Explorer.rr.Next(0, 256);
         //static int[] color = Rand_Color(rand1, 0.5, 0.25);
-
+        public static int popUpY = 230;
         public static Color globColor = Color.FromArgb(255, 128, 0);
 
         Color darkBackColor = Color.FromArgb(0, 0, 0);
@@ -66,8 +68,45 @@ namespace MediaPlayer
         Color mouseHoverColor = Color.FromArgb(255, 128, 0);
         Color mouseClickColor = Color.FromArgb(255, 128, 0);
         Color selectedPbColor = Color.FromArgb(255, 128, 0);
+        Dictionary<String, Image> miniImages = new Dictionary<String, Image>(), largeImages = new Dictionary<string, Image>();
 
         ComponentResourceManager resources = null;
+
+
+        private void enlargeEnter(Button b)
+        {
+            //if (largeImages.Count == 0 || isEnlarged[b.Text])
+              //  return;
+            try
+            {
+                b.Image = largeImages[b.Text];
+                b.ForeColor = mouseClickColor;
+                Padding p = b.Margin;
+                b.Region = null;
+                b.Size = new Size(b.Width + 40, b.Height + 20);
+                b.Margin = new Padding(p.Left - 20, p.Top, p.Right, p.Bottom);
+                b.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, b.Width, b.Height, 25, 25));
+                //label1.Margin = new Padding(label1.Margin.Left, label1.Margin.Top - 10, label1.Margin.Right, label1.Margin.Bottom);
+            }
+            catch { }
+        }
+
+        private void enlargeLeave(Button b, String typee)
+        {
+            //if (miniImages.Count == 0 || isEnlarged[b.Text])
+              //  return;
+            try
+            {
+                b.Image = miniImages[typee];
+                Padding p = b.Margin;
+                b.Region = null;
+                b.Margin = new Padding(p.Left + 20, p.Top, p.Right, p.Bottom);
+                b.Size = new Size(b.Width - 40, b.Height -20);
+                b.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, b.Width, b.Height, 25, 25));
+                //label1.Margin = new Padding(label1.Margin.Left, label1.Margin.Top + 10, label1.Margin.Right, label1.Margin.Bottom);
+            }
+            catch { }
+        }
 
         public Explorer(Calculator calc)
         {
@@ -77,8 +116,9 @@ namespace MediaPlayer
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             calcButton.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, calcButton.Width, calcButton.Height, 20, 20));
             resources = new System.ComponentModel.ComponentResourceManager(typeof(VideoPlayer));
-            button5.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button5.Width, button5.Height, 20, 20));
-            textBox3.Font = new Font("Arial", 12, FontStyle.Regular);
+            button11.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button11.Width, button11.Height, 15,15));
+            button5.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button5.Width, button5.Height, 5, 5));
+            textBox3.Font = new Font("Arial", 13, FontStyle.Regular);
             flowLayoutPanel1.AutoScroll = true;
             textBox3.Select();
             this.DoubleBuffered = true;
@@ -95,12 +135,172 @@ namespace MediaPlayer
                     if (!File.Exists(di.FullName + "\\disPic.txt"))
                         File.Create(di.FullName + "\\disPic.txt");
                 }
-            typeList.Add("Videos");
-            typeList.Add("Pictures");
-            typeList.Add("4K");
-            typeList.Add(" Short Videos");
             typeList.Add("Gifs");
+            typeList.Add("Gif Vid");
+            typeList.Add("4K");
+            typeList.Add("Pictures");
+            typeList.Add("Videos");
             setTheme();
+
+            loadMiniImages();
+            calcButton.MouseEnter += (s, a) =>
+            {
+                try
+                {
+                    calcButton.Image = largeImages[calcButton.Text];
+                    calcButton.ForeColor = mouseClickColor;
+                    Padding p = calcButton.Margin;
+                    calcButton.Region = null;
+                    calcButton.Size = new Size(calcButton.Width + 30, calcButton.Height + 15);
+                    calcButton.Margin = new Padding(p.Left - 18, p.Top - 8, p.Right, p.Bottom);
+                    calcButton.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, calcButton.Width, calcButton.Height, 20, 20));
+                    //label1.Margin = new Padding(label1.Margin.Left, label1.Margin.Top - 10, label1.Margin.Right, label1.Margin.Bottom);
+                }
+                catch { }
+            };
+
+            calcButton.MouseLeave += (s, a) =>
+            {
+                try
+                {
+                    calcButton.Image = miniImages[calcButton.Text];
+                    Padding p = calcButton.Margin;
+                    calcButton.Region = null;
+                    calcButton.Margin = new Padding(p.Left + 18, p.Top + 8, p.Right, p.Bottom);
+                    calcButton.Size = new Size(calcButton.Width - 30, calcButton.Height - 15);
+                    calcButton.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, calcButton.Width, calcButton.Height, 20, 20));
+                    //label1.Margin = new Padding(label1.Margin.Left, label1.Margin.Top + 10, label1.Margin.Right, label1.Margin.Bottom);
+                }
+                catch { }
+            };
+        }
+
+
+        private Bitmap resizedImage(Image img, params int[] numbers)
+        {
+            int width = img.Width, destWidth;
+            int height = img.Height, destHeight;
+            if (width > height)
+            {
+                Double ratio = (Double)width / (Double)height;
+                /*destHeight = (int)(numbers.Length == 4 ? numbers[3] == 0 ? (int)((Double)numbers[2] / ratio) : numbers[3] : (int)(390 / ratio));
+                destWidth = (int)(numbers.Length == 4 ? numbers[2] : 390);*/
+
+                if (numbers.Length == 4 && numbers[3] != 0 && numbers[2] == 0)
+                {
+                    destWidth = (int)((double)numbers[3] * ratio);
+                    destHeight = (int)((double)numbers[3]);
+                }
+                else if (numbers.Length == 4 && numbers[2] != 0 && numbers[3] == 0)
+                {
+                    destWidth = (int)((double)numbers[2]);
+                    destHeight = (int)((double)numbers[2] / ratio);
+                }
+                else if (numbers.Length == 4 && numbers[2] != 0 && numbers[3] != 0)
+                {
+                    destWidth = (int)((double)numbers[2]);
+                    destHeight = (int)((double)numbers[3]);
+                }
+                else
+                {
+                    destWidth = 262;
+                    destHeight = (int)((double)195 / ratio);
+                }
+            }
+            else
+            {
+                Double ratio = (Double)width / (Double)height;
+
+                if (numbers.Length == 4 && numbers[1] != 0 && numbers[0] == 0)
+                {
+                    destWidth = (int)((double)numbers[1] * ratio);
+                    destHeight = (int)((double)numbers[1]);
+                }
+                else if (numbers.Length == 4 && numbers[1] == 0 && numbers[0] != 0)
+                {
+                    destWidth = (int)((double)numbers[0]);
+                    destHeight = (int)((double)numbers[0] / ratio);
+                }
+                else if (numbers.Length == 4 && numbers[1] != 0 && numbers[0] != 0)
+                {
+                    destWidth = (int)((double)numbers[0]);
+                    destHeight = (int)((double)numbers[1]);
+                }
+                else
+                {
+                    destWidth = 195;
+                    destHeight = (int)((double)195 / ratio);
+                }
+            }
+
+            var destRect = new Rectangle(0, 0, destWidth, destHeight);
+            var destImage = new Bitmap(destWidth, destHeight);
+
+            destImage.SetResolution(img.HorizontalResolution, img.VerticalResolution);
+
+            using (var graphics = Graphics.FromImage(destImage))
+            {
+                graphics.CompositingMode = CompositingMode.SourceCopy;
+                graphics.CompositingQuality = CompositingQuality.HighQuality;
+                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphics.SmoothingMode = SmoothingMode.HighQuality;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                using (var wrapMode = new ImageAttributes())
+                {
+                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+                    graphics.DrawImage(img, destRect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, wrapMode);
+                }
+            }
+            return destImage;
+        }
+
+
+        private void loadMiniImages()
+        {
+            foreach (DirectoryInfo directory in pardirectory)
+                foreach (DirectoryInfo di in directory.GetDirectories())
+                {
+                    if(File.Exists(pardirectory[1].FullName + "\\" + di.Name.Substring(1) + ".jpg"))
+                    {
+                        Image img = Image.FromFile(pardirectory[1].FullName + "\\" + di.Name.Substring(1) + ".jpg");
+                        miniImages.Add(di.Name.Substring(1), resizedImage(img, 0, 0, 0, 107));
+                        largeImages.Add(di.Name.Substring(1), resizedImage(img, 0, 0, 0, 127));
+                        img.Dispose();
+                    }    
+
+                }
+
+            if(File.Exists(pardirectory[1].FullName + "\\Stack.jpg"))
+            {
+
+                Image img = Image.FromFile(pardirectory[1].FullName + "\\Stack.jpg");
+                miniImages.Add("Calc", resizedImage(img, 0, 0, 0, 126));
+                largeImages.Add("Calc", resizedImage(img, 0, 0, 0, 142));
+                calcButton.Image = miniImages["Calc"];
+
+                Image img1 = resizedImage(img, 0, 0, 0, popUpY);
+                calcButton.Tag = img1;
+                int yLoc = calcButton.Location.Y + (calcButton.Height / 2) - (popUpY / 2);
+                if (1080 - calcButton.Location.Y <= (popUpY/2))
+                {
+                    yLoc = yLoc - (popUpY / 2) + 10;
+                }
+                else if (calcButton.Location.Y - (popUpY/2) < 0)
+                {
+                    tip = new CustomToolTip(img1.Width, popUpY, calcButton.Location.X + calcButton.Size.Width + 25, calcButton.Location.Y);
+                }
+                else
+                {
+                    if (img.Width > img.Height)
+                        tip = new CustomToolTip(img1.Width, popUpY, calcButton.Location.X + calcButton.Size.Width + 25, yLoc);
+                    else
+                        tip = new CustomToolTip(300, 450, 10, yLoc);
+                }
+
+                tip.SetToolTip(calcButton, calcButton.Text);
+                img.Dispose();
+            }
         }
 
         private void setTheme()
@@ -123,6 +323,10 @@ namespace MediaPlayer
             calcButton.BackColor = lightBackColor;
             calcButton.ForeColor = Color.White;
             calcButton.FlatAppearance.MouseOverBackColor = mouseClickColor;
+            searchLabel.BackColor = darkBackColor;
+            searchLabel.ForeColor = Color.White;
+            typelbl.BackColor = darkBackColor;
+            typelbl.ForeColor = Color.White;
             button11.BackColor = lightBackColor;
             button11.ForeColor = Color.White;
             textBox3.BackColor = lightBackColor;
@@ -226,16 +430,18 @@ namespace MediaPlayer
         {
             Button butt2 = new Button();
             butt2.Text = buttonName;
-            butt2.Font = new Font("Consolas", 13, FontStyle.Bold);
+            butt2.Font = new Font("Consolas", 9, FontStyle.Bold);
             butt2.Cursor = System.Windows.Forms.Cursors.Hand;
             butt2.ForeColor = Color.White;
             butt2.BackColor = lightBackColor;
-            butt2.Size = new Size(258, 56);
+            butt2.Size = new Size(221, 105);
             butt2.FlatStyle = FlatStyle.Flat;
-            butt2.Margin = new Padding(13, 2, 10, 0);
-            butt2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, butt2.Width, butt2.Height, 20, 20));
+            butt2.TextAlign = ContentAlignment.BottomRight;
+            butt2.Region = null;
+            butt2.Margin = new Padding(32, 4, 0, 0);
+            butt2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, butt2.Width, butt2.Height, 15, 15));
             butt2.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
-            butt2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            butt2.ImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
             if (butt2.Text.Contains(Calculator.globalFilt))
             {
                 butt2.BackColor = mouseClickColor;
@@ -257,8 +463,52 @@ namespace MediaPlayer
                 Calculator.globalFilt = butt2.Text;
                 disposeAndLoad();
             };
+            butt2.MouseEnter += (s, a) =>
+            {
+                enlargeEnter(butt2);
+            };
+
+            butt2.MouseLeave += (s, a) =>
+            {
+                enlargeLeave(butt2, butt2.Text);
+            };
+
+            try
+            {
+                butt2.Image = miniImages[butt2.Text];
+            }
+            catch { }
+
+
             folderButt.Add(butt2);
             flowLayoutPanel3.Controls.Add(butt2);
+
+            if (File.Exists(pardirectory[1].FullName + "\\" + butt2.Text + ".jpg"))
+            {
+                Image img = Image.FromFile(pardirectory[1].FullName + "\\" + butt2.Text + ".jpg");
+                Image img1 = resizedImage(img, 0, 0, 0, popUpY);
+                butt2.Tag = img1;
+                int yLoc = butt2.Location.Y + (butt2.Height/2) - (popUpY / 2);
+                if (1080 - butt2.Location.Y <= popUpY / 2)
+                {
+                    yLoc = yLoc - (popUpY / 2) + 10;
+                }
+                else if (butt2.Location.Y - (popUpY / 2) < 0)
+                {
+                    tip = new CustomToolTip(img1.Width, popUpY, butt2.Location.X + butt2.Size.Width + 25, butt2.Location.Y + (butt2.Height/2));
+                }
+                else
+                {
+                    if (img.Width > img.Height)
+                        tip = new CustomToolTip(img1.Width, popUpY, butt2.Location.X + butt2.Size.Width + 25, yLoc);
+                    else
+                        tip = new CustomToolTip(300, 450, 10, yLoc);
+                }
+
+                tip.SetToolTip(butt2, butt2.Text);
+                img.Dispose();
+            }
+
         }
 
         public long[] noOfFiles(DirectoryInfo videoDi)
@@ -414,13 +664,26 @@ namespace MediaPlayer
 
                     }
 
+                /*countFiles = new Label();
+                countFiles.Text = "No of folders: ";
+                countFiles.Font = new Font("Consolas", 11, FontStyle.Bold);
+                countFiles.BackColor = darkBackColor;
+                countFiles.Size = new Size(250, 20);
+                countFiles.ForeColor = Color.White;
+                countFiles.TextAlign = ContentAlignment.MiddleCenter;
+                countFiles.Margin = new Padding(10, 8, 0, 0);*/
+                //flowLayoutPanel3.Controls.AddcountFiles);
             }
 
+
+            countFiles.Text = "No of folders: 0";
             foreach (DirectoryInfo directory in pardirectory)
                 foreach (DirectoryInfo subDi in directory.GetDirectories().OrderBy(f => f.Name).ToList())
                 {
                     if (subDi.Name.Substring(1).Equals(Calculator.globalFilt))
                     {
+
+                        countFiles.Text = "No of folders: " + subDi.GetDirectories().Length;
                         String writePriorStr = "";
                         StreamReader sr1 = new StreamReader(subDi.FullName + "\\priority.txt");
 
@@ -653,9 +916,9 @@ namespace MediaPlayer
                                 {
                                     Directory.CreateDirectory(keyValuePair.Key + "\\imgPB");
                                 }
-                                if (!File.Exists(keyValuePair.Key + "\\imgPB\\smallRes.png"))
+                                if (File.Exists(keyValuePair.Key + "\\imgPB\\smallRes.png"))
                                 {
-                                    ResizeImage(img, keyValuePair.Key + "\\imgPB\\smallRes.png", 57, 0, 57, 0);
+                                    File.Delete(keyValuePair.Key + "\\imgPB\\smallRes.png");
                                 }
                             }
                             try { flowLayoutPanel1.Controls.Add(dirPb); } catch { }
@@ -722,29 +985,37 @@ namespace MediaPlayer
 
             if (useAndThrow)
             {
-                Button dummy = new Button();
+                /*Button dummy = new Button();
                 dummy.Text = "";
                 dummy.Font = new Font("Consolas", 13, FontStyle.Bold);
                 dummy.BackColor = darkBackColor;
                 dummy.Size = new Size(290, 27);
                 dummy.Margin = new Padding(0, 3, 3, 3);
                 dummy.FlatStyle = FlatStyle.Flat;
+                dummy.FlatAppearance.MouseOverBackColor = darkBackColor;
+                dummy.FlatAppearance.MouseDownBackColor = darkBackColor;
                 dummy.FlatAppearance.BorderSize = 0;
-                flowLayoutPanel3.Controls.Add(dummy);
+                dummy.MouseClick += (s, a) =>
+                {
+                    textBox3.Focus();
+                };*/
+                //flowLayoutPanel3.Controls.Add(dummy);
 
-
+                //flowLayoutPanel4.Controls.Remove(searchLabel);
+                //flowLayoutPanel4.Controls.Remove(textBox3);
+                flowLayoutPanel4.Controls.Remove(typelbl);
                 foreach (String type in typeList)
                 {
                     Button butt = new Button();
                     butt.Text = type;
-                    butt.Font = new Font("Consolas", 13, FontStyle.Bold);
+                    butt.Font = new Font("Consolas", 10, FontStyle.Bold);
                     butt.Cursor = System.Windows.Forms.Cursors.Hand;
                     butt.ForeColor = Color.White;
                     butt.BackColor = lightBackColor;
-                    butt.Size = new Size(258, 56);
-                    butt.Margin = new Padding(13, 2, 10, 0);
+                    butt.Size = new Size(150, 45);
+                    butt.Margin = new Padding(0, 0, 3, 0);
                     butt.FlatStyle = FlatStyle.Flat;
-                    butt.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, butt.Width, butt.Height, 20, 20));
+                    butt.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, butt.Width, butt.Height, 5, 5));
                     butt.Image = ((System.Drawing.Image)(resources.GetObject("fourKBtn.Image")));
                     butt.ImageAlign = ContentAlignment.MiddleLeft;
                     if (butt.Text.Equals(Calculator.globalType))
@@ -774,9 +1045,12 @@ namespace MediaPlayer
                         textBox3.Select();
                     };
                     typeButtons.Add(butt);
-                    flowLayoutPanel3.Controls.Add(butt);
+                    flowLayoutPanel4.Controls.Add(butt);
                 }
                 useAndThrow = false;
+                flowLayoutPanel4.Controls.Add(typelbl);
+                //flowLayoutPanel4.Controls.Add(textBox3);
+                //flowLayoutPanel4.Controls.Add(searchLabel);
             }
         }
 
@@ -1352,6 +1626,16 @@ namespace MediaPlayer
             File.WriteAllText(pardirectory[1].FullName + "\\ThemeColor.txt",
                                 colorDialog1.Color.R + "," + colorDialog1.Color.G + "," + colorDialog1.Color.B);
             setTheme();
+        }
+
+        private void calcButton_MouseEnter(object sender, EventArgs e)
+        {
+            calcButton.ForeColor = mouseClickColor;
+        }
+
+        private void calcButton_MouseLeave(object sender, EventArgs e)
+        {
+            calcButton.ForeColor = Color.White;
         }
 
         private void button4_Click(object sender, EventArgs e)
