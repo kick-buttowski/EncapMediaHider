@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,14 +32,31 @@ namespace MediaPlayer
         public void TranspBack_MouseClick(object sender, MouseEventArgs e)
         {
                 wmp.timer3.Enabled = false;
-                try
+            try
+            {
+                wmp.Hide();
+                Explorer.wmpOnTop.axWindowsMediaPlayer1.URL = wmp.axWindowsMediaPlayer1.Name;
+                Explorer.wmpOnTop.axWindowsMediaPlayer1.settings.volume = 0;
+                Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition = wmp.axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+                Explorer.wmpOnTop.WmpOnTop_Activated((int)wmp.duration);
+
+                FileInfo fi = new FileInfo(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL);
+                if (File.Exists(fi.DirectoryName + "\\resume.txt"))
                 {
-                    wmp.Hide();
-                    Explorer.wmpOnTop.axWindowsMediaPlayer1.URL = wmp.axWindowsMediaPlayer1.Name;
-                    Explorer.wmpOnTop.axWindowsMediaPlayer1.settings.volume = 0;
-                    Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition = wmp.axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
-                    Explorer.wmpOnTop.WmpOnTop_Activated((int)wmp.duration);
-                    this.Hide();
+                    String[] resumeFile = File.ReadAllLines(fi.DirectoryName + "\\resume.txt");
+                    String fileStr = "";
+                    foreach (String str in resumeFile)
+                    {
+                        if (str.Contains("@@" + fi.Name + "@@!"))
+                        {
+                            fileStr = fileStr + "@@" + fi.Name + "@@!" + Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
+                            continue;
+                        }
+                        fileStr = fileStr + str + "\n";
+                    }
+                    File.WriteAllText(fi.DirectoryName + "\\resume.txt", fileStr);
+                }
+                        this.Hide();
                     Application.RemoveMessageFilter(wmp);
                     Application.AddMessageFilter(videoPlayer);
                     wmp.timer1.Enabled = false;

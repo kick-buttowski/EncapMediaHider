@@ -49,27 +49,27 @@ namespace MediaPlayer
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 20, 20));
             txtDisplay.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, txtDisplay.Width, txtDisplay.Height, 20, 20));
-            button1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button1.Width, button1.Height, 25, 25));
-            btnReset.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnReset.Width, btnReset.Height, 25, 25));
-            btnDiv.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnDiv.Width, btnDiv.Height, 25, 25));
-            btnClear.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnClear.Width, btnClear.Height, 25, 25));
-            btnCopy.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnCopy.Width, btnCopy.Height, 25, 25));
-            btn7.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn7.Width, btn7.Height, 25, 25));
-            btn8.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn8.Width, btn8.Height, 25, 25));
-            btn9.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn9.Width, btn9.Height, 25, 25));
+            button1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button1.Width, button1.Height,15, 15));
+            btnReset.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnReset.Width, btnReset.Height,15, 15));
+            btnDiv.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnDiv.Width, btnDiv.Height,15, 15));
+            btnClear.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnClear.Width, btnClear.Height,15, 15));
+            btnCopy.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnCopy.Width, btnCopy.Height,15, 15));
+            btn7.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn7.Width, btn7.Height,15, 15));
+            btn8.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn8.Width, btn8.Height,15, 15));
+            btn9.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn9.Width, btn9.Height,15, 15));
 
-            btnMul.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnMul.Width, btnMul.Height, 25, 25));
-            btnSub.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnSub.Width, btnSub.Height, 25, 25));
-            btn1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn1.Width, btn1.Height, 25, 25));
-            btn2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn2.Width, btn2.Height, 25, 25));
-            btn3.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn3.Width, btn3.Height, 25, 25));
-            btn4.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn4.Width, btn4.Height, 25, 25));
-            btn5.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn5.Width, btn5.Height, 25, 25));
-            btn6.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn6.Width, btn6.Height, 25, 25));
-            btnAdd.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnAdd.Width, btnAdd.Height, 25, 25));
-            btn0.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn0.Width, btn0.Height, 25, 25));
-            btnDecimal.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnDecimal.Width, btnDecimal.Height, 25, 25));
-            btnRes.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnRes.Width, btnRes.Height, 25, 25));
+            btnMul.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnMul.Width, btnMul.Height,15, 15));
+            btnSub.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnSub.Width, btnSub.Height,15, 15));
+            btn1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn1.Width, btn1.Height,15, 15));
+            btn2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn2.Width, btn2.Height,15, 15));
+            btn3.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn3.Width, btn3.Height,15, 15));
+            btn4.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn4.Width, btn4.Height,15, 15));
+            btn5.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn5.Width, btn5.Height,15, 15));
+            btn6.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn6.Width, btn6.Height,15, 15));
+            btnAdd.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnAdd.Width, btnAdd.Height,15, 15));
+            btn0.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn0.Width, btn0.Height,15, 15));
+            btnDecimal.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnDecimal.Width, btnDecimal.Height,15, 15));
+            btnRes.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnRes.Width, btnRes.Height,15, 15));
 
             this.Location = new Point(1890, 30);
         }
@@ -324,7 +324,7 @@ namespace MediaPlayer
                 }
             }
 
-            if (tbx.Text.Equals("608442786042"))
+            if (tbx.Text.Equals("608442786042") || tbx.Text.Equals("/**/-+"))
             {
                 tbx.Text = "";
                 this.Hide();

@@ -498,7 +498,7 @@
             this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button7.Font = new System.Drawing.Font("Consolas", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button7.ForeColor = System.Drawing.Color.White;
-            this.button7.Location = new System.Drawing.Point(246, 0);
+            this.button7.Location = new System.Drawing.Point(180, 0);
             this.button7.Margin = new System.Windows.Forms.Padding(0, 0, 2, 2);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(65, 45);
@@ -517,7 +517,7 @@
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Font = new System.Drawing.Font("Consolas", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(179, 0);
+            this.button2.Location = new System.Drawing.Point(247, -1);
             this.button2.Margin = new System.Windows.Forms.Padding(0, 0, 2, 2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(65, 45);

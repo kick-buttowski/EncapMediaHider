@@ -25,12 +25,13 @@ namespace MediaPlayer
         );
 
         Boolean closeIt = false, clicked = false;
+        public bool isEnabled = false;
         int x = 0, y=0;
         double x1 = 0, changesPos, currPos, clickedPos;
         Boolean uimode = false;
         public NewProgressBar newProgressBar = null;
         int noOfPixToMove, duration;
-        Color mouseClickColor = Color.FromArgb(81, 160, 213);
+        Color mouseClickColor = Explorer.globColor;
         private bool mouseDown, keybind = false;
         private Point lastLocation;
 
@@ -43,6 +44,7 @@ namespace MediaPlayer
         {
             if (m.Msg == 0x84)
             {  // Trap WM_NCHITTEST
+                this.Region = null;
                 Point pos = new Point(m.LParam.ToInt32());
                 pos = this.PointToClient(pos);
                 if (pos.Y < cCaption)
@@ -92,6 +94,7 @@ namespace MediaPlayer
 
             axWindowsMediaPlayer1.settings.setMode("loop", true);
             this.Controls.Add(newProgressBar);
+            isEnabled = true;
         }
 
         private void axWindowsMediaPlayer1_MouseDownEvent(object sender, AxWMPLib._WMPOCXEvents_MouseDownEvent e)
@@ -190,6 +193,7 @@ namespace MediaPlayer
                 catch { }
             };
             axWindowsMediaPlayer1.Focus();
+            isEnabled = true;
         }
 
 

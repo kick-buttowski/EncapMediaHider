@@ -63,16 +63,6 @@ namespace MediaPlayer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _314481_lock_icon {
-            get {
-                object obj = ResourceManager.GetObject("314481_lock_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap exit_icon_4600_Windows {
             get {
                 object obj = ResourceManager.GetObject("exit-icon-4600-Windows", resourceCulture);

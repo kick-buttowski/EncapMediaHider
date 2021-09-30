@@ -60,6 +60,7 @@ namespace MediaPlayer
             }
             else
                 smallPb.Size = new Size(315, (int)(315 / 1.7777));
+
             smallPb.SizeMode = PictureBoxSizeMode.Zoom;
             smallPb.Name = vidPb[j < 0 ? (vidPb.Count + j) : j].Name;
             smallPb.MouseClick += (s, args) =>
@@ -75,6 +76,7 @@ namespace MediaPlayer
                 controlDisposer();
                 fillUpFP1(vidPb);
             };
+
 
             dispPb.Add(smallPb);
             flowLayoutPanel1.Controls.Add(smallPb);
@@ -212,7 +214,10 @@ namespace MediaPlayer
                         foreach (int j in seq)
                         {
                             PictureBox smallPb = new PictureBox();
-                            smallPb.Image = Image.FromFile(vidPb[j < 0 ? (vidPb.Count + j) : j].ImageLocation);
+                            String name = vidPb[j < 0 ? (vidPb.Count + j) : j].Name;
+                            smallPb.Image = Image.FromFile(name.Contains("\\kkkk\\")?
+                                name.Replace("\\kkkk\\", "\\kkkk\\imgPB\\"): (name.Contains("\\Gifs\\")?
+                                name.Replace("\\Gifs\\", "\\Gifs\\imgPB\\") : name.Replace("\\Pics\\", "\\Pics\\imgPB\\")));
                             smallPb.Cursor = Cursors.Hand;
                             if (vidPb[j < 0 ? (vidPb.Count + j) : j].Name.Equals(PicViewer.globalPic))
                             {
@@ -266,7 +271,7 @@ namespace MediaPlayer
                                 else
                                 {
                                     smallPb.Size = new Size((int)(185 * ratio), 185);
-                                    smallPb.Margin = new Padding(20, 10, 7, 10);
+                                    smallPb.Margin = new Padding(20, 6, 7, 6);
                                 }
                             }
                             smallPb.SizeMode = PictureBoxSizeMode.Zoom;
@@ -284,6 +289,37 @@ namespace MediaPlayer
                                 picViewer.setPic();
                                 controlDisposer();
                                 fillUpFP1(vidPb, typeImg);
+                            };
+
+                            smallPb.MouseEnter += (s, args) => {
+                                if (PicViewer.globalPic == smallPb.Name)
+                                {
+                                    smallPb.Size = new Size((int)(smallPb.Width * 1.05), (int)(smallPb.Height * 1.05));
+                                    smallPb.Margin = new Padding(smallPb.Margin.Left - 5, smallPb.Margin.Top - 6, smallPb.Margin.Right, smallPb.Margin.Bottom - 6);
+                                }
+                                else
+                                {
+
+                                    int topM = smallPb.Width > smallPb.Height ? 11 : 6;
+                                    smallPb.Size = new Size((int)(smallPb.Width * 1.20), (int)(smallPb.Height * 1.20));
+                                    smallPb.Margin = new Padding(smallPb.Margin.Left - 14, smallPb.Margin.Top - topM, smallPb.Margin.Right, smallPb.Margin.Bottom - 6);
+                                }
+                            };
+
+
+                            smallPb.MouseLeave += (s, a) =>
+                            {
+                                if (PicViewer.globalPic == smallPb.Name)
+                                {
+                                    int topM = smallPb.Width > smallPb.Height ? 0 : 6;
+                                    smallPb.Size = new Size((int)(smallPb.Width * (1.0 / 1.05)), (int)(smallPb.Height * (1.0 / 1.05)));
+                                    smallPb.Margin = new Padding(smallPb.Margin.Left, smallPb.Margin.Top + topM, smallPb.Margin.Right, smallPb.Margin.Bottom + topM);
+                                }
+                                else
+                                {
+                                    smallPb.Size = new Size((int)(smallPb.Width * (1.0 / 1.20)), (int)(smallPb.Height * (1.0 / 1.20)));
+                                    smallPb.Margin = new Padding(smallPb.Margin.Left + 14, smallPb.Margin.Top + 6, smallPb.Margin.Right, smallPb.Margin.Bottom + 6);
+                                }
                             };
 
                             dispPb.Add(smallPb);

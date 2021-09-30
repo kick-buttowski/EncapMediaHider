@@ -39,11 +39,11 @@ namespace MediaPlayer
         );
 
         public Boolean enter = false, ctrl = false, scrollZero = true, hoveredOver = true, hoveredOver2 = true, toggleFullScreen = true,
-            playStatus = true, toMute = true, toRepeat = false, loadAll = false, enlargeImage = false, isFirst = true, isRefresh = false, tipForFirstTime = true;
-        public Dictionary<String, Boolean> isEnlarged = new Dictionary<string, bool>();
+            playStatus = true, toMute = true, toRepeat = false, loadAll = false, enlargeImage = false, isFirst = true, isRefresh = false, stackPics = false;
+        public Dictionary<String, Boolean> isEnlarged = new Dictionary<string, bool>(), tipForFirstTime = new Dictionary<string, bool>();
         String directoryPath;
         public static Boolean toRefresh = false, toChangeTheme = false; 
-        bool isChecked = false, isGlobalChecked = false;
+        public static bool isChecked = false, isGlobalChecked = false, isShort = false;
 
         public static String imagePBLink = "";
         List<Button> typeButtons = new List<Button>();
@@ -83,6 +83,9 @@ namespace MediaPlayer
         DirectoryInfo prevfi = null, nextFi = null;
         Engine engine = new Engine();
         int popUpY = 270;
+        int popUpX = 320;
+        Image img3 = null;
+        Image img4 = null;
 
         NewProgressBar newProgressBar = null;
         checkBox checkBox = new checkBox();
@@ -91,14 +94,15 @@ namespace MediaPlayer
         //static int rand1 = Explorer.rr.Next(0, 256);
         //static int[] color = Explorer.Rand_Color(rand1, 0.5, 0.25);
         static Color globColor = Color.FromArgb(rr.Next(256), rr.Next(256), rr.Next(256));
-        Color darkBackColor = Color.FromArgb(0, 0, 0);
-        Color lightBackColor = Color.FromArgb(31, 31, 31);
+        Color darkBackColor = Explorer.darkBackColor;
+        Color lightBackColor = Explorer.lightBackColor;
+        Color kindaDark = Explorer.kindaDark;
         Color mouseHoverColor = Explorer.globColor;
         Color mouseClickColor = Explorer.globColor;
         Color selectedPbColor = Explorer.globColor;
         List<String> folders = null;
 
-        CustomToolTip tip = null;
+        CustomToolTip tip = null, tip1 = null;
 
         public VideoPlayer(String directoryPath, Explorer exp, String type, DirectoryInfo prevFi, DirectoryInfo nextFi, List<String> folders)
         {
@@ -126,8 +130,15 @@ namespace MediaPlayer
             button3.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button3.Width, button3.Height, 10, 10));
             button4.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button4.Width, button4.Height, 10, 10));
             button5.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button5.Width, button5.Height, 10, 10));
+            myPictureBox1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, myPictureBox1.Width, myPictureBox1.Height, 10, 10));
+            myPictureBox2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, myPictureBox2.Width, myPictureBox2.Height, 10, 10));
+            //this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 10, 10));
+            //flowLayoutPanel2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel2.Width, flowLayoutPanel2.Height, 10, 10));
+            //button6.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button6.Width, button6.Height, 10, 10));
+            //this.WindowState = FormWindowState.Maximized;
             //textBox1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, textBox1.Width, textBox1.Height, 20, 20));
-            trackBar1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, trackBar1.Width, trackBar1.Height, 20, 20));
+            trackBar1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, trackBar1.Width, trackBar1.Height, 5, 5));
+            button1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button1.Width, button1.Height, 5, 5));
             button2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button2.Width, button2.Height, 5, 5));
             mainDi = new DirectoryInfo(directoryPath);
             button5.Text = mainDi.Name;
@@ -149,6 +160,11 @@ namespace MediaPlayer
                 FileStream fi = File.Create(mainDi.FullName + "\\links.txt");
                 fi.Close();
             }
+            if (!File.Exists(mainDi + "\\resume.txt"))
+            {
+                FileStream fi = File.Create(mainDi.FullName + "\\resume.txt");
+                fi.Close();
+            }
             if (!File.Exists(mainDi + "\\webLinks.txt"))
             {
                 FileStream fi = File.Create(mainDi.FullName + "\\webLinks.txt");
@@ -166,6 +182,13 @@ namespace MediaPlayer
             isEnlarged.Add("Gif Vid", false);
             isEnlarged.Add("4K", false);
             isEnlarged.Add("Stack", false);
+
+            tipForFirstTime.Add("LargeVideos", true);
+            tipForFirstTime.Add("LargePictures", true);
+            tipForFirstTime.Add("LargeGifs", true);
+            tipForFirstTime.Add("LargeGif Vid", true);
+            tipForFirstTime.Add("Large4K", true);
+            tipForFirstTime.Add("LargeStack", true);
             if (File.ReadAllText(prevfi.FullName + "\\disPic.txt") != "")
             {
                 try
@@ -173,13 +196,13 @@ namespace MediaPlayer
                     Image img1 = Image.FromFile(File.ReadAllText(prevfi.FullName + "\\disPic.txt").Trim());
                     button3.Tag = img1;
                     if (img1.Width > img1.Height)
-                        tip = new CustomToolTip(505, 327);
+                        tip = new CustomToolTip(401, 260);
                     else
-                        tip = new CustomToolTip(300, 450);
+                        tip = new CustomToolTip(266, 400);
                     disposePb.Add(img1);
                     tip.SetToolTip(button3, prevfi.Name);
 
-                    myPictureBox1.Image = resizedImage(img1, 0, 0, 0, 89);
+                    myPictureBox1.Image = resizedImage(img1, 0, 89, 0, 0);
                 }
                 catch
                 {
@@ -196,11 +219,11 @@ namespace MediaPlayer
                         if (img2.Width > img2.Height)
                             tip = new CustomToolTip(505, 327);
                         else
-                            tip = new CustomToolTip(300, 450);
+                            tip = new CustomToolTip(266, 400);
                     button4.Tag = img2;
                     disposePb.Add(img2);
                     tip.SetToolTip(button4, nextFi.Name);
-                    myPictureBox2.Image = resizedImage(img2, 0, 0, 0, 89);
+                    myPictureBox2.Image = resizedImage(img2, 0, 89, 0, 0);
                 }
                 catch { }
             }
@@ -208,7 +231,8 @@ namespace MediaPlayer
             {
                 try
                 {
-                    Image img3 = Image.FromFile(File.ReadAllText(mainDi.FullName + "\\disPic.txt").Trim()); if (tip == null)
+                    img3 = Image.FromFile(File.ReadAllText(mainDi.FullName + "\\disPic.txt").Trim());
+                    if (tip == null)
 
                         if (img3.Width > img3.Height)
                             tip = new CustomToolTip(505, 327);
@@ -254,30 +278,55 @@ namespace MediaPlayer
 
         private void setToolTip(String keyName, Image img, Button tipBtn)
         {
-                Image img1 = resizedImage(img, 0, 0, 0, popUpY);
-                largeImages.Add(keyName, img1);
-                tipBtn.Tag = img1;
-            if (tipForFirstTime)
+
+                Image img1 = img.Width > img.Height ? resizedImage(img, 0, 0, 0, popUpY) : resizedImage(img, 0, popUpX, 0, 0);
+            try
             {
-                int yLoc = tipBtn.Location.Y + (tipBtn.Height / 2) - (popUpY / 2);
+
+                largeImages.Add(keyName, img1);
+            }
+            catch { 
+            }
+                tipBtn.Tag = img1;
+            if (tipForFirstTime[keyName])
+            {
+                    int yLoc = tipBtn.Location.Y + (tipBtn.Height / 2) - (popUpY / 2);
+                    if (1080 - tipBtn.Location.Y <= (popUpY / 2))
+                    {
+                        yLoc = yLoc - (popUpY / 2) + 10;
+                        tip = new CustomToolTip(img1.Width, popUpY, tipBtn.Location.X + tipBtn.Size.Width + 25, yLoc);
+                }
+                    else if (tipBtn.Location.Y - (popUpY / 2) < 0)
+                    {
+                        tip = new CustomToolTip(img1.Width, popUpY, tipBtn.Location.X + tipBtn.Size.Width + 15, tipBtn.Location.Y);
+                    }
+                    else
+                    {
+                        tip = new CustomToolTip(img1.Width, popUpY, tipBtn.Location.X + tipBtn.Size.Width + 15, yLoc);
+                    }
+
+                /*yLoc = tipBtn.Location.Y + (tipBtn.Height / 2) - (popUpY / 2);
                 if (1080 - tipBtn.Location.Y <= (popUpY / 2))
                 {
                     yLoc = yLoc - (popUpY / 2) + 10;
+                    tip1 = new CustomToolTip(img1.Width, popUpX, tipBtn.Location.X + tipBtn.Size.Width + 25, yLoc);
                 }
                 else if (tipBtn.Location.Y - (popUpY / 2) < 0)
                 {
-                    tip = new CustomToolTip(img1.Width, popUpY, tipBtn.Location.X + tipBtn.Size.Width + 15, tipBtn.Location.Y);
+                    tip1 = new CustomToolTip(img1.Width, popUpX, tipBtn.Location.X + tipBtn.Size.Width + 15, tipBtn.Location.Y);
                 }
                 else
                 {
-                    if (img.Width > img.Height)
-                        tip = new CustomToolTip(img1.Width, popUpY, tipBtn.Location.X + tipBtn.Size.Width + 15, yLoc);
-                    else
-                        tip = new CustomToolTip(300, 450, 10, yLoc);
+                    tip1 = new CustomToolTip(img1.Width, popUpX, tipBtn.Location.X + tipBtn.Size.Width + 15, yLoc);
                 }
-
-                tip.SetToolTip(tipBtn, tipBtn.Text);
+                */
+                    tip.SetToolTip(tipBtn, tipBtn.Text);
+                tipForFirstTime[keyName] = false;
+                
+                tip.InitialDelay = 100;
+                tip.AutoPopDelay = 6000;
             }
+
         }
 
         private void loadMiniImages()
@@ -292,6 +341,8 @@ namespace MediaPlayer
             }
             foreach (Button str in typeButtons)
                 isEnlarged[str.Text] = false;
+            if (img4 != null)
+                img4.Dispose();
             miniImages.Clear();
             largeImages.Clear();
             List<FileInfo> sfi = mainDi.GetFiles().SkipWhile(s => s.FullName.EndsWith(".txt")).ToList();
@@ -299,6 +350,14 @@ namespace MediaPlayer
             String fileName = ".txt";
             int[] res = new int[] { 1080, 1920 };
             int pick = 0,i=0;
+
+            if (img4 == null)
+            {
+                String fName = File.ReadAllText(mainDi.FullName + "\\disPic.txt").Trim();
+                if(fName!="")
+                    img4 = Image.FromFile(fName);
+            }
+
             if (sfi.Count > 0)
             {
                 while (fileName.EndsWith(".txt"))
@@ -323,10 +382,12 @@ namespace MediaPlayer
                 img.Dispose();
             }
             else
-                videosBtn.Image = global::MediaPlayer.Properties.Resources.up_down__1_;
+            {
+                videosBtn.Image = null;
+            }
 
 
-            DirectoryInfo prevDir = new DirectoryInfo(prevfi.FullName);
+            /*DirectoryInfo prevDir = new DirectoryInfo(prevfi.FullName);
             sfi = prevDir.GetFiles().SkipWhile(s => s.FullName.EndsWith(".txt")).ToList();
             fileName = ".txt";
             pick = 0;
@@ -368,7 +429,7 @@ namespace MediaPlayer
                 img.Dispose();
             }
             else
-                button4.Image = global::MediaPlayer.Properties.Resources.left_right__2_;
+                button4.Image = global::MediaPlayer.Properties.Resources.left_right__2_;*/
 
 
             DirectoryInfo picsDir = new DirectoryInfo(mainDi.FullName + "\\Pics");
@@ -385,12 +446,11 @@ namespace MediaPlayer
                     pick = r.Next(0, sfi.Count);
                     fileName = sfi[pick].Name;
 
-                    if (fileName.EndsWith(".txt") || !fileName.Contains("placeholdderr")) continue;
-                    String temp = fileName.Substring(fileName.IndexOf("^^") + 2);
-                    temp = temp.Substring(0, temp.IndexOf("placeholdderr"));
-                    res[0] = int.Parse(temp.Split('x')[0]);
-                    res[1] = int.Parse(temp.Split('x')[1]);
-
+                    if (fileName.EndsWith(".txt")) continue;
+                    Image imggg = Image.FromFile(sfi[pick].FullName);
+                    res[0] = imggg.Width;
+                    res[1] = imggg.Height;
+                    imggg.Dispose();
                     if (fileName.EndsWith(".txt") || res[1] > res[0])
                     {
                         sfi.RemoveAt(pick);
@@ -399,27 +459,34 @@ namespace MediaPlayer
                     }
                 }
 
-                if(res[1] < res[0])
+                if (res[1] < res[0])
                 {
                     Image img = Image.FromFile(sfi[pick].FullName);
 
                     enlargeImage = false;
                     miniImages.Add("Pictures", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
-                        picturesBtn.Image = miniImages["Pictures"];
+                    picturesBtn.Image = miniImages["Pictures"];
                     enlargeImage = true;
                     largeImages.Add("Pictures", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
-                    try { 
-                    setToolTip("LargePictures", img, picturesBtn);
+                    try
+                    {
+                        setToolTip("LargePictures", img, picturesBtn);
 
                     }
                     catch { }
                     img.Dispose();
                 }
+                else
+                {
+                    picturesBtn.Image = null;
+                }
 
             }
-            else
-                picturesBtn.Image = global::MediaPlayer.Properties.Resources.up_down__1_;
 
+            else
+            {
+                picturesBtn.Image = null;
+            }
 
 
             DirectoryInfo fourkDir = new DirectoryInfo(mainDi.FullName + "\\Pics\\kkkk");
@@ -466,10 +533,16 @@ namespace MediaPlayer
                     catch { }
                     img.Dispose();
                 }
+                else
+                {
+                        fourKBtn.Image = null;
+                }
 
             }
             else
-                fourKBtn.Image = global::MediaPlayer.Properties.Resources.up_down__1_;
+            {
+                    fourKBtn.Image = null;
+            }
 
 
             DirectoryInfo gifVid = new DirectoryInfo(mainDi.FullName + "\\Pics\\GifVideos");
@@ -500,7 +573,9 @@ namespace MediaPlayer
                 img.Dispose();
             }
             else
-                shortVideosBtn.Image = global::MediaPlayer.Properties.Resources.up_down__1_;
+            {
+                    shortVideosBtn.Image = null;
+            }
 
 
             DirectoryInfo gifsDir = new DirectoryInfo(mainDi.FullName + "\\Pics\\Gifs");
@@ -547,10 +622,17 @@ namespace MediaPlayer
                     catch { }
                     img.Dispose();
                 }
+                else
+                {
+                        gifsBtn.Image = null;
+                }
 
             }
             else
-                gifsBtn.Image = global::MediaPlayer.Properties.Resources.up_down__1_;
+            {
+                    gifsBtn.Image = null;
+            }
+
 
 
 
@@ -563,26 +645,29 @@ namespace MediaPlayer
                 setToolTip("LargeStack", img, expBtn);
                 img.Dispose();
             }
-            tipForFirstTime = false;
+            if (img4 != null)
+                img4.Dispose();
 
         }
 
         private void setTheme()
         {
-
+            hoverPointer.Visible = false;
             this.BackColor = Color.FromArgb(59, 59, 59);
+            panel1.BackColor = lightBackColor;
+            pointer.BackColor = mouseClickColor;
+            hoverPointer.BackColor = mouseClickColor;
             button6.BackColor = lightBackColor;
             button7.BackColor = lightBackColor;
             button8.BackColor = lightBackColor;
-            button2.BackColor = lightBackColor;
-            button9.BackColor = lightBackColor;
+            button2.BackColor = kindaDark;
+            trackBar1.BackColor = kindaDark;
             button10.BackColor = lightBackColor;
-            flowLayoutPanel3.BackColor = darkBackColor;
+            flowLayoutPanel3.BackColor = lightBackColor;
             flowLayoutPanel1.BackColor = darkBackColor;
-            flowLayoutPanel2.BackColor = darkBackColor;
-            button1.BackColor = lightBackColor;
+            flowLayoutPanel2.BackColor = lightBackColor;
+            button1.BackColor = kindaDark;
             button1.ForeColor = Color.White;
-            button2.BackColor = lightBackColor;
             button2.ForeColor = Color.White;
             button9.BackColor = lightBackColor;
             button9.ForeColor = Color.White;
@@ -594,45 +679,52 @@ namespace MediaPlayer
             expBtn.FlatAppearance.MouseDownBackColor = mouseClickColor;
             videosBtn.BackColor = lightBackColor;
             videosBtn.ForeColor = Color.White;
-            videosBtn.FlatAppearance.MouseOverBackColor = lightBackColor;
-            videosBtn.FlatAppearance.MouseDownBackColor = lightBackColor;
+            videosBtn.FlatAppearance.MouseOverBackColor = kindaDark;
+            videosBtn.FlatAppearance.MouseDownBackColor = kindaDark;
             picturesBtn.BackColor = lightBackColor;
             picturesBtn.ForeColor = Color.White;
-            picturesBtn.FlatAppearance.MouseOverBackColor = lightBackColor;
-            picturesBtn.FlatAppearance.MouseDownBackColor = lightBackColor;
+            picturesBtn.FlatAppearance.MouseOverBackColor = kindaDark;
+            picturesBtn.FlatAppearance.MouseDownBackColor = kindaDark;
             fourKBtn.BackColor = lightBackColor;
             fourKBtn.ForeColor = Color.White;
-            fourKBtn.FlatAppearance.MouseOverBackColor = lightBackColor;
-            fourKBtn.FlatAppearance.MouseDownBackColor = lightBackColor;
+            fourKBtn.FlatAppearance.MouseOverBackColor = kindaDark;
+            fourKBtn.FlatAppearance.MouseDownBackColor = kindaDark;
             shortVideosBtn.BackColor = lightBackColor;
             shortVideosBtn.ForeColor = Color.White;
-            shortVideosBtn.FlatAppearance.MouseOverBackColor = lightBackColor;
-            shortVideosBtn.FlatAppearance.MouseDownBackColor = lightBackColor;
+            shortVideosBtn.FlatAppearance.MouseOverBackColor = kindaDark;
+            shortVideosBtn.FlatAppearance.MouseDownBackColor = kindaDark;
             gifsBtn.BackColor = lightBackColor;
             gifsBtn.ForeColor = Color.White;
-            gifsBtn.FlatAppearance.MouseOverBackColor = lightBackColor;
-            gifsBtn.FlatAppearance.MouseDownBackColor = lightBackColor;
-            button3.BackColor = lightBackColor;
+            gifsBtn.FlatAppearance.MouseOverBackColor = kindaDark;
+            gifsBtn.FlatAppearance.MouseDownBackColor = kindaDark;
+            button3.BackColor = kindaDark;
             button3.ForeColor = Color.White;
             button3.FlatAppearance.MouseOverBackColor = mouseHoverColor;
             button3.FlatAppearance.MouseDownBackColor = mouseClickColor;
-            button4.BackColor = lightBackColor;
+            button4.BackColor = kindaDark;
             button4.ForeColor = Color.White;
             button4.FlatAppearance.MouseOverBackColor = mouseHoverColor;
             button4.FlatAppearance.MouseDownBackColor = mouseClickColor;
-            button5.BackColor = lightBackColor;
+            button5.BackColor = kindaDark;
             button5.ForeColor = Color.White;
             button5.FlatAppearance.MouseOverBackColor = mouseHoverColor;
             button5.FlatAppearance.MouseDownBackColor = mouseClickColor;
             //textBox1.BackColor = lightBackColor;
             //textBox1.ForeColor = Color.White;
-            trackBar1.BackColor = lightBackColor;
-            button2.FlatAppearance.MouseOverBackColor = mouseClickColor;
-            button2.FlatAppearance.MouseDownBackColor = mouseClickColor;
+            trackBar1.BackColor = kindaDark;
+            button2.FlatAppearance.MouseOverBackColor = kindaDark;
+            button2.FlatAppearance.MouseDownBackColor = kindaDark;
             button9.FlatAppearance.MouseOverBackColor = mouseClickColor;
             button9.FlatAppearance.MouseDownBackColor = mouseClickColor;
             button10.FlatAppearance.MouseOverBackColor = mouseClickColor;
             button10.FlatAppearance.MouseDownBackColor = mouseClickColor;
+
+
+            button7.FlatAppearance.MouseOverBackColor = mouseClickColor;
+            button7.FlatAppearance.MouseDownBackColor = mouseClickColor;
+
+            button8.FlatAppearance.MouseOverBackColor = mouseClickColor;
+            button8.FlatAppearance.MouseDownBackColor = mouseClickColor;
 
             newProgressBar.ForeColor = mouseClickColor;
             newProgressBar.BackColor = mouseClickColor;
@@ -646,6 +738,7 @@ namespace MediaPlayer
                 prevPB.BackColor = mouseClickColor;
                 globalDetails.ForeColor = mouseClickColor;
             }
+            this.BackColor = kindaDark;
         }
 
 
@@ -869,7 +962,7 @@ namespace MediaPlayer
             }
             if (File.ReadAllText(mainDi.FullName + "\\disPic.txt") != "" && File.Exists(File.ReadAllText(mainDi.FullName + "\\disPic.txt")))
             {
-                Image img3 = Image.FromFile(File.ReadAllText(mainDi.FullName + "\\disPic.txt").Trim());
+                img3 = Image.FromFile(File.ReadAllText(mainDi.FullName + "\\disPic.txt").Trim());
                 button5.Tag = img3;
                 disposePb.Add(img3);
             }
@@ -891,19 +984,59 @@ namespace MediaPlayer
         {
             if (type == "Videos")
             {
+                isShort = false;
                 Application.RemoveMessageFilter(this);
                 Point controlLoc = this.PointToScreen(pb.Location);
-                Point relativeLoc = new Point(controlLoc.X - this.Location.X + 276, controlLoc.Y - this.Location.Y - 10 + 106);
+                int x = controlLoc.X - this.Location.X + 196, y = controlLoc.Y - this.Location.Y - 10 + 77;
+                if(x + 649 > 1920)
+                {
+                    x = x - ((x + 649) - 1920) - 2;
+                }
+
+                if (y < 0)
+                {
+                    y = 1;
+                }
+                else
+                if (y + 372 > 1080)
+                {
+                    y = y - ((y + 372) - 1080) - 2;
+                }
+                Point relativeLoc = new Point(x, y);
                 miniVideoPlayer.setData(pb, new FileInfo(pb.Name), this);
                 miniVideoPlayer.axWindowsMediaPlayer1.enableContextMenu = false;
 
+                miniVideoPlayer.Region = null;
+                miniVideoPlayer.axWindowsMediaPlayer1.Region = null;
                 miniVideoPlayer.Location = relativeLoc;
-                miniVideoPlayer.Size = new Size(515, 301);
+                miniVideoPlayer.pastPos = 0;
+                miniVideoPlayer.Size = new Size(649, 372);
+                miniVideoPlayer.axWindowsMediaPlayer1.Size = new Size(649, 369);
+                miniVideoPlayer.axWindowsMediaPlayer1.Location = new Point(0,4);
+                miniVideoPlayer.newProgressBar.Location = new Point(0,-3);
+                miniVideoPlayer.newProgressBar.Size = new Size(649, 10);
                 miniVideoPlayer.axWindowsMediaPlayer1.URL = pb.Name;
 
+                miniVideoPlayer.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, miniVideoPlayer.Width, miniVideoPlayer.Height, 20, 20));
+                miniVideoPlayer.axWindowsMediaPlayer1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, miniVideoPlayer.axWindowsMediaPlayer1.Width, miniVideoPlayer.axWindowsMediaPlayer1.Height, 20, 20));
+                //miniVideoPlayer.duration = miniVideoPlayer.axWindowsMediaPlayer1.currentMedia.duration;
+                //miniVideoPlayer.newProgressBar.Maximum = (int)miniVideoPlayer.duration;
                 miniVideoPlayer.Show();
                 if (enter == true)
+                {
+                    String[] resumeFile = File.ReadAllLines(mainDi.FullName + "\\resume.txt");
+                    FileInfo fi = new FileInfo(pb.Name);
+                    isShort = false;
+                    foreach (String str in resumeFile)
+                        if (str.Contains("@@" + fi.Name + "@@!"))
+                        {
+                            miniVideoPlayer.pastPos = Double.Parse(str.Substring(str.IndexOf("@@!") + 3));
+                            miniVideoPlayer.isMoved = true;
+                            //miniVideoPlayer.duration = miniVideoPlayer.axWindowsMediaPlayer1.currentMedia.duration;
+                            //miniVideoPlayer.newProgressBar.Maximum = (int)miniVideoPlayer.duration;
+                        }
                     miniVideoPlayer.axWindowsMediaPlayer1_MouseDownEvent(null, null);
+                }
             }
             else if (type == "Pictures" || type == "4K" || type == "Gifs")
             {
@@ -917,21 +1050,21 @@ namespace MediaPlayer
                     picViewer.Show();
                     wmpSide1 = new wmpSide(null, picViewer, true);
                     wmpSide1.BackColor = darkBackColor;
-                    wmpSide1.Location = new Point(19, 970);
+                    wmpSide1.Location = new Point(0, 970);
                     wmpSide1.fillUpFP1(type == "4K" ? wpbDupe : (type == "Gifs" ? gpb : wpb), true);
-                    wmpSide1.Size = new Size(1910, 110);
+                    wmpSide1.Size = new Size(1920, 110);
                 }
                 else
                 {
                     PicViewer picViewer = new PicViewer(pb.Name, this, type == "4K" ? lpbDupe : (type == "Gifs" ? gpb : lpb), 1750, 1080, false);
                     picViewer.Size = new Size(1750, 1080);
-                    picViewer.Location = new Point(170, 0);
+                    picViewer.Location = new Point(165, 0);
                     picViewer.Show();
                     wmpSide1 = new wmpSide(null, picViewer, true);
-                    wmpSide1.BackColor = darkBackColor;
-                    wmpSide1.Location = new Point(5, 8);
-                    wmpSide1.fillUpFP1(type == "4K" ? lpbDupe : (type == "Gifs" ? gpb : lpb), false);
                     wmpSide1.Size = new Size(120, 1080);
+                    wmpSide1.BackColor = darkBackColor;
+                    wmpSide1.Location = new Point(0, 0);
+                    wmpSide1.fillUpFP1(type == "4K" ? lpbDupe : (type == "Gifs" ? gpb : lpb), false);
 
                 }
                 wmpSide1.Show();
@@ -989,7 +1122,7 @@ namespace MediaPlayer
             }*/
             else if (type == "Gif Vid")
             {
-                Application.RemoveMessageFilter(this);
+                /*Application.RemoveMessageFilter(this);
                 WMP wmp = null;
 
                 wmp = new WMP(pb);
@@ -1031,7 +1164,55 @@ namespace MediaPlayer
                 TranspBack transpBack = new TranspBack(wmp, wmpSide1, this, shortVideosPb);
                 transpBack.Show();
                 wmp.Show();
-                wmpSide1.Show();
+                wmpSide1.Show();*/
+                Application.RemoveMessageFilter(this);
+                timer2.Interval = 50;
+                isShort = true;
+                Point controlLoc = this.PointToScreen(pb.Location);
+                int x = controlLoc.X - this.Location.X + 221, y = controlLoc.Y - this.Location.Y - 10 + 76;
+                if (x + 515 > 1920)
+                {
+                    x = x - ((x + 515) - 1920) - 2;
+                }
+
+                if (y < 0)
+                {
+                    y = 1;
+                }
+                else
+                if (y + 292 > 1080)
+                {
+                    y = y - ((y + 292) - 1080) - 2;
+                }
+                Point relativeLoc = new Point(x, y);
+                miniVideoPlayer.Region = null;
+                miniVideoPlayer.axWindowsMediaPlayer1.Region = null;
+                miniVideoPlayer.setData(pb, new FileInfo(pb.Name), this);
+                miniVideoPlayer.axWindowsMediaPlayer1.enableContextMenu = false;
+                double width = 515 * 1, height = 292 * 1, increment = 0.01;
+                miniVideoPlayer.Location = relativeLoc;
+                miniVideoPlayer.Size = new Size((int)width, (int)height);
+                miniVideoPlayer.axWindowsMediaPlayer1.Size = new Size((int)width, (int)height);
+                miniVideoPlayer.axWindowsMediaPlayer1.Location = new Point(0, 0);
+                miniVideoPlayer.axWindowsMediaPlayer1.URL = pb.Name;
+                miniVideoPlayer.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, miniVideoPlayer.Width, miniVideoPlayer.Height, 20, 20));
+                miniVideoPlayer.axWindowsMediaPlayer1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, miniVideoPlayer.axWindowsMediaPlayer1.Width, miniVideoPlayer.axWindowsMediaPlayer1.Height, 20, 20));
+                miniVideoPlayer.Show();
+                /*timer2.Tick += (s1, a1) =>
+                {
+                    width = 515 * (0.9 + increment); height = 292 * (0.9 + increment);
+                    miniVideoPlayer.Size = new Size((int)width, (int)height);
+                    miniVideoPlayer.axWindowsMediaPlayer1.Size = new Size((int)width, (int)height);
+                    increment = increment + 0.01;
+                    if ((int)width == 515)
+                    {
+                        timer2.Stop();
+                        miniVideoPlayer.axWindowsMediaPlayer1.URL = pb.Name;
+                    }
+                };*/
+                //timer2.Start();
+                if (enter == true)
+                    miniVideoPlayer.axWindowsMediaPlayer1_MouseDownEvent(null, null);
             }
         }
 
@@ -1276,6 +1457,7 @@ namespace MediaPlayer
         private void VideoPlayer_Load()
         {
             allVidDet.Clear();
+            Boolean mouseEnter = false;
             List<String> priorityList = new List<String>();
             if (!File.Exists(mainDi.FullName + "\\priority.txt"))
             {
@@ -1340,6 +1522,7 @@ namespace MediaPlayer
                 priorityList = GetRandomFiles();
             }
 
+            String resumeTxt = File.ReadAllText(mainDi.FullName + "\\resume.txt");
             newProgressBar.Maximum = priorityList.Count;
             for (int i = 0; i < priorityList.Count; i++)
             {
@@ -1367,11 +1550,14 @@ namespace MediaPlayer
                 pb.Cursor = Cursors.Hand;
                 pb.ContextMenuStrip = contextMenuStrip1;
                 pb.SizeMode = PictureBoxSizeMode.Zoom;
-                pb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, pb.Width, pb.Height, 30, 30));
+                pb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, pb.Width, pb.Height, 18, 18));
                 pb.Image = setDefaultPic(fileInfo, pb);
                 pb.Margin = new Padding(5, 10, 17, 0);
 
-
+                if (!resumeTxt.Contains("@@" + fileInfo.Name + "@@!"))
+                {
+                    resumeTxt = resumeTxt + "\n" + "@@" + fileInfo.Name + "@@!0";
+                }
                 videoUrls.Add(fileInfo.Name);
                 videosPb.Add(pb);
                 flowLayoutPanel1.Controls.Add(videosPb.ElementAt(videosPb.Count - 1));
@@ -1384,16 +1570,21 @@ namespace MediaPlayer
 
                 Label vidDetails = new Label();
                 vidDetails.Text = vidDetText;
-                vidDetails.Font = new Font("Consolas", 9, FontStyle.Regular);
-                vidDetails.BackColor = lightBackColor;
-                vidDetails.Size = new Size(515, 48);
+                vidDetails.Font = new Font("Consolas", 10, FontStyle.Bold);
+                vidDetails.BackColor = darkBackColor;
+                vidDetails.Size = new Size(515, 24);
                 vidDetails.ForeColor = Color.White;
                 vidDetails.TextAlign = ContentAlignment.TopCenter;
                 vidDetails.Padding = new Padding(0);
-                vidDetails.Margin = new Padding(5, 0, 17, 5);
-                allVidDet.Add(vidDetails);
+                vidDetails.Margin = new Padding(5, 0, 17, 0);
+                allVidDet.Add(vidDetails); 
+                vidDetails.MouseEnter += (s1, q1) =>
+                {
 
-                vidDetails.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, vidDetails.Width, vidDetails.Height, 15, 15));
+                    if (miniVideoPlayer != null)
+                        miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
+                };
+                vidDetails.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, vidDetails.Width, vidDetails.Height, 8, 8));
                 meta.Add(vidDetails);
 
                 if (meta.Count == 3)
@@ -1402,11 +1593,40 @@ namespace MediaPlayer
                     {
                         flowLayoutPanel1.Controls.Add(label);
                     }
+
+                    foreach (Label label in meta)
+                    {
+                        String[] metaData = label.Text.Split('\n');
+                        label.Text = metaData[1];
+                        Label dupeLabel = new Label();
+                        dupeLabel.Text = metaData[0];
+                        dupeLabel.Font = new Font("Consolas", 9, FontStyle.Regular);
+                        dupeLabel.BackColor = darkBackColor;
+                        dupeLabel.Size = new Size(515, 24);
+                        dupeLabel.ForeColor = Color.White;
+                        dupeLabel.TextAlign = ContentAlignment.TopCenter;
+                        dupeLabel.Padding = new Padding(0);
+                        dupeLabel.Margin = new Padding(5, 0, 17, 6);
+                        flowLayoutPanel1.Controls.Add(dupeLabel);
+                    }
                     meta.Clear();
                 }
 
-                pb.MouseClick += (s, args) =>
+                pb.MouseLeave += (s1, a1) =>
                 {
+                    mouseEnter = false;
+                    if(vidDetails.Font.Name != "Comic Sans MS")
+                    vidDetails.BackColor = darkBackColor;
+                };
+
+                pb.MouseEnter += (s1, q1) =>
+                {
+                    mouseEnter = true;
+                    if (miniVideoPlayer != null)
+                        miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
+
+                    vidDetails.BackColor = mouseClickColor;
+                    /*timer2.Interval = 2000;
                     if (prevPB != null)
                     {
                         prevPB.BackColor = darkBackColor;
@@ -1415,15 +1635,41 @@ namespace MediaPlayer
                         globalDetails.ForeColor = Color.White;
                     }
                     prevPB = pb;
-                    globalDetails = vidDetails; 
+                    globalDetails = vidDetails;
                     Font myfont = new Font("Comic Sans MS", 9, FontStyle.Regular);
                     globalDetails.Font = myfont;
                     globalDetails.ForeColor = mouseClickColor;
                     enter = false;
+
+                    timer2.Enabled = true;
+                    timer2.Tick += (s2, a) =>
+                    {
+                        timer2.Enabled = false;
+                        if (mouseEnter) pbClick(pb);
+                    };*/
+                };
+
+                pb.MouseClick += (s, args) =>
+                {
+                    if (prevPB != null)
+                    {
+                        prevPB.BackColor = darkBackColor;
+                        Font myfont1 = new Font("Consolas", 9, FontStyle.Regular);
+                        globalDetails.Font = myfont1;
+                        globalDetails.BackColor = darkBackColor;
+                    }
+                    prevPB = pb;
+                    globalDetails = vidDetails; 
+                    Font myfont = new Font("Comic Sans MS", 9, FontStyle.Bold);
+                    globalDetails.Font = myfont;
+                    globalDetails.BackColor = mouseClickColor;
+                    enter = false;
                     pbClick(pb);
                 };
+
             }
 
+            File.WriteAllText(mainDi.FullName + "\\resume.txt", resumeTxt);
             for (int y = 0; y < 3 - meta.Count; y++)
             {
                 PictureBox pb = new PictureBox();
@@ -1432,8 +1678,28 @@ namespace MediaPlayer
             }
             foreach (Label label in meta)
             {
-                label.Margin = new Padding(5, 0, 17, 50);
                 flowLayoutPanel1.Controls.Add(label);
+            }
+            for (int y = 0; y < 3 - meta.Count; y++)
+            {
+                PictureBox pb = new PictureBox();
+                pb.Size = new Size(515, 1);
+                flowLayoutPanel1.Controls.Add(pb);
+            }
+            foreach (Label label in meta)
+            {
+                String[] metaData = label.Text.Split('\n');
+                label.Text = metaData[1];
+                Label dupeLabel = new Label();
+                dupeLabel.Text = metaData[0];
+                dupeLabel.Font = new Font("Consolas", 9, FontStyle.Regular);
+                dupeLabel.BackColor = darkBackColor;
+                dupeLabel.Size = new Size(515, 24);
+                dupeLabel.ForeColor = Color.White;
+                dupeLabel.TextAlign = ContentAlignment.TopCenter;
+                dupeLabel.Padding = new Padding(0);
+                dupeLabel.Margin = new Padding(5, 0, 17, 50);
+                flowLayoutPanel1.Controls.Add(dupeLabel);
             }
             meta.Clear();
             /*Button dummy = new Button();
@@ -1504,6 +1770,30 @@ namespace MediaPlayer
             flowLayoutPanel1.Padding = new Padding(5, 0, 0, 0);
             this.Controls.Add(newProgressBar);
             imageViewer_load();
+        }
+
+
+        private void picturesBtn_Click(object sender, MouseEventArgs e)
+        {
+            if (!isRefresh && globalBtn != null && globalBtn.Text != "Pictures")
+            {
+                globalBtn.ForeColor = Color.White;
+                isEnlarged[type] = false;
+                enlargeLeave(globalBtn, type);
+            }
+            scrollZero = false;
+            type = "Pictures";
+            isEnlarged[type] = true;
+            globalBtn = picturesBtn;
+            picturesBtn.ForeColor = mouseClickColor;
+            deletePb.Clear();
+            controlDisposer();
+            GC.Collect();
+            flowLayoutPanel1.Padding = new Padding(5, 0, 0, 0);
+            this.Controls.Add(newProgressBar);
+            imageViewer_load();
+            hoverPointer.Visible = false;
+            pointer.Location = new Point(0, picturesBtn.Location.Y + ((picturesBtn.Size.Height - pointer.Size.Height) / 2) - 3);
         }
 
         private void ResizeImage(string SoucePath, string DestPath, params int[] numbers)
@@ -1707,7 +1997,7 @@ namespace MediaPlayer
             {
                 if (fi.Name.ToLower().EndsWith(".txt")) continue;
                 if (!File.Exists(di.FullName + "\\ImgPB\\" + fi.Name))
-                    ResizeImage(fi.FullName, di.FullName + "\\ImgPB\\" + fi.Name, 195, 0, 262, 0);
+                    ResizeImage(fi.FullName, di.FullName + "\\ImgPB\\" + fi.Name, 225, 0, 318, 0);
             }
         }
 
@@ -1882,6 +2172,8 @@ namespace MediaPlayer
         {
             flowLayoutPanel1.Padding = new Padding(5, 0, 0, 0);
             DirectoryInfo picsDir = new DirectoryInfo(mainDi.FullName + "\\Pics");
+            if (stackPics)
+                picsDir = new DirectoryInfo(mainDi.Parent.FullName + "\\StackPics");
             createSmallResFiles(picsDir);
             GC.Collect();
             int count = picsDir.GetFiles().Count(), i = 0;
@@ -1896,6 +2188,7 @@ namespace MediaPlayer
 
             foreach (FileInfo fi in filesFi)
             {
+                Image img = null, img1 = null;
                 if (fi.Length == 0)
                 {
                     try
@@ -1914,8 +2207,7 @@ namespace MediaPlayer
                 try
                 {
                     Image imgg = Image.FromFile(picsDir.FullName + "\\imgPB\\" + fi.Name);
-                    pb.Image = imgg;
-                    pb.ImageLocation = picsDir.FullName + "\\imgPB\\" + fi.Name;
+                    pb.Image = resizedImage(imgg, 195, 0, 262,0);
                     if (imgg.Width > imgg.Height)
                     {
                         Double ratio = (Double)imgg.Width / (Double)imgg.Height;
@@ -1930,6 +2222,7 @@ namespace MediaPlayer
                         pb.Height = (int)(225 / ratio);
                         lpb.Add(pb);
                     }
+                    imgg.Dispose();
                 }
                 catch (Exception) { }
                 pb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, pb.Width, pb.Height, 20, 20));
@@ -1972,13 +2265,19 @@ namespace MediaPlayer
 
                 pb.MouseEnter += (s, args) => {
 
-                    if (pb.BackColor != mouseClickColor)
-                        pb.BackColor = lightBackColor;
+                    /*if (pb.BackColor != mouseClickColor)
+                        pb.BackColor = lightBackColor;*/
+                    img1 = pb.Image;
+                    pb.Image = Image.FromFile(picsDir.FullName + "\\imgPB\\" + fi.Name);
+                    //pb.SizeMode = PictureBoxSizeMode.StretchImage;
                 };
 
                 pb.MouseLeave += (s, args) => {
-                    if(pb.BackColor == lightBackColor)
-                    pb.BackColor = darkBackColor;
+                    //if(pb.BackColor == lightBackColor)
+                    //pb.BackColor = darkBackColor;
+                    //pb.SizeMode = PictureBoxSizeMode.CenterImage;
+                    pb.Image.Dispose();
+                    pb.Image = img1;
                 };
             }
 
@@ -2134,9 +2433,9 @@ namespace MediaPlayer
                     FileInfo fileInfo = new FileInfo(fi);
                     for (int k = 0; k < 50; k++)
                     {
-                        if (File.Exists(dirPath + "\\" + k + fileInfo.Name))
+                        if (File.Exists(dirPath + "\\" + fileInfo.Name.Substring(0, fileInfo.Name.LastIndexOf(".")) + k + fileInfo.Extension))
                             continue;
-                        File.Move(fi, dirPath + "\\" + k + fileInfo.Name);
+                        File.Move(fi, dirPath + "\\" + fileInfo.Name.Substring(0, fileInfo.Name.LastIndexOf(".")) + k + fileInfo.Extension);
                         break;
                     }
                 }
@@ -2214,12 +2513,15 @@ namespace MediaPlayer
             this.Controls.Add(newProgressBar);
             flowLayoutPanel1.Padding = new Padding(16, 0, 0, 0);
             VideoPlayer_Load();
+            hoverPointer.Visible = false;
+            pointer.Location = new Point(0, videosBtn.Location.Y + ((videosBtn.Size.Height - pointer.Size.Height) / 2) - 3);
         }
 
         public void loadImages(int noOf)
         {
             newProgressBar.Value = 0;
             newProgressBar.Maximum = noOf;
+            Image img1 = null;
             for (int j = whereAt; j < (imagesFi.Count < whereAt + noOf ? imagesFi.Count : whereAt + noOf); j++)
             {
                 FileInfo fi = imagesFi.ElementAt(j);
@@ -2245,8 +2547,7 @@ namespace MediaPlayer
                     try
                     {
                         imgg = Image.FromFile(_4kdir.FullName + "\\imgPB\\" + fi.Name);
-                        pb.ImageLocation = _4kdir.FullName + "\\imgPB\\" + fi.Name;
-                        pb.Image = imgg;
+                        pb.Image = resizedImage(imgg, 195,0,262,0);
                         int width = imgg.Width;
                         int height = imgg.Height;
                         if (width > height)
@@ -2263,6 +2564,7 @@ namespace MediaPlayer
                             pb.Height = (int)(225 / ratio);
                             lpb.Add(pb);
                         }
+                        imgg.Dispose();
                     }
                     catch { }
 
@@ -2320,14 +2622,19 @@ namespace MediaPlayer
 
                 pb.MouseEnter += (s, args) => {
 
-                    if (pb.BackColor != mouseClickColor)
-                        pb.BackColor = lightBackColor;
+                    /*if (pb.BackColor != mouseClickColor)
+                        pb.BackColor = lightBackColor;*/
+                    img1 = pb.Image;
+                    pb.Image = Image.FromFile(_4kdir.FullName + "\\imgPB\\" + fi.Name);
+                    //pb.SizeMode = PictureBoxSizeMode.StretchImage;
                 };
 
                 pb.MouseLeave += (s, args) => {
-
-                    if(pb.BackColor == lightBackColor)
-                    pb.BackColor = darkBackColor;
+                    //if(pb.BackColor == lightBackColor)
+                    //pb.BackColor = darkBackColor;
+                    //pb.SizeMode = PictureBoxSizeMode.CenterImage;
+                    pb.Image.Dispose();
+                    pb.Image = img1;
                 };
             }
 
@@ -2515,6 +2822,8 @@ namespace MediaPlayer
             this.Controls.Add(newProgressBar);
             whereAt = 0;
             load4kImages();
+            hoverPointer.Visible = false;
+            pointer.Location = new Point(0, fourKBtn.Location.Y + ((fourKBtn.Size.Height - pointer.Size.Height) / 2) - 3);
         }
 
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
@@ -2569,7 +2878,7 @@ namespace MediaPlayer
             {
                 if (!File.Exists(fi.DirectoryName + "\\_resized" + i + fi.Name.Substring(fi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1)))
                 {
-                    try { ResizeImage(fi.FullName, fi.DirectoryName + "\\_resized" + i + fi.Name.Substring(fi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1), 300, 0, 505, 0); } catch { return; }
+                    try { ResizeImage(fi.FullName, fi.DirectoryName + "\\_resized" + i + fi.Name.Substring(fi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1), 308, 0, 513, 0); } catch { return; }
                     String newFileName = renameFile(i, new FileInfo(fi.DirectoryName + "\\_resized" + i + fi.Name.Substring(fi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1)));
                     File.WriteAllText(mainDi.FullName + "\\disPic.txt", newFileName);
                     imagePBLink = newFileName;
@@ -2773,14 +3082,22 @@ namespace MediaPlayer
                 PictureBox pb = new PictureBox();
                 pb.Dock = DockStyle.Top;
                 pb.Name = fileInfo.FullName;
-                    pb.Size = new Size(397, 225);
+                pb.Size = new Size(397, 225);
                 pb.SizeMode = PictureBoxSizeMode.Zoom;
                 pb.Cursor = Cursors.Hand;
                 pb.ContextMenuStrip = contextMenuStrip1;
-                pb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, pb.Width, pb.Height, 35, 35));
+                pb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, pb.Width, pb.Height, 20 ,20));
 
                 pb.Image = setDefaultPic(fileInfo, pb);
-                pb.Margin = new Padding(5, 3, 0, 3);
+                pb.Margin = new Padding(5, 3, 0, 4);
+
+
+                pb.MouseEnter += (s1, q1) =>
+                {
+
+                    if (miniVideoPlayer != null)
+                        miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
+                };
 
                 pb.MouseClick += (s, args) =>
                 {
@@ -2801,6 +3118,7 @@ namespace MediaPlayer
                     pbClick(pb);
                 };
 
+
                 shortVideosPb.Add(pb);
                 newProgressBar.PerformStep();
                 flowLayoutPanel1.Controls.Add(shortVideosPb.ElementAt(shortVideosPb.Count - 1));
@@ -2813,9 +3131,40 @@ namespace MediaPlayer
                 vidDetails.ForeColor = Color.White;
                 vidDetails.TextAlign = ContentAlignment.TopLeft;
                 vidDetails.Margin = new Padding(0, 15, 14, 3);
-                vidDetails.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, vidDetails.Width, vidDetails.Height, 20, 20));
+                vidDetails.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, vidDetails.Width, vidDetails.Height, 10, 10));
+                vidDetails.MouseEnter += (s1, q1) =>
+                {
 
+                    if (miniVideoPlayer != null)
+                        miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
+                };
                 allVidDet.Add(vidDetails);
+
+
+                pb.MouseHover += (s, args) =>
+                {
+                    Font myfont = new Font("Consolas", 9, FontStyle.Regular);
+                    if (prevPB != null)
+                    {
+                        prevPB.BackColor = lightBackColor;
+
+                        globalDetails.BackColor = lightBackColor;
+                        
+                        globalDetails.Font = myfont;
+                    }
+                    globalDetails = vidDetails;
+                    prevPB = pb;
+                    prevPB.BackColor = mouseClickColor;
+
+                    globalDetails.BackColor = mouseClickColor;
+                    myfont = new Font("Comic Sans MS", 8, FontStyle.Bold);
+                    globalDetails.Font = myfont;
+                    enter = false;
+                    if (Explorer.wmpOnTop != null && Explorer.wmpOnTop.axWindowsMediaPlayer1.playState == WMPPlayState.wmppsPlaying)
+                        return;
+                    pbClick(pb);
+                };
+
                 flowLayoutPanel1.Controls.Add(vidDetails);
             }
             newProgressBar.Value = filesFi.Count;
@@ -2829,6 +3178,7 @@ namespace MediaPlayer
                 newProgressBar.Value = newProgressBar.Maximum;
             }
             button5.Text = button5.Text.Substring(0, button5.Text.Contains("(") ? button5.Text.IndexOf("(") : button5.Text.Length) + "(" + shortVideosPb.Count + ")";
+            miniVideoPlayer = new miniVideoPlayer(shortVideosPb);
         }
 
         private void shortVideosBtn_Click(object sender, EventArgs e)
@@ -2851,6 +3201,8 @@ namespace MediaPlayer
             flowLayoutPanel1.Padding = new Padding(9, 0, 0, 0);
             this.Controls.Add(newProgressBar);
             loadShortVideos();
+            hoverPointer.Visible = false;
+            pointer.Location = new Point(0, shortVideosBtn.Location.Y + ((shortVideosBtn.Size.Height - pointer.Size.Height) / 2) - 3);
         }
 
         private void VideoPlayer_Load(object sender, EventArgs e)
@@ -3015,6 +3367,17 @@ namespace MediaPlayer
                     pbClick(pb);
                 };
 
+                pb.MouseEnter += (s, args) =>
+                {
+                    pb.SizeMode = PictureBoxSizeMode.StretchImage;
+                };
+
+
+                pb.MouseLeave += (s, args) =>
+                {
+                    pb.SizeMode = PictureBoxSizeMode.CenterImage;
+                };
+
             }
 
             foreach (PictureBox pb in lpb)
@@ -3085,6 +3448,8 @@ namespace MediaPlayer
             flowLayoutPanel1.Padding = new Padding(8, 0, 0, 0);
             this.Controls.Add(newProgressBar);
             gif_Load();
+            hoverPointer.Visible = false;
+            pointer.Location = new Point(0, gifsBtn.Location.Y + ((gifsBtn.Size.Height - pointer.Size.Height) / 2)-3);
         }
 
         private void VideoPlayer_Activated(object sender, EventArgs e)
@@ -3255,7 +3620,7 @@ namespace MediaPlayer
         {
             ctrl = !ctrl;
             button2.Text = "Taskbar Control " + (ctrl == true ? "On" : "Off");
-            button2.BackColor = (ctrl == true ? mouseClickColor : lightBackColor);
+            button2.ForeColor = (ctrl == true ? mouseClickColor : Color.White);
         }
 
         private void button8_Click(object sender, EventArgs e)
@@ -3481,26 +3846,36 @@ namespace MediaPlayer
         private void videosBtn_MouseEnter(object sender, EventArgs e)
         {
             enlargeEnter((Button)sender);
+            hoverPointer.Location = new Point(0, videosBtn.Location.Y + ((videosBtn.Size.Height - hoverPointer.Size.Height) / 2) - 3);
+            hoverPointer.Visible = true;
         }
 
         private void picturesBtn_MouseEnter(object sender, EventArgs e)
         {
             enlargeEnter((Button)sender);
+            hoverPointer.Location = new Point(0, picturesBtn.Location.Y + ((picturesBtn.Size.Height - hoverPointer.Size.Height) / 2) - 3);
+            hoverPointer.Visible = true;
         }
 
         private void fourKBtn_MouseEnter(object sender, EventArgs e)
         {
             enlargeEnter((Button)sender);
+            hoverPointer.Location = new Point(0, fourKBtn.Location.Y + ((fourKBtn.Size.Height - hoverPointer.Size.Height) / 2) - 3);
+            hoverPointer.Visible = true;
         }
 
         private void shortVideosBtn_MouseEnter(object sender, EventArgs e)
         {
             enlargeEnter((Button)sender);
+            hoverPointer.Location = new Point(0, shortVideosBtn.Location.Y + ((shortVideosBtn.Size.Height - hoverPointer.Size.Height) / 2) - 3);
+            hoverPointer.Visible = true;
         }
 
         private void gifsBtn_MouseEnter(object sender, EventArgs e)
         {
             enlargeEnter((Button)sender);
+            hoverPointer.Location = new Point(0, gifsBtn.Location.Y + ((gifsBtn.Size.Height - hoverPointer.Size.Height) / 2) - 3);
+            hoverPointer.Visible = true;
         }
 
         private void videosBtn_MouseLeave(object sender, EventArgs e)
@@ -3508,6 +3883,43 @@ namespace MediaPlayer
             if (globalBtn != null && !globalBtn.Text.Equals("Videos"))
                 videosBtn.ForeColor = Color.White;
             enlargeLeave((Button)sender, "Videos");
+        }
+
+        private void flowLayoutPanel1_MouseHover(object sender, EventArgs e)
+        {
+
+            if (miniVideoPlayer != null)
+                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
+        }
+
+        private void button2_MouseEnter(object sender, EventArgs e)
+        {
+            button2.ForeColor = mouseClickColor;
+        }
+
+        private void button2_MouseLeave(object sender, EventArgs e)
+        {
+            if (!button2.Text.Contains("On"))
+                button2.ForeColor = Color.White;
+        }
+
+        private void toolStripMenuItem47_Click(object sender, EventArgs e)
+        {
+            PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+            String[] resumeFile = File.ReadAllLines(mainDi.FullName + "\\resume.txt");
+            FileInfo fi = new FileInfo(pb.Name);
+            isShort = false;
+            foreach (String str in resumeFile)
+            if (str.Contains("@@" + fi.Name + "@@!"))
+            {
+                miniVideoPlayer.pastPos = Double.Parse(str.Substring(str.IndexOf("@@!") + 3));
+                Application.RemoveMessageFilter(this);
+                miniVideoPlayer.setData(pb, new FileInfo(pb.Name), this);
+                miniVideoPlayer.isMoved = true;
+                //miniVideoPlayer.duration = miniVideoPlayer.axWindowsMediaPlayer1.currentMedia.duration;
+                //miniVideoPlayer.newProgressBar.Maximum = (int)miniVideoPlayer.duration;
+                miniVideoPlayer.axWindowsMediaPlayer1_MouseDownEvent(null,null);
+            }
         }
 
         private void picturesBtn_MouseLeave(object sender, EventArgs e)
@@ -3519,6 +3931,7 @@ namespace MediaPlayer
 
         private void expBtn_MouseEnter(object sender, EventArgs e)
         {
+            hoverPointer.Visible = false;
             expBtn.ForeColor = mouseClickColor;
             try
             {
@@ -3531,10 +3944,13 @@ namespace MediaPlayer
                 expBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, expBtn.Width, expBtn.Height, 25, 25));
             }
             catch { }
+            hoverPointer.Location = new Point(0, expBtn.Location.Y + ((expBtn.Size.Height - hoverPointer.Size.Height) / 2) - 3);
+            hoverPointer.Visible = true;
         }
 
         private void expBtn_MouseLeave(object sender, EventArgs e)
         {
+            hoverPointer.Visible = false;
             expBtn.ForeColor = Color.White; try
             {
                 expBtn.Image = miniImages[expBtn.Text];
@@ -3549,6 +3965,7 @@ namespace MediaPlayer
 
         private void fourKBtn_MouseLeave(object sender, EventArgs e)
         {
+            hoverPointer.Visible = false;
             if (globalBtn != null && !globalBtn.Text.Equals("4K"))
                 fourKBtn.ForeColor = Color.White;
             enlargeLeave((Button)sender, "4K");
@@ -3556,6 +3973,7 @@ namespace MediaPlayer
 
         private void shortVideosBtn_MouseLeave(object sender, EventArgs e)
         {
+            hoverPointer.Visible = false;
             if (globalBtn!=null && !globalBtn.Text.Equals("Gif Vid"))
                 shortVideosBtn.ForeColor = Color.White;
             enlargeLeave((Button)sender, "Gif Vid");
@@ -3563,6 +3981,7 @@ namespace MediaPlayer
 
         private void gifsBtn_MouseLeave(object sender, EventArgs e)
         {
+            hoverPointer.Visible = false;
             if (globalBtn != null && !globalBtn.Text.Equals("Gifs"))
                 gifsBtn.ForeColor = Color.White;
             enlargeLeave((Button)sender, "Gifs");
@@ -3678,7 +4097,7 @@ namespace MediaPlayer
                     disposePb.Add(img1);
                     if (myPictureBox1.Image != null)
                         myPictureBox1.Image.Dispose();
-                    myPictureBox1.Image = resizedImage(img1, 0, 0, 0, 89);
+                    myPictureBox1.Image = resizedImage(img1, 0, 89, 0, 0);
                 }
                 catch { }
             }
@@ -3692,7 +4111,7 @@ namespace MediaPlayer
 
                     if (myPictureBox2.Image != null)
                         myPictureBox2.Image.Dispose();
-                    myPictureBox2.Image = resizedImage(img2, 0, 0, 0, 89);
+                    myPictureBox2.Image = resizedImage(img2, 0, 89, 0, 0);
                 }
                 catch { }
             }
@@ -3749,7 +4168,7 @@ namespace MediaPlayer
 
                     if (myPictureBox1.Image != null)
                         myPictureBox1.Image.Dispose();
-                    myPictureBox1.Image = resizedImage(img1, 0, 0, 0, 89);
+                    myPictureBox1.Image = resizedImage(img1, 0, 89, 0, 0);
                 }
                 catch { }
             }
@@ -3763,7 +4182,7 @@ namespace MediaPlayer
 
                     if (myPictureBox2.Image != null)
                         myPictureBox2.Image.Dispose();
-                    myPictureBox2.Image = resizedImage(img2, 0, 0, 0, 89);
+                    myPictureBox2.Image = resizedImage(img2, 0, 89, 0, 0);
                 }
                 catch { }
             }
@@ -4421,10 +4840,12 @@ namespace MediaPlayer
                 if (prevPB == null)
                 {
                     globalDetails = allVidDet.ElementAt(0);
+                    globalDetails.BackColor = darkBackColor;
                     prevPB = videosPb.ElementAt(0);
                     prevPB.BackColor = mouseClickColor;
-                    allVidDet.ElementAt(0).ForeColor = mouseClickColor;
-                    Font myfont = new Font("Comic Sans MS", 9, FontStyle.Regular);
+                    //allVidDet.ElementAt(0).ForeColor = mouseClickColor;
+                    Font myfont = new Font("Comic Sans MS", 10, FontStyle.Bold);
+                    allVidDet.ElementAt(0).BackColor = mouseClickColor;
                     globalDetails.Font = myfont;
                     return;
                 }
@@ -4433,37 +4854,43 @@ namespace MediaPlayer
                 if (index < 0)
                 {
                     globalDetails.ForeColor = Color.White;
-                    Font myfont = new Font("Consolas", 9, FontStyle.Regular);
+                    globalDetails.BackColor = darkBackColor;
+                    Font myfont = new Font("Consolas", 10, FontStyle.Bold);
                     globalDetails.Font = myfont;
                     globalDetails = allVidDet.ElementAt(videosPb.Count - 1);
                     prevPB = videosPb.ElementAt(videosPb.Count - 1);
-                    allVidDet.ElementAt(videosPb.Count - 1).ForeColor = mouseClickColor;
-                    myfont = new Font("Comic Sans MS", 9, FontStyle.Regular);
+                    //allVidDet.ElementAt(videosPb.Count - 1).ForeColor = mouseClickColor;
+                    allVidDet.ElementAt(videosPb.Count - 1).BackColor = mouseClickColor;
+                    myfont = new Font("Comic Sans MS", 10, FontStyle.Bold);
                     globalDetails.Font = myfont;
                     index = videosPb.Count - 1;
                 }
                 else if (index >= videosPb.Count)
                 {
                     globalDetails.ForeColor = Color.White;
-                    Font myfont = new Font("Consolas", 9, FontStyle.Regular);
+                    globalDetails.BackColor = darkBackColor;
+                    Font myfont = new Font("Consolas", 10, FontStyle.Bold);
                     globalDetails.Font = myfont;
                     globalDetails = allVidDet.ElementAt(0);
-                    myfont = new Font("Comic Sans MS", 9, FontStyle.Regular);
+                    myfont = new Font("Comic Sans MS", 10, FontStyle.Bold);
                     globalDetails.Font = myfont;
                     prevPB = videosPb.ElementAt(0);
-                    allVidDet.ElementAt(0).ForeColor = mouseClickColor;
+                    //allVidDet.ElementAt(0).ForeColor = mouseClickColor;
+                    allVidDet.ElementAt(0).BackColor = mouseClickColor;
                     index = 0;
                 }
                 else
                 {
                     globalDetails.ForeColor = Color.White;
-                    Font myfont = new Font("Consolas", 9, FontStyle.Regular);
+                    globalDetails.BackColor = darkBackColor;
+                    Font myfont = new Font("Consolas", 10, FontStyle.Bold);
                     globalDetails.Font = myfont;
                     globalDetails = allVidDet.ElementAt(index);
-                    myfont = new Font("Comic Sans MS", 9, FontStyle.Regular);
+                    myfont = new Font("Comic Sans MS", 10, FontStyle.Bold);
                     globalDetails.Font = myfont;
                     prevPB = videosPb.ElementAt(index);
-                    allVidDet.ElementAt(index).ForeColor = mouseClickColor;
+                    //allVidDet.ElementAt(index).ForeColor = mouseClickColor;
+                    allVidDet.ElementAt(index).BackColor = mouseClickColor;
                 }
 
                 prevPB.BackColor = mouseClickColor;
@@ -4535,10 +4962,10 @@ namespace MediaPlayer
                 if (prevPB == null)
                 {
                     globalDetails = allVidDet.ElementAt(0);
-                    allVidDet.ElementAt(0).ForeColor = mouseClickColor;
+                    allVidDet.ElementAt(0).BackColor = mouseClickColor;
                     prevPB = shortVideosPb.ElementAt(0);
                     prevPB.BackColor = mouseClickColor;
-                    Font myfont = new Font("Comic Sans MS", 9, FontStyle.Regular);
+                    Font myfont = new Font("Comic Sans MS", 8, FontStyle.Bold);
                     globalDetails.Font = myfont;
                     return;
                 }
@@ -4546,39 +4973,39 @@ namespace MediaPlayer
                 int index = shortVideosPb.IndexOf(prevPB) + idx;
                 if (index < 0)
                 {
-                    globalDetails.ForeColor = Color.White;
+                    globalDetails.BackColor = lightBackColor;
 
                     Font myfont = new Font("Consolas", 9, FontStyle.Regular);
                     globalDetails.Font = myfont;
                     index = shortVideosPb.Count - 1;
                     prevPB = shortVideosPb.ElementAt(shortVideosPb.Count - 1);
                     globalDetails = allVidDet.ElementAt(shortVideosPb.Count - 1);
-                    myfont = new Font("Comic Sans MS", 9, FontStyle.Regular);
+                    myfont = new Font("Comic Sans MS", 8, FontStyle.Bold);
                     globalDetails.Font = myfont;
-                    allVidDet.ElementAt(shortVideosPb.Count - 1).ForeColor = mouseClickColor;
+                    allVidDet.ElementAt(shortVideosPb.Count - 1).BackColor = mouseClickColor;
                 }
                 else if (index >= shortVideosPb.Count)
                 {
                     index = 0;
                     prevPB = shortVideosPb.ElementAt(0);
-                    globalDetails.ForeColor = Color.White;
+                    globalDetails.BackColor = lightBackColor;
                     Font myfont = new Font("Consolas", 9, FontStyle.Regular);
                     globalDetails.Font = myfont;
                     globalDetails = allVidDet.ElementAt(index);
-                    myfont = new Font("Comic Sans MS", 9, FontStyle.Regular);
+                    myfont = new Font("Comic Sans MS", 8, FontStyle.Bold);
                     globalDetails.Font = myfont;
-                    allVidDet.ElementAt(index).ForeColor = mouseClickColor;
+                    allVidDet.ElementAt(index).BackColor = mouseClickColor;
                 }
                 else
                 {
                     prevPB = shortVideosPb.ElementAt(index);
-                    globalDetails.ForeColor = Color.White;
+                    globalDetails.BackColor = lightBackColor;
                     Font myfont = new Font("Consolas", 9, FontStyle.Regular);
                     globalDetails.Font = myfont;
                     globalDetails = allVidDet.ElementAt(index);
-                    myfont = new Font("Comic Sans MS", 9, FontStyle.Regular);
+                    myfont = new Font("Comic Sans MS", 8, FontStyle.Bold);
                     globalDetails.Font = myfont;
-                    allVidDet.ElementAt(index).ForeColor = mouseClickColor;
+                    allVidDet.ElementAt(index).BackColor = mouseClickColor;
                 }
 
                 prevPB.BackColor = mouseClickColor;

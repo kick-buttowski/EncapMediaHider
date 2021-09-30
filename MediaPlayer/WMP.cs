@@ -21,6 +21,16 @@ namespace MediaPlayer
 
     public partial class WMP : Form, IMessageFilter
     {
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn
+        (
+            int nLeftRect,     // x-coordinate of upper-left corner
+            int nTopRect,      // y-coordinate of upper-left corner
+            int nRightRect,    // x-coordinate of lower-right corner
+            int nBottomRect,   // y-coordinate of lower-right corner
+            int nWidthEllipse, // height of ellipse
+            int nHeightEllipse // width of ellipse
+        );
 
         public Boolean hoveredOver = true, hoveredOver2 = true, toggleFullScreen = true, 
             keyLock = false, playStatus = true, toMute = true, toRepeat = false;
@@ -79,7 +89,6 @@ namespace MediaPlayer
         {
             InitializeComponent();
 
-            //this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 20, 20));
             this.refPb = refPb;
             mouseClickColor = Explorer.globColor;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -107,6 +116,9 @@ namespace MediaPlayer
             newProgressBar.BackColor = mouseClickColor;
             newProgressBar.Margin = new Padding(0);
             this.Controls.Add(newProgressBar);
+            this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 30, 30));
+            axWindowsMediaPlayer1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, axWindowsMediaPlayer1.Width, axWindowsMediaPlayer1.Height, 30, 30));
+
 
         }
 

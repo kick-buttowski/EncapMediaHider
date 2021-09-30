@@ -142,7 +142,7 @@ namespace MediaPlayer
                     picOriginalPicture.Image.Dispose();
                 picOriginalPicture.Dispose();
                 picCroppedPicture.Dispose();
-                cropPen.Dispose();
+                if(cropPen!=null) cropPen.Dispose();
                 this.Dispose();
                 this.Close();
             }
