@@ -328,20 +328,21 @@ namespace MediaPlayer
                         }
                     }
 
-                    if (keyCode == Keys.O || keyCode == Keys.G)
+                    if (keyCode == Keys.O || keyCode == Keys.G || keyCode == Keys.B)
                     {
                         int endTo = timer2.Interval;
-
                         Thread gifThread = new Thread(() =>
                         {
                             try
                             {
+                                String temp = wmpFi.Name.Substring(wmpFi.Name.IndexOf("placeholdeerr") + 13);
                                 var inputFile = new MediaFile { Filename = wmpFi.FullName };
                                 var outputFile = new MediaFile
                                 {
-                                    Filename = (isShort==null?(wmpFi.DirectoryName + "\\"):(wmpFi.DirectoryName.Substring(0,wmpFi.DirectoryName.LastIndexOf("\\")) + "\\Gifs\\")) +
-                                    wmpFi.Name.Substring(0,wmpFi.Name.LastIndexOf(".")) + endTo + (keyCode == Keys.G ? ".gif" : ".mp4")
-                                };
+                                    Filename = (isShort == null ? (wmpFi.DirectoryName + "\\" + (keyCode == Keys.G ? "Pics\\Gifs\\" : (keyCode == Keys.B ? "Pics\\Affinity\\" : ""))) :
+                                    (keyCode == Keys.G ? (wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")) + "\\Gifs\\") : (keyCode == Keys.B ? (wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")) + "\\Affinity\\") : wmpFi.DirectoryName + "\\"))) +
+                                      temp.Substring(0, temp.LastIndexOf(".")) + endTo + (keyCode == Keys.G ? ".gif" : ".mp4")
+                            };
 
                                 using (var engine = new Engine())
                                 {
@@ -490,7 +491,7 @@ namespace MediaPlayer
                     if (Control.ModifierKeys == Keys.Control && keyCode == Keys.Right)
                     {
                         double c = axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
-                        axWindowsMediaPlayer1.Ctlcontrols.currentPosition = c + 20.0;
+                        axWindowsMediaPlayer1.Ctlcontrols.currentPosition = c + (duration < 220 ? 8.0 : 18.0);
                         if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPaused)
                         {
                             ((WMPLib.IWMPControls2)axWindowsMediaPlayer1.Ctlcontrols).step(1);
@@ -499,7 +500,7 @@ namespace MediaPlayer
                     if (Control.ModifierKeys == Keys.Shift && keyCode == Keys.Right)
                     {
                         double c = axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
-                        axWindowsMediaPlayer1.Ctlcontrols.currentPosition = c + 60.0;
+                        axWindowsMediaPlayer1.Ctlcontrols.currentPosition = c + (duration < 220 ? 18.0 : 55.0);
                         if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPaused)
                         {
                             ((WMPLib.IWMPControls2)axWindowsMediaPlayer1.Ctlcontrols).step(1);
@@ -517,7 +518,7 @@ namespace MediaPlayer
                     if (Control.ModifierKeys == Keys.Control && keyCode == Keys.Left)
                     {
                         double c = axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
-                        axWindowsMediaPlayer1.Ctlcontrols.currentPosition = (c - 20.0) < 0 ? 0 : (c - 20.0);
+                        axWindowsMediaPlayer1.Ctlcontrols.currentPosition = (c - (duration < 220 ? 8.0 : 20.0)) < 0 ? 0 : (c - (duration < 220 ? 8.0 : 18.0));
                         if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPaused)
                         {
                             ((WMPLib.IWMPControls2)axWindowsMediaPlayer1.Ctlcontrols).step(1);
@@ -526,14 +527,14 @@ namespace MediaPlayer
                     if (Control.ModifierKeys == Keys.Shift && keyCode == Keys.Left)
                     {
                         double c = axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
-                        axWindowsMediaPlayer1.Ctlcontrols.currentPosition = (c - 60.0) < 0 ? 0 : (c - 60.0);
+                        axWindowsMediaPlayer1.Ctlcontrols.currentPosition = (c - (duration < 220 ? 20.0 : 60.0)) < 0 ? 0 : (c - (duration < 220 ? 18.0 : 55.0));
                         if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPaused)
                         {
                             ((WMPLib.IWMPControls2)axWindowsMediaPlayer1.Ctlcontrols).step(1);
                         }
                     }
 
-                    if ((Control.ModifierKeys == Keys.Control && keyCode == Keys.Up) || keyCode==Keys.B)
+                    if ((Control.ModifierKeys == Keys.Control && keyCode == Keys.Up) || keyCode==Keys.Z)
                     {
                         WMPLib.IWMPMedia media = axWindowsMediaPlayer1.currentMedia;
                         WMPLib.IWMPMedia targetMedia = null;
@@ -557,7 +558,7 @@ namespace MediaPlayer
                         textBox5.Text = Path.GetFileName(axWindowsMediaPlayer1.currentMedia.sourceURL).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.currentMedia.sourceURL).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "\t\tDura:").Replace("Size^ ", "\tSize:");
                     }
 
-                    else if ((Control.ModifierKeys == Keys.Control && keyCode == Keys.Down) || keyCode == Keys.N)
+                    else if ((Control.ModifierKeys == Keys.Control && keyCode == Keys.Down) || keyCode == Keys.X)
                     {
                         WMPLib.IWMPMedia media = axWindowsMediaPlayer1.currentMedia;
                         WMPLib.IWMPMedia targetMedia = null;

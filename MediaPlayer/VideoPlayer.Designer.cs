@@ -78,23 +78,14 @@ namespace MediaPlayer
             this.toolStripMenuItem26 = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem45 = new System.Windows.Forms.ToolStripMenuItem();
-            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-            this.myPictureBox1 = new System.Windows.Forms.PictureBox();
-            this.button3 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.myPictureBox2 = new System.Windows.Forms.PictureBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.expBtn = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.button1 = new System.Windows.Forms.Button();
             this.videosBtn = new System.Windows.Forms.Button();
             this.picturesBtn = new System.Windows.Forms.Button();
-            this.fourKBtn = new System.Windows.Forms.Button();
-            this.shortVideosBtn = new System.Windows.Forms.Button();
-            this.gifsBtn = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.bsButton = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
@@ -129,16 +120,40 @@ namespace MediaPlayer
             this.panel1 = new System.Windows.Forms.Panel();
             this.hoverPointer = new System.Windows.Forms.Label();
             this.pointer = new System.Windows.Forms.Label();
+            this.flowLayoutPanel3 = new System.Windows.Forms.Panel();
+            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.addFile = new System.Windows.Forms.Button();
+            this.move = new System.Windows.Forms.Button();
+            this.refresh = new System.Windows.Forms.Button();
+            this.delete = new System.Windows.Forms.Button();
+            this.multisel = new System.Windows.Forms.Button();
+            this.theme = new System.Windows.Forms.Button();
+            this.sortSize = new System.Windows.Forms.Button();
+            this.sortDate = new System.Windows.Forms.Button();
+            this.convert = new System.Windows.Forms.Button();
+            this.reset = new System.Windows.Forms.Button();
+            this.load4K = new System.Windows.Forms.Button();
+            this.myPictureBox2 = new System.Windows.Forms.PictureBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.myPictureBox1 = new System.Windows.Forms.PictureBox();
+            this.fourKBtn = new System.Windows.Forms.Button();
+            this.shortVideosBtn = new System.Windows.Forms.Button();
+            this.gifsBtn = new System.Windows.Forms.Button();
+            this.navController = new System.Windows.Forms.Button();
+            this.divider = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
-            this.flowLayoutPanel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.myPictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.myPictureBox2)).BeginInit();
             this.flowLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.contextMenuStrip3.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.flowLayoutPanel3.SuspendLayout();
+            this.flowLayoutPanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.myPictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.myPictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // errorProvider1
@@ -383,7 +398,9 @@ namespace MediaPlayer
             this.flowLayoutPanel1.AutoScroll = true;
             this.flowLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
             this.flowLayoutPanel1.ContextMenuStrip = this.contextMenuStrip2;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(276, 100);
+            this.flowLayoutPanel1.Controls.Add(this.myPictureBox1);
+            this.flowLayoutPanel1.Controls.Add(this.myPictureBox2);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(276, 103);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(16, 0, 0, 0);
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1648, 998);
@@ -588,111 +605,38 @@ namespace MediaPlayer
             this.toolStripMenuItem45.Text = "Change Theme Color";
             this.toolStripMenuItem45.Click += new System.EventHandler(this.toolStripMenuItem44_Click);
             // 
-            // flowLayoutPanel3
-            // 
-            this.flowLayoutPanel3.Controls.Add(this.myPictureBox1);
-            this.flowLayoutPanel3.Controls.Add(this.button3);
-            this.flowLayoutPanel3.Controls.Add(this.button5);
-            this.flowLayoutPanel3.Controls.Add(this.button4);
-            this.flowLayoutPanel3.Controls.Add(this.myPictureBox2);
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(276, 8);
-            this.flowLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
-            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(1443, 92);
-            this.flowLayoutPanel3.TabIndex = 1;
-            // 
-            // myPictureBox1
-            // 
-            this.myPictureBox1.Location = new System.Drawing.Point(5, 0);
-            this.myPictureBox1.Margin = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.myPictureBox1.Name = "myPictureBox1";
-            this.myPictureBox1.Size = new System.Drawing.Size(57, 89);
-            this.myPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.myPictureBox1.TabIndex = 0;
-            this.myPictureBox1.TabStop = false;
-            // 
-            // button3
-            // 
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.button3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button3.FlatAppearance.BorderSize = 0;
-            this.button3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Font = new System.Drawing.Font("Consolas", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.ForeColor = System.Drawing.Color.White;
-            this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
-            this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button3.Location = new System.Drawing.Point(62, 2);
-            this.button3.Margin = new System.Windows.Forms.Padding(0, 2, 5, 0);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(438, 86);
-            this.button3.TabIndex = 21;
-            this.button3.Text = "Prev: ";
-            this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
             // button5
             // 
             this.button5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.button5.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button5.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.button5.FlatAppearance.BorderSize = 0;
             this.button5.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
             this.button5.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button5.Font = new System.Drawing.Font("Consolas", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button5.ForeColor = System.Drawing.Color.White;
-            this.button5.Location = new System.Drawing.Point(505, 2);
+            this.button5.Location = new System.Drawing.Point(500, 43);
             this.button5.Margin = new System.Windows.Forms.Padding(0, 2, 5, 0);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(437, 86);
+            this.button5.Size = new System.Drawing.Size(441, 49);
             this.button5.TabIndex = 23;
             this.button5.UseVisualStyleBackColor = false;
-            // 
-            // button4
-            // 
-            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.button4.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button4.FlatAppearance.BorderSize = 0;
-            this.button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Font = new System.Drawing.Font("Consolas", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.ForeColor = System.Drawing.Color.White;
-            this.button4.Image = ((System.Drawing.Image)(resources.GetObject("button4.Image")));
-            this.button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button4.Location = new System.Drawing.Point(947, 2);
-            this.button4.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(438, 86);
-            this.button4.TabIndex = 22;
-            this.button4.Text = "Next: ";
-            this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // myPictureBox2
-            // 
-            this.myPictureBox2.BackColor = System.Drawing.SystemColors.Desktop;
-            this.myPictureBox2.Location = new System.Drawing.Point(1385, 0);
-            this.myPictureBox2.Margin = new System.Windows.Forms.Padding(0, 0, 1, 0);
-            this.myPictureBox2.Name = "myPictureBox2";
-            this.myPictureBox2.Size = new System.Drawing.Size(57, 90);
-            this.myPictureBox2.TabIndex = 1;
-            this.myPictureBox2.TabStop = false;
+            this.button5.MouseEnter += new System.EventHandler(this.button5_MouseEnter);
+            this.button5.MouseLeave += new System.EventHandler(this.button5_MouseLeave);
             // 
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(7)))), ((int)(((byte)(17)))));
             this.flowLayoutPanel2.Controls.Add(this.expBtn);
-            this.flowLayoutPanel2.Controls.Add(this.button2);
+            this.flowLayoutPanel2.Controls.Add(this.divider);
             this.flowLayoutPanel2.Controls.Add(this.trackBar1);
             this.flowLayoutPanel2.Controls.Add(this.button1);
             this.flowLayoutPanel2.Controls.Add(this.videosBtn);
             this.flowLayoutPanel2.Controls.Add(this.picturesBtn);
             this.flowLayoutPanel2.Controls.Add(this.fourKBtn);
+            this.flowLayoutPanel2.Controls.Add(this.bsButton);
             this.flowLayoutPanel2.Controls.Add(this.shortVideosBtn);
             this.flowLayoutPanel2.Controls.Add(this.gifsBtn);
-            this.flowLayoutPanel2.Controls.Add(this.label1);
             this.flowLayoutPanel2.Font = new System.Drawing.Font("Consolas", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.flowLayoutPanel2.Location = new System.Drawing.Point(9, 0);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
@@ -710,7 +654,7 @@ namespace MediaPlayer
             this.expBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.expBtn.ForeColor = System.Drawing.Color.White;
             this.expBtn.Location = new System.Drawing.Point(10, 6);
-            this.expBtn.Margin = new System.Windows.Forms.Padding(10, 6, 10, 8);
+            this.expBtn.Margin = new System.Windows.Forms.Padding(10, 6, 10, 3);
             this.expBtn.Name = "expBtn";
             this.expBtn.Size = new System.Drawing.Size(254, 122);
             this.expBtn.TabIndex = 20;
@@ -721,39 +665,15 @@ namespace MediaPlayer
             this.expBtn.MouseEnter += new System.EventHandler(this.expBtn_MouseEnter);
             this.expBtn.MouseLeave += new System.EventHandler(this.expBtn_MouseLeave);
             // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.button2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
-            this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button2.Location = new System.Drawing.Point(17, 140);
-            this.button2.Margin = new System.Windows.Forms.Padding(17, 4, 17, 0);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(240, 58);
-            this.button2.TabIndex = 28;
-            this.button2.Text = "Taskbar Control Off";
-            this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            this.button2.MouseEnter += new System.EventHandler(this.button2_MouseEnter);
-            this.button2.MouseLeave += new System.EventHandler(this.button2_MouseLeave);
-            // 
             // trackBar1
             // 
             this.trackBar1.AutoSize = false;
             this.trackBar1.BackColor = System.Drawing.Color.Black;
-            this.trackBar1.Location = new System.Drawing.Point(17, 200);
-            this.trackBar1.Margin = new System.Windows.Forms.Padding(17, 2, 0, 13);
+            this.trackBar1.Location = new System.Drawing.Point(0, 146);
+            this.trackBar1.Margin = new System.Windows.Forms.Padding(0, 0, 0, 9);
             this.trackBar1.Maximum = 100;
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(186, 30);
+            this.trackBar1.Size = new System.Drawing.Size(211, 30);
             this.trackBar1.TabIndex = 4;
             this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackBar1.Value = 25;
@@ -768,8 +688,8 @@ namespace MediaPlayer
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(203, 200);
-            this.button1.Margin = new System.Windows.Forms.Padding(0, 2, 1, 7);
+            this.button1.Location = new System.Drawing.Point(211, 146);
+            this.button1.Margin = new System.Windows.Forms.Padding(0, 0, 1, 7);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(53, 30);
             this.button1.TabIndex = 19;
@@ -785,7 +705,7 @@ namespace MediaPlayer
             this.videosBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.videosBtn.Font = new System.Drawing.Font("Consolas", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.videosBtn.ForeColor = System.Drawing.Color.White;
-            this.videosBtn.Location = new System.Drawing.Point(25, 243);
+            this.videosBtn.Location = new System.Drawing.Point(25, 185);
             this.videosBtn.Margin = new System.Windows.Forms.Padding(25, 0, 25, 7);
             this.videosBtn.Name = "videosBtn";
             this.videosBtn.Size = new System.Drawing.Size(217, 123);
@@ -806,7 +726,7 @@ namespace MediaPlayer
             this.picturesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.picturesBtn.Font = new System.Drawing.Font("Consolas", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.picturesBtn.ForeColor = System.Drawing.Color.White;
-            this.picturesBtn.Location = new System.Drawing.Point(25, 373);
+            this.picturesBtn.Location = new System.Drawing.Point(25, 315);
             this.picturesBtn.Margin = new System.Windows.Forms.Padding(25, 0, 25, 7);
             this.picturesBtn.Name = "picturesBtn";
             this.picturesBtn.Size = new System.Drawing.Size(217, 123);
@@ -818,83 +738,26 @@ namespace MediaPlayer
             this.picturesBtn.MouseEnter += new System.EventHandler(this.picturesBtn_MouseEnter);
             this.picturesBtn.MouseLeave += new System.EventHandler(this.picturesBtn_MouseLeave);
             // 
-            // fourKBtn
+            // bsButton
             // 
-            this.fourKBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.fourKBtn.FlatAppearance.BorderSize = 0;
-            this.fourKBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.fourKBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.fourKBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.fourKBtn.Font = new System.Drawing.Font("Consolas", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.fourKBtn.ForeColor = System.Drawing.Color.White;
-            this.fourKBtn.Image = ((System.Drawing.Image)(resources.GetObject("fourKBtn.Image")));
-            this.fourKBtn.Location = new System.Drawing.Point(25, 503);
-            this.fourKBtn.Margin = new System.Windows.Forms.Padding(25, 0, 25, 7);
-            this.fourKBtn.Name = "fourKBtn";
-            this.fourKBtn.Size = new System.Drawing.Size(217, 123);
-            this.fourKBtn.TabIndex = 24;
-            this.fourKBtn.Text = "4K";
-            this.fourKBtn.TextAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.fourKBtn.UseVisualStyleBackColor = true;
-            this.fourKBtn.Click += new System.EventHandler(this.fourKBtn_Click);
-            this.fourKBtn.MouseEnter += new System.EventHandler(this.fourKBtn_MouseEnter);
-            this.fourKBtn.MouseLeave += new System.EventHandler(this.fourKBtn_MouseLeave);
-            // 
-            // shortVideosBtn
-            // 
-            this.shortVideosBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.shortVideosBtn.FlatAppearance.BorderSize = 0;
-            this.shortVideosBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.shortVideosBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.shortVideosBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.shortVideosBtn.Font = new System.Drawing.Font("Consolas", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.shortVideosBtn.ForeColor = System.Drawing.Color.White;
-            this.shortVideosBtn.Image = ((System.Drawing.Image)(resources.GetObject("shortVideosBtn.Image")));
-            this.shortVideosBtn.Location = new System.Drawing.Point(25, 633);
-            this.shortVideosBtn.Margin = new System.Windows.Forms.Padding(25, 0, 25, 7);
-            this.shortVideosBtn.Name = "shortVideosBtn";
-            this.shortVideosBtn.Size = new System.Drawing.Size(217, 123);
-            this.shortVideosBtn.TabIndex = 25;
-            this.shortVideosBtn.Text = "Gif Vid";
-            this.shortVideosBtn.TextAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.shortVideosBtn.UseVisualStyleBackColor = true;
-            this.shortVideosBtn.Click += new System.EventHandler(this.shortVideosBtn_Click);
-            this.shortVideosBtn.MouseEnter += new System.EventHandler(this.shortVideosBtn_MouseEnter);
-            this.shortVideosBtn.MouseLeave += new System.EventHandler(this.shortVideosBtn_MouseLeave);
-            // 
-            // gifsBtn
-            // 
-            this.gifsBtn.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.gifsBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.gifsBtn.FlatAppearance.BorderSize = 0;
-            this.gifsBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.gifsBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.gifsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.gifsBtn.Font = new System.Drawing.Font("Consolas", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gifsBtn.ForeColor = System.Drawing.Color.White;
-            this.gifsBtn.Image = ((System.Drawing.Image)(resources.GetObject("gifsBtn.Image")));
-            this.gifsBtn.Location = new System.Drawing.Point(25, 763);
-            this.gifsBtn.Margin = new System.Windows.Forms.Padding(25, 0, 25, 15);
-            this.gifsBtn.Name = "gifsBtn";
-            this.gifsBtn.Size = new System.Drawing.Size(217, 123);
-            this.gifsBtn.TabIndex = 26;
-            this.gifsBtn.Text = "Gifs";
-            this.gifsBtn.TextAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.gifsBtn.UseVisualStyleBackColor = true;
-            this.gifsBtn.Click += new System.EventHandler(this.gifsBtn_Click);
-            this.gifsBtn.MouseEnter += new System.EventHandler(this.gifsBtn_MouseEnter);
-            this.gifsBtn.MouseLeave += new System.EventHandler(this.gifsBtn_MouseLeave);
-            // 
-            // label1
-            // 
-            this.label1.Font = new System.Drawing.Font("Consolas", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(8, 906);
-            this.label1.Margin = new System.Windows.Forms.Padding(8, 5, 3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(267, 154);
-            this.label1.TabIndex = 29;
-            this.label1.Text = resources.GetString("label1.Text");
+            this.bsButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.bsButton.FlatAppearance.BorderSize = 0;
+            this.bsButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.bsButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.bsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bsButton.Font = new System.Drawing.Font("Consolas", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bsButton.ForeColor = System.Drawing.Color.White;
+            this.bsButton.Location = new System.Drawing.Point(25, 575);
+            this.bsButton.Margin = new System.Windows.Forms.Padding(25, 0, 25, 7);
+            this.bsButton.Name = "bsButton";
+            this.bsButton.Size = new System.Drawing.Size(217, 123);
+            this.bsButton.TabIndex = 29;
+            this.bsButton.Text = "Affinity";
+            this.bsButton.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.bsButton.UseVisualStyleBackColor = true;
+            this.bsButton.Click += new System.EventHandler(this.bsButton_Click);
+            this.bsButton.MouseEnter += new System.EventHandler(this.bsButton_MouseEnter);
+            this.bsButton.MouseLeave += new System.EventHandler(this.bsButton_MouseLeave);
             // 
             // button6
             // 
@@ -906,10 +769,10 @@ namespace MediaPlayer
             this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button6.Font = new System.Drawing.Font("Consolas", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button6.ForeColor = System.Drawing.Color.White;
-            this.button6.Location = new System.Drawing.Point(1855, 0);
+            this.button6.Location = new System.Drawing.Point(1855, -1);
             this.button6.Margin = new System.Windows.Forms.Padding(0);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(65, 45);
+            this.button6.Size = new System.Drawing.Size(65, 42);
             this.button6.TabIndex = 24;
             this.button6.Text = "X";
             this.button6.UseVisualStyleBackColor = false;
@@ -925,10 +788,10 @@ namespace MediaPlayer
             this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button7.Font = new System.Drawing.Font("Consolas", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button7.ForeColor = System.Drawing.Color.White;
-            this.button7.Location = new System.Drawing.Point(1788, 0);
+            this.button7.Location = new System.Drawing.Point(1788, -1);
             this.button7.Margin = new System.Windows.Forms.Padding(0);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(65, 45);
+            this.button7.Size = new System.Drawing.Size(67, 42);
             this.button7.TabIndex = 25;
             this.button7.Text = "−";
             this.button7.UseVisualStyleBackColor = false;
@@ -944,10 +807,10 @@ namespace MediaPlayer
             this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button8.Font = new System.Drawing.Font("Consolas", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button8.ForeColor = System.Drawing.Color.White;
-            this.button8.Location = new System.Drawing.Point(1721, 0);
+            this.button8.Location = new System.Drawing.Point(1721, -1);
             this.button8.Margin = new System.Windows.Forms.Padding(0);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(65, 45);
+            this.button8.Size = new System.Drawing.Size(67, 42);
             this.button8.TabIndex = 26;
             this.button8.Text = "<-";
             this.button8.UseVisualStyleBackColor = false;
@@ -956,17 +819,17 @@ namespace MediaPlayer
             // button9
             // 
             this.button9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.button9.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button9.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.button9.FlatAppearance.BorderSize = 0;
             this.button9.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button9.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button9.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button9.ForeColor = System.Drawing.Color.White;
-            this.button9.Location = new System.Drawing.Point(1721, 47);
+            this.button9.Location = new System.Drawing.Point(1721, 43);
             this.button9.Margin = new System.Windows.Forms.Padding(0, 3, 2, 0);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(116, 51);
+            this.button9.Size = new System.Drawing.Size(116, 57);
             this.button9.TabIndex = 29;
             this.button9.Text = "Random Videos";
             this.button9.UseVisualStyleBackColor = false;
@@ -975,7 +838,7 @@ namespace MediaPlayer
             // button10
             // 
             this.button10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.button10.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button10.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.button10.Enabled = false;
             this.button10.FlatAppearance.BorderSize = 0;
             this.button10.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -983,10 +846,10 @@ namespace MediaPlayer
             this.button10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button10.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button10.ForeColor = System.Drawing.Color.White;
-            this.button10.Location = new System.Drawing.Point(1839, 47);
+            this.button10.Location = new System.Drawing.Point(1839, 43);
             this.button10.Margin = new System.Windows.Forms.Padding(0, 3, 0, 0);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(79, 51);
+            this.button10.Size = new System.Drawing.Size(79, 57);
             this.button10.TabIndex = 30;
             this.button10.Text = "Global";
             this.button10.UseVisualStyleBackColor = false;
@@ -1251,18 +1114,455 @@ namespace MediaPlayer
             this.pointer.TabIndex = 0;
             this.pointer.Text = "                  ";
             // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.Controls.Add(this.flowLayoutPanel4);
+            this.flowLayoutPanel3.Controls.Add(this.button4);
+            this.flowLayoutPanel3.Controls.Add(this.button5);
+            this.flowLayoutPanel3.Controls.Add(this.button3);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(276, 8);
+            this.flowLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(1443, 92);
+            this.flowLayoutPanel3.TabIndex = 32;
+            // 
+            // flowLayoutPanel4
+            // 
+            this.flowLayoutPanel4.Controls.Add(this.navController);
+            this.flowLayoutPanel4.Controls.Add(this.addFile);
+            this.flowLayoutPanel4.Controls.Add(this.move);
+            this.flowLayoutPanel4.Controls.Add(this.refresh);
+            this.flowLayoutPanel4.Controls.Add(this.delete);
+            this.flowLayoutPanel4.Controls.Add(this.multisel);
+            this.flowLayoutPanel4.Controls.Add(this.theme);
+            this.flowLayoutPanel4.Controls.Add(this.sortSize);
+            this.flowLayoutPanel4.Controls.Add(this.sortDate);
+            this.flowLayoutPanel4.Controls.Add(this.convert);
+            this.flowLayoutPanel4.Controls.Add(this.reset);
+            this.flowLayoutPanel4.Controls.Add(this.load4K);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(1, 1);
+            this.flowLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(1443, 40);
+            this.flowLayoutPanel4.TabIndex = 24;
+            // 
+            // addFile
+            // 
+            this.addFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.addFile.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.addFile.FlatAppearance.BorderSize = 0;
+            this.addFile.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.addFile.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.addFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.addFile.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.addFile.ForeColor = System.Drawing.Color.White;
+            this.addFile.Image = ((System.Drawing.Image)(resources.GetObject("addFile.Image")));
+            this.addFile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.addFile.Location = new System.Drawing.Point(121, 0);
+            this.addFile.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.addFile.Name = "addFile";
+            this.addFile.Size = new System.Drawing.Size(119, 41);
+            this.addFile.TabIndex = 22;
+            this.addFile.Text = "New file";
+            this.addFile.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.addFile.UseVisualStyleBackColor = false;
+            this.addFile.Click += new System.EventHandler(this.addFile_Click);
+            // 
+            // move
+            // 
+            this.move.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.move.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.move.FlatAppearance.BorderSize = 0;
+            this.move.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.move.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.move.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.move.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.move.ForeColor = System.Drawing.Color.White;
+            this.move.Image = global::MediaPlayer.Properties.Resources.icons8_move_32;
+            this.move.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.move.Location = new System.Drawing.Point(242, 0);
+            this.move.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.move.Name = "move";
+            this.move.Size = new System.Drawing.Size(118, 41);
+            this.move.TabIndex = 28;
+            this.move.Text = "Move";
+            this.move.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.move.UseVisualStyleBackColor = false;
+            this.move.Click += new System.EventHandler(this.move_Click);
+            // 
+            // refresh
+            // 
+            this.refresh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.refresh.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.refresh.FlatAppearance.BorderSize = 0;
+            this.refresh.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.refresh.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.refresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.refresh.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.refresh.ForeColor = System.Drawing.Color.White;
+            this.refresh.Image = ((System.Drawing.Image)(resources.GetObject("refresh.Image")));
+            this.refresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.refresh.Location = new System.Drawing.Point(362, 0);
+            this.refresh.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.refresh.Name = "refresh";
+            this.refresh.Size = new System.Drawing.Size(119, 41);
+            this.refresh.TabIndex = 24;
+            this.refresh.Text = "Refresh";
+            this.refresh.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.refresh.UseVisualStyleBackColor = false;
+            this.refresh.Click += new System.EventHandler(this.refresh_Click);
+            // 
+            // delete
+            // 
+            this.delete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.delete.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.delete.FlatAppearance.BorderSize = 0;
+            this.delete.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.delete.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.delete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.delete.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.delete.ForeColor = System.Drawing.Color.White;
+            this.delete.Image = ((System.Drawing.Image)(resources.GetObject("delete.Image")));
+            this.delete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.delete.Location = new System.Drawing.Point(483, 0);
+            this.delete.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.delete.Name = "delete";
+            this.delete.Size = new System.Drawing.Size(119, 41);
+            this.delete.TabIndex = 25;
+            this.delete.Text = "Delete";
+            this.delete.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.delete.UseVisualStyleBackColor = false;
+            this.delete.Click += new System.EventHandler(this.button11_Click);
+            // 
+            // multisel
+            // 
+            this.multisel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.multisel.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.multisel.FlatAppearance.BorderSize = 0;
+            this.multisel.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.multisel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.multisel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.multisel.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.multisel.ForeColor = System.Drawing.Color.White;
+            this.multisel.Image = global::MediaPlayer.Properties.Resources.icons8_multiple_choice_32__1_;
+            this.multisel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.multisel.Location = new System.Drawing.Point(604, 0);
+            this.multisel.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.multisel.Name = "multisel";
+            this.multisel.Size = new System.Drawing.Size(118, 41);
+            this.multisel.TabIndex = 26;
+            this.multisel.Text = "Multisel";
+            this.multisel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.multisel.UseVisualStyleBackColor = false;
+            this.multisel.Click += new System.EventHandler(this.multisel_Click);
+            // 
+            // theme
+            // 
+            this.theme.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.theme.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.theme.FlatAppearance.BorderSize = 0;
+            this.theme.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.theme.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.theme.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.theme.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.theme.ForeColor = System.Drawing.Color.White;
+            this.theme.Image = global::MediaPlayer.Properties.Resources.icons8_swatch_32__1_;
+            this.theme.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.theme.Location = new System.Drawing.Point(724, 0);
+            this.theme.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.theme.Name = "theme";
+            this.theme.Size = new System.Drawing.Size(118, 41);
+            this.theme.TabIndex = 27;
+            this.theme.Text = "Theme";
+            this.theme.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.theme.UseVisualStyleBackColor = false;
+            this.theme.Click += new System.EventHandler(this.button11_Click_1);
+            // 
+            // sortSize
+            // 
+            this.sortSize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.sortSize.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.sortSize.FlatAppearance.BorderSize = 0;
+            this.sortSize.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.sortSize.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.sortSize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.sortSize.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sortSize.ForeColor = System.Drawing.Color.White;
+            this.sortSize.Image = global::MediaPlayer.Properties.Resources.sort__1_;
+            this.sortSize.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.sortSize.Location = new System.Drawing.Point(844, 0);
+            this.sortSize.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.sortSize.Name = "sortSize";
+            this.sortSize.Size = new System.Drawing.Size(118, 41);
+            this.sortSize.TabIndex = 29;
+            this.sortSize.Text = "By Size";
+            this.sortSize.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.sortSize.UseVisualStyleBackColor = false;
+            this.sortSize.Click += new System.EventHandler(this.sortSize_Click);
+            // 
+            // sortDate
+            // 
+            this.sortDate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.sortDate.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.sortDate.FlatAppearance.BorderSize = 0;
+            this.sortDate.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.sortDate.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.sortDate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.sortDate.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sortDate.ForeColor = System.Drawing.Color.White;
+            this.sortDate.Image = global::MediaPlayer.Properties.Resources.icons8_sort_by_modified_date_35;
+            this.sortDate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.sortDate.Location = new System.Drawing.Point(964, 0);
+            this.sortDate.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.sortDate.Name = "sortDate";
+            this.sortDate.Size = new System.Drawing.Size(118, 41);
+            this.sortDate.TabIndex = 30;
+            this.sortDate.Text = "By Date";
+            this.sortDate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.sortDate.UseVisualStyleBackColor = false;
+            this.sortDate.Click += new System.EventHandler(this.sortDate_Click);
+            // 
+            // convert
+            // 
+            this.convert.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.convert.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.convert.FlatAppearance.BorderSize = 0;
+            this.convert.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.convert.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.convert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.convert.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.convert.ForeColor = System.Drawing.Color.White;
+            this.convert.Image = global::MediaPlayer.Properties.Resources.Square44x44Logo_targetsize_30;
+            this.convert.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.convert.Location = new System.Drawing.Point(1084, 0);
+            this.convert.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.convert.Name = "convert";
+            this.convert.Size = new System.Drawing.Size(118, 41);
+            this.convert.TabIndex = 31;
+            this.convert.Text = "To Mp4";
+            this.convert.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.convert.UseVisualStyleBackColor = false;
+            this.convert.Click += new System.EventHandler(this.convert_Click);
+            // 
+            // reset
+            // 
+            this.reset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.reset.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.reset.FlatAppearance.BorderSize = 0;
+            this.reset.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.reset.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.reset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.reset.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.reset.ForeColor = System.Drawing.Color.White;
+            this.reset.Image = global::MediaPlayer.Properties.Resources.reset;
+            this.reset.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.reset.Location = new System.Drawing.Point(1204, 0);
+            this.reset.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.reset.Name = "reset";
+            this.reset.Size = new System.Drawing.Size(118, 41);
+            this.reset.TabIndex = 32;
+            this.reset.Text = "Reset";
+            this.reset.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.reset.UseVisualStyleBackColor = false;
+            this.reset.Click += new System.EventHandler(this.reset_Click);
+            // 
+            // load4K
+            // 
+            this.load4K.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.load4K.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.load4K.FlatAppearance.BorderSize = 0;
+            this.load4K.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.load4K.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.load4K.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.load4K.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.load4K.ForeColor = System.Drawing.Color.White;
+            this.load4K.Image = global::MediaPlayer.Properties.Resources.loading_bar;
+            this.load4K.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.load4K.Location = new System.Drawing.Point(1324, 0);
+            this.load4K.Margin = new System.Windows.Forms.Padding(0);
+            this.load4K.Name = "load4K";
+            this.load4K.Size = new System.Drawing.Size(118, 41);
+            this.load4K.TabIndex = 33;
+            this.load4K.Text = "Load 4K";
+            this.load4K.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.load4K.UseVisualStyleBackColor = false;
+            this.load4K.Click += new System.EventHandler(this.load4K_Click);
+            // 
+            // myPictureBox2
+            // 
+            this.myPictureBox2.BackColor = System.Drawing.SystemColors.Desktop;
+            this.myPictureBox2.Location = new System.Drawing.Point(78, 0);
+            this.myPictureBox2.Margin = new System.Windows.Forms.Padding(0, 0, 1, 0);
+            this.myPictureBox2.Name = "myPictureBox2";
+            this.myPictureBox2.Size = new System.Drawing.Size(57, 90);
+            this.myPictureBox2.TabIndex = 1;
+            this.myPictureBox2.TabStop = false;
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.button4.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.button4.FlatAppearance.BorderSize = 0;
+            this.button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.Font = new System.Drawing.Font("Consolas", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.ForeColor = System.Drawing.Color.White;
+            this.button4.Image = ((System.Drawing.Image)(resources.GetObject("button4.Image")));
+            this.button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button4.Location = new System.Drawing.Point(943, 43);
+            this.button4.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(500, 49);
+            this.button4.TabIndex = 22;
+            this.button4.Text = "Next: ";
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.button4.MouseEnter += new System.EventHandler(this.button4_MouseEnter);
+            this.button4.MouseLeave += new System.EventHandler(this.button4_MouseLeave);
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.button3.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.button3.FlatAppearance.BorderSize = 0;
+            this.button3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.Font = new System.Drawing.Font("Consolas", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.ForeColor = System.Drawing.Color.White;
+            this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
+            this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button3.Location = new System.Drawing.Point(0, 43);
+            this.button3.Margin = new System.Windows.Forms.Padding(0, 2, 3, 0);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(498, 49);
+            this.button3.TabIndex = 21;
+            this.button3.Text = "Prev: ";
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button3.MouseEnter += new System.EventHandler(this.button3_MouseMove);
+            this.button3.MouseLeave += new System.EventHandler(this.button3_MouseLeave);
+            // 
+            // myPictureBox1
+            // 
+            this.myPictureBox1.Location = new System.Drawing.Point(21, 0);
+            this.myPictureBox1.Margin = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.myPictureBox1.Name = "myPictureBox1";
+            this.myPictureBox1.Size = new System.Drawing.Size(57, 89);
+            this.myPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.myPictureBox1.TabIndex = 0;
+            this.myPictureBox1.TabStop = false;
+            // 
+            // fourKBtn
+            // 
+            this.fourKBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.fourKBtn.FlatAppearance.BorderSize = 0;
+            this.fourKBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.fourKBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.fourKBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.fourKBtn.Font = new System.Drawing.Font("Consolas", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.fourKBtn.ForeColor = System.Drawing.Color.White;
+            this.fourKBtn.Image = ((System.Drawing.Image)(resources.GetObject("fourKBtn.Image")));
+            this.fourKBtn.Location = new System.Drawing.Point(25, 445);
+            this.fourKBtn.Margin = new System.Windows.Forms.Padding(25, 0, 25, 7);
+            this.fourKBtn.Name = "fourKBtn";
+            this.fourKBtn.Size = new System.Drawing.Size(217, 123);
+            this.fourKBtn.TabIndex = 24;
+            this.fourKBtn.Text = "4K";
+            this.fourKBtn.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.fourKBtn.UseVisualStyleBackColor = true;
+            this.fourKBtn.Click += new System.EventHandler(this.fourKBtn_Click);
+            this.fourKBtn.MouseEnter += new System.EventHandler(this.fourKBtn_MouseEnter);
+            this.fourKBtn.MouseLeave += new System.EventHandler(this.fourKBtn_MouseLeave);
+            // 
+            // shortVideosBtn
+            // 
+            this.shortVideosBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.shortVideosBtn.FlatAppearance.BorderSize = 0;
+            this.shortVideosBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.shortVideosBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.shortVideosBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.shortVideosBtn.Font = new System.Drawing.Font("Consolas", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.shortVideosBtn.ForeColor = System.Drawing.Color.White;
+            this.shortVideosBtn.Image = ((System.Drawing.Image)(resources.GetObject("shortVideosBtn.Image")));
+            this.shortVideosBtn.Location = new System.Drawing.Point(25, 705);
+            this.shortVideosBtn.Margin = new System.Windows.Forms.Padding(25, 0, 25, 7);
+            this.shortVideosBtn.Name = "shortVideosBtn";
+            this.shortVideosBtn.Size = new System.Drawing.Size(217, 123);
+            this.shortVideosBtn.TabIndex = 25;
+            this.shortVideosBtn.Text = "Gif Vid";
+            this.shortVideosBtn.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.shortVideosBtn.UseVisualStyleBackColor = true;
+            this.shortVideosBtn.Click += new System.EventHandler(this.shortVideosBtn_Click);
+            this.shortVideosBtn.MouseEnter += new System.EventHandler(this.shortVideosBtn_MouseEnter);
+            this.shortVideosBtn.MouseLeave += new System.EventHandler(this.shortVideosBtn_MouseLeave);
+            // 
+            // gifsBtn
+            // 
+            this.gifsBtn.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.gifsBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.gifsBtn.FlatAppearance.BorderSize = 0;
+            this.gifsBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.gifsBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.gifsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.gifsBtn.Font = new System.Drawing.Font("Consolas", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gifsBtn.ForeColor = System.Drawing.Color.White;
+            this.gifsBtn.Image = ((System.Drawing.Image)(resources.GetObject("gifsBtn.Image")));
+            this.gifsBtn.Location = new System.Drawing.Point(25, 835);
+            this.gifsBtn.Margin = new System.Windows.Forms.Padding(25, 0, 25, 15);
+            this.gifsBtn.Name = "gifsBtn";
+            this.gifsBtn.Size = new System.Drawing.Size(217, 123);
+            this.gifsBtn.TabIndex = 26;
+            this.gifsBtn.Text = "Gifs";
+            this.gifsBtn.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.gifsBtn.UseVisualStyleBackColor = true;
+            this.gifsBtn.Click += new System.EventHandler(this.gifsBtn_Click);
+            this.gifsBtn.MouseEnter += new System.EventHandler(this.gifsBtn_MouseEnter);
+            this.gifsBtn.MouseLeave += new System.EventHandler(this.gifsBtn_MouseLeave);
+            // 
+            // navController
+            // 
+            this.navController.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.navController.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.navController.FlatAppearance.BorderSize = 0;
+            this.navController.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.navController.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.navController.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.navController.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.navController.ForeColor = System.Drawing.Color.White;
+            this.navController.Image = global::MediaPlayer.Properties.Resources.arrow;
+            this.navController.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.navController.Location = new System.Drawing.Point(0, 0);
+            this.navController.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.navController.Name = "navController";
+            this.navController.Size = new System.Drawing.Size(119, 41);
+            this.navController.TabIndex = 34;
+            this.navController.Text = "Nav Lock";
+            this.navController.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.navController.UseVisualStyleBackColor = false;
+            this.navController.Click += new System.EventHandler(this.navController_Click);
+            // 
+            // divider
+            // 
+            this.divider.Location = new System.Drawing.Point(0, 136);
+            this.divider.Margin = new System.Windows.Forms.Padding(0, 5, 0, 2);
+            this.divider.Name = "divider";
+            this.divider.Size = new System.Drawing.Size(265, 8);
+            this.divider.TabIndex = 30;
+            // 
             // VideoPlayer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Desktop;
             this.ClientSize = new System.Drawing.Size(1902, 1033);
+            this.Controls.Add(this.flowLayoutPanel3);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.button9);
             this.Controls.Add(this.button10);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
-            this.Controls.Add(this.flowLayoutPanel3);
             this.Controls.Add(this.flowLayoutPanel2);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.button8);
@@ -1277,14 +1577,16 @@ namespace MediaPlayer
             this.Enter += new System.EventHandler(this.VideoPlayer_Enter);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
+            this.flowLayoutPanel1.ResumeLayout(false);
             this.contextMenuStrip2.ResumeLayout(false);
-            this.flowLayoutPanel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.myPictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.myPictureBox2)).EndInit();
             this.flowLayoutPanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.contextMenuStrip3.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            this.flowLayoutPanel3.ResumeLayout(false);
+            this.flowLayoutPanel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.myPictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.myPictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1308,18 +1610,14 @@ namespace MediaPlayer
         private System.Windows.Forms.Button videosBtn;
         private System.Windows.Forms.Button picturesBtn;
         private System.Windows.Forms.Button fourKBtn;
-        private System.Windows.Forms.Button shortVideosBtn;
-        private System.Windows.Forms.Button gifsBtn;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem23;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem22;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem25;
         private System.Windows.Forms.ToolStripMenuItem kPicsOperationsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadAll4KImagesToolStripMenuItem1;
@@ -1376,7 +1674,6 @@ namespace MediaPlayer
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem45;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem46;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.PictureBox myPictureBox1;
@@ -1386,5 +1683,23 @@ namespace MediaPlayer
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label hoverPointer;
         private System.Windows.Forms.Label pointer;
+        private System.Windows.Forms.Button bsButton;
+        private System.Windows.Forms.Button shortVideosBtn;
+        private System.Windows.Forms.Button gifsBtn;
+        private System.Windows.Forms.Panel flowLayoutPanel3;
+        private System.Windows.Forms.Button addFile;
+        private System.Windows.Forms.Button refresh;
+        private System.Windows.Forms.Button delete;
+        private System.Windows.Forms.Button multisel;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
+        private System.Windows.Forms.Button theme;
+        private System.Windows.Forms.Button move;
+        private System.Windows.Forms.Button sortSize;
+        private System.Windows.Forms.Button sortDate;
+        private System.Windows.Forms.Button convert;
+        private System.Windows.Forms.Button reset;
+        private System.Windows.Forms.Button load4K;
+        private System.Windows.Forms.Button navController;
+        private System.Windows.Forms.Panel divider;
     }
 }

@@ -125,11 +125,26 @@ namespace MediaPlayer
             videosBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, videosBtn.Width, videosBtn.Height, 25, 25));
             expBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, expBtn.Width, expBtn.Height, 25, 25));
             shortVideosBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, picturesBtn.Width, picturesBtn.Height, 25, 25));
-            fourKBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, videosBtn.Width, videosBtn.Height, 25, 25));
-            gifsBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, videosBtn.Width, videosBtn.Height, 25, 25));
-            button3.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button3.Width, button3.Height, 10, 10));
-            button4.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button4.Width, button4.Height, 10, 10));
-            button5.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button5.Width, button5.Height, 10, 10));
+            fourKBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, fourKBtn.Width, fourKBtn.Height, 25, 25));
+            gifsBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, gifsBtn.Width, gifsBtn.Height, 25, 25));
+            bsButton.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, bsButton.Width, bsButton.Height, 25, 25));
+            button3.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button3.Width, button3.Height, 5, 5));
+            button4.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button4.Width, button4.Height, 5, 5));
+            button5.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button5.Width, button5.Height, 5, 5));
+
+            move.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, move.Width, move.Height, 5, 5));
+            addFile.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, addFile.Width, addFile.Height, 5, 5));
+            theme.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, theme.Width, theme.Height, 5, 5));
+            refresh.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, refresh.Width, refresh.Height, 5, 5));
+            multisel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, multisel.Width, multisel.Height, 5, 5));
+            delete.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, delete.Width, delete.Height, 5, 5));
+            sortDate.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, sortDate.Width, sortDate.Height, 5, 5));
+            sortSize.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, sortSize.Width, sortSize.Height, 5, 5));
+            convert.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, convert.Width, convert.Height, 5, 5));
+            load4K.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, load4K.Width, load4K.Height, 5, 5));
+            reset.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, reset.Width, reset.Height, 5, 5));
+            navController.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, navController.Width, navController.Height, 5, 5));
+
             myPictureBox1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, myPictureBox1.Width, myPictureBox1.Height, 10, 10));
             myPictureBox2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, myPictureBox2.Width, myPictureBox2.Height, 10, 10));
             //this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 10, 10));
@@ -139,7 +154,6 @@ namespace MediaPlayer
             //textBox1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, textBox1.Width, textBox1.Height, 20, 20));
             trackBar1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, trackBar1.Width, trackBar1.Height, 5, 5));
             button1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button1.Width, button1.Height, 5, 5));
-            button2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button2.Width, button2.Height, 5, 5));
             mainDi = new DirectoryInfo(directoryPath);
             button5.Text = mainDi.Name;
             this.folders = folders;
@@ -154,8 +168,12 @@ namespace MediaPlayer
             if (!Directory.Exists(mainDi + "\\Pics\\" + "imgPB")) { Directory.CreateDirectory(mainDi + "\\Pics\\" + "imgPB"); }
             if (!Directory.Exists(mainDi + "\\Pics\\" + "kkkk")) { Directory.CreateDirectory(mainDi + "\\Pics\\" + "kkkk"); }
             if (!Directory.Exists(mainDi + "\\Pics\\" + "kkkk\\imgPB")) { Directory.CreateDirectory(mainDi + "\\Pics\\" + "kkkk\\imgPB"); }
-            if (!Directory.Exists(mainDi + "\\Pics\\" + "Gif Vid")) { Directory.CreateDirectory(mainDi + "\\Pics\\" + "Gif Vid"); }
+            if (!Directory.Exists(mainDi + "\\Pics\\" + "GifVideos")) { Directory.CreateDirectory(mainDi + "\\Pics\\" + "GifVideos"); }
             if (!Directory.Exists(mainDi + "\\Pics\\" + "GifVideos\\imgPB")) { Directory.CreateDirectory(mainDi + "\\Pics\\" + "GifVideos\\imgPB"); }
+
+            if (!Directory.Exists(mainDi + "\\Pics\\Affinity")) { Directory.CreateDirectory(mainDi + "\\Pics\\Affinity"); }
+            if (!Directory.Exists(mainDi + "\\Pics\\Affinity\\imgPB")) { Directory.CreateDirectory(mainDi + "\\Pics\\Affinity\\imgPB"); }
+
             if (!File.Exists(mainDi + "\\links.txt")) {
                 FileStream fi = File.Create(mainDi.FullName + "\\links.txt");
                 fi.Close();
@@ -174,9 +192,11 @@ namespace MediaPlayer
             typeButtons.Add(videosBtn);
             typeButtons.Add(picturesBtn);
             typeButtons.Add(fourKBtn);
+            typeButtons.Add(bsButton);
             typeButtons.Add(shortVideosBtn);
             typeButtons.Add(gifsBtn);
             isEnlarged.Add("Videos", false);
+            isEnlarged.Add("Affinity", false);
             isEnlarged.Add("Pictures", false);
             isEnlarged.Add("Gifs", false);
             isEnlarged.Add("Gif Vid", false);
@@ -184,6 +204,7 @@ namespace MediaPlayer
             isEnlarged.Add("Stack", false);
 
             tipForFirstTime.Add("LargeVideos", true);
+            tipForFirstTime.Add("LargeAffinity", true);
             tipForFirstTime.Add("LargePictures", true);
             tipForFirstTime.Add("LargeGifs", true);
             tipForFirstTime.Add("LargeGif Vid", true);
@@ -578,6 +599,40 @@ namespace MediaPlayer
             }
 
 
+
+            DirectoryInfo affinityVid = new DirectoryInfo(mainDi.FullName + "\\Pics\\Affinity");
+            sfi = affinityVid.GetFiles().SkipWhile(s => s.FullName.EndsWith(".txt")).ToList();
+            fileName = ".txt";
+            pick = 0; i = 0;
+            if (sfi.Count > 0)
+            {
+                while (fileName.EndsWith(".txt"))
+                {
+                    pick = r.Next(0, sfi.Count);
+                    fileName = sfi[pick].Extension;
+                    if (fileName.EndsWith(".txt"))
+                        sfi.RemoveAt(pick);
+                }
+                Image img = setDefaultPic(sfi[pick]);
+                enlargeImage = false;
+                miniImages.Add("Affinity", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
+                bsButton.Image = miniImages["Affinity"];
+                enlargeImage = true;
+                largeImages.Add("Affinity", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
+                try
+                {
+                    setToolTip("LargeAffinity", img, bsButton);
+
+                }
+                catch { }
+                img.Dispose();
+            }
+            else
+            {
+                bsButton.Image = null;
+            }
+
+
             DirectoryInfo gifsDir = new DirectoryInfo(mainDi.FullName + "\\Pics\\Gifs");
             res = new int[] { 1080, 1920 };
             sfi = gifsDir.GetFiles().SkipWhile(s => s.FullName.EndsWith(".txt")).ToList();
@@ -660,23 +715,26 @@ namespace MediaPlayer
             button6.BackColor = lightBackColor;
             button7.BackColor = lightBackColor;
             button8.BackColor = lightBackColor;
-            button2.BackColor = kindaDark;
             trackBar1.BackColor = kindaDark;
-            button10.BackColor = lightBackColor;
+            divider.BackColor = kindaDark;
             flowLayoutPanel3.BackColor = lightBackColor;
             flowLayoutPanel1.BackColor = darkBackColor;
             flowLayoutPanel2.BackColor = lightBackColor;
+            flowLayoutPanel4.BackColor = lightBackColor;
             button1.BackColor = kindaDark;
             button1.ForeColor = Color.White;
-            button2.ForeColor = Color.White;
-            button9.BackColor = lightBackColor;
+            button9.BackColor = darkBackColor;
             button9.ForeColor = Color.White;
-            button10.BackColor = lightBackColor;
+            button10.BackColor = darkBackColor;
             button10.ForeColor = Color.White;
             expBtn.BackColor = lightBackColor;
             expBtn.ForeColor = Color.White;
             expBtn.FlatAppearance.MouseOverBackColor = mouseHoverColor;
             expBtn.FlatAppearance.MouseDownBackColor = mouseClickColor;
+            bsButton.BackColor = lightBackColor;
+            bsButton.ForeColor = Color.White;
+            bsButton.FlatAppearance.MouseOverBackColor = kindaDark;
+            bsButton.FlatAppearance.MouseDownBackColor = kindaDark;
             videosBtn.BackColor = lightBackColor;
             videosBtn.ForeColor = Color.White;
             videosBtn.FlatAppearance.MouseOverBackColor = kindaDark;
@@ -697,23 +755,85 @@ namespace MediaPlayer
             gifsBtn.ForeColor = Color.White;
             gifsBtn.FlatAppearance.MouseOverBackColor = kindaDark;
             gifsBtn.FlatAppearance.MouseDownBackColor = kindaDark;
-            button3.BackColor = kindaDark;
+
+            button3.BackColor = darkBackColor;
             button3.ForeColor = Color.White;
-            button3.FlatAppearance.MouseOverBackColor = mouseHoverColor;
-            button3.FlatAppearance.MouseDownBackColor = mouseClickColor;
-            button4.BackColor = kindaDark;
+            button3.FlatAppearance.MouseOverBackColor = darkBackColor;
+            button3.FlatAppearance.MouseDownBackColor = darkBackColor;
+
+            button4.BackColor = darkBackColor;
             button4.ForeColor = Color.White;
-            button4.FlatAppearance.MouseOverBackColor = mouseHoverColor;
-            button4.FlatAppearance.MouseDownBackColor = mouseClickColor;
-            button5.BackColor = kindaDark;
+            button4.FlatAppearance.MouseOverBackColor = darkBackColor;
+            button4.FlatAppearance.MouseDownBackColor = darkBackColor;
+
+            addFile.BackColor = darkBackColor;
+            addFile.ForeColor = Color.White;
+            addFile.FlatAppearance.MouseOverBackColor = kindaDark;
+            addFile.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            refresh.BackColor = darkBackColor;
+            refresh.ForeColor = Color.White;
+            refresh.FlatAppearance.MouseOverBackColor = kindaDark;
+            refresh.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            multisel.BackColor = darkBackColor;
+            multisel.ForeColor = Color.White;
+            multisel.FlatAppearance.MouseOverBackColor = kindaDark;
+            multisel.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            delete.BackColor = darkBackColor;
+            delete.ForeColor = Color.White;
+            delete.FlatAppearance.MouseOverBackColor = kindaDark;
+            delete.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            theme.BackColor = darkBackColor;
+            theme.ForeColor = Color.White;
+            theme.FlatAppearance.MouseOverBackColor = kindaDark;
+            theme.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            move.BackColor = darkBackColor;
+            move.ForeColor = Color.White;
+            move.FlatAppearance.MouseOverBackColor = kindaDark;
+            move.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            sortSize.BackColor = darkBackColor;
+            sortSize.ForeColor = Color.White;
+            sortSize.FlatAppearance.MouseOverBackColor = kindaDark;
+            sortSize.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            sortDate.BackColor = darkBackColor;
+            sortDate.ForeColor = Color.White;
+            sortDate.FlatAppearance.MouseOverBackColor = kindaDark;
+            sortDate.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            convert.BackColor = darkBackColor;
+            convert.ForeColor = Color.White;
+            convert.FlatAppearance.MouseOverBackColor = kindaDark;
+            convert.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            reset.BackColor = darkBackColor;
+            reset.ForeColor = Color.White;
+            reset.FlatAppearance.MouseOverBackColor = kindaDark;
+            reset.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            load4K.BackColor = darkBackColor;
+            load4K.ForeColor = Color.White;
+            load4K.FlatAppearance.MouseOverBackColor = kindaDark;
+            load4K.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            button5.BackColor = darkBackColor;
             button5.ForeColor = Color.White;
-            button5.FlatAppearance.MouseOverBackColor = mouseHoverColor;
-            button5.FlatAppearance.MouseDownBackColor = mouseClickColor;
+            button5.FlatAppearance.MouseOverBackColor = darkBackColor;
+            button5.FlatAppearance.MouseDownBackColor = darkBackColor;
+
+            navController.BackColor = darkBackColor;
+            navController.ForeColor = Color.White;
+            navController.FlatAppearance.MouseOverBackColor = kindaDark;
+            navController.FlatAppearance.MouseDownBackColor = kindaDark;
+
             //textBox1.BackColor = lightBackColor;
             //textBox1.ForeColor = Color.White;
             trackBar1.BackColor = kindaDark;
-            button2.FlatAppearance.MouseOverBackColor = kindaDark;
-            button2.FlatAppearance.MouseDownBackColor = kindaDark;
             button9.FlatAppearance.MouseOverBackColor = mouseClickColor;
             button9.FlatAppearance.MouseDownBackColor = mouseClickColor;
             button10.FlatAppearance.MouseOverBackColor = mouseClickColor;
@@ -726,8 +846,8 @@ namespace MediaPlayer
             button8.FlatAppearance.MouseOverBackColor = mouseClickColor;
             button8.FlatAppearance.MouseDownBackColor = mouseClickColor;
 
-            newProgressBar.ForeColor = mouseClickColor;
-            newProgressBar.BackColor = mouseClickColor;
+            newProgressBar.ForeColor = darkBackColor;
+            newProgressBar.BackColor = darkBackColor;
 
 
             if (globalBtn != null)
@@ -770,10 +890,29 @@ namespace MediaPlayer
 
         public void controlDisposer()
         {
+            if (type == "Videos" || type == "Gif Vid" || type == "Affinity")
+                convert.Enabled = true;
+            else
+                convert.Enabled = false;
+
+            if (type == "4K")
+                load4K.Enabled = true;
+            else
+                load4K.Enabled = false;
+
+
+            if (type == "Videos")
+                reset.Enabled = true;
+            else
+                reset.Enabled = false;
+
+            sortDate.Enabled = true;
+            sortSize.Enabled = true;
             newProgressBar.Value = 0;
             newProgressBar.Step = 1;
             flowLayoutPanel1.Controls.Clear();
             mutltiSelect = false;
+            multisel.ForeColor = Color.White;
             noOfTimerRuns = 0;
             allVidDet.Clear();
             prevPB = null;
@@ -1120,7 +1259,7 @@ namespace MediaPlayer
                 Calculator.disCef = true;
                 disCef = true;
             }*/
-            else if (type == "Gif Vid")
+            else if (type == "Gif Vid" || type == "Affinity")
             {
                 /*Application.RemoveMessageFilter(this);
                 WMP wmp = null;
@@ -1456,6 +1595,8 @@ namespace MediaPlayer
 
         private void VideoPlayer_Load()
         {
+            sortDate.Enabled = false;
+            sortSize.Enabled = false;
             allVidDet.Clear();
             Boolean mouseEnter = false;
             List<String> priorityList = new List<String>();
@@ -1570,13 +1711,13 @@ namespace MediaPlayer
 
                 Label vidDetails = new Label();
                 vidDetails.Text = vidDetText;
-                vidDetails.Font = new Font("Consolas", 10, FontStyle.Bold);
+                vidDetails.Font = new Font("Segoe UI", 9, FontStyle.Bold);
                 vidDetails.BackColor = darkBackColor;
                 vidDetails.Size = new Size(515, 24);
                 vidDetails.ForeColor = Color.White;
                 vidDetails.TextAlign = ContentAlignment.TopCenter;
                 vidDetails.Padding = new Padding(0);
-                vidDetails.Margin = new Padding(5, 0, 17, 0);
+                vidDetails.Margin = new Padding(5, 2, 17, 0);
                 allVidDet.Add(vidDetails); 
                 vidDetails.MouseEnter += (s1, q1) =>
                 {
@@ -1600,7 +1741,7 @@ namespace MediaPlayer
                         label.Text = metaData[1];
                         Label dupeLabel = new Label();
                         dupeLabel.Text = metaData[0];
-                        dupeLabel.Font = new Font("Consolas", 9, FontStyle.Regular);
+                        dupeLabel.Font = new Font("Segoe UI", 9, FontStyle.Regular);
                         dupeLabel.BackColor = darkBackColor;
                         dupeLabel.Size = new Size(515, 24);
                         dupeLabel.ForeColor = Color.White;
@@ -1630,7 +1771,7 @@ namespace MediaPlayer
                     if (prevPB != null)
                     {
                         prevPB.BackColor = darkBackColor;
-                        Font myfont1 = new Font("Consolas", 9, FontStyle.Regular);
+                        Font myfont1 = new Font("Segoe UI", 9, FontStyle.Regular);
                         globalDetails.Font = myfont1;
                         globalDetails.ForeColor = Color.White;
                     }
@@ -1654,7 +1795,7 @@ namespace MediaPlayer
                     if (prevPB != null)
                     {
                         prevPB.BackColor = darkBackColor;
-                        Font myfont1 = new Font("Consolas", 9, FontStyle.Regular);
+                        Font myfont1 = new Font("Segoe UI", 9, FontStyle.Regular);
                         globalDetails.Font = myfont1;
                         globalDetails.BackColor = darkBackColor;
                     }
@@ -1692,7 +1833,7 @@ namespace MediaPlayer
                 label.Text = metaData[1];
                 Label dupeLabel = new Label();
                 dupeLabel.Text = metaData[0];
-                dupeLabel.Font = new Font("Consolas", 9, FontStyle.Regular);
+                dupeLabel.Font = new Font("Segoe UI", 9, FontStyle.Regular);
                 dupeLabel.BackColor = darkBackColor;
                 dupeLabel.Size = new Size(515, 24);
                 dupeLabel.ForeColor = Color.White;
@@ -1704,7 +1845,7 @@ namespace MediaPlayer
             meta.Clear();
             /*Button dummy = new Button();
             dummy.Text = "";
-            dummy.Font = new Font("Consolas", 13, FontStyle.Bold);
+            dummy.Font = new Font("Segoe UI", 13, FontStyle.Bold);
             dummy.BackColor = lightBackColor;
             dummy.Size = new Size(515 * (3-meta.Count), 1);
             dummy.Margin = new Padding(0, 3, 3, 3);
@@ -2233,7 +2374,7 @@ namespace MediaPlayer
                         if (pb.BackColor == mouseClickColor)
                         {
                             deletePb.Remove(pb);
-                            pb.BackColor = lightBackColor;
+                            pb.BackColor = darkBackColor;
                         }
                         else
                         {
@@ -2252,7 +2393,7 @@ namespace MediaPlayer
                         return;
                     }
 
-                    prevPB.BackColor = lightBackColor;
+                    prevPB.BackColor = darkBackColor;
 
                     prevPB = pb;
                     prevPB.BackColor = selectedPbColor;
@@ -2296,7 +2437,7 @@ namespace MediaPlayer
 
                 pb.Paint += (s, args) =>
                 {
-                    using (Font myFont = new Font("Microsoft Sans Serif", 8, FontStyle.Regular))
+                    using (Font myFont = new Font("Segoe UI", 8, FontStyle.Regular))
                     {
                         FileInfo fi = new FileInfo(pb.Name);
                         args.Graphics.DrawString("Size:" + fi.Name.Substring(0, fi.Name.IndexOf("placeholdderr")).Replace("^^", "\tReso:").Replace("x", "*").Replace("_", "").Replace("resized", "").Replace("cropped", ""), myFont, Brushes.White, new Point(8, pb.Height - 18));
@@ -2304,7 +2445,7 @@ namespace MediaPlayer
                 };
                 /*Label vidDetails = new Label();
                 vidDetails.Text = vidDetText;
-                vidDetails.Font = new Font("Consolas", 9, FontStyle.Regular);
+                vidDetails.Font = new Font("Segoe UI", 9, FontStyle.Regular);
                 vidDetails.BackColor = lightBackColor;
                 vidDetails.Size = new Size(264, 40);
                 vidDetails.ForeColor = Color.DarkGray;
@@ -2329,7 +2470,7 @@ namespace MediaPlayer
             flowLayoutPanel1.Controls.Add(dumPb);
             /*Button dummy = new Button();
             dummy.Text = "";
-            dummy.Font = new Font("Consolas", 13, FontStyle.Bold);
+            dummy.Font = new Font("Segoe UI", 13, FontStyle.Bold);
             dummy.BackColor = lightBackColor;
             dummy.Size = new Size(264 * (6 - meta.Count), 1);
             dummy.Margin = new Padding(3);
@@ -2344,7 +2485,7 @@ namespace MediaPlayer
 
             Button dummy1 = new Button();
             dummy1.Text = "";
-            dummy1.Font = new Font("Consolas", 13, FontStyle.Bold);
+            dummy1.Font = new Font("Segoe UI", 13, FontStyle.Bold);
             dummy1.BackColor = lightBackColor;
             dummy1.Size = new Size(264 * (6 - meta.Count), 1);
             dummy1.Margin = new Padding(3);
@@ -2370,7 +2511,7 @@ namespace MediaPlayer
                 };
                 /*Label vidDetails = new Label();
                 vidDetails.Text = vidDetText;
-                vidDetails.Font = new Font("Consolas", 9, FontStyle.Regular);
+                vidDetails.Font = new Font("Segoe UI", 9, FontStyle.Regular);
                 vidDetails.BackColor = lightBackColor;
                 vidDetails.Size = new Size(399, 40);
                 vidDetails.ForeColor = Color.DarkGray;
@@ -2405,7 +2546,7 @@ namespace MediaPlayer
             button5.Text = button5.Text.Substring(0, button5.Text.Contains("(") ? button5.Text.IndexOf("(") : button5.Text.Length) + "(" + gpb.Count + ")";
             /*Button dummy2 = new Button();
             dummy2.Text = "";
-            dummy2.Font = new Font("Consolas", 13, FontStyle.Bold);
+            dummy2.Font = new Font("Segoe UI", 13, FontStyle.Bold);
             dummy2.BackColor = lightBackColor;
             dummy2.Size = new Size(399 * (4 - meta.Count), 1);
             dummy2.Margin = new Padding(3);
@@ -2590,7 +2731,7 @@ namespace MediaPlayer
                         if (pb.BackColor == mouseClickColor)
                         {
                             deletePb.Remove(pb);
-                            pb.BackColor = lightBackColor;
+                            pb.BackColor = darkBackColor;
                         }
                         else
                         {
@@ -2609,7 +2750,7 @@ namespace MediaPlayer
                         return;
                     }
 
-                    prevPB.BackColor = lightBackColor;
+                    prevPB.BackColor = darkBackColor;
 
                     prevPB = pb;
                     prevPB.BackColor = selectedPbColor;
@@ -2650,7 +2791,7 @@ namespace MediaPlayer
                 flowLayoutPanel1.Controls.Add(pb);
                 pb.Paint += (s, args) =>
                 {
-                    using (Font myFont = new Font("Microsoft Sans Serif", 8, FontStyle.Regular))
+                    using (Font myFont = new Font("Segoe UI", 8, FontStyle.Regular))
                     {
                         FileInfo fi = new FileInfo(pb.Name);
                         args.Graphics.DrawString("Size:" + fi.Name.Substring(0, fi.Name.IndexOf("placeholdderr")).Replace("^^", "\tReso:").Replace("x", "*").Replace("_", "").Replace("resized", "").Replace("cropped", ""), myFont, Brushes.White, new Point(8, pb.Height - 18));
@@ -2658,7 +2799,7 @@ namespace MediaPlayer
                 };/*
                 Label vidDetails = new Label();
                 vidDetails.Text = vidDetText;
-                vidDetails.Font = new Font("Consolas", 9, FontStyle.Regular);
+                vidDetails.Font = new Font("Segoe UI", 9, FontStyle.Regular);
                 vidDetails.BackColor = lightBackColor;
                 vidDetails.Size = new Size(264, 50);
                 vidDetails.ForeColor = Color.DarkGray;
@@ -2683,7 +2824,7 @@ namespace MediaPlayer
             flowLayoutPanel1.Controls.Add(dumPb);
             /*Button dummy = new Button();
             dummy.Text = "";
-            dummy.Font = new Font("Consolas", 13, FontStyle.Bold);
+            dummy.Font = new Font("Segoe UI", 13, FontStyle.Bold);
             dummy.BackColor = lightBackColor;
             dummy.Size = new Size(264 * (6 - meta.Count), 1);
             dummy.Margin = new Padding(3);
@@ -2698,7 +2839,7 @@ namespace MediaPlayer
 
             Button dummy1 = new Button();
             dummy1.Text = "";
-            dummy1.Font = new Font("Consolas", 13, FontStyle.Bold);
+            dummy1.Font = new Font("Segoe UI", 13, FontStyle.Bold);
             dummy1.BackColor = lightBackColor;
             dummy1.Size = new Size(264 * (6 - meta.Count), 1);
             dummy1.Margin = new Padding(3);
@@ -2727,7 +2868,7 @@ namespace MediaPlayer
                 };
                 /*Label vidDetails = new Label();
                 vidDetails.Text = vidDetText;
-                vidDetails.Font = new Font("Consolas", 9, FontStyle.Regular);
+                vidDetails.Font = new Font("Segoe UI", 9, FontStyle.Regular);
                 vidDetails.BackColor = lightBackColor;
                 vidDetails.Size = new Size(399, 50);
                 vidDetails.ForeColor = Color.DarkGray;
@@ -2753,7 +2894,7 @@ namespace MediaPlayer
             button5.Text = button5.Text.Substring(0, button5.Text.Contains("(") ? button5.Text.IndexOf("(") : button5.Text.Length) + "(" + gpb.Count + ")";
             /*Button dummy2 = new Button();
             dummy2.Text = "";
-            dummy2.Font = new Font("Consolas", 13, FontStyle.Bold);
+            dummy2.Font = new Font("Segoe UI", 13, FontStyle.Bold);
             dummy2.BackColor = lightBackColor;
             dummy2.Size = new Size(399 * (4 - meta.Count), 1);
             dummy2.Margin = new Padding(3);
@@ -2769,7 +2910,7 @@ namespace MediaPlayer
 
             Button dummy3 = new Button();
             dummy3.Text = "";
-            dummy3.Font = new Font("Consolas", 13, FontStyle.Bold);
+            dummy3.Font = new Font("Segoe UI", 13, FontStyle.Bold);
             dummy3.BackColor = lightBackColor;
             dummy3.Size = new Size(399 * (4 - meta.Count), 1);
             dummy3.Margin = new Padding(3);
@@ -2911,6 +3052,10 @@ namespace MediaPlayer
             {
                 gifsBtn_Click(null, null);
             }
+            else if (globalBtn.Text.Equals("Affinity"))
+            {
+                bsButton_Click(null, null);
+            }
             isRefresh = true;
         }
 
@@ -3033,9 +3178,9 @@ namespace MediaPlayer
 
         private void loadShortVideos()
         {
-            DirectoryInfo shortVideoDi = new DirectoryInfo(mainDi.FullName + "\\Pics\\GifVideos");
+            DirectoryInfo shortVideoDi = new DirectoryInfo(mainDi.FullName + "\\Pics\\" + (type.Contains("Affinity")?"Affinity" : "GifVideos"));
             int noOfFile = shortVideoDi.GetFiles().Length;
-            renameVideoFiles(mainDi.FullName + "\\Pics\\GifVideos");
+            renameVideoFiles(mainDi.FullName + "\\Pics\\" + (type.Contains("Affinity") ? "Affinity" : "GifVideos"));
 
             List<FileInfo> filesFi = shortVideoDi.GetFiles().OrderByDescending(f => f.LastWriteTime)
                                                   .ToList();
@@ -3094,14 +3239,13 @@ namespace MediaPlayer
 
                 pb.MouseEnter += (s1, q1) =>
                 {
-
                     if (miniVideoPlayer != null)
                         miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
                 };
 
                 pb.MouseClick += (s, args) =>
                 {
-                    if (mutltiSelect == true)
+                    /*if (mutltiSelect == true)
                     {
                         if (pb.BackColor == mouseClickColor)
                         {
@@ -3114,7 +3258,7 @@ namespace MediaPlayer
                             pb.BackColor = mouseClickColor;
                         }
                         return;
-                    }
+                    }*/
                     pbClick(pb);
                 };
 
@@ -3125,7 +3269,7 @@ namespace MediaPlayer
 
                 Label vidDetails = new Label();
                 vidDetails.Text = fileInfo.Name.Replace("placeholdeerr00", "\n\n").Replace("placeholdeerr0", "\n\n").Replace("placeholdeerr", "\n\n").Replace("Reso^ ", "\nReso:").Replace("Dura^ ", "\nDura:").Replace("Size^ ", "\nSize:").Substring(fileInfo.Name.IndexOf("Reso"));
-                vidDetails.Font = new Font("Consolas", 9, FontStyle.Regular);
+                vidDetails.Font = new Font("Segoe UI", 9, FontStyle.Regular);
                 vidDetails.BackColor = lightBackColor;
                 vidDetails.Size = new Size(123, 200);
                 vidDetails.ForeColor = Color.White;
@@ -3143,7 +3287,7 @@ namespace MediaPlayer
 
                 pb.MouseHover += (s, args) =>
                 {
-                    Font myfont = new Font("Consolas", 9, FontStyle.Regular);
+                    Font myfont = new Font("Segoe UI", 9, FontStyle.Regular);
                     if (prevPB != null)
                     {
                         prevPB.BackColor = lightBackColor;
@@ -3167,6 +3311,15 @@ namespace MediaPlayer
 
                 flowLayoutPanel1.Controls.Add(vidDetails);
             }
+
+            Button dummy = new Button();
+            dummy.Text = "";
+            dummy.BackColor = darkBackColor;
+            dummy.FlatStyle = FlatStyle.Flat;
+            dummy.FlatAppearance.BorderSize = 0;
+            dummy.Size = new Size(1920, 1);
+            flowLayoutPanel1.Controls.Add(dummy);
+
             newProgressBar.Value = filesFi.Count;
             if (filesFi.Count == 0)
             {
@@ -3232,7 +3385,12 @@ namespace MediaPlayer
                 gifsBtn.ForeColor = mouseClickColor;
                 gifsBtn_Click(null, null);
             }
-            if(isFirst)
+            else if (type.Equals("Affinity"))
+            {
+                bsButton.ForeColor = mouseClickColor;
+                bsButton_Click(null, null);
+            }
+            if (isFirst)
             {
                 isEnlarged[globalBtn.Text] = false;
                 enlargeEnter(globalBtn);
@@ -3263,6 +3421,10 @@ namespace MediaPlayer
             else if (globalBtn.Text.Equals("Gifs"))
             {
                 gifsBtn_Click(null, null);
+            }
+            else if (globalBtn.Text.Equals("Affinity"))
+            {
+                bsButton_Click(null, null);
             }
             isRefresh = false;
         }
@@ -3337,7 +3499,7 @@ namespace MediaPlayer
                         if (pb.BackColor == mouseClickColor)
                         {
                             deletePb.Remove(pb);
-                            pb.BackColor = lightBackColor;
+                            pb.BackColor = darkBackColor;
                         }
                         else
                         {
@@ -3539,6 +3701,12 @@ namespace MediaPlayer
                 globalBtn = gifsBtn;
                 gifsBtn_Click(null, null);
             }
+            else if (globalBtn.Text.Equals("Affinity"))
+            {
+                bsButton.ForeColor = mouseClickColor;
+                globalBtn = bsButton;
+                bsButton_Click(null, null);
+            }
         }
 
         private void toolStripMenuItem22_Click(object sender, EventArgs e)
@@ -3551,11 +3719,12 @@ namespace MediaPlayer
         private void flowLayoutPanel1_MouseClick(object sender, MouseEventArgs e)
         {
             mutltiSelect = false;
+            multisel.ForeColor = Color.White;
             if (deletePb.Count > 0)
             {
                 foreach (PictureBox delPb in deletePb)
                 {
-                    delPb.BackColor = lightBackColor;
+                    delPb.BackColor = darkBackColor;
                 }
             }
 
@@ -3596,6 +3765,12 @@ namespace MediaPlayer
                 loadFiles(filePath);
                 gifsBtn_Click(null, null);
             }
+            else if (globalBtn.Text.Equals("Affinity"))
+            {
+                filePath = mainDi.FullName + "\\Pics\\Affinity";
+                loadFiles(filePath);
+                bsButton_Click(null, null);
+            }
             isRefresh = false;
         }
 
@@ -3614,13 +3789,6 @@ namespace MediaPlayer
                 scrollZero = false;
                 noOfTimerRuns++;
             }
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            ctrl = !ctrl;
-            button2.Text = "Taskbar Control " + (ctrl == true ? "On" : "Off");
-            button2.ForeColor = (ctrl == true ? mouseClickColor : Color.White);
         }
 
         private void button8_Click(object sender, EventArgs e)
@@ -3728,7 +3896,17 @@ namespace MediaPlayer
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+            PictureBox pb = null;
+            try
+            {
+                pb = (PictureBox)(contextMenuStrip1.SourceControl);
+            }
+            catch
+            {
+                
+            }
+            if(pb==null)
+                pb = prevPB;
             DialogResult result = MessageBox.Show("Are you sure?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
@@ -3769,6 +3947,8 @@ namespace MediaPlayer
                 fourKBtn_Click(null, null);
             else if (type == "Gif Vid")
                 shortVideosBtn_Click(null, null);
+            else if (type == "Affinity")
+                bsButton_Click(null, null);
             else if (type == "Gifs")
                 gifsBtn_Click(null, null);
             isRefresh = false;
@@ -3892,15 +4072,297 @@ namespace MediaPlayer
                 miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
         }
 
-        private void button2_MouseEnter(object sender, EventArgs e)
+
+        private void bsButton_Click(object sender, EventArgs e)
         {
-            button2.ForeColor = mouseClickColor;
+            if (!isRefresh && globalBtn != null && globalBtn.Text != "Affinity")
+            {
+                globalBtn.ForeColor = Color.White;
+                isEnlarged[type] = false;
+                enlargeLeave(globalBtn, type);
+            }
+            scrollZero = true;
+            globalBtn = bsButton;
+            bsButton.ForeColor = mouseClickColor;
+
+            type = "Affinity";
+            isEnlarged[type] = true;
+            controlDisposer();
+            deletePb.Clear();
+            GC.Collect();
+            flowLayoutPanel1.Padding = new Padding(9, 0, 0, 0);
+            this.Controls.Add(newProgressBar);
+            loadShortVideos();
+            hoverPointer.Visible = false;
+            pointer.Location = new Point(0, bsButton.Location.Y + ((bsButton.Size.Height - pointer.Size.Height) / 2) - 3);
         }
 
-        private void button2_MouseLeave(object sender, EventArgs e)
+        private void bsButton_MouseEnter(object sender, EventArgs e)
         {
-            if (!button2.Text.Contains("On"))
-                button2.ForeColor = Color.White;
+
+            enlargeEnter((Button)sender);
+            hoverPointer.Location = new Point(0, bsButton.Location.Y + ((bsButton.Size.Height - hoverPointer.Size.Height) / 2) - 3);
+            hoverPointer.Visible = true;
+        }
+
+        private void bsButton_MouseLeave(object sender, EventArgs e)
+        {
+
+            if (globalBtn != null && !globalBtn.Text.Equals("Affinity"))
+                bsButton.ForeColor = Color.White;
+            enlargeLeave((Button)sender, "Affinity");
+        }
+
+        private void refresh_Click(object sender, EventArgs e)
+        {
+            refreshToolStripMenuItem_Click(null, null);
+        }
+
+        private void addFile_Click(object sender, EventArgs e)
+        {
+            toolStripMenuItem10_Click(null, null);
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            if (type == "Videos" || type == "Gif Vid" || type == "Affinity")
+                toolStripMenuItem1_Click(null, null);
+            else
+                deleteToolStripMenuItem1_Click_1(null, null);
+        }
+
+        private void multisel_Click(object sender, EventArgs e)
+        {
+            if (mutltiSelect)
+            {
+                foreach (PictureBox pb in deletePb)
+                {
+                    pb.BackColor = darkBackColor;
+                }
+                if (prevPB != null)
+                {
+                    prevPB.BackColor = selectedPbColor;
+                    deletePb.Add(prevPB);
+                }
+            }
+
+            if (mutltiSelect)
+                multisel.ForeColor = Color.White;
+            else
+                multisel.ForeColor = mouseClickColor;
+            mutltiSelect = !mutltiSelect;
+            button1.Text = trackBar1.Value.ToString();
+        }
+
+        private void button11_Click_1(object sender, EventArgs e)
+        {
+            colorDialog1.ShowDialog();
+
+            mouseHoverColor = colorDialog1.Color;
+            mouseClickColor = colorDialog1.Color;
+            selectedPbColor = colorDialog1.Color;
+
+            Explorer.globColor = colorDialog1.Color;
+
+            File.WriteAllText(Explorer.pardirectory[1].FullName + "\\ThemeColor.txt",
+                                colorDialog1.Color.R + "," + colorDialog1.Color.G + "," + colorDialog1.Color.B);
+            toChangeTheme = true;
+            setTheme();
+        }
+
+        private void move_Click(object sender, EventArgs e)
+        {
+            PictureBox pb = null;
+            try
+            {
+                pb = (PictureBox)(contextMenuStrip1.SourceControl);
+            }
+            catch
+            {
+
+            }
+            if (pb == null)
+                pb = prevPB;
+            FileInfo fi = null;
+            if (pb!=null)
+            {
+                fi = new FileInfo(pb.Name);
+            }
+            else if(deletePb.Count > 0)
+                fi = new FileInfo(deletePb[0].Name);
+            if (fi == null)
+                return;
+            var fbd = new FolderBrowserDialog();
+            fbd.SelectedPath = fi.DirectoryName;
+            DialogResult result = fbd.ShowDialog();
+
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+            {
+                try
+                {
+
+                    if (deletePb.Count > 0)
+                    {
+                        foreach (PictureBox delPb in deletePb)
+                        {
+
+                            FileInfo fi1 = new FileInfo(delPb.Name);
+                            File.Move(fi1.FullName, fbd.SelectedPath + "\\" + fi1.Name);
+                        }
+                        refreshFolder();
+                    }
+                    else
+                    {
+
+                        File.Move(fi.FullName, fbd.SelectedPath + "\\" + fi.Name);
+                        refreshFolder();
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Unable to do the move action!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
+        }
+
+        private void sortSize_Click(object sender, EventArgs e)
+        {
+            sortBySize = true;
+            sortByDate = false;
+            bySort = true;
+            isRefresh = true;
+            if (type == "Pictures")
+                picturesBtn_Click(null, null);
+            else if (type == "4K")
+                fourKBtn_Click(null, null);
+            else if (type == "Gif Vid")
+                shortVideosBtn_Click(null, null);
+            else if (type == "Affinity")
+                bsButton_Click(null, null);
+            else if (type == "Gifs")
+                gifsBtn_Click(null, null);
+            isRefresh = false;
+        }
+
+        private void sortDate_Click(object sender, EventArgs e)
+        {
+
+            sortBySize = false;
+            sortByDate = true;
+            bySort = true;
+            isRefresh = true;
+            if (type == "Pictures")
+                picturesBtn_Click(null, null);
+            else if (type == "4K")
+                fourKBtn_Click(null, null);
+            else if (type == "Gif Vid")
+                shortVideosBtn_Click(null, null);
+            else if (type == "Affinity")
+                bsButton_Click(null, null);
+            else if (type == "Gifs")
+                gifsBtn_Click(null, null);
+            isRefresh = false;
+        }
+
+        private void convert_Click(object sender, EventArgs e)
+        {
+
+            if (prevPB == null)
+                return;
+            PictureBox pb = prevPB;
+
+            FileInfo fi = new FileInfo(pb.Name);
+
+            DialogResult result = MessageBox.Show("Are you sure?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                Thread convert = new Thread(() =>
+                {
+                    try
+                    {
+                        var inputFile = new MediaFile { Filename = fi.FullName };
+                        var outputFile = new MediaFile { Filename = fi.DirectoryName + "\\1" + fi.Name.Substring(0, fi.Name.LastIndexOf('.')) + ".mp4" };
+
+                        using (var eng = new Engine())
+                        {
+                            eng.Convert(inputFile, outputFile);
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Unable to convert!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                });
+                convert.Start();
+            }
+        }
+
+        private void reset_Click(object sender, EventArgs e)
+        {
+
+            FileInfo fi = null;
+            if (globalBtn.Text.Equals("Videos"))
+            {
+                fi = new FileInfo(mainDi.FullName);
+            }
+
+            try { if (fi != null) { File.Delete(fi.FullName + "\\priority.txt"); isRefresh = true; videosBtn_Click(null, null); isRefresh = false; } } catch { }
+        }
+
+        private void load4K_Click(object sender, EventArgs e)
+        {
+            if (globalBtn.Text.Equals("4K"))
+            {
+                loadAll = !loadAll;
+            }
+            else
+                return;
+            isRefresh = true;
+            fourKBtn_Click(null, null);
+            isRefresh = false;
+        }
+
+
+        private void button3_MouseLeave(object sender, EventArgs e)
+        {
+            button3.ForeColor = Color.White;
+        }
+
+        private void button3_MouseMove(object sender, EventArgs e)
+        {
+
+            button3.ForeColor = mouseClickColor;
+        }
+
+        private void button5_MouseEnter(object sender, EventArgs e)
+        {
+
+            button5.ForeColor = mouseClickColor;
+        }
+
+        private void button5_MouseLeave(object sender, EventArgs e)
+        {
+
+            button5.ForeColor = Color.White;
+        }
+
+        private void button4_MouseEnter(object sender, EventArgs e)
+        {
+
+            button4.ForeColor = mouseClickColor;
+        }
+
+        private void button4_MouseLeave(object sender, EventArgs e)
+        {
+
+            button4.ForeColor = Color.White;
+        }
+
+        private void navController_Click(object sender, EventArgs e)
+        {
+            ctrl = !ctrl;
+            divider.BackColor = ctrl == true ? mouseClickColor : kindaDark;
         }
 
         private void toolStripMenuItem47_Click(object sender, EventArgs e)
@@ -4225,6 +4687,8 @@ namespace MediaPlayer
                 fourKBtn_Click(null, null);
             else if (type == "Gif Vid")
                 shortVideosBtn_Click(null, null);
+            else if (type == "Affinity")
+                bsButton_Click(null, null);
             else if (type == "Gifs")
                 gifsBtn_Click(null, null);
             isRefresh = false;
@@ -4290,6 +4754,7 @@ namespace MediaPlayer
         private void convertToolStripMenuItem_Click(object sender, EventArgs e)
         {
             PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+
             FileInfo fi = new FileInfo(pb.Name);
 
             DialogResult result = MessageBox.Show("Are you sure?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -4510,7 +4975,8 @@ namespace MediaPlayer
                 checkBox.Hide();
                 if (Control.ModifierKeys == Keys.Shift)
                 {
-                    button2_Click(null, null);
+                    ctrl = !ctrl;
+                    divider.BackColor = ctrl == true ? mouseClickColor : kindaDark;
                 }
                 else if (Control.ModifierKeys == Keys.Control)
                 {
@@ -4518,7 +4984,7 @@ namespace MediaPlayer
                     {
                         foreach (PictureBox pb in deletePb)
                         {
-                            pb.BackColor = lightBackColor;
+                            pb.BackColor = darkBackColor;
                         }
                         if (prevPB != null)
                         {
@@ -4623,7 +5089,12 @@ namespace MediaPlayer
                     Explorer.globalVol = trackBar1.Value;
                     button1.Text = 0 + "";
                 }
-                else if (keyCode == Keys.NumPad1 || keyCode == Keys.NumPad2 || keyCode == Keys.NumPad3 || keyCode == Keys.NumPad4 || keyCode == Keys.NumPad5)
+                else if (keyCode == Keys.Delete)
+                {
+                    File.Delete(prevPB.Name);
+                    refreshToolStripMenuItem_Click(null, null);
+                }
+                else if (keyCode == Keys.NumPad1 || keyCode == Keys.NumPad6 || keyCode == Keys.NumPad2 || keyCode == Keys.NumPad3 || keyCode == Keys.NumPad4 || keyCode == Keys.NumPad5)
                 {
                     isEnlarged[globalBtn.Text] = false;
                     enlargeLeave(globalBtn, type);
@@ -4662,6 +5133,14 @@ namespace MediaPlayer
                     else if (keyCode == Keys.NumPad5)
                     {
                         int idx = 4;
+                        globalBtn.ForeColor = Color.White;
+                        globalBtn = null;
+                        type = typeButtons.ElementAt(idx).Text;
+                        VideoPlayer_Load(null, null);
+                    }
+                    else if (keyCode == Keys.NumPad6)
+                    {
+                        int idx = 5;
                         globalBtn.ForeColor = Color.White;
                         globalBtn = null;
                         type = typeButtons.ElementAt(idx).Text;
@@ -4855,7 +5334,7 @@ namespace MediaPlayer
                 {
                     globalDetails.ForeColor = Color.White;
                     globalDetails.BackColor = darkBackColor;
-                    Font myfont = new Font("Consolas", 10, FontStyle.Bold);
+                    Font myfont = new Font("Segoe UI", 10, FontStyle.Bold);
                     globalDetails.Font = myfont;
                     globalDetails = allVidDet.ElementAt(videosPb.Count - 1);
                     prevPB = videosPb.ElementAt(videosPb.Count - 1);
@@ -4869,7 +5348,7 @@ namespace MediaPlayer
                 {
                     globalDetails.ForeColor = Color.White;
                     globalDetails.BackColor = darkBackColor;
-                    Font myfont = new Font("Consolas", 10, FontStyle.Bold);
+                    Font myfont = new Font("Segoe UI", 10, FontStyle.Bold);
                     globalDetails.Font = myfont;
                     globalDetails = allVidDet.ElementAt(0);
                     myfont = new Font("Comic Sans MS", 10, FontStyle.Bold);
@@ -4883,7 +5362,7 @@ namespace MediaPlayer
                 {
                     globalDetails.ForeColor = Color.White;
                     globalDetails.BackColor = darkBackColor;
-                    Font myfont = new Font("Consolas", 10, FontStyle.Bold);
+                    Font myfont = new Font("Segoe UI", 10, FontStyle.Bold);
                     globalDetails.Font = myfont;
                     globalDetails = allVidDet.ElementAt(index);
                     myfont = new Font("Comic Sans MS", 10, FontStyle.Bold);
@@ -4919,7 +5398,7 @@ namespace MediaPlayer
                     prevPB.BackColor = mouseClickColor;
                     return;
                 }
-                prevPB.BackColor = lightBackColor;
+                prevPB.BackColor = darkBackColor;
                 int index = gpb.IndexOf(prevPB);
                 if (!(type == "4K"))
                     index = index + (idx > 1 ? (lpb.Contains(prevPB) ? 7 : (wpb.Contains(prevPB) ? 5 : idx)) : (idx < -1 ? (lpb.Contains(prevPB) ? -7 : (wpb.Contains(prevPB) ? -5 : idx)) : idx));
@@ -4975,7 +5454,7 @@ namespace MediaPlayer
                 {
                     globalDetails.BackColor = lightBackColor;
 
-                    Font myfont = new Font("Consolas", 9, FontStyle.Regular);
+                    Font myfont = new Font("Segoe UI", 9, FontStyle.Regular);
                     globalDetails.Font = myfont;
                     index = shortVideosPb.Count - 1;
                     prevPB = shortVideosPb.ElementAt(shortVideosPb.Count - 1);
@@ -4989,7 +5468,7 @@ namespace MediaPlayer
                     index = 0;
                     prevPB = shortVideosPb.ElementAt(0);
                     globalDetails.BackColor = lightBackColor;
-                    Font myfont = new Font("Consolas", 9, FontStyle.Regular);
+                    Font myfont = new Font("Segoe UI", 9, FontStyle.Regular);
                     globalDetails.Font = myfont;
                     globalDetails = allVidDet.ElementAt(index);
                     myfont = new Font("Comic Sans MS", 8, FontStyle.Bold);
@@ -5000,7 +5479,7 @@ namespace MediaPlayer
                 {
                     prevPB = shortVideosPb.ElementAt(index);
                     globalDetails.BackColor = lightBackColor;
-                    Font myfont = new Font("Consolas", 9, FontStyle.Regular);
+                    Font myfont = new Font("Segoe UI", 9, FontStyle.Regular);
                     globalDetails.Font = myfont;
                     globalDetails = allVidDet.ElementAt(index);
                     myfont = new Font("Comic Sans MS", 8, FontStyle.Bold);
@@ -5033,7 +5512,7 @@ namespace MediaPlayer
                     prevPB.BackColor = mouseClickColor;
                     return;
                 }
-                prevPB.BackColor = lightBackColor;
+                prevPB.BackColor = darkBackColor;
                 int index = gifsPb.IndexOf(prevPB) + idx;
                 if (index < 0)
                 {

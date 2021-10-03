@@ -133,9 +133,24 @@ namespace MediaPlayer
             calcButton.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, calcButton.Width, calcButton.Height, 20, 20));
             //flowLayoutPanel3.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel3.Width, flowLayoutPanel3.Height, 20, 20));
             resources = new System.ComponentModel.ComponentResourceManager(typeof(VideoPlayer));
-            button11.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button11.Width, button11.Height, 15,15));
-            button5.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button5.Width, button5.Height, 5, 5));
-            textBox3.Font = new Font("Arial", 13, FontStyle.Regular);
+
+            videos.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, videos.Width, videos.Height, 5, 5));
+            pictures.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, pictures.Width, pictures.Height, 5, 5));
+            fourK.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, fourK.Width, fourK.Height, 5, 5));
+            shortVideos.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, shortVideos.Width, shortVideos.Height, 5, 5));
+            gifs.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, gifs.Width, gifs.Height, 5, 5));
+            affinity.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, affinity.Width, affinity.Height, 5, 5));
+
+            newFolder.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, newFolder.Width, newFolder.Height, 5, 5));
+            move.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, move.Width, move.Height, 5, 5));
+            reset.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, reset.Width, reset.Height, 5, 5));
+            refresh.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, refresh.Width, refresh.Height, 5, 5));
+            navController.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, navController.Width, navController.Height, 5, 5));
+            stack.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, stack.Width, stack.Height, 5, 5));
+            delete.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, delete.Width, delete.Height, 5, 5));
+            theme.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, theme.Width, theme.Height, 5, 5));
+
+            textBox3.Font = new Font("Segoe UI", 19, FontStyle.Regular);
             flowLayoutPanel1.AutoScroll = true;
             textBox3.Select();
             this.DoubleBuffered = true;
@@ -193,6 +208,8 @@ namespace MediaPlayer
                 }
                 catch { }
             };
+            videos.ForeColor = mouseClickColor;
+            Calculator.globalTypeButton = videos;
         }
 
 
@@ -343,6 +360,7 @@ namespace MediaPlayer
             flowLayoutPanel1.BackColor = darkBackColor;
             flowLayoutPanel3.BackColor = lightBackColor;
             flowLayoutPanel4.BackColor = lightBackColor;
+            flowLayoutPanel2.BackColor = lightBackColor;
             panel1.BackColor = lightBackColor;
             pointer.BackColor = mouseClickColor;
             hoverPointer.BackColor = mouseClickColor;
@@ -351,27 +369,89 @@ namespace MediaPlayer
             calcButton.FlatAppearance.MouseOverBackColor = mouseClickColor;
             searchLabel.BackColor = lightBackColor;
             searchLabel.ForeColor = Color.White;
-            typelbl.BackColor = lightBackColor;
-            typelbl.ForeColor = Color.White;
-            button11.ForeColor = Color.White;
-            textBox3.BackColor = lightBackColor;
+            textBox3.BackColor = darkBackColor;
             textBox3.ForeColor = Color.White;
             button2.BackColor = lightBackColor;
             button3.BackColor = lightBackColor;
             button4.BackColor = lightBackColor;
-            button11.BackColor = kindaDark;
-            button5.BackColor = lightBackColor;
-            button5.FlatAppearance.MouseOverBackColor = mouseClickColor;
-            button5.FlatAppearance.MouseDownBackColor = mouseClickColor;
+
+            divider.BackColor = kindaDark;
+
+            videos.BackColor = darkBackColor;
+            videos.ForeColor = Color.White;
+            videos.FlatAppearance.MouseOverBackColor = kindaDark;
+            videos.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            pictures.BackColor = darkBackColor;
+            pictures.ForeColor = Color.White;
+            pictures.FlatAppearance.MouseOverBackColor = kindaDark;
+            pictures.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            fourK.BackColor = darkBackColor;
+            fourK.ForeColor = Color.White;
+            fourK.FlatAppearance.MouseOverBackColor = kindaDark;
+            fourK.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            shortVideos.BackColor = darkBackColor;
+            shortVideos.ForeColor = Color.White;
+            shortVideos.FlatAppearance.MouseOverBackColor = kindaDark;
+            shortVideos.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            affinity.BackColor = darkBackColor;
+            affinity.ForeColor = Color.White;
+            affinity.FlatAppearance.MouseOverBackColor = kindaDark;
+            affinity.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            gifs.BackColor = darkBackColor;
+            gifs.ForeColor = Color.White;
+            gifs.FlatAppearance.MouseOverBackColor = kindaDark;
+            gifs.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            newFolder.BackColor = darkBackColor;
+            newFolder.ForeColor = Color.White;
+            newFolder.FlatAppearance.MouseOverBackColor = kindaDark;
+            newFolder.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            reset.BackColor = darkBackColor;
+            reset.ForeColor = Color.White;
+            reset.FlatAppearance.MouseOverBackColor = kindaDark;
+            reset.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            refresh.BackColor = darkBackColor;
+            refresh.ForeColor = Color.White;
+            refresh.FlatAppearance.MouseOverBackColor = kindaDark;
+            refresh.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            theme.BackColor = darkBackColor;
+            theme.ForeColor = Color.White;
+            theme.FlatAppearance.MouseOverBackColor = kindaDark;
+            theme.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            move.BackColor = darkBackColor;
+            move.ForeColor = Color.White;
+            move.FlatAppearance.MouseOverBackColor = kindaDark;
+            move.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            delete.BackColor = darkBackColor;
+            delete.ForeColor = Color.White;
+            delete.FlatAppearance.MouseOverBackColor = kindaDark;
+            delete.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            navController.BackColor = darkBackColor;
+            navController.ForeColor = Color.White;
+            navController.FlatAppearance.MouseOverBackColor = kindaDark;
+            navController.FlatAppearance.MouseDownBackColor = kindaDark;
+
+            stack.BackColor = darkBackColor;
+            stack.ForeColor = Color.White;
+            stack.FlatAppearance.MouseOverBackColor = kindaDark;
+            stack.FlatAppearance.MouseDownBackColor = kindaDark;
 
             button3.FlatAppearance.MouseOverBackColor = mouseClickColor;
             button3.FlatAppearance.MouseDownBackColor = mouseClickColor;
 
-            button11.FlatAppearance.MouseOverBackColor = kindaDark;
-            button11.FlatAppearance.MouseDownBackColor = kindaDark;
             button4.FlatAppearance.MouseOverBackColor = mouseClickColor;
             button4.FlatAppearance.MouseDownBackColor = mouseClickColor;
-            button5.BackColor = mouseClickColor;
             foreach (Button  b in folderButt)
             {
 
@@ -493,7 +573,7 @@ namespace MediaPlayer
             butt2.FlatAppearance.BorderSize = 0;
             butt2.MouseClick += (s, a) =>
             {
-                if (Calculator.globalDirButton != null && isEnlarged[Calculator.globalDirButton.Text]) { 
+                if (Calculator.globalDirButton != null && isEnlarged[Calculator.globalDirButton.Text] && Calculator.globalDirButton.Text!=butt2.Text) { 
                     Calculator.globalDirButton.ForeColor = Color.White;
                     isEnlarged[Calculator.globalDirButton.Text] = false;
                     enlargeLeave(Calculator.globalDirButton, Calculator.globalDirButton.Text);
@@ -1114,56 +1194,60 @@ namespace MediaPlayer
 
                 //flowLayoutPanel4.Controls.Remove(searchLabel);
                 //flowLayoutPanel4.Controls.Remove(textBox3);
-                flowLayoutPanel4.Controls.Remove(typelbl);
-                foreach (String type in typeList)
+                /*foreach (String type in typeList)
                 {
                     Button butt = new Button();
                     butt.Text = type;
                     butt.Font = new Font("Consolas", 10, FontStyle.Bold);
-                    butt.Cursor = System.Windows.Forms.Cursors.Hand;
+                    butt.Cursor = System.Windows.Forms.Cursors.Arrow;
                     butt.ForeColor = Color.White;
-                    butt.BackColor = lightBackColor;
-                    butt.Size = new Size(150, 46);
-                    butt.Margin = new Padding(0, 0, 1, 0);
+                    butt.BackColor = darkBackColor;
+                    butt.Size = new Size(214, 46);
+                    butt.Margin = new Padding(0, 1, 2, 0);
                     butt.FlatStyle = FlatStyle.Flat;
                     butt.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, butt.Width, butt.Height, 5, 5));
-                    butt.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
+                    //butt.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
                     butt.ImageAlign = ContentAlignment.MiddleLeft;
                     if (butt.Text.Equals(Calculator.globalType))
                     {
                         Calculator.globalTypeButton = butt;
-                        butt.BackColor = mouseClickColor;
+                        butt.ForeColor = mouseClickColor;
                     }
                     else
                     {
-                        butt.BackColor = lightBackColor;
+                        butt.ForeColor = Color.White;
+                        butt.BackColor = darkBackColor;
                     }
                     butt.FlatAppearance.BorderSize = 0;
-                    butt.FlatAppearance.MouseOverBackColor = mouseHoverColor;
-                    butt.FlatAppearance.MouseDownBackColor = mouseClickColor;
+                    butt.FlatAppearance.MouseOverBackColor = darkBackColor;
+                    butt.FlatAppearance.MouseDownBackColor = darkBackColor;
+                    butt.TextAlign = ContentAlignment.MiddleRight;
+
+                    butt.Image = ((System.Drawing.Image)(resources.GetObject("video-player.Image")));
+                    butt.ImageAlign = ContentAlignment.MiddleLeft;
                     butt.MouseClick += (s, a) =>
                     {
                         this.butt1.Text = butt.Text;
-                        Calculator.globalTypeButton.BackColor = lightBackColor;
+                        Calculator.globalTypeButton.BackColor = darkBackColor;
+                        Calculator.globalTypeButton.ForeColor = Color.White;
                         Calculator.globalType = butt.Text;
                         if (Calculator.globalType.Contains("Short"))
                             typeName.Text = "Gif vid";
                         else
                             typeName.Text = Calculator.globalType;
-                        butt.BackColor = mouseClickColor;
+                        butt.ForeColor = mouseClickColor;
                         Calculator.globalTypeButton = butt;
-                        textBox3.Focus();
                         textBox3.Select();
+                        textBox3.Focus();
                     };
                     typeButtons.Add(butt);
                     flowLayoutPanel4.Controls.Add(butt);
                 }
-                useAndThrow = false;
-                flowLayoutPanel4.Controls.Add(typelbl);
                 //flowLayoutPanel4.Controls.Add(textBox3);
                 //flowLayoutPanel4.Controls.Add(searchLabel);
-
-                if(Calculator.globalDirButton != null)
+                */
+                useAndThrow = false;
+                if (Calculator.globalDirButton != null)
                 {
                     enlargeEnter(Calculator.globalDirButton);
                     isEnlarged[Calculator.globalDirButton.Text] = true;
@@ -1264,16 +1348,6 @@ namespace MediaPlayer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ctrl = !ctrl;
-            button11.Text = "Taskbar Control " + (ctrl == true ? "On" : "Off");
-            button11.ForeColor = (ctrl == true ? mouseClickColor : Color.White);
-            textBox3.Select();
-            // Update the text box color if the user clicks OK 
-            /*if (colorDialog1.ShowDialog() == DialogResult.OK)
-                mouseClickColor = colorDialog1.Color;
-
-
-            disposeAndLoad();*/
         }
 
         public void uiReload()
@@ -1299,8 +1373,7 @@ namespace MediaPlayer
             else if (Control.ModifierKeys == Keys.Shift)
             {
                 ctrl = !ctrl;
-                button11.Text = "Taskbar Control " + (ctrl == true ? "On" : "Off");
-                button11.ForeColor = (ctrl == true ? mouseClickColor : Color.White);
+                divider.BackColor = ctrl == true ? mouseClickColor : kindaDark;
                 textBox3.Select();
             }
             else if (Control.ModifierKeys == Keys.Control && e.KeyCode == Keys.Enter)
@@ -1727,11 +1800,11 @@ namespace MediaPlayer
             compact = !compact;
             if (compact)
             {
-                button5.BackColor = mouseClickColor;
+                stack.Text = "Un Stack";
             }
             else
             {
-                button5.BackColor = lightBackColor;
+                stack.Text = "Stack";
             }
             disposeAndLoad();
         }
@@ -1751,6 +1824,7 @@ namespace MediaPlayer
                 setTheme();
             }
             VideoPlayer.toChangeTheme = false;
+            textBox3.Select();
         }
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
@@ -1766,15 +1840,80 @@ namespace MediaPlayer
             calcButton.ForeColor = mouseClickColor;
         }
 
-        private void button11_MouseEnter(object sender, EventArgs e)
+
+        private void button12_Click(object sender, EventArgs e)
         {
-            button11.ForeColor = mouseClickColor;
+
+            ctrl = !ctrl;
+            divider.BackColor = ctrl == true ? mouseClickColor : kindaDark;
+            textBox3.Select();
         }
 
-        private void button11_MouseLeave(object sender, EventArgs e)
+        private void newFolder_Click(object sender, EventArgs e)
         {
-            if (!button11.Text.Contains("On"))
-                button11.ForeColor = Color.White;
+            for (int i = 0; i < 20; i++)
+            {
+                if (Directory.Exists((Calculator.globalDirButton.Text.Contains("Best") ? pardirectory[0] : pardirectory[1]).FullName + "\\" + i + Calculator.globalDirButton.Text))
+                {
+                    PopUpTextBox popUpTextBox = new PopUpTextBox();
+                    popUpTextBox.ShowDialog();
+                    if (popUpTextBox.fileName.Length > 0 && !Directory.Exists((Calculator.globalDirButton.Text.Contains("Best") ? pardirectory[0] : pardirectory[1]).FullName + "\\" + i + Calculator.globalDirButton.Text + "\\" + popUpTextBox.fileName))
+                    {
+                        Directory.CreateDirectory((Calculator.globalDirButton.Text.Contains("Best") ? pardirectory[0] : pardirectory[1]).FullName + "\\" + i + Calculator.globalDirButton.Text + "\\" + popUpTextBox.fileName);
+                    }
+                    break;
+                }
+            }
+            disposeAndLoad();
+        }
+
+        private void refresh_Click(object sender, EventArgs e)
+        {
+            disposeAndLoad();
+        }
+
+        private void theme_Click(object sender, EventArgs e)
+        {
+            colorDialog1.ShowDialog();
+            File.WriteAllText(pardirectory[1].FullName + "\\ThemeColor.txt",
+                                colorDialog1.Color.R + "," + colorDialog1.Color.G + "," + colorDialog1.Color.B);
+            setTheme();
+        }
+
+        private void reset_Click(object sender, EventArgs e)
+        {
+
+            for (int i = 0; i < 20; i++)
+            {
+                if (File.Exists((Calculator.globalDirButton.Text.Contains("Best") ? pardirectory[0] : pardirectory[1]).FullName + "\\" + i + Calculator.globalDirButton.Text + "\\priority.txt"))
+                {
+                    FileInfo fi = new FileInfo((Calculator.globalDirButton.Text.Contains("Best") ? pardirectory[0] : pardirectory[1]).FullName + "\\" + i + Calculator.globalDirButton.Text + "\\priority.txt");
+                    fi.Delete();
+                    FileStream fs = File.Create((Calculator.globalDirButton.Text.Contains("Best") ? pardirectory[0] : pardirectory[1]).FullName + "\\" + i + Calculator.globalDirButton.Text + "\\priority.txt");
+                    fs.Close();
+                    break;
+                }
+            }
+            disposeAndLoad();
+        }
+
+        private void videos_Click(object sender, EventArgs e)
+        {
+            Button b = (Button)sender;
+
+            Calculator.globalTypeButton.ForeColor = Color.White;
+            if (b.Text.Contains("Short"))
+                typeName.Text = "Gif Vid";
+            else if (b.Text.Contains("4K"))
+                typeName.Text = "4K";
+            else
+                typeName.Text = b.Text;
+
+            Calculator.globalType = typeName.Text;
+            Calculator.globalTypeButton = b;
+            Calculator.globalTypeButton.ForeColor = mouseClickColor;
+
+            textBox3.Focus();
         }
 
         private void calcButton_MouseLeave(object sender, EventArgs e)

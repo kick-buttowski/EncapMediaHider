@@ -346,5 +346,134 @@
   <ItemGroup>
     <None Include="Resources\314481_lock_icon1.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-multiple-choice-32 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-multiple-choice-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refresh %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\48761_file_add_upload_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\add-file %281%29.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-swatch-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-swatch-32 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\move %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\move.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-move-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sorting %283%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sorting %282%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-sort-by-modified-date-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sort %282%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sort %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sorting %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sorting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sort.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-sort-by-modified-date-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\convert-3220.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Square44x44Logo.targetsize-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hourglass.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loading-bar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loading.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\reset %282%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\reset %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\reset.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\book-stack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\4k.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\image-gallery.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\picture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\video.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\movie.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\edit-video.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\video-player.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gif %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gif.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\379365_video_camera_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1054941_video_film_movie_icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

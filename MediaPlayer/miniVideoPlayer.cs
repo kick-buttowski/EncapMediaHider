@@ -184,7 +184,7 @@ namespace MediaPlayer
 
                 wmpSide = new wmpSide(wmp, null, false);
                 wmpSide.fillUpFP1(videosPb);
-                wmpSide.Location = new Point(0, 85);
+                wmpSide.Location = new Point(0, 10);
 
                 transpBack = new TranspBack(wmp, wmpSide, null, null);
                 transpBack.Show();
@@ -260,7 +260,7 @@ namespace MediaPlayer
 
             wmpSide = new wmpSide(wmp,null, false);
             wmpSide.fillUpFP1(videosPb);
-            wmpSide.Location = new Point(0, 80);
+            wmpSide.Location = new Point(0, 10);
             wmpSide.BackColor = Explorer.darkBackColor;
 
             transpBack = new TranspBack(wmp, wmpSide, null, null);

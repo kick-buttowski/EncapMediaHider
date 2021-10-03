@@ -56,7 +56,7 @@ namespace MediaPlayer
             {
                 globalPb = smallPb;
                 smallPb.Size = new Size(255, (int)(255 / 1.7777));
-                smallPb.Margin = new Padding(20, 30, 40, 30);
+                smallPb.Margin = new Padding(20, 15, 40, 15);
             }
             else
                 smallPb.Size = new Size(315, (int)(315 / 1.7777));
@@ -84,6 +84,7 @@ namespace MediaPlayer
 
         public void fillUpFP1(List<PictureBox> vidPb, params Boolean[] typeImg)
         {
+            flowLayoutPanel1.Controls.Clear();
             this.vidPb = vidPb;
             int prevX = 0, prevY = 0;
             if(typeImg.Length>0) this.typeImg = typeImg[0];
@@ -116,6 +117,8 @@ namespace MediaPlayer
                         }    
                         foreach (int j in seq)
                             vidPicBox(vidPb, j);
+
+                        flowLayoutPanel1.Controls.Add(label1);
                     }
                     /*else if (form2 != null && vidPb[i].Name.Equals(form2.globalPic))
                     {
