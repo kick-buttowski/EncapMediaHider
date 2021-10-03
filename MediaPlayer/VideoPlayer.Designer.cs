@@ -81,6 +81,7 @@ namespace MediaPlayer
             this.button5 = new System.Windows.Forms.Button();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.expBtn = new System.Windows.Forms.Button();
+            this.divider = new System.Windows.Forms.Panel();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.button1 = new System.Windows.Forms.Button();
             this.videosBtn = new System.Windows.Forms.Button();
@@ -89,7 +90,6 @@ namespace MediaPlayer
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.contextMenuStrip3 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
@@ -122,6 +122,7 @@ namespace MediaPlayer
             this.pointer = new System.Windows.Forms.Label();
             this.flowLayoutPanel3 = new System.Windows.Forms.Panel();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.navController = new System.Windows.Forms.Button();
             this.addFile = new System.Windows.Forms.Button();
             this.move = new System.Windows.Forms.Button();
             this.refresh = new System.Windows.Forms.Button();
@@ -133,15 +134,14 @@ namespace MediaPlayer
             this.convert = new System.Windows.Forms.Button();
             this.reset = new System.Windows.Forms.Button();
             this.load4K = new System.Windows.Forms.Button();
-            this.myPictureBox2 = new System.Windows.Forms.PictureBox();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.myPictureBox1 = new System.Windows.Forms.PictureBox();
+            this.button9 = new System.Windows.Forms.Button();
             this.fourKBtn = new System.Windows.Forms.Button();
             this.shortVideosBtn = new System.Windows.Forms.Button();
             this.gifsBtn = new System.Windows.Forms.Button();
-            this.navController = new System.Windows.Forms.Button();
-            this.divider = new System.Windows.Forms.Panel();
+            this.myPictureBox1 = new System.Windows.Forms.PictureBox();
+            this.myPictureBox2 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -152,8 +152,8 @@ namespace MediaPlayer
             this.panel1.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.myPictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.myPictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.myPictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // errorProvider1
@@ -665,6 +665,14 @@ namespace MediaPlayer
             this.expBtn.MouseEnter += new System.EventHandler(this.expBtn_MouseEnter);
             this.expBtn.MouseLeave += new System.EventHandler(this.expBtn_MouseLeave);
             // 
+            // divider
+            // 
+            this.divider.Location = new System.Drawing.Point(0, 136);
+            this.divider.Margin = new System.Windows.Forms.Padding(0, 5, 0, 2);
+            this.divider.Name = "divider";
+            this.divider.Size = new System.Drawing.Size(265, 8);
+            this.divider.TabIndex = 30;
+            // 
             // trackBar1
             // 
             this.trackBar1.AutoSize = false;
@@ -815,25 +823,6 @@ namespace MediaPlayer
             this.button8.Text = "<-";
             this.button8.UseVisualStyleBackColor = false;
             this.button8.Click += new System.EventHandler(this.button8_Click);
-            // 
-            // button9
-            // 
-            this.button9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.button9.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.button9.FlatAppearance.BorderSize = 0;
-            this.button9.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.button9.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.button9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button9.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button9.ForeColor = System.Drawing.Color.White;
-            this.button9.Location = new System.Drawing.Point(1721, 43);
-            this.button9.Margin = new System.Windows.Forms.Padding(0, 3, 2, 0);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(116, 57);
-            this.button9.TabIndex = 29;
-            this.button9.Text = "Random Videos";
-            this.button9.UseVisualStyleBackColor = false;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // button10
             // 
@@ -1146,6 +1135,28 @@ namespace MediaPlayer
             this.flowLayoutPanel4.Size = new System.Drawing.Size(1443, 40);
             this.flowLayoutPanel4.TabIndex = 24;
             // 
+            // navController
+            // 
+            this.navController.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.navController.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.navController.FlatAppearance.BorderSize = 0;
+            this.navController.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.navController.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.navController.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.navController.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.navController.ForeColor = System.Drawing.Color.White;
+            this.navController.Image = global::MediaPlayer.Properties.Resources.arrow;
+            this.navController.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.navController.Location = new System.Drawing.Point(0, 0);
+            this.navController.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.navController.Name = "navController";
+            this.navController.Size = new System.Drawing.Size(119, 41);
+            this.navController.TabIndex = 34;
+            this.navController.Text = "Nav Lock";
+            this.navController.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.navController.UseVisualStyleBackColor = false;
+            this.navController.Click += new System.EventHandler(this.navController_Click);
+            // 
             // addFile
             // 
             this.addFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
@@ -1388,16 +1399,6 @@ namespace MediaPlayer
             this.load4K.UseVisualStyleBackColor = false;
             this.load4K.Click += new System.EventHandler(this.load4K_Click);
             // 
-            // myPictureBox2
-            // 
-            this.myPictureBox2.BackColor = System.Drawing.SystemColors.Desktop;
-            this.myPictureBox2.Location = new System.Drawing.Point(78, 0);
-            this.myPictureBox2.Margin = new System.Windows.Forms.Padding(0, 0, 1, 0);
-            this.myPictureBox2.Name = "myPictureBox2";
-            this.myPictureBox2.Size = new System.Drawing.Size(57, 90);
-            this.myPictureBox2.TabIndex = 1;
-            this.myPictureBox2.TabStop = false;
-            // 
             // button4
             // 
             this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
@@ -1409,7 +1410,7 @@ namespace MediaPlayer
             this.button4.Font = new System.Drawing.Font("Consolas", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button4.ForeColor = System.Drawing.Color.White;
             this.button4.Image = ((System.Drawing.Image)(resources.GetObject("button4.Image")));
-            this.button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button4.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button4.Location = new System.Drawing.Point(943, 43);
             this.button4.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.button4.Name = "button4";
@@ -1432,7 +1433,7 @@ namespace MediaPlayer
             this.button3.Font = new System.Drawing.Font("Consolas", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button3.ForeColor = System.Drawing.Color.White;
             this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
-            this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button3.Location = new System.Drawing.Point(0, 43);
             this.button3.Margin = new System.Windows.Forms.Padding(0, 2, 3, 0);
             this.button3.Name = "button3";
@@ -1444,15 +1445,27 @@ namespace MediaPlayer
             this.button3.MouseEnter += new System.EventHandler(this.button3_MouseMove);
             this.button3.MouseLeave += new System.EventHandler(this.button3_MouseLeave);
             // 
-            // myPictureBox1
+            // button9
             // 
-            this.myPictureBox1.Location = new System.Drawing.Point(21, 0);
-            this.myPictureBox1.Margin = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.myPictureBox1.Name = "myPictureBox1";
-            this.myPictureBox1.Size = new System.Drawing.Size(57, 89);
-            this.myPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.myPictureBox1.TabIndex = 0;
-            this.myPictureBox1.TabStop = false;
+            this.button9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.button9.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.button9.FlatAppearance.BorderSize = 0;
+            this.button9.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button9.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button9.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button9.ForeColor = System.Drawing.Color.White;
+            this.button9.Image = global::MediaPlayer.Properties.Resources.random;
+            this.button9.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button9.Location = new System.Drawing.Point(1721, 43);
+            this.button9.Margin = new System.Windows.Forms.Padding(0, 3, 2, 0);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(116, 57);
+            this.button9.TabIndex = 29;
+            this.button9.Text = "Random\r\nVideos";
+            this.button9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button9.UseVisualStyleBackColor = false;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // fourKBtn
             // 
@@ -1521,35 +1534,25 @@ namespace MediaPlayer
             this.gifsBtn.MouseEnter += new System.EventHandler(this.gifsBtn_MouseEnter);
             this.gifsBtn.MouseLeave += new System.EventHandler(this.gifsBtn_MouseLeave);
             // 
-            // navController
+            // myPictureBox1
             // 
-            this.navController.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.navController.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.navController.FlatAppearance.BorderSize = 0;
-            this.navController.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.navController.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.navController.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.navController.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.navController.ForeColor = System.Drawing.Color.White;
-            this.navController.Image = global::MediaPlayer.Properties.Resources.arrow;
-            this.navController.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.navController.Location = new System.Drawing.Point(0, 0);
-            this.navController.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.navController.Name = "navController";
-            this.navController.Size = new System.Drawing.Size(119, 41);
-            this.navController.TabIndex = 34;
-            this.navController.Text = "Nav Lock";
-            this.navController.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.navController.UseVisualStyleBackColor = false;
-            this.navController.Click += new System.EventHandler(this.navController_Click);
+            this.myPictureBox1.Location = new System.Drawing.Point(21, 0);
+            this.myPictureBox1.Margin = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.myPictureBox1.Name = "myPictureBox1";
+            this.myPictureBox1.Size = new System.Drawing.Size(57, 89);
+            this.myPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.myPictureBox1.TabIndex = 0;
+            this.myPictureBox1.TabStop = false;
             // 
-            // divider
+            // myPictureBox2
             // 
-            this.divider.Location = new System.Drawing.Point(0, 136);
-            this.divider.Margin = new System.Windows.Forms.Padding(0, 5, 0, 2);
-            this.divider.Name = "divider";
-            this.divider.Size = new System.Drawing.Size(265, 8);
-            this.divider.TabIndex = 30;
+            this.myPictureBox2.BackColor = System.Drawing.SystemColors.Desktop;
+            this.myPictureBox2.Location = new System.Drawing.Point(78, 0);
+            this.myPictureBox2.Margin = new System.Windows.Forms.Padding(0, 0, 1, 0);
+            this.myPictureBox2.Name = "myPictureBox2";
+            this.myPictureBox2.Size = new System.Drawing.Size(57, 90);
+            this.myPictureBox2.TabIndex = 1;
+            this.myPictureBox2.TabStop = false;
             // 
             // VideoPlayer
             // 
@@ -1585,8 +1588,8 @@ namespace MediaPlayer
             this.panel1.ResumeLayout(false);
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.myPictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.myPictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.myPictureBox2)).EndInit();
             this.ResumeLayout(false);
 
         }

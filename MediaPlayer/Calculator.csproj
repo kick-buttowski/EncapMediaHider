@@ -475,5 +475,8 @@
   <ItemGroup>
     <None Include="Resources\1054941_video_film_movie_icon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\random.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

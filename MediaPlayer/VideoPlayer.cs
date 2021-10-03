@@ -145,8 +145,6 @@ namespace MediaPlayer
             reset.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, reset.Width, reset.Height, 5, 5));
             navController.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, navController.Width, navController.Height, 5, 5));
 
-            myPictureBox1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, myPictureBox1.Width, myPictureBox1.Height, 10, 10));
-            myPictureBox2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, myPictureBox2.Width, myPictureBox2.Height, 10, 10));
             //this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 10, 10));
             //flowLayoutPanel2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel2.Width, flowLayoutPanel2.Height, 10, 10));
             //button6.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button6.Width, button6.Height, 10, 10));
@@ -223,7 +221,7 @@ namespace MediaPlayer
                     disposePb.Add(img1);
                     tip.SetToolTip(button3, prevfi.Name);
 
-                    myPictureBox1.Image = resizedImage(img1, 0, 89, 0, 0);
+                    button3.Image = resizedImage(img1, 0, 50, 0, 0);
                 }
                 catch
                 {
@@ -244,7 +242,7 @@ namespace MediaPlayer
                     button4.Tag = img2;
                     disposePb.Add(img2);
                     tip.SetToolTip(button4, nextFi.Name);
-                    myPictureBox2.Image = resizedImage(img2, 0, 89, 0, 0);
+                    button4.Image = resizedImage(img2, 0, 50, 0, 0);
                 }
                 catch { }
             }
@@ -3973,7 +3971,7 @@ namespace MediaPlayer
         private void button9_Click(object sender, EventArgs e)
         {
             isChecked = !isChecked;
-            button9.BackColor = (isChecked == true ? mouseClickColor : lightBackColor);
+            button9.BackColor = (isChecked == true ? mouseClickColor : darkBackColor);
             if (isChecked)
                 button10.Enabled = true;
             else
@@ -4557,9 +4555,9 @@ namespace MediaPlayer
 
                     button3.Tag = img1;
                     disposePb.Add(img1);
-                    if (myPictureBox1.Image != null)
-                        myPictureBox1.Image.Dispose();
-                    myPictureBox1.Image = resizedImage(img1, 0, 89, 0, 0);
+                    if (button3.Image != null)
+                        button3.Image.Dispose();
+                    button3.Image = resizedImage(img1, 0, 50, 0, 0);
                 }
                 catch { }
             }
@@ -4571,9 +4569,9 @@ namespace MediaPlayer
                     button4.Tag = img2;
                     disposePb.Add(img2);
 
-                    if (myPictureBox2.Image != null)
-                        myPictureBox2.Image.Dispose();
-                    myPictureBox2.Image = resizedImage(img2, 0, 89, 0, 0);
+                    if (button4.Image != null)
+                        button4.Image.Dispose();
+                    button4.Image = resizedImage(img2, 0, 50, 0, 0);
                 }
                 catch { }
             }
@@ -4628,9 +4626,9 @@ namespace MediaPlayer
                     disposePb.Add(img1);
 
 
-                    if (myPictureBox1.Image != null)
-                        myPictureBox1.Image.Dispose();
-                    myPictureBox1.Image = resizedImage(img1, 0, 89, 0, 0);
+                    if (button3.Image != null)
+                        button3.Image.Dispose();
+                    button3.Image = resizedImage(img1, 0, 50, 0, 0);
                 }
                 catch { }
             }
@@ -4642,9 +4640,9 @@ namespace MediaPlayer
                     button4.Tag = img2;
                     disposePb.Add(img2);
 
-                    if (myPictureBox2.Image != null)
-                        myPictureBox2.Image.Dispose();
-                    myPictureBox2.Image = resizedImage(img2, 0, 89, 0, 0);
+                    if (button4.Image != null)
+                        button4.Image.Dispose();
+                    button4.Image = resizedImage(img2, 0, 50, 0, 0);
                 }
                 catch { }
             }
@@ -4813,10 +4811,10 @@ namespace MediaPlayer
             {
                 img.Dispose();
             }
-            if (myPictureBox1.Image != null)
-                myPictureBox1.Image.Dispose();
-            if (myPictureBox2.Image != null)
-                myPictureBox2.Image.Dispose();
+            if (button3.Image != null)
+                button3.Image.Dispose();
+            if (button4.Image != null)
+                button4.Image.Dispose();
             Controls.Clear();
             controlDisposer();
             this.Dispose();

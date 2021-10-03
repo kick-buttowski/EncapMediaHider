@@ -928,7 +928,7 @@ namespace MediaPlayer
                             vidDetText = vidDetText + "\n" + "Priority - " + keyValuePair.Value;
 
                             PictureBox dirPb = new PictureBox();
-                            dirPb.Margin = new Padding(0, 11, 0, 0);
+                            dirPb.Margin = new Padding(0, 8, 0, 0);
                             dirPb.Name = keyValuePair.Key;
 
 
