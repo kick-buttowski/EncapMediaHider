@@ -38,12 +38,6 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
-            this.videos = new System.Windows.Forms.Button();
-            this.pictures = new System.Windows.Forms.Button();
-            this.fourK = new System.Windows.Forms.Button();
-            this.affinity = new System.Windows.Forms.Button();
-            this.shortVideos = new System.Windows.Forms.Button();
-            this.gifs = new System.Windows.Forms.Button();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.searchLabel = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
@@ -59,6 +53,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.hoverPointer = new System.Windows.Forms.Label();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.navController = new System.Windows.Forms.Button();
             this.newFolder = new System.Windows.Forms.Button();
             this.move = new System.Windows.Forms.Button();
             this.refresh = new System.Windows.Forms.Button();
@@ -66,7 +61,12 @@
             this.theme = new System.Windows.Forms.Button();
             this.reset = new System.Windows.Forms.Button();
             this.stack = new System.Windows.Forms.Button();
-            this.navController = new System.Windows.Forms.Button();
+            this.videos = new System.Windows.Forms.Button();
+            this.pictures = new System.Windows.Forms.Button();
+            this.fourK = new System.Windows.Forms.Button();
+            this.affinity = new System.Windows.Forms.Button();
+            this.shortVideos = new System.Windows.Forms.Button();
+            this.gifs = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
@@ -165,138 +165,6 @@
             this.flowLayoutPanel4.Size = new System.Drawing.Size(1081, 48);
             this.flowLayoutPanel4.TabIndex = 2;
             // 
-            // videos
-            // 
-            this.videos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.videos.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.videos.FlatAppearance.BorderSize = 0;
-            this.videos.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.videos.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.videos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.videos.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.videos.ForeColor = System.Drawing.Color.White;
-            this.videos.Image = global::MediaPlayer.Properties.Resources.video_player;
-            this.videos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.videos.Location = new System.Drawing.Point(0, 1);
-            this.videos.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
-            this.videos.Name = "videos";
-            this.videos.Size = new System.Drawing.Size(178, 47);
-            this.videos.TabIndex = 34;
-            this.videos.Text = "Videos";
-            this.videos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.videos.UseVisualStyleBackColor = false;
-            this.videos.Click += new System.EventHandler(this.videos_Click);
-            // 
-            // pictures
-            // 
-            this.pictures.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.pictures.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.pictures.FlatAppearance.BorderSize = 0;
-            this.pictures.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.pictures.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.pictures.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pictures.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pictures.ForeColor = System.Drawing.Color.White;
-            this.pictures.Image = global::MediaPlayer.Properties.Resources.image_gallery;
-            this.pictures.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.pictures.Location = new System.Drawing.Point(180, 1);
-            this.pictures.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
-            this.pictures.Name = "pictures";
-            this.pictures.Size = new System.Drawing.Size(178, 47);
-            this.pictures.TabIndex = 35;
-            this.pictures.Text = "Pictures";
-            this.pictures.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.pictures.UseVisualStyleBackColor = false;
-            this.pictures.Click += new System.EventHandler(this.videos_Click);
-            // 
-            // fourK
-            // 
-            this.fourK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.fourK.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.fourK.FlatAppearance.BorderSize = 0;
-            this.fourK.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.fourK.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.fourK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.fourK.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.fourK.ForeColor = System.Drawing.Color.White;
-            this.fourK.Image = global::MediaPlayer.Properties.Resources._4k;
-            this.fourK.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.fourK.Location = new System.Drawing.Point(360, 1);
-            this.fourK.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
-            this.fourK.Name = "fourK";
-            this.fourK.Size = new System.Drawing.Size(178, 47);
-            this.fourK.TabIndex = 36;
-            this.fourK.Text = "4K Pictures";
-            this.fourK.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.fourK.UseVisualStyleBackColor = false;
-            this.fourK.Click += new System.EventHandler(this.videos_Click);
-            // 
-            // affinity
-            // 
-            this.affinity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.affinity.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.affinity.FlatAppearance.BorderSize = 0;
-            this.affinity.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.affinity.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.affinity.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.affinity.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.affinity.ForeColor = System.Drawing.Color.White;
-            this.affinity.Image = global::MediaPlayer.Properties.Resources._379365_video_camera_icon;
-            this.affinity.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.affinity.Location = new System.Drawing.Point(540, 1);
-            this.affinity.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
-            this.affinity.Name = "affinity";
-            this.affinity.Size = new System.Drawing.Size(178, 47);
-            this.affinity.TabIndex = 39;
-            this.affinity.Text = "Affinity";
-            this.affinity.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.affinity.UseVisualStyleBackColor = false;
-            this.affinity.Click += new System.EventHandler(this.videos_Click);
-            // 
-            // shortVideos
-            // 
-            this.shortVideos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.shortVideos.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.shortVideos.FlatAppearance.BorderSize = 0;
-            this.shortVideos.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.shortVideos.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.shortVideos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.shortVideos.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.shortVideos.ForeColor = System.Drawing.Color.White;
-            this.shortVideos.Image = global::MediaPlayer.Properties.Resources._1054941_video_film_movie_icon;
-            this.shortVideos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.shortVideos.Location = new System.Drawing.Point(720, 1);
-            this.shortVideos.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
-            this.shortVideos.Name = "shortVideos";
-            this.shortVideos.Size = new System.Drawing.Size(178, 47);
-            this.shortVideos.TabIndex = 37;
-            this.shortVideos.Text = "Short videos";
-            this.shortVideos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.shortVideos.UseVisualStyleBackColor = false;
-            this.shortVideos.Click += new System.EventHandler(this.videos_Click);
-            // 
-            // gifs
-            // 
-            this.gifs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.gifs.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.gifs.FlatAppearance.BorderSize = 0;
-            this.gifs.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.gifs.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.gifs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.gifs.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gifs.ForeColor = System.Drawing.Color.White;
-            this.gifs.Image = global::MediaPlayer.Properties.Resources.gif;
-            this.gifs.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.gifs.Location = new System.Drawing.Point(900, 1);
-            this.gifs.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
-            this.gifs.Name = "gifs";
-            this.gifs.Size = new System.Drawing.Size(178, 47);
-            this.gifs.TabIndex = 38;
-            this.gifs.Text = "Gifs";
-            this.gifs.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.gifs.UseVisualStyleBackColor = false;
-            this.gifs.Click += new System.EventHandler(this.videos_Click);
-            // 
             // textBox3
             // 
             this.textBox3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(230)))), ((int)(((byte)(235)))));
@@ -315,10 +183,10 @@
             // searchLabel
             // 
             this.searchLabel.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchLabel.Location = new System.Drawing.Point(290, 43);
+            this.searchLabel.Location = new System.Drawing.Point(291, 44);
             this.searchLabel.Margin = new System.Windows.Forms.Padding(12, 8, 0, 5);
             this.searchLabel.Name = "searchLabel";
-            this.searchLabel.Size = new System.Drawing.Size(74, 48);
+            this.searchLabel.Size = new System.Drawing.Size(73, 46);
             this.searchLabel.TabIndex = 25;
             this.searchLabel.Text = "Search:";
             this.searchLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -331,7 +199,7 @@
             this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Red;
             this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Consolas", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Font = new System.Drawing.Font("Consolas", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.White;
             this.button2.Location = new System.Drawing.Point(1858, -1);
             this.button2.Margin = new System.Windows.Forms.Padding(0);
@@ -477,6 +345,28 @@
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(1435, 40);
             this.flowLayoutPanel2.TabIndex = 25;
+            // 
+            // navController
+            // 
+            this.navController.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.navController.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.navController.FlatAppearance.BorderSize = 0;
+            this.navController.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.navController.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.navController.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.navController.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.navController.ForeColor = System.Drawing.Color.White;
+            this.navController.Image = global::MediaPlayer.Properties.Resources.arrow;
+            this.navController.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.navController.Location = new System.Drawing.Point(0, 0);
+            this.navController.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.navController.Name = "navController";
+            this.navController.Size = new System.Drawing.Size(177, 41);
+            this.navController.TabIndex = 34;
+            this.navController.Text = "Nav Controller";
+            this.navController.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.navController.UseVisualStyleBackColor = false;
+            this.navController.Click += new System.EventHandler(this.button12_Click);
             // 
             // newFolder
             // 
@@ -632,27 +522,137 @@
             this.stack.UseVisualStyleBackColor = false;
             this.stack.Click += new System.EventHandler(this.button5_Click);
             // 
-            // navController
+            // videos
             // 
-            this.navController.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.navController.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.navController.FlatAppearance.BorderSize = 0;
-            this.navController.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.navController.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.navController.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.navController.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.navController.ForeColor = System.Drawing.Color.White;
-            this.navController.Image = global::MediaPlayer.Properties.Resources.arrow;
-            this.navController.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.navController.Location = new System.Drawing.Point(0, 0);
-            this.navController.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.navController.Name = "navController";
-            this.navController.Size = new System.Drawing.Size(177, 41);
-            this.navController.TabIndex = 34;
-            this.navController.Text = "Nav Controller";
-            this.navController.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.navController.UseVisualStyleBackColor = false;
-            this.navController.Click += new System.EventHandler(this.button12_Click);
+            this.videos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.videos.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.videos.FlatAppearance.BorderSize = 0;
+            this.videos.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.videos.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.videos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.videos.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.videos.ForeColor = System.Drawing.Color.White;
+            this.videos.Image = global::MediaPlayer.Properties.Resources.video_player;
+            this.videos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.videos.Location = new System.Drawing.Point(0, 1);
+            this.videos.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
+            this.videos.Name = "videos";
+            this.videos.Size = new System.Drawing.Size(178, 47);
+            this.videos.TabIndex = 34;
+            this.videos.Text = "Videos";
+            this.videos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.videos.UseVisualStyleBackColor = false;
+            this.videos.Click += new System.EventHandler(this.videos_Click);
+            // 
+            // pictures
+            // 
+            this.pictures.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.pictures.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.pictures.FlatAppearance.BorderSize = 0;
+            this.pictures.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.pictures.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.pictures.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pictures.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pictures.ForeColor = System.Drawing.Color.White;
+            this.pictures.Image = global::MediaPlayer.Properties.Resources.image_gallery;
+            this.pictures.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.pictures.Location = new System.Drawing.Point(180, 1);
+            this.pictures.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
+            this.pictures.Name = "pictures";
+            this.pictures.Size = new System.Drawing.Size(178, 47);
+            this.pictures.TabIndex = 35;
+            this.pictures.Text = "Pictures";
+            this.pictures.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.pictures.UseVisualStyleBackColor = false;
+            this.pictures.Click += new System.EventHandler(this.videos_Click);
+            // 
+            // fourK
+            // 
+            this.fourK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.fourK.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.fourK.FlatAppearance.BorderSize = 0;
+            this.fourK.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.fourK.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.fourK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.fourK.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.fourK.ForeColor = System.Drawing.Color.White;
+            this.fourK.Image = global::MediaPlayer.Properties.Resources._4k;
+            this.fourK.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.fourK.Location = new System.Drawing.Point(360, 1);
+            this.fourK.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
+            this.fourK.Name = "fourK";
+            this.fourK.Size = new System.Drawing.Size(178, 47);
+            this.fourK.TabIndex = 36;
+            this.fourK.Text = "4K Pictures";
+            this.fourK.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.fourK.UseVisualStyleBackColor = false;
+            this.fourK.Click += new System.EventHandler(this.videos_Click);
+            // 
+            // affinity
+            // 
+            this.affinity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.affinity.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.affinity.FlatAppearance.BorderSize = 0;
+            this.affinity.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.affinity.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.affinity.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.affinity.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.affinity.ForeColor = System.Drawing.Color.White;
+            this.affinity.Image = global::MediaPlayer.Properties.Resources._379365_video_camera_icon;
+            this.affinity.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.affinity.Location = new System.Drawing.Point(540, 1);
+            this.affinity.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
+            this.affinity.Name = "affinity";
+            this.affinity.Size = new System.Drawing.Size(178, 47);
+            this.affinity.TabIndex = 39;
+            this.affinity.Text = "Affinity";
+            this.affinity.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.affinity.UseVisualStyleBackColor = false;
+            this.affinity.Click += new System.EventHandler(this.videos_Click);
+            // 
+            // shortVideos
+            // 
+            this.shortVideos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.shortVideos.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.shortVideos.FlatAppearance.BorderSize = 0;
+            this.shortVideos.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.shortVideos.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.shortVideos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.shortVideos.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.shortVideos.ForeColor = System.Drawing.Color.White;
+            this.shortVideos.Image = global::MediaPlayer.Properties.Resources._1054941_video_film_movie_icon;
+            this.shortVideos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.shortVideos.Location = new System.Drawing.Point(720, 1);
+            this.shortVideos.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
+            this.shortVideos.Name = "shortVideos";
+            this.shortVideos.Size = new System.Drawing.Size(178, 47);
+            this.shortVideos.TabIndex = 37;
+            this.shortVideos.Text = "Short videos";
+            this.shortVideos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.shortVideos.UseVisualStyleBackColor = false;
+            this.shortVideos.Click += new System.EventHandler(this.videos_Click);
+            // 
+            // gifs
+            // 
+            this.gifs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.gifs.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.gifs.FlatAppearance.BorderSize = 0;
+            this.gifs.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.gifs.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.gifs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.gifs.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gifs.ForeColor = System.Drawing.Color.White;
+            this.gifs.Image = global::MediaPlayer.Properties.Resources.gif;
+            this.gifs.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.gifs.Location = new System.Drawing.Point(900, 1);
+            this.gifs.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
+            this.gifs.Name = "gifs";
+            this.gifs.Size = new System.Drawing.Size(178, 47);
+            this.gifs.TabIndex = 38;
+            this.gifs.Text = "Gifs";
+            this.gifs.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.gifs.UseVisualStyleBackColor = false;
+            this.gifs.Click += new System.EventHandler(this.videos_Click);
             // 
             // Explorer
             // 

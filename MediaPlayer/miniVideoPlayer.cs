@@ -59,6 +59,7 @@ namespace MediaPlayer
             newProgressBar.BackColor = mouseClickColor;
             newProgressBar.Margin = new Padding(0);
             this.Controls.Add(newProgressBar);
+            axWindowsMediaPlayer1.settings.rate = 1.25;
         }
 
         private void axWindowsMediaPlayer1_MouseMoveEvent(object sender, AxWMPLib._WMPOCXEvents_MouseMoveEvent e)
@@ -67,7 +68,7 @@ namespace MediaPlayer
             {
                 timer1.Enabled = false;
                 duration = axWindowsMediaPlayer1.currentMedia.duration;
-                axWindowsMediaPlayer1.settings.rate = 1.0;
+                axWindowsMediaPlayer1.settings.rate = 1.00;
                 newProgressBar.Maximum = (int)duration;
                 loc = (e.fX / 649.0) * duration;
 
@@ -141,7 +142,7 @@ namespace MediaPlayer
             if (!VideoPlayer.isShort)
             {
                 timer1.Enabled = true;
-                timer1.Interval = 3500;
+                timer1.Interval = 4000;
                 whereAt = 1.0;
             }
         }

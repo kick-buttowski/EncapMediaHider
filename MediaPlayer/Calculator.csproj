@@ -478,5 +478,44 @@
   <ItemGroup>
     <None Include="Resources\random.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\circular-arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refresh1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refresh %281%291.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refresh %282%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refresh %284%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refresh %285%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refresh %286%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refresh %287%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refresh %288%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refresh-arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\picture %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dog.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

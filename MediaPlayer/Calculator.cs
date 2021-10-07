@@ -300,7 +300,7 @@ namespace MediaPlayer
             {
                 foreach (FileInfo fi in di1.GetFiles())
                 {
-                    if (fi.Name.EndsWith(".txt"))
+                    if (fi.Name.EndsWith(".txt") && !fi.Name.Contains("disPic"))
                     {
                         fi.Delete();
                     }
@@ -324,7 +324,7 @@ namespace MediaPlayer
                 }
             }
 
-            if (tbx.Text.Equals("608442786042") || tbx.Text.Equals("/**/-+"))
+            if (tbx.Text.Equals("608442786042") || tbx.Text.Equals("/**/-+") || tbx.Text.Equals("6633+--"))
             {
                 tbx.Text = "";
                 this.Hide();
@@ -350,9 +350,10 @@ namespace MediaPlayer
             }
             else if (tbx.Text.Equals("Clear"))
             {
-
-                    DirectoryInfo di = new DirectoryInfo("E:\\Git\\CalculatorApp\\Calculator\\obj");
+                DirectoryInfo di = new DirectoryInfo("F:\\Calculator");
                     deleteTxtFile(di);
+                di = new DirectoryInfo("H:\\vivado\\rand_name\\rand_name.ir");
+                deleteTxtFile(di);
             }
             else if (tbx.Text.Equals("trimm") || tbx.Text.Equals("trim"))
             {
@@ -385,6 +386,7 @@ namespace MediaPlayer
 
             v = new Explorer(this);
             v.Explorer_Load(null, null);
+            button2_Click(null, null);
         }
 
         private void button6_Click(object sender, EventArgs e)
