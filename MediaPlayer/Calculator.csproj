@@ -132,6 +132,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Browser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Browser.Designer.cs">
+      <DependentUpon>Browser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Calculator.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -171,6 +177,12 @@
     </Compile>
     <Compile Include="miniVideoPlayer.Designer.cs">
       <DependentUpon>miniVideoPlayer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NewFileForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewFileForm.Designer.cs">
+      <DependentUpon>NewFileForm.cs</DependentUpon>
     </Compile>
     <Compile Include="NewProgressBar.cs">
       <SubType>Component</SubType>
@@ -236,6 +248,9 @@
     <Compile Include="wmpSide.Designer.cs">
       <DependentUpon>wmpSide.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Browser.resx">
+      <DependentUpon>Browser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Calculator.resx">
       <DependentUpon>Calculator.cs</DependentUpon>
     </EmbeddedResource>
@@ -253,6 +268,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="miniVideoPlayer.resx">
       <DependentUpon>miniVideoPlayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewFileForm.resx">
+      <DependentUpon>NewFileForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PicViewer.resx">
       <DependentUpon>PicViewer.cs</DependentUpon>
@@ -516,6 +534,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\dog.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\minimize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\minimize %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-add-file-20.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

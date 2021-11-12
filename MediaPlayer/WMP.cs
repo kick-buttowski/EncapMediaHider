@@ -69,6 +69,19 @@ namespace MediaPlayer
             axWindowsMediaPlayer1.settings.volume = trackBar1.Value;
         }
 
+        private void WMP_MouseClick(object sender, MouseEventArgs e)
+        {
+            TranspBack.toTop = true;
+            if (this.axWindowsMediaPlayer1.fullScreen)
+            {
+                this.axWindowsMediaPlayer1.fullScreen = false;
+            }
+            this.Hide();
+            if (miniVideoPlayer.wmpSide != null) miniVideoPlayer.wmpSide.Hide();
+            if (VideoPlayer.wmpSide1 != null) VideoPlayer.wmpSide1.Hide();
+            TranspBack.toTop = false;
+        }
+
         private void axWindowsMediaPlayer1_MouseUpEvent(object sender, _WMPOCXEvents_MouseUpEvent e)
         {
 
@@ -100,7 +113,7 @@ namespace MediaPlayer
 
             curr.Text = "00:00:00 / ";
             curr.Font = new Font("Consolas", 8, FontStyle.Regular);
-            curr.Location = new Point(this.Width - 162, 834);
+            curr.Location = new Point(this.Width - 162, 899);
             curr.BackColor = Color.FromArgb(50, 50, 50);
             curr.Size = new Size(160, 20);
             curr.ForeColor = Color.White;
@@ -109,17 +122,16 @@ namespace MediaPlayer
             curr.Margin = new Padding(0);
 
             newProgressBar = new NewProgressBar();
-            newProgressBar.Size = new Size(this.Width-3, 15);
-            newProgressBar.Location = new Point(0, 823);
+            newProgressBar.Size = new Size(this.Width, 15);
+            newProgressBar.Location = new Point(-2, 888);
             newProgressBar.Value = 0;
-            newProgressBar.ForeColor = mouseClickColor;
-            newProgressBar.BackColor = mouseClickColor;
+            newProgressBar.ForeColor = Color.Black;
+            newProgressBar.BackColor = Color.Black;
             newProgressBar.Margin = new Padding(0);
             this.Controls.Add(newProgressBar);
-            this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 30, 30));
-            axWindowsMediaPlayer1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, axWindowsMediaPlayer1.Width, axWindowsMediaPlayer1.Height, 30, 30));
-
-
+            this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 20, 20));
+            axWindowsMediaPlayer1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, axWindowsMediaPlayer1.Width, axWindowsMediaPlayer1.Height, 20, 20));
+            
         }
 
         private void miniProgress_MouseClick(object sender, MouseEventArgs e)
@@ -177,7 +189,7 @@ namespace MediaPlayer
             axWindowsMediaPlayer1.stretchToFit = true;
             this.duration = mediainfo.duration;
             miniPlayer = new MiniPlayer(this);
-            miniPlayer.Location = new Point(50, 688);
+            miniPlayer.Location = new Point(50, 690);
             axWindowsMediaPlayer1.settings.volume = Explorer.globalVol;
             axWindowsMediaPlayer1.Ctlcontrols.currentPosition = duration1;
             int shift = 1;
@@ -295,6 +307,7 @@ namespace MediaPlayer
 
                 if (keyCode == Keys.Back || keyCode == Keys.Escape)
                 {
+                    TranspBack.toTop = true;
                     if (this.axWindowsMediaPlayer1.fullScreen)
                     {
                         this.axWindowsMediaPlayer1.fullScreen = false;
@@ -302,6 +315,7 @@ namespace MediaPlayer
                     this.Hide();
                     if (miniVideoPlayer.wmpSide != null) miniVideoPlayer.wmpSide.Hide();
                     if (VideoPlayer.wmpSide1 != null) VideoPlayer.wmpSide1.Hide();
+                    TranspBack.toTop = false;
                 }
                 else 
                 if (!keyLock)
@@ -389,7 +403,8 @@ namespace MediaPlayer
                         var engine = new Engine();
                         var inputFile = new MediaFile { Filename = fileName };
                         var options = new ConversionOptions { Seek = TimeSpan.FromMilliseconds(c) };
-                        var outputFile = new MediaFile { Filename = (isShort == null ? (wmpFi.DirectoryName + "\\Pics\\") : (wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")+1))) + wmpDi.Name + "-" + c + ".jpg" };
+                        var outputFile = new MediaFile { Filename = (isShort == null ? (wmpFi.DirectoryName + "\\Pics\\") : 
+                            (wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")+1)))/*"C:\\Users\\Harsha Vardhan\\Videos\\"*/ + wmpDi.Name + "-" + c + ".jpg" };
                         engine.GetThumbnail(inputFile, outputFile, options);
                     }
 

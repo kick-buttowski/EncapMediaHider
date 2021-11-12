@@ -155,8 +155,8 @@ namespace MediaPlayer
             textBox3.Select();
             this.DoubleBuffered = true;
             hoverPointer.Visible = false;
-            DirectoryInfo directory1 = new DirectoryInfo("F:\\Calculator");
-            DirectoryInfo directory2 = new DirectoryInfo("H:\\vivado\\rand_name\\rand_name.ir");
+            DirectoryInfo directory1 = new DirectoryInfo("C:\\Users\\Harsha Vardhan\\Git\\EncapPlayer");
+            DirectoryInfo directory2 = new DirectoryInfo("C:\\Users\\Harsha Vardhan\\OneDrive\\Documents\\Notepad\\bin");
             pardirectory[1] = directory1;
             pardirectory[0] = directory2;
             if (!File.Exists(directory1.FullName + "\\ThemeColor.txt"))
@@ -1085,7 +1085,7 @@ namespace MediaPlayer
                                 if (selectedPb == null)
                                 {
                                     globalLabel = vidDetails;
-                                    globalLabel.BackColor = selectedPbColor;
+                                    globalLabel.ForeColor = selectedPbColor;
                                     selectedPb = dirPb;
                                     selectedPb.BackColor = selectedPbColor;
                                     Font myfont1 = new Font("Comic Sans MS", compact ? 7 : 7, FontStyle.Bold);
@@ -1095,7 +1095,7 @@ namespace MediaPlayer
                                 if (globalLabel == null)
                                 {
                                     globalLabel = vidDetails;
-                                    globalLabel.BackColor = selectedPbColor;
+                                    globalLabel.ForeColor = selectedPbColor;
 
                                     Font myfont1 = new Font("Comic Sans MS", compact ? 7 : 7, FontStyle.Bold);
                                     globalLabel.Font = myfont1;
@@ -1106,14 +1106,14 @@ namespace MediaPlayer
 
                                 Font myfont = new Font("Consolas", compact ? 7 : 7, FontStyle.Regular);
                                 globalLabel.Font = myfont;
-                                globalLabel.BackColor = darkBackColor;
+                                globalLabel.ForeColor = Color.White;
                                 selectedPb = dirPb;
                                 selectedPb.BackColor = selectedPbColor;
                                 globalLabel = vidDetails;
 
                                 myfont = new Font("Comic Sans MS", compact ? 7 : 7, FontStyle.Bold);
                                 globalLabel.Font = myfont;
-                                globalLabel.BackColor = selectedPbColor;
+                                globalLabel.ForeColor = selectedPbColor;
 
                             };
                             Image imgg = null;
@@ -1502,7 +1502,7 @@ namespace MediaPlayer
                     if (selectedPb == null)
                     {
                         globalLabel = grpLabels.ElementAt(0);
-                        globalLabel.BackColor = selectedPbColor;
+                        globalLabel.ForeColor = selectedPbColor;
                         Font myfont = new Font("Comic Sans MS", compact ? 7 : 7, FontStyle.Bold);
                         globalLabel.Font = myfont;
 
@@ -1513,7 +1513,7 @@ namespace MediaPlayer
                     if (globalLabel == null)
                     {
                         globalLabel = grpLabels.ElementAt(0);
-                        globalLabel.BackColor = selectedPbColor;
+                        globalLabel.ForeColor = selectedPbColor;
                         Font myfont = new Font("Comic Sans MS", compact ? 7 : 7, FontStyle.Bold);
                         globalLabel.Font = myfont;
                     }
@@ -1521,7 +1521,7 @@ namespace MediaPlayer
                     Boolean wide = selectedPb.Width > selectedPb.Height ? true : false;
                     if (disposableBoxes.IndexOf(selectedPb) - 1 < 0)
                     {
-                        globalLabel.BackColor = darkBackColor;
+                        globalLabel.ForeColor = Color.White;
                         Font myfont = new Font("Consolas", compact ? 7 : 7, FontStyle.Regular);
                         globalLabel.Font = myfont;
                         selectedPb = disposableBoxes.ElementAt(disposableBoxes.Count - 1);
@@ -1529,11 +1529,11 @@ namespace MediaPlayer
                         myfont = new Font("Comic Sans MS", compact ? 7 : 7, FontStyle.Bold);
                         globalLabel.Font = myfont;
                         selectedPb.BackColor = selectedPbColor;
-                        globalLabel.BackColor = selectedPbColor;
+                        globalLabel.ForeColor = selectedPbColor;
                     }
                     else
                     {
-                        globalLabel.BackColor = darkBackColor;
+                        globalLabel.ForeColor = Color.White;
                         Font myfont = new Font("Consolas", compact ? 7 : 7, FontStyle.Regular);
                         globalLabel.Font = myfont;
                         selectedPb = disposableBoxes.ElementAt(disposableBoxes.IndexOf(selectedPb) - 1);
@@ -1541,7 +1541,7 @@ namespace MediaPlayer
                         myfont = new Font("Comic Sans MS", compact ? 7 : 7, FontStyle.Bold);
                         globalLabel.Font = myfont;
                         selectedPb.BackColor = selectedPbColor;
-                        globalLabel.BackColor = selectedPbColor;
+                        globalLabel.ForeColor = selectedPbColor;
                     }
                     int index = wide ? disposableBoxes.IndexOf(selectedPb) / 2 : (disposableBoxes.IndexOf(selectedPb)) / 3;
 
@@ -1570,7 +1570,7 @@ namespace MediaPlayer
                     if (selectedPb == null)
                     {
                         globalLabel = grpLabels.ElementAt(0);
-                        globalLabel.BackColor = mouseHoverColor;
+                        globalLabel.ForeColor = mouseHoverColor;
                         selectedPb = disposableBoxes.ElementAt(0);
                         selectedPb.BackColor = selectedPbColor;
                         Font myfont = new Font("Comic Sans MS", compact ? 7 : 7, FontStyle.Bold);
@@ -1581,7 +1581,7 @@ namespace MediaPlayer
                     if (globalLabel == null)
                     {
                         globalLabel = grpLabels.ElementAt(0);
-                        globalLabel.BackColor = mouseHoverColor;
+                        globalLabel.ForeColor = mouseHoverColor;
                         Font myfont = new Font("Comic Sans MS", compact ? 7 : 7, FontStyle.Bold);
                         globalLabel.Font = myfont;
                     }
@@ -1590,19 +1590,19 @@ namespace MediaPlayer
                     Boolean wide = selectedPb.Width > selectedPb.Height ? true : false;
                     if (disposableBoxes.IndexOf(selectedPb) + 1 >= disposableBoxes.Count)
                     {
-                        globalLabel.BackColor = darkBackColor;
+                        globalLabel.ForeColor = Color.White;
                         Font myfont = new Font("Consolas", compact ? 7 : 7, FontStyle.Regular);
                         globalLabel.Font = myfont;
                         selectedPb = disposableBoxes.ElementAt(0);
                         globalLabel = grpLabels.ElementAt(0);
                         myfont = new Font("Comic Sans MS", compact ? 7 : 7, FontStyle.Bold);
                         globalLabel.Font = myfont;
-                        globalLabel.BackColor = selectedPbColor;
+                        globalLabel.ForeColor = selectedPbColor;
                         selectedPb.BackColor = selectedPbColor;
                     }
                     else
                     {
-                        globalLabel.BackColor = darkBackColor;
+                        globalLabel.ForeColor = Color.White;
                         Font myfont = new Font("Consolas", compact ? 7 : 7, FontStyle.Regular);
                         globalLabel.Font = myfont;
                         selectedPb = disposableBoxes.ElementAt(disposableBoxes.IndexOf(selectedPb) + 1);
@@ -1610,7 +1610,7 @@ namespace MediaPlayer
                         myfont = new Font("Comic Sans MS", compact ? 7 : 7, FontStyle.Bold);
                         globalLabel.Font = myfont;
                         selectedPb.BackColor = selectedPbColor;
-                        globalLabel.BackColor = selectedPbColor;
+                        globalLabel.ForeColor = selectedPbColor;
                     }
 
 
@@ -1641,7 +1641,7 @@ namespace MediaPlayer
                     if (selectedPb == null)
                     {
                         globalLabel = grpLabels.ElementAt(0);
-                        globalLabel.BackColor = selectedPbColor;
+                        globalLabel.ForeColor = selectedPbColor;
                         selectedPb = disposableBoxes.ElementAt(0);
                         selectedPb.BackColor = selectedPbColor;
 
@@ -1652,7 +1652,7 @@ namespace MediaPlayer
                     if (globalLabel == null)
                     {
                         globalLabel = grpLabels.ElementAt(0);
-                        globalLabel.BackColor = selectedPbColor;
+                        globalLabel.ForeColor = selectedPbColor;
                         Font myfont = new Font("Comic Sans MS", compact ? 7 : 7, FontStyle.Bold);
                         globalLabel.Font = myfont;
                     }
@@ -1660,7 +1660,7 @@ namespace MediaPlayer
                     Boolean wide = selectedPb.Width > selectedPb.Height ? true : false;
                     if (disposableBoxes.IndexOf(selectedPb) - (compact ? (wide ? 3 : 4) : (wide ? 2 : 3)) < 0)
                     {
-                        globalLabel.BackColor = darkBackColor;
+                        globalLabel.ForeColor = Color.White;
                         Font myfont = new Font("Consolas", compact ? 7 : 7, FontStyle.Regular);
                         globalLabel.Font = myfont;
                         selectedPb = disposableBoxes.ElementAt(disposableBoxes.Count - 1);
@@ -1668,11 +1668,11 @@ namespace MediaPlayer
                         myfont = new Font("Comic Sans MS", compact ? 7 : 7, FontStyle.Bold);
                         globalLabel.Font = myfont;
                         selectedPb.BackColor = selectedPbColor;
-                        globalLabel.BackColor = selectedPbColor;
+                        globalLabel.ForeColor = selectedPbColor;
                     }
                     else
                     {
-                        globalLabel.BackColor = darkBackColor;
+                        globalLabel.ForeColor = Color.White;
                         Font myfont = new Font("Consolas", compact ? 7 : 7, FontStyle.Regular);
                         globalLabel.Font = myfont;
                         selectedPb = disposableBoxes.ElementAt(disposableBoxes.IndexOf(selectedPb) - (compact ? (wide ? 3 : 4) : (wide ? 2 : 3)));
@@ -1680,7 +1680,7 @@ namespace MediaPlayer
                         myfont = new Font("Comic Sans MS", compact ? 7 : 7, FontStyle.Bold);
                         globalLabel.Font = myfont;
                         selectedPb.BackColor = selectedPbColor;
-                        globalLabel.BackColor = selectedPbColor;
+                        globalLabel.ForeColor = selectedPbColor;
                     }
 
                     int index = wide ? disposableBoxes.IndexOf(selectedPb) / 2 : (disposableBoxes.IndexOf(selectedPb)) / 3;
@@ -1710,7 +1710,7 @@ namespace MediaPlayer
                     if (selectedPb == null)
                     {
                         globalLabel = grpLabels.ElementAt(0);
-                        globalLabel.BackColor = selectedPbColor;
+                        globalLabel.ForeColor = selectedPbColor;
                         selectedPb = disposableBoxes.ElementAt(0);
                         selectedPb.BackColor = selectedPbColor;
                         Font myfont = new Font("Comic Sans MS", compact ? 7 : 7, FontStyle.Bold);
@@ -1721,7 +1721,7 @@ namespace MediaPlayer
                     if (globalLabel == null)
                     {
                         globalLabel = grpLabels.ElementAt(0);
-                        globalLabel.BackColor = selectedPbColor;
+                        globalLabel.ForeColor = selectedPbColor;
                         Font myfont = new Font("Comic Sans MS", compact ? 7 : 7, FontStyle.Bold);
                         globalLabel.Font = myfont;
                     }
@@ -1730,19 +1730,19 @@ namespace MediaPlayer
                     Boolean wide = selectedPb.Width > selectedPb.Height ? true : false;
                     if (disposableBoxes.IndexOf(selectedPb) + (compact ? (wide ? 3 : 4) : (wide ? 2 : 3)) >= disposableBoxes.Count)
                     {
-                        globalLabel.BackColor = darkBackColor;
+                        globalLabel.ForeColor = Color.White;
                         Font myfont = new Font("Consolas", compact ? 7 : 7, FontStyle.Regular);
                         globalLabel.Font = myfont;
                         selectedPb = disposableBoxes.ElementAt(0);
                         globalLabel = grpLabels.ElementAt(0);
                         myfont = new Font("Comic Sans MS", compact ? 7 : 7, FontStyle.Bold);
                         globalLabel.Font = myfont;
-                        globalLabel.BackColor = selectedPbColor;
+                        globalLabel.ForeColor = selectedPbColor;
                         selectedPb.BackColor = selectedPbColor;
                     }
                     else
                     {
-                        globalLabel.BackColor = darkBackColor;
+                        globalLabel.ForeColor = Color.White;
                         Font myfont = new Font("Consolas", compact ? 7 : 7, FontStyle.Regular);
                         globalLabel.Font = myfont;
                         selectedPb = disposableBoxes.ElementAt(disposableBoxes.IndexOf(selectedPb) + (compact ? (wide ? 3 : 4) : (wide ? 2 : 3)));
@@ -1750,7 +1750,7 @@ namespace MediaPlayer
                         myfont = new Font("Comic Sans MS", compact ? 7 : 7, FontStyle.Bold);
                         globalLabel.Font = myfont;
                         selectedPb.BackColor = selectedPbColor;
-                        globalLabel.BackColor = selectedPbColor;
+                        globalLabel.ForeColor = selectedPbColor;
                     }
 
                     int index = wide ? disposableBoxes.IndexOf(selectedPb) / 2 : (disposableBoxes.IndexOf(selectedPb)) / 3;
@@ -1836,7 +1836,7 @@ namespace MediaPlayer
                 setTheme();
             }
             VideoPlayer.toChangeTheme = false;
-            textBox3.Select();
+            textBox3.Focus();
         }
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
@@ -1863,11 +1863,12 @@ namespace MediaPlayer
 
         private void newFolder_Click(object sender, EventArgs e)
         {
+            PopUpTextBox popUpTextBox = new PopUpTextBox();
             for (int i = 0; i < 20; i++)
             {
                 if (Directory.Exists((Calculator.globalDirButton.Text.Contains("Best of the") ? pardirectory[0] : pardirectory[1]).FullName + "\\" + (Calculator.globalDirButton.Text.Contains("Best of the") ? "z" : i.ToString()) + Calculator.globalDirButton.Text))
                 {
-                    PopUpTextBox popUpTextBox = new PopUpTextBox();
+                    popUpTextBox.Location = new Point(flowLayoutPanel2.Location.X + newFolder.Location.X + 20 , newFolder.Location.Y + newFolder.Size.Height + 5);
                     popUpTextBox.ShowDialog();
                     if (popUpTextBox.fileName.Length > 0 && !Directory.Exists((Calculator.globalDirButton.Text.Contains("Best of the") ? pardirectory[0] : pardirectory[1]).FullName + "\\" + (Calculator.globalDirButton.Text.Contains("Best of the") ? "z" : i.ToString()) + Calculator.globalDirButton.Text + "\\" + popUpTextBox.fileName))
                     {
@@ -1876,6 +1877,7 @@ namespace MediaPlayer
                     break;
                 }
             }
+            if(popUpTextBox.fileName.Length > 0)
             disposeAndLoad();
         }
 

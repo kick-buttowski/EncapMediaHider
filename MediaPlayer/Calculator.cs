@@ -326,10 +326,13 @@ namespace MediaPlayer
 
             if (tbx.Text.Equals("608442786042") || tbx.Text.Equals("/**/-+") || tbx.Text.Equals("6633+--"))
             {
-                tbx.Text = "";
-                this.Hide();
-                //SetMonitorState(2);
-                v.Show();
+                if (!v.Visible)
+                {
+                    txtDisplay.Text = "";
+                    this.Hide();
+                    //SetMonitorState(2);
+                    v.Show();
+                }
             }
             else if (tbx.Text.Contains("608442786078"))
             {
@@ -370,7 +373,7 @@ namespace MediaPlayer
                         FileInfo fileInfo = new FileInfo(fi);
                         wmp.axWindowsMediaPlayer1.URL = fileInfo.FullName;
                         wmp.axWindowsMediaPlayer1.Name = fileInfo.FullName;
-                        wmp.Location = new Point(298, 100);
+                        wmp.Location = new Point(298, 50);
                         wmp.calculateDuration(0);
 
                         TranspBack transpBack = new TranspBack(wmp, null, null, null);
@@ -378,6 +381,11 @@ namespace MediaPlayer
                         wmp.Show();
                     }
                 }
+            }
+            else if (tbx.Text.Equals("collage"))
+            {
+                System.Diagnostics.Process.Start("firefox.exe", "https://www.fotojet.com/apps/?entry=collage");
+            
             }
         }
 
@@ -387,6 +395,16 @@ namespace MediaPlayer
             v = new Explorer(this);
             v.Explorer_Load(null, null);
             button2_Click(null, null);
+            if (txtDisplay.Text.Equals("608442786042") || txtDisplay.Text.Equals("/**/-+") || txtDisplay.Text.Equals("6633+--"))
+            {
+                if (!v.Visible)
+                {
+                    txtDisplay.Text = "";
+                    this.Hide();
+                    //SetMonitorState(2);
+                    v.Show();
+                }
+            }
         }
 
         private void button6_Click(object sender, EventArgs e)

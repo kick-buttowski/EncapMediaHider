@@ -18,6 +18,7 @@ namespace MediaPlayer
         int k = 0;
         List<PictureBox> vidPb = null;
         wmpSide wmpSide = null;
+        public static Boolean toTop = false;
 
         public TranspBack(WMP wmp, wmpSide wmpSide, VideoPlayer videoPlayer, List<PictureBox> vidPb)
         {
@@ -80,7 +81,17 @@ namespace MediaPlayer
                     this.Dispose();
                     GC.Collect();
                     this.Close();
-                    Explorer.wmpOnTop.Show();
+                if (toTop) Explorer.wmpOnTop.Show();
+                else
+                {
+                    Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.pause();
+                    Explorer.wmpOnTop.axWindowsMediaPlayer1.currentPlaylist.clear();
+                    Explorer.wmpOnTop.axWindowsMediaPlayer1.URL = "";
+                    Explorer.wmpOnTop.axWindowsMediaPlayer1.Dispose();
+                    Explorer.wmpOnTop.Dispose();
+                    Explorer.wmpOnTop = null;
+                    return;
+                }
                 }
                 catch { }
         }

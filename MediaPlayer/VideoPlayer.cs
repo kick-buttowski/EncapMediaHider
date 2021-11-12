@@ -14,6 +14,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -181,6 +182,8 @@ namespace MediaPlayer
 
             if (!Directory.Exists(mainDi + "\\Pics\\Affinity")) { Directory.CreateDirectory(mainDi + "\\Pics\\Affinity"); }
             if (!Directory.Exists(mainDi + "\\Pics\\Affinity\\imgPB")) { Directory.CreateDirectory(mainDi + "\\Pics\\Affinity\\imgPB"); }
+
+            if (!Directory.Exists(mainDi + "\\Online")) { Directory.CreateDirectory(mainDi + "\\Online"); }
 
             if (!File.Exists(mainDi + "\\links.txt")) {
                 FileStream fi = File.Create(mainDi.FullName + "\\links.txt");
@@ -383,7 +386,7 @@ namespace MediaPlayer
             if (img4 == null)
             {
                 String fName = File.ReadAllText(mainDi.FullName + "\\disPic.txt").Trim();
-                if(fName!="")
+                if(fName!="" && File.Exists(fName))
                     img4 = Image.FromFile(fName);
             }
 
@@ -680,7 +683,7 @@ namespace MediaPlayer
                     largeImages.Add("Gifs", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
                     try
                     {
-                        setToolTip("LargeGifs", img, picturesBtn);
+                        setToolTip("LargeGifs", img, gifsBtn);
 
                     }
                     catch { }
@@ -725,7 +728,7 @@ namespace MediaPlayer
             button6.BackColor = darkBackColor;
             button7.BackColor = darkBackColor;
             button8.BackColor = darkBackColor;
-            trackBar1.BackColor = kindaDark;
+            trackBar1.BackColor = lightBackColor;
             divider.BackColor = kindaDark;
             flowLayoutPanel3.BackColor = lightBackColor;
             flowLayoutPanel1.BackColor = darkBackColor;
@@ -888,7 +891,6 @@ namespace MediaPlayer
 
             //textBox1.BackColor = lightBackColor;
             //textBox1.ForeColor = Color.White;
-            trackBar1.BackColor = kindaDark;
             button9.FlatAppearance.MouseOverBackColor = mouseClickColor;
             button9.FlatAppearance.MouseDownBackColor = mouseClickColor;
             button10.FlatAppearance.MouseOverBackColor = mouseClickColor;
@@ -1724,10 +1726,24 @@ namespace MediaPlayer
                 }
             }
 
+            String[] webLinkStr = File.ReadAllLines(mainDi.FullName + "\\webLinks.txt");
+
+
             if (isChecked)
             {
                 priorityList = GetRandomFiles();
             }
+
+
+            Label dupeLabel2 = new Label();
+            dupeLabel2.Text = "Local Videos";
+            dupeLabel2.Font = new Font("Segoe UI", 22, FontStyle.Bold);
+            dupeLabel2.BackColor = darkBackColor;
+            dupeLabel2.Size = new Size(1610, 55);
+            dupeLabel2.ForeColor = Color.White;
+            dupeLabel2.TextAlign = ContentAlignment.MiddleLeft;
+            dupeLabel2.Margin = new Padding(0, 8, 0, 0);
+            flowLayoutPanel1.Controls.Add(dupeLabel2);
 
             String resumeTxt = File.ReadAllText(mainDi.FullName + "\\resume.txt");
             newProgressBar.Maximum = priorityList.Count;
@@ -1758,6 +1774,8 @@ namespace MediaPlayer
                 }
                 toSort = false;
             }
+
+
             for (int i = 0; i < priorityList.Count; i++)
             {
                 FileInfo fileInfo = null;
@@ -1904,6 +1922,7 @@ namespace MediaPlayer
 
             }
 
+
             File.WriteAllText(mainDi.FullName + "\\resume.txt", resumeTxt);
             for (int y = 0; y < 3 - meta.Count; y++)
             {
@@ -1936,6 +1955,13 @@ namespace MediaPlayer
                 dupeLabel.Margin = new Padding(5, 0, 17, 50);
                 flowLayoutPanel1.Controls.Add(dupeLabel);
             }
+
+            for (int y = 0; y < 3 - meta.Count; y++)
+            {
+                PictureBox pb = new PictureBox();
+                pb.Size = new Size(515, 1);
+                flowLayoutPanel1.Controls.Add(pb);
+            }
             meta.Clear();
             /*Button dummy = new Button();
             dummy.Text = "";
@@ -1946,7 +1972,140 @@ namespace MediaPlayer
             dummy.FlatStyle = FlatStyle.Flat;
             dummy.FlatAppearance.BorderSize = 0;
             flowLayoutPanel1.Controls.Add(dummy);*/
-            if(priorityList.Count == 0)
+            //flowLayoutPanel1.Padding = new Padding(0,0,0,0);
+            Label dupeLabel1 = new Label();
+            dupeLabel1.Text = "Online Videos";
+            dupeLabel1.Font = new Font("Segoe UI", 22, FontStyle.Bold);
+            dupeLabel1.BackColor = darkBackColor;
+            dupeLabel1.Size = new Size(1610, 55);
+            dupeLabel1.ForeColor = Color.White;
+            dupeLabel1.TextAlign = ContentAlignment.MiddleLeft;
+            dupeLabel1.Margin = new Padding(0, 15, 0, 5);
+            flowLayoutPanel1.Controls.Add(dupeLabel1);
+            meta.Clear();
+            for (int i = 0; i < webLinkStr.Length; i++)
+            {
+                if (webLinkStr[i].Trim().Length == 0)
+                    continue;
+                String[] splitted = webLinkStr[i].Split('@');
+                if (splitted.Length < 2)
+                    continue;
+                string htmlCode = "";
+                using (WebClient client = new WebClient())
+                {
+                    htmlCode = client.DownloadString(splitted[1]);
+                }
+                String videoUrl = getVideoUrl(htmlCode, splitted[1]);
+                PictureBox pb = new PictureBox();
+                pb.Dock = DockStyle.Top;
+                pb.Name = splitted[0];
+                pb.Size = new Size(515, 292);
+                pb.SizeMode = PictureBoxSizeMode.StretchImage;
+                pb.Cursor = Cursors.Hand;
+                pb.ContextMenuStrip = contextMenuStrip4;
+                pb.SizeMode = PictureBoxSizeMode.Zoom;
+                pb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, pb.Width, pb.Height, 18, 18));
+
+                if (Directory.Exists(mainDi.FullName + "\\Online\\" + pb.Name))
+                {
+                    DirectoryInfo picsDir = new DirectoryInfo(mainDi.FullName + "\\Online\\" + pb.Name);
+                    List<FileInfo> sfi = picsDir.GetFiles().SkipWhile(s => s.FullName.EndsWith(".txt")).ToList();
+
+                    if (sfi.Count > 0)
+                    {
+                        foreach (FileInfo fi in sfi)
+                        {
+                            if (fi.Name.StartsWith("resized"))
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                ResizeImage(fi.FullName, fi.DirectoryName + "\\resized_" + fi.Name + ".jpg", 0, 292, 515, 0);
+                                File.Delete(fi.FullName);
+                            }
+                        }
+                        sfi = picsDir.GetFiles().SkipWhile(s => s.FullName.EndsWith(".txt")).ToList();
+                        Random rand = new Random();
+                        pb.Image = Image.FromFile(sfi.ElementAt(rand.Next(sfi.Count)).FullName);
+                    }
+                }
+                pb.Margin = new Padding(5, 5, 17, 0);
+
+                pb.MouseClick += (s, args) =>
+                {
+                    Process.Start("firefox.exe", videoUrl);
+                    /*Browser browser = new Browser();
+                    browser.axWindowsMediaPlayer1.URL = splitted[1];
+                    browser.Show();*/
+                };
+
+
+                Label vidDetails = new Label();
+                vidDetails.Text = pb.Name;
+                vidDetails.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+                vidDetails.BackColor = darkBackColor;
+                vidDetails.Size = new Size(515, 24);
+                vidDetails.ForeColor = Color.White;
+                vidDetails.TextAlign = ContentAlignment.TopCenter;
+                vidDetails.Padding = new Padding(0);
+                vidDetails.Margin = new Padding(5, 2, 17, 20);
+                vidDetails.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, vidDetails.Width, vidDetails.Height, 8, 8));
+                meta.Add(vidDetails);
+
+                pb.MouseEnter += (s, args) =>
+                {
+                    pb.BackColor = mouseClickColor;
+                    vidDetails.BackColor = mouseClickColor;
+                };
+
+                pb.MouseLeave += (s, args) =>
+                {
+                    pb.BackColor = darkBackColor;
+                    vidDetails.BackColor = darkBackColor;
+                };
+
+                if (meta.Count == 3)
+                {
+                    foreach (Label label in meta)
+                    {
+                        flowLayoutPanel1.Controls.Add(label);
+                    }
+
+                    foreach (Label label in meta)
+                    {
+                        String[] metaData = label.Text.Split('\n');
+                        if (metaData.Length == 2)
+                            label.Text = metaData[1];
+                        Label dupeLabel = new Label();
+                        dupeLabel.Text = metaData[0];
+                        dupeLabel.Font = new Font("Segoe UI", 9, FontStyle.Regular);
+                        dupeLabel.BackColor = darkBackColor;
+                        dupeLabel.Size = new Size(515, 24);
+                        dupeLabel.ForeColor = Color.White;
+                        dupeLabel.TextAlign = ContentAlignment.TopCenter;
+                        dupeLabel.Padding = new Padding(0);
+                        dupeLabel.Margin = new Padding(5, 0, 17, 6);
+                        flowLayoutPanel1.Controls.Add(dupeLabel);
+                    }
+                    meta.Clear();
+                }
+
+                flowLayoutPanel1.Controls.Add(pb);
+            }
+
+            for (int y = 0; y < 3 - meta.Count; y++)
+            {
+                PictureBox pb = new PictureBox();
+                pb.Size = new Size(515, 1);
+                flowLayoutPanel1.Controls.Add(pb);
+            }
+            foreach (Label label in meta)
+            {
+                flowLayoutPanel1.Controls.Add(label);
+            }
+
+            if (priorityList.Count == 0)
             {
                 newProgressBar.Maximum = 100;
                 newProgressBar.Value = 100;
@@ -1957,6 +2116,43 @@ namespace MediaPlayer
             }
             button5.Text = button5.Text.Substring(0, button5.Text.Contains("(") ? button5.Text.IndexOf("(") : button5.Text.Length) + "(" + priorityList.Count + ")";
             miniVideoPlayer = new miniVideoPlayer(videosPb);
+        }
+
+        private String getVideoUrl(String html, String url)
+        {
+            if (url.Contains("hqporner.com"))
+            {
+
+                int startAt = html.IndexOf("'/blocks/altplayer.php?i=//") + "'/blocks/altplayer.php?i=//".Length;
+                int length = html.Substring(startAt).IndexOf("'");
+
+                /*string htmlCode = "";
+                using (WebClient client = new WebClient())
+                {
+                    String secondLevel = "https://" + html.Substring(startAt, length);
+                    htmlCode = client.DownloadString(secondLevel);
+                }*/
+                return html.Substring(startAt, length);
+            }
+            else if (url.Contains("goodporn.to"))
+            {
+                int startAt = html.IndexOf("Download:");
+                String trimmed = html.Substring(startAt);
+
+                String[] htmlLines = trimmed.Split('\n');
+                String returnLink = "";
+                foreach(String str in htmlLines)
+                {
+                    if (str.Contains("href"))
+                    {
+                        returnLink = str.Substring(str.IndexOf("href=\"") + 6);
+                        returnLink = returnLink.Substring(0,returnLink.IndexOf("/?download=true"));
+                    }
+                    if (str.Contains("</div>"))
+                        return returnLink;
+                }
+            }
+            return url;
         }
 
         private void clearImageStackToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2147,11 +2343,14 @@ namespace MediaPlayer
             myEncoderParameters = new EncoderParameters(1);
             myEncoderParameter = new EncoderParameter(myEncoder, 100L);
             myEncoderParameters.Param[0] = myEncoderParameter;
-
-            bmp.Save(DestPath, myImageCodecInfo, myEncoderParameters);
-            //bmp.Save(DestPath);
-            bmp.Dispose();
-            GC.Collect();
+            try
+            {
+                bmp.Save(DestPath, myImageCodecInfo, myEncoderParameters);
+                //bmp.Save(DestPath);
+                bmp.Dispose();
+                GC.Collect();
+            }
+            catch { }
         }
 
         private static ImageCodecInfo GetEncoderInfo(String mimeType)
@@ -2684,6 +2883,31 @@ namespace MediaPlayer
                         File.Move(fi, dirPath + "\\" + fileInfo.Name.Substring(0, fileInfo.Name.LastIndexOf(".")) + k + fileInfo.Extension);
                         break;
                     }
+                }
+
+                if (globalBtn.Text.Equals("Videos"))
+                {
+                    videosBtn_Click(null, null);
+                }
+                else if (globalBtn.Text.Equals("Pictures"))
+                {
+                    picturesBtn_Click(null, null);
+                }
+                else if (globalBtn.Text.Equals("Gif Vid"))
+                {
+                    shortVideosBtn_Click(null, null);
+                }
+                else if (globalBtn.Text.Equals("4K"))
+                {
+                    fourKBtn_Click(null, null);
+                }
+                else if (globalBtn.Text.Equals("Gifs"))
+                {
+                    gifsBtn_Click(null, null);
+                }
+                else if (globalBtn.Text.Equals("Affinity"))
+                {
+                    bsButton_Click(null, null);
                 }
             }
         }
@@ -3784,6 +4008,12 @@ namespace MediaPlayer
                 refreshToolStripMenuItem_Click(null, null);
                 isCropped = false;
             }
+
+            if (NewFileForm.newFile)
+            {
+                toolStripMenuItem10_Click(null, null);
+                NewFileForm.newFile = false;
+            }
         }
 
         private void ctlDisposer_DoWork(object sender, DoWorkEventArgs e)
@@ -3869,37 +4099,31 @@ namespace MediaPlayer
             {
                 filePath = mainDi.FullName;
                 loadFiles(filePath);
-                videosBtn_Click(null, null);
             }
             else if (globalBtn.Text.Equals("Pictures"))
             {
                 filePath = mainDi.FullName + "\\Pics";
                 loadFiles(filePath);
-                picturesBtn_Click(null, null);
             }
             else if (globalBtn.Text.Equals("Gif Vid"))
             {
                 filePath = mainDi.FullName + "\\Pics\\GifVideos";
                 loadFiles(filePath);
-                shortVideosBtn_Click(null, null);
             }
             else if (globalBtn.Text.Equals("4K"))
             {
                 filePath = mainDi.FullName + "\\Pics\\kkkk";
                 loadFiles(filePath);
-                fourKBtn_Click(null, null);
             }
             else if (globalBtn.Text.Equals("Gifs"))
             {
                 filePath = mainDi.FullName + "\\Pics\\Gifs";
                 loadFiles(filePath);
-                gifsBtn_Click(null, null);
             }
             else if (globalBtn.Text.Equals("Affinity"))
             {
                 filePath = mainDi.FullName + "\\Pics\\Affinity";
                 loadFiles(filePath);
-                bsButton_Click(null, null);
             }
             isRefresh = false;
         }
@@ -4250,7 +4474,11 @@ namespace MediaPlayer
 
         private void addFile_Click(object sender, EventArgs e)
         {
-            toolStripMenuItem10_Click(null, null);
+            Application.RemoveMessageFilter(this);
+            NewFileForm newFileForm = new NewFileForm(mainDi);
+            newFileForm.Location = new Point(addFile.Location.X, addFile.Location.Y + addFile.Size.Height + 8);
+            newFileForm.Show();
+            //toolStripMenuItem10_Click(null, null);
         }
 
         private void button11_Click(object sender, EventArgs e)
@@ -4605,6 +4833,101 @@ namespace MediaPlayer
                 gifsBtn_Click(null, null);
                 isRefresh = false;
             }
+        }
+
+        private void toolStripMenuItem48_Click(object sender, EventArgs e)
+        {
+            PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+            Process.Start(Directory.GetParent(pb.Name).FullName);
+        }
+
+        private void toolStripMenuItem49_Click(object sender, EventArgs e)
+        {
+            PictureBox pb = (PictureBox)contextMenuStrip2.SourceControl;
+            Process.Start(Directory.GetParent(pb.Name).FullName);
+        }
+
+        private void toolStripMenuItem50_Click(object sender, EventArgs e)
+        {
+            PictureBox pb = (PictureBox)contextMenuStrip3.SourceControl;
+            Process.Start(Directory.GetParent(pb.Name).FullName);
+        }
+
+        private void toolStripMenuItem70_Click(object sender, EventArgs e)
+        {
+            PictureBox pb = (PictureBox)contextMenuStrip4.SourceControl;
+            Application.RemoveMessageFilter(this);
+            PopUpTextBox popUpTextBox = new PopUpTextBox();
+            popUpTextBox.Location = new Point(pb.Location.X + flowLayoutPanel1.Location.X + pb.Width/2, pb.Location.Y + flowLayoutPanel1.Location.Y);
+            popUpTextBox.TopMost = true;
+            popUpTextBox.ShowDialog();
+            if (popUpTextBox.fileName.Length > 0)
+            {
+                String webLinks = File.ReadAllText(mainDi + "\\webLinks.txt");
+                int k = 0;
+                while (Directory.Exists(mainDi + "\\Online\\" + mainDi.Name + k))
+                {
+                    k++;
+                }
+                Directory.CreateDirectory(mainDi + "\\Online\\" + (popUpTextBox.name.Length > 0 ? popUpTextBox.name : (mainDi.Name + k)));
+                webLinks = webLinks + "\n" + (popUpTextBox.name.Length > 0 ? popUpTextBox.name : (mainDi.Name + k)) + "@" + popUpTextBox.fileName;
+                File.WriteAllText(mainDi + "\\webLinks.txt", webLinks);
+                refreshToolStripMenuItem_Click(null, null);
+            }
+            Application.AddMessageFilter(this);
+        }
+
+        private void toolStripMenuItem51_Click(object sender, EventArgs e)
+        {
+            PictureBox pb = null;
+            try {
+                pb = (PictureBox)(contextMenuStrip1.SourceControl);
+            }
+            catch {}
+
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "All files (*.*)|*.*";
+
+            ofd.Multiselect = true;
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                foreach (String fi in ofd.FileNames)
+                {
+                    FileInfo fileInfo = new FileInfo(fi);
+                    for (int k = 0; k < 50; k++)
+                    {
+                        if (File.Exists(mainDi + "\\Online\\" + k + fileInfo.Name))
+                            continue;
+                        File.Move(fi, mainDi + "\\Online\\" + k +fileInfo.Name);
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void toolStripMenuItem62_Click(object sender, EventArgs e)
+        {
+            PictureBox pb = null;
+            try
+            {
+                pb = (PictureBox)(contextMenuStrip4.SourceControl);
+            }
+            catch { }
+
+            String[] strArray = File.ReadAllLines(mainDi.FullName + "\\webLinks.txt");
+            String finalized = "";
+            foreach(String str in strArray)
+            {
+                if (str.Contains(pb.Name + "@"))
+                    continue;
+                finalized = finalized + str + "\n";
+            }
+            File.WriteAllText(mainDi.FullName + "\\webLinks.txt", finalized);
+            if(Directory.Exists(mainDi.FullName + "\\Online\\" + pb.Name))
+            {
+                Directory.Delete(mainDi.FullName + "\\Online\\" + pb.Name);
+            }
+            refreshToolStripMenuItem_Click(null, null);
         }
 
         private void setDp_Click(object sender, EventArgs e)
@@ -5201,7 +5524,8 @@ namespace MediaPlayer
                         catch { }
                         if (picBox.Length > 0)
                             picBox[0].ImageLocation = di.FullName + "\\resized_" + fileName + ".jpg";
-                        return Image.FromFile(di.FullName + "\\resized_" + fileName + ".jpg");
+                        if(File.Exists(di.FullName + "\\resized_" + fileName + ".jpg"))return Image.FromFile(di.FullName + "\\resized_" + fileName + ".jpg");
+                        return null;
                     }
                 }
 
@@ -5220,9 +5544,9 @@ namespace MediaPlayer
                 sec = 3 * sec;
                 Image img = null;
                 var options = new ConversionOptions { Seek = TimeSpan.FromSeconds(sec) };
-                engine.GetThumbnail(inputFile, outputFile, options);
                 try
                 {
+                    engine.GetThumbnail(inputFile, outputFile, options);
                     img = Image.FromFile(di.FullName + "\\" + fileName + ".jpg");
 
                     if (picBox.Length > 0)
