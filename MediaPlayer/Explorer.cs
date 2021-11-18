@@ -156,7 +156,7 @@ namespace MediaPlayer
             this.DoubleBuffered = true;
             hoverPointer.Visible = false;
             DirectoryInfo directory1 = new DirectoryInfo("C:\\Users\\Harsha Vardhan\\Git\\EncapPlayer");
-            DirectoryInfo directory2 = new DirectoryInfo("C:\\Users\\Harsha Vardhan\\OneDrive\\Documents\\Notepad\\bin");
+            DirectoryInfo directory2 = new DirectoryInfo("C:\\Users\\Harsha Vardhan\\OneDrive\\Documents\\Notepad\\build\\release");
             pardirectory[1] = directory1;
             pardirectory[0] = directory2;
             if (!File.Exists(directory1.FullName + "\\ThemeColor.txt"))

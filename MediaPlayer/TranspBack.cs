@@ -60,7 +60,17 @@ namespace MediaPlayer
                         this.Hide();
                     Application.RemoveMessageFilter(wmp);
                     Application.AddMessageFilter(videoPlayer);
-                    wmp.timer1.Enabled = false;
+
+
+                foreach (PictureBox pb in wmp.disposePb)
+                {
+                    pb.Image.Dispose();
+                    pb.Dispose();
+                    pb.Tag = null;
+                }
+                wmp.disposePb.Clear();
+
+                wmp.timer1.Enabled = false;
                     wmp.axWindowsMediaPlayer1.Ctlcontrols.pause();
                     wmp.axWindowsMediaPlayer1.currentPlaylist.clear();
                     wmp.axWindowsMediaPlayer1.URL = "";

@@ -180,7 +180,7 @@ namespace MediaPlayer
                 wmp = new WMP(pb);
                 wmp.axWindowsMediaPlayer1.URL = fileInfo.FullName;
                 wmp.axWindowsMediaPlayer1.Name = fileInfo.FullName;
-                wmp.Location = new Point(298, 38);
+                wmp.Location = new Point(298, 28);
                 wmp.calculateDuration(VideoPlayer.isShort?0:axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
 
                 wmpSide = new wmpSide(wmp, null, false);
@@ -256,7 +256,7 @@ namespace MediaPlayer
             wmp = new WMP(pb);
             wmp.axWindowsMediaPlayer1.URL = fileInfo.FullName;
             wmp.axWindowsMediaPlayer1.Name = fileInfo.FullName;
-            wmp.Location = new Point(298, 38);
+            wmp.Location = new Point(298, 28);
             wmp.calculateDuration(VideoPlayer.isShort?0:(pastPos==0 ? axWindowsMediaPlayer1.Ctlcontrols.currentPosition : pastPos));
 
             wmpSide = new wmpSide(wmp,null, false);
