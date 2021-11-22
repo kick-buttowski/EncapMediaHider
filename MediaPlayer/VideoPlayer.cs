@@ -5494,9 +5494,16 @@ namespace MediaPlayer
 
             if (File.Exists(di.FullName + "\\resized_" + fi.Name + ".jpg"))
             {
-                if(picBox.Length>0)
-                picBox[0].ImageLocation = di.FullName + "\\resized_" + fi.Name + ".jpg";
-                return Image.FromFile(di.FullName + "\\resized_" + fi.Name + ".jpg");
+                if (File.Exists(di.FullName + "\\" + fi.Name + ".jpg"))
+                {
+                    File.Delete(di.FullName + "\\resized_" + fi.Name + ".jpg");
+                }
+                else
+                {
+                    if (picBox.Length > 0)
+                        picBox[0].ImageLocation = di.FullName + "\\resized_" + fi.Name + ".jpg";
+                    return Image.FromFile(di.FullName + "\\resized_" + fi.Name + ".jpg");
+                }
             }
 
             foreach (FileInfo file in di.GetFiles())

@@ -69,7 +69,7 @@ namespace MediaPlayer
                 wmp.axWindowsMediaPlayer1.Name = smallPb.Name;
                 wmp.textBox5.Text = Path.GetFileName(wmp.axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(wmp.axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "\t\tDura:").Replace("Size^ ", "\tSize:");
                 if (isShort)
-                    wmp.calculateDuration(0, true);
+                    wmp.calculateDuration(0);
                 else
                     wmp.calculateDuration(0);
 

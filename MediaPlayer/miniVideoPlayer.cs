@@ -143,7 +143,7 @@ namespace MediaPlayer
             {
                 timer1.Enabled = true;
                 timer1.Interval = 4000;
-                whereAt = 1.0;
+                axWindowsMediaPlayer1.settings.rate = 1.2;
             }
         }
 
@@ -177,20 +177,16 @@ namespace MediaPlayer
                 }
                 catch { }
 
-                wmp = new WMP(pb);
+                wmp = new WMP(pb,null, videosPb);
                 wmp.axWindowsMediaPlayer1.URL = fileInfo.FullName;
                 wmp.axWindowsMediaPlayer1.Name = fileInfo.FullName;
-                wmp.Location = new Point(298, 28);
+                wmp.Location = new Point(0, 28);
                 wmp.calculateDuration(VideoPlayer.isShort?0:axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
-
-                wmpSide = new wmpSide(wmp, null, false);
-                wmpSide.fillUpFP1(videosPb);
-                wmpSide.Location = new Point(0, 10);
 
                 transpBack = new TranspBack(wmp, wmpSide, null, null);
                 transpBack.Show();
                 wmp.Show();
-                wmpSide.Show();
+                //wmpSide.Show();
             }
         }
 
@@ -253,21 +249,21 @@ namespace MediaPlayer
             }
             catch { }
 
-            wmp = new WMP(pb);
+            wmp = new WMP(pb,null, videosPb);
             wmp.axWindowsMediaPlayer1.URL = fileInfo.FullName;
             wmp.axWindowsMediaPlayer1.Name = fileInfo.FullName;
-            wmp.Location = new Point(298, 28);
+            wmp.Location = new Point(0, 28);
             wmp.calculateDuration(VideoPlayer.isShort?0:(pastPos==0 ? axWindowsMediaPlayer1.Ctlcontrols.currentPosition : pastPos));
 
             wmpSide = new wmpSide(wmp,null, false);
             wmpSide.fillUpFP1(videosPb);
-            wmpSide.Location = new Point(0, 10);
+            wmpSide.Location = new Point(0, 0);
             wmpSide.BackColor = Explorer.darkBackColor;
 
             transpBack = new TranspBack(wmp, wmpSide, null, null);
             transpBack.Show();
             wmp.Show();
-            wmpSide.Show();
+            //wmpSide.Show();
         }
     }
 }

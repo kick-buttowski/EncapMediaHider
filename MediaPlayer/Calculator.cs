@@ -37,6 +37,7 @@ namespace MediaPlayer
         public static Explorer v;
         public static Boolean disCef = false;
         public static TextBox globalCalcTb = null;
+        public static List<String> staleDeletes = new List<string>(); 
 
 
         public Calculator()
@@ -369,7 +370,7 @@ namespace MediaPlayer
 
                     foreach (String fi in ofd.FileNames)
                     {
-                        WMP wmp = new WMP(null);
+                        WMP wmp = new WMP(null,null,null);
                         FileInfo fileInfo = new FileInfo(fi);
                         wmp.axWindowsMediaPlayer1.URL = fileInfo.FullName;
                         wmp.axWindowsMediaPlayer1.Name = fileInfo.FullName;
@@ -449,6 +450,11 @@ namespace MediaPlayer
                 }
             });
             lala.Start();
+
+        }
+
+        private void Calculator_FormClosed(object sender, FormClosedEventArgs e)
+        {
 
         }
 

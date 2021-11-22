@@ -155,8 +155,8 @@ namespace MediaPlayer
             this.button9 = new System.Windows.Forms.Button();
             this.contextMenuStrip4 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem52 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem54 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem70 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem54 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem72 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem51 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem62 = new System.Windows.Forms.ToolStripMenuItem();
@@ -1813,7 +1813,7 @@ namespace MediaPlayer
             this.toolStripMenuItem51,
             this.toolStripMenuItem62});
             this.contextMenuStrip4.Name = "contextMenuStrip1";
-            this.contextMenuStrip4.Size = new System.Drawing.Size(233, 176);
+            this.contextMenuStrip4.Size = new System.Drawing.Size(233, 148);
             // 
             // toolStripMenuItem52
             // 
@@ -1825,15 +1825,6 @@ namespace MediaPlayer
             this.toolStripMenuItem52.Text = "Go Back";
             this.toolStripMenuItem52.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click_1);
             // 
-            // toolStripMenuItem54
-            // 
-            this.toolStripMenuItem54.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.toolStripMenuItem54.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripMenuItem54.Name = "toolStripMenuItem54";
-            this.toolStripMenuItem54.Size = new System.Drawing.Size(232, 24);
-            this.toolStripMenuItem54.Text = "Refresh";
-            this.toolStripMenuItem54.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
-            // 
             // toolStripMenuItem70
             // 
             this.toolStripMenuItem70.BackColor = System.Drawing.Color.White;
@@ -1842,6 +1833,15 @@ namespace MediaPlayer
             this.toolStripMenuItem70.Size = new System.Drawing.Size(232, 24);
             this.toolStripMenuItem70.Text = "Add a web link";
             this.toolStripMenuItem70.Click += new System.EventHandler(this.toolStripMenuItem70_Click);
+            // 
+            // toolStripMenuItem54
+            // 
+            this.toolStripMenuItem54.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.toolStripMenuItem54.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripMenuItem54.Name = "toolStripMenuItem54";
+            this.toolStripMenuItem54.Size = new System.Drawing.Size(232, 24);
+            this.toolStripMenuItem54.Text = "Refresh";
+            this.toolStripMenuItem54.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // toolStripMenuItem72
             // 

@@ -156,7 +156,7 @@ namespace MediaPlayer
             this.DoubleBuffered = true;
             hoverPointer.Visible = false;
             DirectoryInfo directory1 = new DirectoryInfo("C:\\Users\\Harsha Vardhan\\Git\\EncapPlayer");
-            DirectoryInfo directory2 = new DirectoryInfo("C:\\Users\\Harsha Vardhan\\OneDrive\\Documents\\Notepad\\build\\release");
+            DirectoryInfo directory2 = new DirectoryInfo("C:\\Users\\Harsha Vardhan\\OneDrive\\Documents\\Visual Studio 2019\\Code Snippets\\XML\\My Xml Snippets");
             pardirectory[1] = directory1;
             pardirectory[0] = directory2;
             if (!File.Exists(directory1.FullName + "\\ThemeColor.txt"))
@@ -1928,6 +1928,11 @@ namespace MediaPlayer
             Calculator.globalTypeButton.ForeColor = mouseClickColor;
 
             textBox3.Focus();
+        }
+
+        private void Explorer_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
         }
 
         private void calcButton_MouseLeave(object sender, EventArgs e)

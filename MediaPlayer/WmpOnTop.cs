@@ -142,7 +142,7 @@ namespace MediaPlayer
 
                 if (e.fY - y < -20)
                 {
-                    WMP wmp = new WMP(null);
+                    WMP wmp = new WMP(null,null,null);
                     wmp.axWindowsMediaPlayer1.URL = axWindowsMediaPlayer1.URL;
                     wmp.axWindowsMediaPlayer1.Name = axWindowsMediaPlayer1.URL;
                     wmp.Location = new Point(298, 100);
