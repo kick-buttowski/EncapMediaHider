@@ -401,17 +401,20 @@ namespace MediaPlayer
                 }
                 Image img = setDefaultPic(sfi[pick]);
                 enlargeImage = false;
-                miniImages.Add("Videos", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
-                videosBtn.Image = miniImages["Videos"];
-                enlargeImage = true;
-                largeImages.Add("Videos", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
-                try
+                if (img != null)
                 {
-                    setToolTip("LargeVideos", img, videosBtn);
-                }
-                catch { }
+                    miniImages.Add("Videos", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
+                    videosBtn.Image = miniImages["Videos"];
+                    enlargeImage = true;
+                    largeImages.Add("Videos", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
+                    try
+                    {
+                        setToolTip("LargeVideos", img, videosBtn);
+                    }
+                    catch { }
 
-                img.Dispose();
+                    img.Dispose();
+                }
             }
             else
             {
@@ -591,18 +594,21 @@ namespace MediaPlayer
                         sfi.RemoveAt(pick);
                 }
                 Image img = setDefaultPic(sfi[pick]);
-                enlargeImage = false;
-                miniImages.Add("Gif Vid", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
-                    shortVideosBtn.Image = miniImages["Gif Vid"];
-                enlargeImage = true;
-                largeImages.Add("Gif Vid", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
-                try
+                if (img != null)
                 {
-                    setToolTip("LargeGif Vid", img, shortVideosBtn);
+                    enlargeImage = false;
+                    miniImages.Add("Gif Vid", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
+                    shortVideosBtn.Image = miniImages["Gif Vid"];
+                    enlargeImage = true;
+                    largeImages.Add("Gif Vid", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
+                    try
+                    {
+                        setToolTip("LargeGif Vid", img, shortVideosBtn);
 
+                    }
+                    catch { }
+                    img.Dispose();
                 }
-                catch { }
-                img.Dispose();
             }
             else
             {
@@ -625,18 +631,21 @@ namespace MediaPlayer
                         sfi.RemoveAt(pick);
                 }
                 Image img = setDefaultPic(sfi[pick]);
-                enlargeImage = false;
-                miniImages.Add("Affinity", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
-                bsButton.Image = miniImages["Affinity"];
-                enlargeImage = true;
-                largeImages.Add("Affinity", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
-                try
+                if (img != null)
                 {
-                    setToolTip("LargeAffinity", img, bsButton);
+                    enlargeImage = false;
+                    miniImages.Add("Affinity", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
+                    bsButton.Image = miniImages["Affinity"];
+                    enlargeImage = true;
+                    largeImages.Add("Affinity", resizedImage(img, 0, 0, 0, correctFit(img.Width, img.Height)));
+                    try
+                    {
+                        setToolTip("LargeAffinity", img, bsButton);
 
+                    }
+                    catch { }
+                    img.Dispose();
                 }
-                catch { }
-                img.Dispose();
             }
             else
             {
@@ -1004,9 +1013,10 @@ namespace MediaPlayer
                 {
                     if (miniVideoPlayer.pb!=null && miniVideoPlayer.pb.Image != null)
                         miniVideoPlayer.pb.Image.Dispose();
+
+                    miniVideoPlayer.axWindowsMediaPlayer1.Dispose();
                 }
                 catch { }
-                miniVideoPlayer.axWindowsMediaPlayer1.Dispose();
 
                 if (miniVideoPlayer.wmp != null)
                 {
@@ -4270,7 +4280,7 @@ namespace MediaPlayer
                     try
                     {
                         File.Delete(pb.Name);
-                        refreshFolder();
+                        flowLayoutPanel1.Controls.Remove(pb);
                     }
                     catch { }
                 }
@@ -4928,6 +4938,18 @@ namespace MediaPlayer
                 Directory.Delete(mainDi.FullName + "\\Online\\" + pb.Name);
             }
             refreshToolStripMenuItem_Click(null, null);
+        }
+
+        private void toolStripMenuItem53_Click(object sender, EventArgs e)
+        {
+            PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+            FileInfo fi = new FileInfo(pb.Name);
+
+                        File.Move(fi.FullName, fi.DirectoryName + "\\Pics\\Affinity\\" + fi.Name);
+            pb.Image.Dispose();
+            pb.Dispose();
+            GC.Collect();
+
         }
 
         private void setDp_Click(object sender, EventArgs e)

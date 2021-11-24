@@ -155,8 +155,8 @@ namespace MediaPlayer
             textBox3.Select();
             this.DoubleBuffered = true;
             hoverPointer.Visible = false;
-            DirectoryInfo directory1 = new DirectoryInfo("C:\\Users\\Harsha Vardhan\\Git\\EncapPlayer");
-            DirectoryInfo directory2 = new DirectoryInfo("C:\\Users\\Harsha Vardhan\\OneDrive\\Documents\\Visual Studio 2019\\Code Snippets\\XML\\My Xml Snippets");
+            DirectoryInfo directory2 = new DirectoryInfo("C:\\Users\\Harsha Vardhan\\Downloads\\Video");
+            DirectoryInfo directory1 = new DirectoryInfo("E:\\VS Code\\CSS");
             pardirectory[1] = directory1;
             pardirectory[0] = directory2;
             if (!File.Exists(directory1.FullName + "\\ThemeColor.txt"))

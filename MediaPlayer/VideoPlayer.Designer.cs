@@ -160,6 +160,7 @@ namespace MediaPlayer
             this.toolStripMenuItem72 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem51 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem62 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem53 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
@@ -182,6 +183,7 @@ namespace MediaPlayer
             this.contextMenuStrip1.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(0, 0);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem53,
             this.toolStripMenuItem47,
             this.deleteToolStripMenuItem,
             this.toolStripMenuItem13,
@@ -196,7 +198,7 @@ namespace MediaPlayer
             this.toolStripMenuItem44,
             this.toolStripMenuItem48});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(240, 316);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(240, 368);
             // 
             // toolStripMenuItem47
             // 
@@ -1871,6 +1873,15 @@ namespace MediaPlayer
             this.toolStripMenuItem62.Text = "Delete";
             this.toolStripMenuItem62.Click += new System.EventHandler(this.toolStripMenuItem62_Click);
             // 
+            // toolStripMenuItem53
+            // 
+            this.toolStripMenuItem53.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.toolStripMenuItem53.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripMenuItem53.Name = "toolStripMenuItem53";
+            this.toolStripMenuItem53.Size = new System.Drawing.Size(239, 24);
+            this.toolStripMenuItem53.Text = "Move To Affinity";
+            this.toolStripMenuItem53.Click += new System.EventHandler(this.toolStripMenuItem53_Click);
+            // 
             // VideoPlayer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -2038,5 +2049,6 @@ namespace MediaPlayer
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem72;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem51;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem62;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem53;
     }
 }

@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WMP));
             this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
-            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
@@ -53,6 +52,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.keyS = new System.Windows.Forms.Button();
             this.timer4 = new System.Windows.Forms.Timer(this.components);
+            this.startLabel = new System.Windows.Forms.Label();
+            this.endLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -70,6 +71,7 @@
             this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
             this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(1471, 825);
             this.axWindowsMediaPlayer1.TabIndex = 0;
+            this.axWindowsMediaPlayer1.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.axWindowsMediaPlayer1_PlayStateChange);
             // 
             // timer1
             // 
@@ -82,12 +84,12 @@
             this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox2.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox2.ForeColor = System.Drawing.Color.White;
-            this.textBox2.Location = new System.Drawing.Point(1373, 1059);
+            this.textBox2.Location = new System.Drawing.Point(1495, 1057);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(160, 30);
             this.textBox2.TabIndex = 4;
-            this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // textBox3
@@ -96,13 +98,12 @@
             this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox3.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox3.ForeColor = System.Drawing.Color.White;
-            this.textBox3.Location = new System.Drawing.Point(1192, 1059);
+            this.textBox3.Location = new System.Drawing.Point(894, 1057);
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(183, 30);
+            this.textBox3.Size = new System.Drawing.Size(604, 30);
             this.textBox3.TabIndex = 5;
-            this.textBox3.Text = "KeyLock: Off";
-            this.textBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox3.Text = "\tKeyLock: Off\t      Repeat: On";
             this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // textBox4
@@ -111,7 +112,7 @@
             this.textBox4.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox4.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox4.ForeColor = System.Drawing.Color.White;
-            this.textBox4.Location = new System.Drawing.Point(1003, 1059);
+            this.textBox4.Location = new System.Drawing.Point(702, 1057);
             this.textBox4.Multiline = true;
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(193, 30);
@@ -126,7 +127,7 @@
             this.textBox5.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox5.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox5.ForeColor = System.Drawing.Color.White;
-            this.textBox5.Location = new System.Drawing.Point(315, 1059);
+            this.textBox5.Location = new System.Drawing.Point(12, 1057);
             this.textBox5.Multiline = true;
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(690, 30);
@@ -141,7 +142,7 @@
             // 
             this.trackBar1.AutoSize = false;
             this.trackBar1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.trackBar1.Location = new System.Drawing.Point(1521, 1059);
+            this.trackBar1.Location = new System.Drawing.Point(1655, 1057);
             this.trackBar1.Margin = new System.Windows.Forms.Padding(17, 10, 17, 0);
             this.trackBar1.Maximum = 100;
             this.trackBar1.Name = "trackBar1";
@@ -253,7 +254,7 @@
             this.label1.Location = new System.Drawing.Point(9, 944);
             this.label1.Margin = new System.Windows.Forms.Padding(5, 5, 0, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(306, 146);
+            this.label1.Size = new System.Drawing.Size(306, 158);
             this.label1.TabIndex = 30;
             this.label1.Text = resources.GetString("label1.Text");
             this.label1.Visible = false;
@@ -310,6 +311,27 @@
             this.timer4.Interval = 3500;
             this.timer4.Tick += new System.EventHandler(this.timer4_Tick);
             // 
+            // startLabel
+            // 
+            this.startLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.startLabel.ForeColor = System.Drawing.Color.White;
+            this.startLabel.Location = new System.Drawing.Point(585, 995);
+            this.startLabel.Name = "startLabel";
+            this.startLabel.Size = new System.Drawing.Size(4, 13);
+            this.startLabel.TabIndex = 31;
+            this.startLabel.Text = "|";
+            this.startLabel.Visible = false;
+            // 
+            // endLabel
+            // 
+            this.endLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.endLabel.Location = new System.Drawing.Point(647, 995);
+            this.endLabel.Name = "endLabel";
+            this.endLabel.Size = new System.Drawing.Size(4, 13);
+            this.endLabel.TabIndex = 32;
+            this.endLabel.Text = "|";
+            this.endLabel.Visible = false;
+            // 
             // WMP
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -317,6 +339,8 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(1902, 1055);
+            this.Controls.Add(this.endLabel);
+            this.Controls.Add(this.startLabel);
             this.Controls.Add(this.keyS);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.panel2);
@@ -353,7 +377,6 @@
         #endregion
 
         public AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
-        private System.Windows.Forms.Timer timer2;
         public System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox3;
@@ -375,5 +398,7 @@
         private System.Windows.Forms.Button keyS;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Timer timer4;
+        private System.Windows.Forms.Label startLabel;
+        private System.Windows.Forms.Label endLabel;
     }
 }

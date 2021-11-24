@@ -36,7 +36,7 @@ namespace MediaPlayer
 
         WMP wmp = null;
         public Boolean hoveredOver = true, hoveredOver2 = true, toggleFullScreen = true, 
-            keyLock = false, playStatus = true, toMute = true, toRepeat = false;
+            keyLock = false, playStatus = true, toMute = true, toRepeat = false, playable =true, pressedSpace = true, manualFrameChange = false;
         String directoryPath;
         Dictionary<String, Double> timeSpan = new Dictionary<String, Double>();
         Thread countThread = null, imgStackThread = null, miniPlayerThread = null;
@@ -51,13 +51,13 @@ namespace MediaPlayer
         public List<PictureBox> disposePb = new List<PictureBox>();
 
         public List<PictureBox> vidPb = new List<PictureBox>();
-        public Boolean typeImg = false;
+        public Boolean typeImg = false, repeat = true;
         public PictureBox globalPb = null;
         PicViewer picViewer = null;
         public List<PictureBox> dispPb = new List<PictureBox>();
-        public Double startRepeatFrom = 0, duration = 0, currPos = 0;
+        public Double startRepeatFrom = 0, duration = 0, currPos = 0, endRepeatTo = 0;
         double whereAt = 1;
-
+        TimeSpan startTime, endTime;
         public void controlDisposer()
         {
             if (dispPb.Count > 0)
@@ -141,8 +141,13 @@ namespace MediaPlayer
                 miniPlayer.Hide();
                 wmp.axWindowsMediaPlayer1.URL = smallPb.Name;
                 wmp.axWindowsMediaPlayer1.Name = smallPb.Name;
-                wmp.textBox5.Text = Path.GetFileName(wmp.axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(wmp.axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "\t\tDura:").Replace("Size^ ", "\tSize:");
-                
+                String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+
+                startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
+                endTime = TimeSpan.FromSeconds((int)endRepeatTo);
+                textBox5.Text = (temp.Substring(0, temp.IndexOf("Dura")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") + 
+                    "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+
                 wmp.calculateDuration(miniPlayer.miniVidPlayer.Ctlcontrols.currentPosition);
 
                 controlDisposer();
@@ -325,6 +330,111 @@ namespace MediaPlayer
             Calculator.staleDeletes = temp;
         }
 
+        private void axWindowsMediaPlayer1_PlayStateChange(object sender, _WMPOCXEvents_PlayStateChangeEvent e)
+        {
+                /*if (!pressedSpace)
+                {
+                    axWindowsMediaPlayer1.Ctlcontrols.play();
+                }*/
+
+                //pressedSpace = false;
+                // Test the current state of the player and display a message for each state.
+                switch (e.newState)
+                {
+                    case 0:    // Undefined
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Undefined";
+                        break;
+
+                    case 1:    // Stopped
+                        if (!repeat)
+                        {
+                            if (playable)
+                            {
+                                for (int i = 0; i < vidPb.Count; i++)
+                                {
+                                    if (vidPb[i].Name.Equals(wmp.axWindowsMediaPlayer1.Name))
+                                    {
+                                        if (i == vidPb.Count - 1) i = 0;
+                                        else i = i + 1;
+
+                                        wmp.axWindowsMediaPlayer1.URL = vidPb.ElementAt(i).Name;
+                                        wmp.axWindowsMediaPlayer1.Name = vidPb.ElementAt(i).Name;
+                                        String temp = Path.GetFileName(wmp.axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(wmp.axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+
+                                        startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
+                                        endTime = TimeSpan.FromSeconds((int)endRepeatTo);
+                                        textBox5.Text = (temp.Substring(0, temp.IndexOf("Dura")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                                            "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+                                        wmp.calculateDuration(0);
+
+                                        controlDisposer();
+                                        fillUpFP1(vidPb);
+                                        break;
+                                    }
+                                }
+                            }
+                            playable = !playable;
+                        }
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Stopped";
+                        if (!pressedSpace)
+                        {
+                            axWindowsMediaPlayer1.Ctlcontrols.play();
+                        }
+                        
+                        pressedSpace = false;
+                    break;
+
+                    case 2:    // Paused
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Paused";
+                        break;
+
+                    case 3:    // Playing
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Playing";
+                        break;
+
+                    case 4:    // ScanForward
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      ScanForward";
+                        break;
+
+                    case 5:    // ScanReverse
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      ScanReverse";
+                        break;
+
+                    case 6:    // Buffering
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Buffering";
+                        break;
+
+                    case 7:    // Waiting
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Waiting";
+                        break;
+
+                    case 8:    // MediaEnded
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      MediaEnded";
+                        break;
+
+                    case 9:    // Transitioning
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Transitioning";
+                        break;
+
+                    case 10:   // Ready
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Ready";
+                        break;
+
+                    case 11:   // Reconnecting
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Reconnecting";
+                        break;
+
+                    case 12:   // Last
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Last";
+                        break;
+
+                    default:
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      " + ("Unknown State: " + e.newState.ToString());
+                        break;
+
+                }
+        }
+
         private void timer4_Tick(object sender, EventArgs e)
         {
             if (miniPlayer.miniVidPlayer.currentMedia == null) return;
@@ -490,17 +600,32 @@ namespace MediaPlayer
                 timer3.Interval = 50;
             }
             textBox2.Text = "Volume: " + Explorer.globalVol.ToString();
-            if(axWindowsMediaPlayer1.Name.Contains("placeholdeerr"))
-            textBox5.Text = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "\t\tDura:").Replace("Size^ ", "\tSize:");
+            if (axWindowsMediaPlayer1.Name.Contains("placeholdeerr"))
+            {
+                String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+
+                startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
+                endTime = TimeSpan.FromSeconds((int)endRepeatTo);
+                textBox5.Text = (temp.Substring(0, temp.IndexOf("Dura")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                    "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+            }
             time = TimeSpan.FromSeconds((int)duration);
             durInFor = time.ToString(@"hh\:mm\:ss");
             newProgressBar.Maximum = (int)(duration* shift);
             timer3.Enabled = true;
             timer3.Tick += (s, args) =>
             {
+                
                 try
                 {
                     int currTrack = (int)(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
+                    if (toRepeat && endRepeatTo > startRepeatFrom)
+                    {
+                        if (axWindowsMediaPlayer1.Ctlcontrols.currentPosition >= endRepeatTo || axWindowsMediaPlayer1.Ctlcontrols.currentPosition<startRepeatFrom)
+                        {
+                            axWindowsMediaPlayer1.Ctlcontrols.currentPosition = startRepeatFrom;
+                        }
+                    }
                     time = TimeSpan.FromSeconds(currTrack);
                     curr.Text = time.ToString(@"hh\:mm\:ss") + " / " + durInFor;
                     newProgressBar.Value = (int)(axWindowsMediaPlayer1.Ctlcontrols.currentPosition* shift);
@@ -853,7 +978,7 @@ namespace MediaPlayer
                 if (Control.ModifierKeys == Keys.Control && keyCode == Keys.A)
                 {
                     keyLock = !keyLock;
-                    textBox3.Text = "KeyLock: " + (keyLock == true ? "On" : "Off");
+                    textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      " + axWindowsMediaPlayer1.playState.ToString().Replace("wmpps", "");
                 }
 
                 if (keyCode == Keys.Back || keyCode == Keys.Escape)
@@ -866,7 +991,7 @@ namespace MediaPlayer
                     }
                     disposePb.Clear();
                     controlDisposer();
-                    TranspBack.toTop = true;
+                    TranspBack.toTop = keyCode == Keys.Back?true:false;
                     if (this.axWindowsMediaPlayer1.fullScreen)
                     {
                         this.axWindowsMediaPlayer1.fullScreen = false;
@@ -881,32 +1006,47 @@ namespace MediaPlayer
                     if (keyCode == Keys.OemOpenBrackets)
                     {
                         startRepeatFrom = axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
-                        toRepeat = true;
+                        startLabel.Visible = true;
+                        startLabel.Location = new Point((int)((startRepeatFrom / axWindowsMediaPlayer1.currentMedia.duration) * axWindowsMediaPlayer1.Width) + axWindowsMediaPlayer1.Location.X,
+                            textBox1.Location.Y);
+                        if (axWindowsMediaPlayer1.Name.Length > 0 && axWindowsMediaPlayer1.Name.Contains("placeholdeerr"))
+                        {
+                            String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+
+                            startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
+                            endTime = TimeSpan.FromSeconds((int)endRepeatTo);
+                            textBox5.Text = (temp.Substring(0, temp.IndexOf("Dura")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                                "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+                        }
                     }
                     else if (keyCode == Keys.OemCloseBrackets)
                     {
-                        if (!toRepeat) { }
-                        else
+                        toRepeat = true;
+                        endRepeatTo = axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+                        endLabel.Visible = true;
+                        endLabel.Location = new Point((int)((endRepeatTo / axWindowsMediaPlayer1.currentMedia.duration) * axWindowsMediaPlayer1.Width) + axWindowsMediaPlayer1.Location.X,
+                            textBox1.Location.Y);
+                        if (axWindowsMediaPlayer1.Name.Length > 0 && axWindowsMediaPlayer1.Name.Contains("placeholdeerr"))
                         {
-                            timer2.Enabled = true;
-                            timer2.Start();
-                            timer2.Interval = (int)(axWindowsMediaPlayer1.Ctlcontrols.currentPosition * 1000 - startRepeatFrom * 1000);
-                            axWindowsMediaPlayer1.Ctlcontrols.currentPosition = startRepeatFrom;
-                            timer2.Tick += (s, a) =>
-                            {
-                                axWindowsMediaPlayer1.Ctlcontrols.currentPosition = startRepeatFrom;
-                            };
+                            String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+
+                            startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
+                            endTime = TimeSpan.FromSeconds((int)endRepeatTo);
+                            textBox5.Text = (temp.Substring(0, temp.IndexOf("Dura")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                                "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
                         }
                     }
 
                     if (keyCode == Keys.O || keyCode == Keys.G || keyCode == Keys.B)
                     {
-                        int endTo = timer2.Interval;
+                        if (endRepeatTo <= startRepeatFrom)
+                            return true;
+                        int endTo = (int)(endRepeatTo * 1000 - startRepeatFrom * 1000);
                         Thread gifThread = new Thread(() =>
                         {
                             try
                             {
-                                String temp = wmpFi.Name.Substring(wmpFi.Name.IndexOf("placeholdeerr") + 13);
+                                String temp = wmpFi.Name.Substring(wmpFi.Name.IndexOf("placeholdeerr") + (wmpFi.Name.Contains("placeholdeerr")?13:1));
                                 var inputFile = new MediaFile { Filename = wmpFi.FullName };
                                 var outputFile = new MediaFile
                                 {
@@ -926,19 +1066,28 @@ namespace MediaPlayer
                                 }
                             }
                             catch { }
+
+                            finally
+                            {
+                                DialogResult result = MessageBox.Show("Trimmed " + wmpFi.Name, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            }
+
                         });
                         gifThread.Start();
                     }
 
                     if (keyCode == Keys.P)
                     {
-                        timer2.Enabled = false;
                         toRepeat = false;
+                        startLabel.Visible = false;
+                        endLabel.Visible = false;
                     }
 
                     if (keyCode == Keys.F)
                     {
                         ((WMPLib.IWMPControls2)axWindowsMediaPlayer1.Ctlcontrols).step(1);
+                        manualFrameChange = true;
                     }
 
                     if (keyCode == Keys.W)
@@ -950,8 +1099,18 @@ namespace MediaPlayer
                     if (keyCode == Keys.Q)
                     {
                         ((WMPLib.IWMPControls2)axWindowsMediaPlayer1.Ctlcontrols).step(-1);
+                        manualFrameChange = true;
                     }
 
+                    if(keyCode == Keys.R)
+                    {
+                        repeat = !repeat;
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      " + axWindowsMediaPlayer1.playState.ToString().Replace("wmpps", "");
+                        if (repeat)
+                            axWindowsMediaPlayer1.settings.setMode("loop", true);
+                        else
+                            axWindowsMediaPlayer1.settings.setMode("loop", false);
+                    }
 
                     if (keyCode == Keys.C)
                     {
@@ -1016,16 +1175,10 @@ namespace MediaPlayer
                         {
                             refPb.Image = Image.FromFile(fi.DirectoryName + "\\ImgPB\\" + fi.Name + ".jpg");
                             refPb.ImageLocation = fi.DirectoryName + "\\ImgPB\\" + fi.Name + ".jpg";
+                            globalPb.Image = Image.FromFile(fi.DirectoryName + "\\ImgPB\\" + fi.Name + ".jpg");
                         }
                         catch { }
-                        globalPb.Image = Image.FromFile(fi.DirectoryName + "\\ImgPB\\" + fi.Name + ".jpg");
 
-                        if (File.Exists(fi.DirectoryName + "\\ImgPB\\resized_" + fi.Name + ".jpg"))
-                            try
-                            {
-                                File.Delete(fi.DirectoryName + "\\ImgPB\\resized_" + fi.Name + ".jpg");
-                            }
-                            catch { Calculator.staleDeletes.Add(fi.DirectoryName + "\\ImgPB\\resized_" + fi.Name + ".jpg"); }
                     }
 
                     if (keyCode == Keys.Enter)
@@ -1035,6 +1188,7 @@ namespace MediaPlayer
 
                     if (keyCode == Keys.Space)
                     {
+                        pressedSpace = true;
                         if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPlaying)
                             axWindowsMediaPlayer1.Ctlcontrols.pause();
                         else
@@ -1125,7 +1279,29 @@ namespace MediaPlayer
 
                     if ((Control.ModifierKeys == Keys.Control && keyCode == Keys.Up) || keyCode==Keys.Z)
                     {
-                        WMPLib.IWMPMedia media = axWindowsMediaPlayer1.currentMedia;
+                        for (int i = 0; i < vidPb.Count; i++)
+                        {
+                            if (vidPb[i].Name.Equals(wmp.axWindowsMediaPlayer1.Name))
+                            {
+                                if (i == 0) i = vidPb.Count - 1;
+                                else i = i - 1;
+
+                                wmp.axWindowsMediaPlayer1.URL = vidPb.ElementAt(i).Name;
+                                wmp.axWindowsMediaPlayer1.Name = vidPb.ElementAt(i).Name;
+                                String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+
+                                startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
+                                endTime = TimeSpan.FromSeconds((int)endRepeatTo);
+                                textBox5.Text = (temp.Substring(0, temp.IndexOf("Dura")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                                    "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+                                wmp.calculateDuration(0);
+
+                                controlDisposer();
+                                fillUpFP1(vidPb);
+                                break;
+                            }
+                        }
+                        /*WMPLib.IWMPMedia media = axWindowsMediaPlayer1.currentMedia;
                         WMPLib.IWMPMedia targetMedia = null;
                         for (int i = 0; i < axWindowsMediaPlayer1.currentPlaylist.count; i++)
                         {
@@ -1144,12 +1320,35 @@ namespace MediaPlayer
                         time = TimeSpan.FromSeconds((int)duration);
                         String durInFor = time.ToString(@"hh\:mm\:ss");
                         newProgressBar.Maximum = (int)duration;
-                        textBox5.Text = Path.GetFileName(axWindowsMediaPlayer1.currentMedia.sourceURL).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.currentMedia.sourceURL).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "\t\tDura:").Replace("Size^ ", "\tSize:");
+                        textBox5.Text = Path.GetFileName(axWindowsMediaPlayer1.currentMedia.sourceURL).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.currentMedia.sourceURL).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "\t\tDura:").Replace("Size^ ", "Size:");*/
                     }
 
                     else if ((Control.ModifierKeys == Keys.Control && keyCode == Keys.Down) || keyCode == Keys.X)
                     {
-                        WMPLib.IWMPMedia media = axWindowsMediaPlayer1.currentMedia;
+                        for (int i = 0; i < vidPb.Count; i++)
+                        {
+                            if (vidPb[i].Name.Equals(wmp.axWindowsMediaPlayer1.Name))
+                            {
+                                if (i == vidPb.Count-1) i = 0;
+                                else i = i + 1;
+
+                                wmp.axWindowsMediaPlayer1.URL = vidPb.ElementAt(i).Name;
+                                wmp.axWindowsMediaPlayer1.Name = vidPb.ElementAt(i).Name;
+                                String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+
+                                startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
+                                endTime = TimeSpan.FromSeconds((int)endRepeatTo);
+                                textBox5.Text = (temp.Substring(0, temp.IndexOf("Dura")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                                    "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+                                wmp.calculateDuration(0);
+
+                                controlDisposer();
+                                fillUpFP1(vidPb);
+                                break;
+                            }
+                        }
+
+                        /*WMPLib.IWMPMedia media = axWindowsMediaPlayer1.currentMedia;
                         WMPLib.IWMPMedia targetMedia = null;
                         for (int i = 0; i < axWindowsMediaPlayer1.currentPlaylist.count; i++)
                         {
@@ -1175,7 +1374,7 @@ namespace MediaPlayer
                         time = TimeSpan.FromSeconds((int)duration);
                         durInFor = time.ToString(@"hh\:mm\:ss");
                         newProgressBar.Maximum = (int)duration;
-                        textBox5.Text = Path.GetFileName(axWindowsMediaPlayer1.currentMedia.sourceURL).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.currentMedia.sourceURL).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "\t\tDura:").Replace("Size^ ", "\tSize:");
+                        textBox5.Text = Path.GetFileName(axWindowsMediaPlayer1.currentMedia.sourceURL).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.currentMedia.sourceURL).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "\t\tDura:").Replace("Size^ ", "Size:");*/
                     }
 
                     else if (keyCode == Keys.Up)
@@ -1187,6 +1386,8 @@ namespace MediaPlayer
 
                         textBox2.Text = "Volume: " + axWindowsMediaPlayer1.settings.volume.ToString();
                         trackBar1.Value = axWindowsMediaPlayer1.settings.volume;
+
+                        Explorer.globalVol = trackBar1.Value;
                     }
                     else if (keyCode == Keys.Down)
                     {
@@ -1197,6 +1398,8 @@ namespace MediaPlayer
 
                         textBox2.Text = "Volume: " + axWindowsMediaPlayer1.settings.volume.ToString();
                         trackBar1.Value = axWindowsMediaPlayer1.settings.volume;
+
+                        Explorer.globalVol = trackBar1.Value;
                     }
                     if (keyCode == Keys.M)
                     {
@@ -1207,6 +1410,8 @@ namespace MediaPlayer
 
                         textBox2.Text = "Volume: " + axWindowsMediaPlayer1.settings.volume.ToString();
                         trackBar1.Value = axWindowsMediaPlayer1.settings.volume;
+
+                        Explorer.globalVol = trackBar1.Value;
                     }
 
                     if (keyCode == Keys.S)
