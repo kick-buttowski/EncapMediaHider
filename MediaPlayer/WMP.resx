@@ -146,7 +146,8 @@
  H - To start, B - Save to affinity
  L,K,J - Speed,Normal,Slow
  S - Strech, Z,X- Change track
- R - Repeat On/Off</value>
+ R - Repeat On/Off
+ T - Save frame as time frame</value>
   </data>
   <metadata name="timer4.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>619, 17</value>

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Web.WebView2.Core;
 
 namespace MediaPlayer
 {
@@ -16,7 +17,7 @@ namespace MediaPlayer
         public Browser()
         {
             InitializeComponent();
-
+            this.FormBorderStyle = FormBorderStyle.None;
             /*int BrowserVer, RegVal;
 
             // get the installed IE version
@@ -41,9 +42,5 @@ namespace MediaPlayer
                     Key.SetValue(System.Diagnostics.Process.GetCurrentProcess().ProcessName + ".exe", RegVal, RegistryValueKind.DWord);*/
         }
 
-        private void webBrowser1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            Console.WriteLine("lala");
-        }
     }
 }

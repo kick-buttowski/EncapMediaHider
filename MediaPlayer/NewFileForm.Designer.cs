@@ -55,7 +55,7 @@ namespace MediaPlayer
             this.addFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addFile.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.addFile.ForeColor = System.Drawing.Color.White;
-            this.addFile.Image = global::MediaPlayer.Properties.Resources.icons8_add_file_20;
+            this.addFile.Image = global::Calculator.Properties.Resources.icons8_add_file_20;
             this.addFile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.addFile.Location = new System.Drawing.Point(2, 2);
             this.addFile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 0);
@@ -77,7 +77,7 @@ namespace MediaPlayer
             this.addWebLink.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addWebLink.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.addWebLink.ForeColor = System.Drawing.Color.White;
-            this.addWebLink.Image = global::MediaPlayer.Properties.Resources.icons8_add_file_20;
+            this.addWebLink.Image = global::Calculator.Properties.Resources.icons8_add_file_20;
             this.addWebLink.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.addWebLink.Location = new System.Drawing.Point(2, 37);
             this.addWebLink.Margin = new System.Windows.Forms.Padding(2, 2, 0, 0);

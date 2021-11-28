@@ -43,7 +43,7 @@ namespace MediaPlayer
         Explorer exp;
         int xWidth, yWidth;
         Double currRate = 1.0, formClosingPos = 0.0, x=0.0, changesPos = 0.0, x1 = 0.0;
-        int startFrom = 30, endAt = 55, noOfPixToMove = 9, stakImg = 0;
+        int startFrom = 30, endAt = 55, noOfPixToMove = 9, stakImg = 0, topC = 2, botC = 3, layout1Size = 828;
         NewProgressBar newProgressBar = null;
         TimeSpan time = new TimeSpan(), time1 = new TimeSpan();
         String durInFor = null;
@@ -55,9 +55,163 @@ namespace MediaPlayer
         public PictureBox globalPb = null;
         PicViewer picViewer = null;
         public List<PictureBox> dispPb = new List<PictureBox>();
-        public Double startRepeatFrom = 0, duration = 0, currPos = 0, endRepeatTo = 0;
+        public Double startRepeatFrom = 0, duration = 0, currPos = 0, endRepeatTo = 0, hoverDuration = 0;
         double whereAt = 1;
         TimeSpan startTime, endTime;
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            var sb = new SolidBrush(Color.FromArgb(140, 30,30,30));
+            e.Graphics.FillRectangle(sb, this.DisplayRectangle);
+        }
+
+        /*protected override void OnHandleCreated(EventArgs e)
+        {
+            AppUtils.EnableAcrylic(this, Color.Transparent);
+            base.OnHandleCreated(e);
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.Transparent);
+        }*/
+
+
+        public MiniPlayer miniPlayer = null;
+        DirectoryInfo mainDi = null;
+        List<String> videoUrls = new List<String>();
+        FileInfo vidFi = null;
+        PictureBox refPb = new PictureBox();
+        Color mouseClickColor = Color.FromArgb(81, 160, 213);
+        List<PictureBox> videosPb = null;
+
+        public void formClosingDispoer()
+        {
+            this.timer3.Enabled = false;
+            try
+            {
+                this.Hide();
+                Explorer.wmpOnTop.axWindowsMediaPlayer1.URL = this.axWindowsMediaPlayer1.Name;
+                Explorer.wmpOnTop.axWindowsMediaPlayer1.settings.volume = 0;
+                Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition = this.axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+                Explorer.wmpOnTop.WmpOnTop_Activated((int)this.duration);
+
+                FileInfo fi = new FileInfo(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL);
+                if (File.Exists(fi.DirectoryName + "\\resume.txt"))
+                {
+                    String[] resumeFile = File.ReadAllLines(fi.DirectoryName + "\\resume.txt");
+                    String fileStr = "";
+                    foreach (String str in resumeFile)
+                    {
+                        if (str.Contains("@@" + fi.Name + "@@!"))
+                        {
+                            fileStr = fileStr + "@@" + fi.Name + "@@!" + Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
+                            continue;
+                        }
+                        fileStr = fileStr + str + "\n";
+                    }
+                    File.WriteAllText(fi.DirectoryName + "\\resume.txt", fileStr);
+                }
+                this.Hide();
+                Application.RemoveMessageFilter(wmp);
+                //Application.AddMessageFilter(videoPlayer);
+
+
+                foreach (PictureBox pb in this.disposePb)
+                {
+                    pb.Image.Dispose();
+                    pb.Dispose();
+                    pb.Tag = null;
+                }
+                this.disposePb.Clear();
+
+                this.timer1.Enabled = false;
+                this.axWindowsMediaPlayer1.Ctlcontrols.pause();
+                this.axWindowsMediaPlayer1.currentPlaylist.clear();
+                this.axWindowsMediaPlayer1.URL = "";
+                this.axWindowsMediaPlayer1.Dispose();
+                this.miniPlayer.miniVidPlayer.currentPlaylist.clear();
+                this.miniPlayer.URL = "";
+                this.miniPlayer.miniVidPlayer.Dispose();
+                this.miniPlayer.Dispose();
+                this.Dispose();
+                this.Close();
+
+                this.Dispose();
+                GC.Collect();
+                this.Close();
+                if (TranspBack.toTop) Explorer.wmpOnTop.Show();
+                else
+                {
+                    Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.pause();
+                    Explorer.wmpOnTop.axWindowsMediaPlayer1.currentPlaylist.clear();
+                    Explorer.wmpOnTop.axWindowsMediaPlayer1.URL = "";
+                    Explorer.wmpOnTop.axWindowsMediaPlayer1.Dispose();
+                    Explorer.wmpOnTop.Dispose();
+                    Explorer.wmpOnTop = null;
+                    return;
+                }
+            }
+            catch { }
+        }
+
+        public WMP(PictureBox refPb, PicViewer picViewer, List<PictureBox> videosPb)
+        {
+            InitializeComponent();
+            wmp = this;
+            this.picViewer = picViewer;
+            this.videosPb = videosPb;
+            panel2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, panel2.Width, panel2.Height, 12, 12));
+            keyS.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, keyS.Width, keyS.Height, 12, 12));
+            label1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, label1.Width, label1.Height, 9, 9));
+            this.refPb = refPb;
+            mouseClickColor = Explorer.globColor;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            Application.AddMessageFilter(this);
+            videoUrls = VideoPlayer.videoUrls;
+            axWindowsMediaPlayer1.settings.autoStart = true;
+            axWindowsMediaPlayer1.settings.setMode("loop", true);
+            stakImg = 0;
+            panel1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, panel1.Width, panel1.Height, 13, 13));
+            curr.Text = "00:00:00 / ";
+            curr.Font = new Font("Consolas", 8, FontStyle.Regular);
+            curr.Location = new Point(panel1.Location.X + axWindowsMediaPlayer1.Width - 160, 950);
+            curr.BackColor = Color.FromArgb(50, 50, 50);
+            curr.Size = new Size(160, 20);
+            curr.ForeColor = Color.White;
+            curr.TextAlign = ContentAlignment.TopLeft;
+            curr.Padding = new Padding(0);
+            curr.Margin = new Padding(0);
+
+            track.Text = "00:00:00";
+            track.Font = new Font("Consolas", 8, FontStyle.Regular);
+            track.BackColor = Color.FromArgb(50, 50, 50);
+            track.Size = new Size(75, 20);
+            track.ForeColor = Color.White;
+            track.TextAlign = ContentAlignment.MiddleCenter;
+            track.Padding = new Padding(0);
+            track.Margin = new Padding(0);
+            track.Visible = false;
+
+            newProgressBar = new NewProgressBar();
+            newProgressBar.Size = new Size(axWindowsMediaPlayer1.Width, 15);
+            newProgressBar.Margin = new Padding(0, 0, 0, 0);
+            textBox1.Size = new Size(axWindowsMediaPlayer1.Width, 7);
+            textBox1.BackColor = curr.BackColor;
+            String temp = " 0\t\t\t             1\t\t\t\t       2\t\t\t\t 3\t\t\t              4\t\t\t\t        5\t\t\t\t 6\t\t\t               7\t\t\t\t        8\t\t\t\t  9";
+            textBox1.Text = temp;
+            newProgressBar.Location = new Point(panel1.Location.X, 934);
+            textBox1.Location = new Point(panel1.Location.X - 2, 944);
+            newProgressBar.Value = 0;
+            newProgressBar.ForeColor = Color.Black;
+            newProgressBar.BackColor = Color.White;
+            newProgressBar.Margin = new Padding(0);
+
+
+            this.Controls.Add(newProgressBar);
+
+        }
+
         public void controlDisposer()
         {
             if (dispPb.Count > 0)
@@ -111,11 +265,14 @@ namespace MediaPlayer
                                                         , flowLayoutPanel1.Location.Y + smallPb.Location.Y - ((miniPlayer.miniVidPlayer.Height- smallPb.Height)/2));
 
                 miniPlayer.Show();
+                WindowsMediaPlayer wmp = new WindowsMediaPlayerClass();
+                IWMPMedia mediainfo = wmp.newMedia(smallPb.Name);
 
+                this.hoverDuration = mediainfo.duration;
                 timer4.Enabled = true;
-                timer4.Interval = 3000;
-                miniPlayer.miniVidPlayer.Ctlcontrols.currentPosition = (1.0 / 10.0) * duration;
-                miniPlayer.miniVidPlayer.settings.rate = 1.35;
+                timer4.Interval = 3500;
+                miniPlayer.miniVidPlayer.Ctlcontrols.currentPosition = (1.0 / 8.0) * hoverDuration;
+                miniPlayer.miniVidPlayer.settings.rate = 1.60;
                 whereAt = 2.0;
                 timer4.Start();
 
@@ -145,7 +302,7 @@ namespace MediaPlayer
 
                 startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
                 endTime = TimeSpan.FromSeconds((int)endRepeatTo);
-                textBox5.Text = (temp.Substring(0, temp.IndexOf("Dura")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") + 
+                textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") + 
                     "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
 
                 wmp.calculateDuration(miniPlayer.miniVidPlayer.Ctlcontrols.currentPosition);
@@ -159,11 +316,45 @@ namespace MediaPlayer
             flowLayoutPanel1.Controls.Add(smallPb);
         }
 
+        public void calcXY(int count)
+        {
+            if(count == 4)
+            {
+                topC = 1;
+                botC = 3;
+                layout1Size = 665;
+                flowLayoutPanel1.Location = new Point(flowLayoutPanel1.Location.X, 114 + 80);
+            }
+            else if (count == 3)
+            {
+                topC = 1;
+                botC = 2;
+                layout1Size = 505;
+                flowLayoutPanel1.Location = new Point(flowLayoutPanel1.Location.X, 114 + 154);
+            }
+            else if (count == 2)
+            {
+                topC = 0;
+                botC = 2;
+                layout1Size = 343;
+                flowLayoutPanel1.Location = new Point(flowLayoutPanel1.Location.X, 114 + 228);
+            }
+            else if (count == 1)
+            {
+                topC = 0;
+                botC = 1;
+                layout1Size = 181;
+                flowLayoutPanel1.Location = new Point(flowLayoutPanel1.Location.X, 114 + 302);
+            }
+        }
+
         public void fillUpFP1(List<PictureBox> vidPb, params Boolean[] typeImg)
         {
+            calcXY(vidPb.Count);
+            flowLayoutPanel1.Size = new Size(flowLayoutPanel1.Width, layout1Size);
+            flowLayoutPanel1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel1.Width, flowLayoutPanel1.Height, 15, 15));
             flowLayoutPanel1.Controls.Clear();
             this.vidPb = vidPb;
-            int prevX = 0, prevY = 0;
             if (typeImg.Length > 0) this.typeImg = typeImg[0];
             if (vidPb != null)
             {
@@ -172,10 +363,10 @@ namespace MediaPlayer
                     if (wmp != null && vidPb[i].Name.Equals(wmp.axWindowsMediaPlayer1.Name))
                     {
                         List<int> seq = new List<int>();
-                        for (int j = i - 2; j < i; j++)
+                        for (int j = i - topC; j < i; j++)
                             seq.Add(j < 0 ? vidPb.Count + j : j);
 
-                        for (int j = i; j < i + 3; j++)
+                        for (int j = i; j < i + botC; j++)
                             seq.Add(j >= vidPb.Count ? j - vidPb.Count : j);
 
                         for (int j = 0; j < seq.Count; j++)
@@ -238,7 +429,7 @@ namespace MediaPlayer
             {
                 this.axWindowsMediaPlayer1.fullScreen = false;
             }
-            this.Hide();
+            formClosingDispoer();
         }
 
         private void axWindowsMediaPlayer1_MouseUpEvent(object sender, _WMPOCXEvents_MouseUpEvent e)
@@ -298,7 +489,7 @@ namespace MediaPlayer
             {
                 this.axWindowsMediaPlayer1.fullScreen = false;
             }
-            this.Hide();
+            formClosingDispoer();
             TranspBack.toTop = false;
         }
 
@@ -342,7 +533,7 @@ namespace MediaPlayer
                 switch (e.newState)
                 {
                     case 0:    // Undefined
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Undefined";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Undefined";
                         break;
 
                     case 1:    // Stopped
@@ -363,9 +554,9 @@ namespace MediaPlayer
 
                                         startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
                                         endTime = TimeSpan.FromSeconds((int)endRepeatTo);
-                                        textBox5.Text = (temp.Substring(0, temp.IndexOf("Dura")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
-                                            "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
-                                        wmp.calculateDuration(0);
+                                    textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                    "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+                                    wmp.calculateDuration(0);
 
                                         controlDisposer();
                                         fillUpFP1(vidPb);
@@ -375,7 +566,7 @@ namespace MediaPlayer
                             }
                             playable = !playable;
                         }
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Stopped";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Stopped";
                         if (!pressedSpace)
                         {
                             axWindowsMediaPlayer1.Ctlcontrols.play();
@@ -385,51 +576,51 @@ namespace MediaPlayer
                     break;
 
                     case 2:    // Paused
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Paused";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Paused";
                         break;
 
                     case 3:    // Playing
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Playing";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Playing";
                         break;
 
                     case 4:    // ScanForward
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      ScanForward";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            ScanForward";
                         break;
 
                     case 5:    // ScanReverse
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      ScanReverse";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            ScanReverse";
                         break;
 
                     case 6:    // Buffering
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Buffering";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Buffering";
                         break;
 
                     case 7:    // Waiting
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Waiting";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Waiting";
                         break;
 
                     case 8:    // MediaEnded
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      MediaEnded";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            MediaEnded";
                         break;
 
                     case 9:    // Transitioning
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Transitioning";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Transitioning";
                         break;
 
                     case 10:   // Ready
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Ready";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Ready";
                         break;
 
                     case 11:   // Reconnecting
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Reconnecting";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Reconnecting";
                         break;
 
                     case 12:   // Last
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      Last";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Last";
                         break;
 
                     default:
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      " + ("Unknown State: " + e.newState.ToString());
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            " + ("Unknown State: " + e.newState.ToString());
                         break;
 
                 }
@@ -439,7 +630,7 @@ namespace MediaPlayer
         {
             if (miniPlayer.miniVidPlayer.currentMedia == null) return;
             if (whereAt == 10.0) whereAt = 1.0;
-            double temp = (whereAt / 10.0) * duration;
+            double temp = (whereAt / 10.0) * hoverDuration;
             miniPlayer.miniVidPlayer.Ctlcontrols.currentPosition = temp;
             whereAt++;
         }
@@ -460,73 +651,6 @@ namespace MediaPlayer
             disposePb.Clear();
         }
 
-        public MiniPlayer miniPlayer = null;
-        DirectoryInfo mainDi = null;
-        List<String> videoUrls = new List<String>();
-        FileInfo vidFi = null;
-        PictureBox refPb = new PictureBox();
-        Color mouseClickColor = Color.FromArgb(81, 160, 213);
-        List<PictureBox> videosPb = null;
-
-        public WMP(PictureBox refPb, PicViewer picViewer, List<PictureBox> videosPb)
-        {
-            InitializeComponent();
-
-            wmp = this;
-            this.picViewer = picViewer;
-            this.videosPb = videosPb;
-            panel2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, panel2.Width, panel2.Height, 12, 12));
-            flowLayoutPanel1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel1.Width, flowLayoutPanel1.Height, 15, 15));
-            keyS.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, keyS.Width, keyS.Height, 12, 12));
-            label1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, label1.Width, label1.Height, 9, 9));
-            label1.BackColor = Color.FromArgb(20, 20, 20);
-            this.refPb = refPb;
-            mouseClickColor = Explorer.globColor;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            Application.AddMessageFilter(this);
-            videoUrls = VideoPlayer.videoUrls;
-            axWindowsMediaPlayer1.settings.autoStart = true;
-            axWindowsMediaPlayer1.settings.setMode("loop", true);
-            stakImg = 0;
-
-            curr.Text = "00:00:00 / ";
-            curr.Font = new Font("Consolas", 8, FontStyle.Regular);
-            curr.Location = new Point(axWindowsMediaPlayer1.Location.X + axWindowsMediaPlayer1.Width - 160, 950);
-            curr.BackColor = Color.FromArgb(50, 50, 50);
-            curr.Size = new Size(160, 20);
-            curr.ForeColor = Color.White;
-            curr.TextAlign = ContentAlignment.TopLeft;
-            curr.Padding = new Padding(0);
-            curr.Margin = new Padding(0);
-
-            track.Text = "00:00:00";
-            track.Font = new Font("Consolas", 8, FontStyle.Regular);
-            track.BackColor = Color.FromArgb(50, 50, 50);
-            track.Size = new Size(75, 20);
-            track.ForeColor = Color.White;
-            track.TextAlign = ContentAlignment.MiddleCenter;
-            track.Padding = new Padding(0);
-            track.Margin = new Padding(0);
-            track.Visible = false;
-
-            newProgressBar = new NewProgressBar();
-            newProgressBar.Size = new Size(axWindowsMediaPlayer1.Width, 15);
-            newProgressBar.Margin = new Padding(0, 0, 0, 0);
-            textBox1.Size = new Size(axWindowsMediaPlayer1.Width, 7);
-            textBox1.BackColor = curr.BackColor;
-            String temp = " 0\t\t\t             1\t\t\t\t      2\t\t\t\t 3\t\t\t              4\t\t\t\t        5\t\t\t\t  6\t\t\t                 7\t\t\t\t        8\t\t\t\t   9";
-            textBox1.Text = temp;
-            newProgressBar.Location = new Point(axWindowsMediaPlayer1.Location.X-2, 934);
-            textBox1.Location = new Point(axWindowsMediaPlayer1.Location.X, 944);
-            newProgressBar.Value = 0;
-            newProgressBar.ForeColor = Color.Black;
-            newProgressBar.BackColor = Color.Black;
-            newProgressBar.Margin = new Padding(0);
-
-
-            this.Controls.Add(newProgressBar);
-
-        }
 
         private void miniProgress_MouseClick(object sender, MouseEventArgs e)
         {
@@ -606,7 +730,7 @@ namespace MediaPlayer
 
                 startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
                 endTime = TimeSpan.FromSeconds((int)endRepeatTo);
-                textBox5.Text = (temp.Substring(0, temp.IndexOf("Dura")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
                     "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
             }
             time = TimeSpan.FromSeconds((int)duration);
@@ -678,7 +802,7 @@ namespace MediaPlayer
                 tempBox.Margin = new Padding(0, 0, 0, 0);
                 Double c = Convert.ToDouble(fi.Name.Substring(0, fi.Name.IndexOf("placeholder")));
                 tempBox.Location = new Point((int)((c / (Double)(duration * 1000)) * axWindowsMediaPlayer1.Width) + 305,
-                    axWindowsMediaPlayer1.Location.Y-tempBox.Height-2);
+                    panel1.Location.Y-tempBox.Height-2);
                 tempBox.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, tempBox.Width, tempBox.Height, 8, 8));
                 tempBox.ContextMenuStrip = contextMenuStrip1;
 
@@ -699,7 +823,7 @@ namespace MediaPlayer
                     miniPlayer.miniVidPlayer.settings.volume = 0;
                     int x = tempBox.Location.X - (miniPlayer.miniVidPlayer.Width - tempBox.Width) + 85;
                     miniPlayer.miniVidPlayer.Location = new Point(x>1457?1457:x, miniPlayer.miniVidPlayer.Location.Y);
-                    miniPlayer.Location = new Point(50, axWindowsMediaPlayer1.Location.Y-2);
+                    miniPlayer.Location = new Point(50, panel1.Location.Y-2);
 
                     miniPlayer.Show();
                     miniPlayer.miniVidPlayer.Ctlcontrols.currentPosition = ((Double)c / 1000.0) - 1.5;
@@ -966,9 +1090,38 @@ namespace MediaPlayer
         }
 
         private const UInt32 WM_KEYDOWN = 0x0100;
+        private const int WM_MOUSEWHEEL = 0x20a;
         public bool PreFilterMessage(ref Message m)
         {
-            if (m.Msg == WM_KEYDOWN)
+            if (m.Msg == WM_MOUSEWHEEL)
+            {
+                if(m.WParam.ToString() == "7864320")
+                {
+                    if (axWindowsMediaPlayer1.settings.volume <= 98)
+                        axWindowsMediaPlayer1.settings.volume = (axWindowsMediaPlayer1.settings.volume + 2);
+                    else
+                        axWindowsMediaPlayer1.settings.volume = 100;
+
+                    textBox2.Text = "Volume: " + axWindowsMediaPlayer1.settings.volume.ToString();
+                    trackBar1.Value = axWindowsMediaPlayer1.settings.volume;
+
+                    Explorer.globalVol = trackBar1.Value;
+                }
+                else
+                {
+                    if (axWindowsMediaPlayer1.settings.volume >= 2)
+                        axWindowsMediaPlayer1.settings.volume = (axWindowsMediaPlayer1.settings.volume - 2);
+                    else
+                        axWindowsMediaPlayer1.settings.volume = 0;
+
+                    textBox2.Text = "Volume: " + axWindowsMediaPlayer1.settings.volume.ToString();
+                    trackBar1.Value = axWindowsMediaPlayer1.settings.volume;
+
+                    Explorer.globalVol = trackBar1.Value;
+                }
+                return true;
+            }
+            else if (m.Msg == WM_KEYDOWN)
             {
                 FileInfo wmpFi = new FileInfo(axWindowsMediaPlayer1.Name);
                 DirectoryInfo wmpDi = new DirectoryInfo(wmpFi.DirectoryName);
@@ -978,7 +1131,7 @@ namespace MediaPlayer
                 if (Control.ModifierKeys == Keys.Control && keyCode == Keys.A)
                 {
                     keyLock = !keyLock;
-                    textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      " + axWindowsMediaPlayer1.playState.ToString().Replace("wmpps", "");
+                    textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            " + axWindowsMediaPlayer1.playState.ToString().Replace("wmpps", "");
                 }
 
                 if (keyCode == Keys.Back || keyCode == Keys.Escape)
@@ -996,7 +1149,7 @@ namespace MediaPlayer
                     {
                         this.axWindowsMediaPlayer1.fullScreen = false;
                     }
-                    this.Hide();
+                    formClosingDispoer();
                     TranspBack.toTop = false;
                 }
                 else 
@@ -1007,7 +1160,7 @@ namespace MediaPlayer
                     {
                         startRepeatFrom = axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
                         startLabel.Visible = true;
-                        startLabel.Location = new Point((int)((startRepeatFrom / axWindowsMediaPlayer1.currentMedia.duration) * axWindowsMediaPlayer1.Width) + axWindowsMediaPlayer1.Location.X,
+                        startLabel.Location = new Point((int)((startRepeatFrom / axWindowsMediaPlayer1.currentMedia.duration) * axWindowsMediaPlayer1.Width) + panel1.Location.X - (startLabel.Width/2),
                             textBox1.Location.Y);
                         if (axWindowsMediaPlayer1.Name.Length > 0 && axWindowsMediaPlayer1.Name.Contains("placeholdeerr"))
                         {
@@ -1015,16 +1168,17 @@ namespace MediaPlayer
 
                             startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
                             endTime = TimeSpan.FromSeconds((int)endRepeatTo);
-                            textBox5.Text = (temp.Substring(0, temp.IndexOf("Dura")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
-                                "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+                            textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                        "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
                         }
                     }
                     else if (keyCode == Keys.OemCloseBrackets)
                     {
                         toRepeat = true;
                         endRepeatTo = axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+                        startLabel.Visible = true;
                         endLabel.Visible = true;
-                        endLabel.Location = new Point((int)((endRepeatTo / axWindowsMediaPlayer1.currentMedia.duration) * axWindowsMediaPlayer1.Width) + axWindowsMediaPlayer1.Location.X,
+                        endLabel.Location = new Point((int)((endRepeatTo / axWindowsMediaPlayer1.currentMedia.duration) * axWindowsMediaPlayer1.Width) + panel1.Location.X - (endLabel.Width / 2),
                             textBox1.Location.Y);
                         if (axWindowsMediaPlayer1.Name.Length > 0 && axWindowsMediaPlayer1.Name.Contains("placeholdeerr"))
                         {
@@ -1032,14 +1186,15 @@ namespace MediaPlayer
 
                             startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
                             endTime = TimeSpan.FromSeconds((int)endRepeatTo);
-                            textBox5.Text = (temp.Substring(0, temp.IndexOf("Dura")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
-                                "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+
+                            textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                        "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
                         }
                     }
 
                     if (keyCode == Keys.O || keyCode == Keys.G || keyCode == Keys.B)
                     {
-                        if (endRepeatTo <= startRepeatFrom)
+                        if (endRepeatTo <= startRepeatFrom || !toRepeat)
                             return true;
                         int endTo = (int)(endRepeatTo * 1000 - startRepeatFrom * 1000);
                         Thread gifThread = new Thread(() =>
@@ -1105,7 +1260,7 @@ namespace MediaPlayer
                     if(keyCode == Keys.R)
                     {
                         repeat = !repeat;
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Repeat: " + (repeat ? "On" : "Off") + "\t      " + axWindowsMediaPlayer1.playState.ToString().Replace("wmpps", "");
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            " + axWindowsMediaPlayer1.playState.ToString().Replace("wmpps", "");
                         if (repeat)
                             axWindowsMediaPlayer1.settings.setMode("loop", true);
                         else
@@ -1292,8 +1447,8 @@ namespace MediaPlayer
 
                                 startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
                                 endTime = TimeSpan.FromSeconds((int)endRepeatTo);
-                                textBox5.Text = (temp.Substring(0, temp.IndexOf("Dura")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
-                                    "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+                                textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                    "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss"); 
                                 wmp.calculateDuration(0);
 
                                 controlDisposer();
@@ -1338,8 +1493,8 @@ namespace MediaPlayer
 
                                 startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
                                 endTime = TimeSpan.FromSeconds((int)endRepeatTo);
-                                textBox5.Text = (temp.Substring(0, temp.IndexOf("Dura")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
-                                    "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+                                textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                    "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
                                 wmp.calculateDuration(0);
 
                                 controlDisposer();
@@ -1449,7 +1604,7 @@ namespace MediaPlayer
                         //pb.ContextMenuStrip = contextMenuStrip1;
                         tempBox.Margin = new Padding(0, 0, 0, 0);
                         tempBox.Location = new Point((int)((c / (Double)(duration * 1000)) * axWindowsMediaPlayer1.Width) + 305,
-                                axWindowsMediaPlayer1.Location.Y - tempBox.Height - 2);
+                                panel1.Location.Y - tempBox.Height - 2);
                         tempBox.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, tempBox.Width, tempBox.Height, 8, 8));
                         tempBox.ContextMenuStrip = contextMenuStrip1;
 
@@ -1472,7 +1627,7 @@ namespace MediaPlayer
                             miniPlayer.miniVidPlayer.settings.volume = 0;
                             int x = tempBox.Location.X - (miniPlayer.miniVidPlayer.Width - tempBox.Width) + 85;
                             miniPlayer.miniVidPlayer.Location = new Point(x > 1457 ? 1457 : x, miniPlayer.miniVidPlayer.Location.Y);
-                            miniPlayer.Location = new Point(50, axWindowsMediaPlayer1.Location.Y-2);
+                            miniPlayer.Location = new Point(50, panel1.Location.Y-2);
 
                             miniPlayer.Show();
                             miniPlayer.miniVidPlayer.Ctlcontrols.currentPosition = ((Double)c / 1000.0)-1.5;

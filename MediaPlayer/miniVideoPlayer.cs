@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 namespace MediaPlayer
 {
-    public partial class miniVideoPlayer : Form
+    public partial class miniVideoPlayer : Form, IMessageFilter
     {
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
@@ -39,7 +39,8 @@ namespace MediaPlayer
         public bool isMoved = false;
         public NewProgressBar newProgressBar = null;
         public double pastPos = 0.0;
-
+        int noOfPixelsToMove = 16;
+        Boolean verticalScroll = true;
         Color mouseHoverColor = Explorer.globColor;
         Color mouseClickColor = Explorer.globColor;
         public miniVideoPlayer(List<PictureBox> videosPb)
@@ -51,26 +52,27 @@ namespace MediaPlayer
             axWindowsMediaPlayer1.settings.volume = 0;
             this.videosPb = videosPb;
             axWindowsMediaPlayer1.settings.setMode("loop", true);
-            this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 25, 25));
-            axWindowsMediaPlayer1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, axWindowsMediaPlayer1.Width, axWindowsMediaPlayer1.Height, 25, 25));
             newProgressBar = new NewProgressBar();
             newProgressBar.Value = 0;
-            newProgressBar.ForeColor = mouseClickColor;
-            newProgressBar.BackColor = mouseClickColor;
+            newProgressBar.ForeColor = Color.FromArgb(0,0,10);
+            newProgressBar.BackColor = Color.White;
             newProgressBar.Margin = new Padding(0);
+            newProgressBar.Location = new Point(0, axWindowsMediaPlayer1.Height);
             this.Controls.Add(newProgressBar);
-            axWindowsMediaPlayer1.settings.rate = 1.25;
+            axWindowsMediaPlayer1.settings.rate = 1.5;
+            this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 25, 25));
         }
 
         private void axWindowsMediaPlayer1_MouseMoveEvent(object sender, AxWMPLib._WMPOCXEvents_MouseMoveEvent e)
         {
+
             if (isMoved)
             {
                 timer1.Enabled = false;
                 duration = axWindowsMediaPlayer1.currentMedia.duration;
                 axWindowsMediaPlayer1.settings.rate = 1.00;
                 newProgressBar.Maximum = (int)duration;
-                loc = (e.fX / 649.0) * duration;
+                loc = (e.fX / 582.0) * duration;
 
                 if (loc - prevX > 16 || loc - prevX < -16)
                 {
@@ -83,16 +85,23 @@ namespace MediaPlayer
 
         public void miniVideoPlayer_MouseLeave(object sender, EventArgs e)
         {
-            this.Hide();
-            prevX = -12;
-            this.Size = new Size(0, 0);
-            timer1.Enabled = false;
-            isMoved = false;
-            whereAt = 1.0;
+            try
+            {
+                Application.RemoveMessageFilter(this);
+                axWindowsMediaPlayer1.Ctlcontrols.pause();
+                this.Hide();
+                prevX = -12;
+                this.Size = new Size(0, 0);
+                timer1.Enabled = false;
+                isMoved = false;
+                whereAt = 1.0;
+            }
+            catch { }
         }
 
         public void setData(PictureBox pb, FileInfo fileInfo, VideoPlayer videoPlayer)
         {
+            Application.AddMessageFilter(this);
             this.pb = pb;
             this.fileInfo = fileInfo;
             this.videoPlayer = videoPlayer;
@@ -105,6 +114,7 @@ namespace MediaPlayer
 
             try
             {
+                Application.RemoveMessageFilter(this);
                 pastPos = 0;
                 timer1.Enabled = false;
                 isMoved = false;
@@ -128,8 +138,8 @@ namespace MediaPlayer
                     newProgressBar.Maximum = (int)duration;
                 }
                 catch { duration = 0; }
-                if (whereAt == 10.0) whereAt = 1.0;
-                double temp = (whereAt / 10.0) * duration;
+                if (whereAt == 8.0) whereAt = 1.0;
+                double temp = (whereAt / 8.0) * duration;
                 axWindowsMediaPlayer1.Ctlcontrols.currentPosition = temp;
                 newProgressBar.Value = (int)axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
                 whereAt++;
@@ -142,8 +152,8 @@ namespace MediaPlayer
             if (!VideoPlayer.isShort)
             {
                 timer1.Enabled = true;
-                timer1.Interval = 4000;
-                axWindowsMediaPlayer1.settings.rate = 1.2;
+                timer1.Interval = 3500;
+                axWindowsMediaPlayer1.settings.rate = 1.6;
             }
         }
 
@@ -181,10 +191,10 @@ namespace MediaPlayer
                 wmp.axWindowsMediaPlayer1.URL = fileInfo.FullName;
                 wmp.axWindowsMediaPlayer1.Name = fileInfo.FullName;
                 wmp.Location = new Point(0, 28);
-                wmp.calculateDuration(VideoPlayer.isShort?0:axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
+                wmp.calculateDuration(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
 
                 transpBack = new TranspBack(wmp, wmpSide, null, null);
-                transpBack.Show();
+                //transpBack.Show();
                 wmp.Show();
                 //wmpSide.Show();
             }
@@ -192,7 +202,7 @@ namespace MediaPlayer
 
         public void axWindowsMediaPlayer1_MouseDownEvent(object sender, AxWMPLib._WMPOCXEvents_MouseDownEvent e)
         {
-            if (!isMoved && !VideoPlayer.isShort)
+            if (!isMoved && (!VideoPlayer.isShort || axWindowsMediaPlayer1.currentMedia.duration > 3*60))
             {
                 pastPos = 0;
                 timer1.Enabled = false;
@@ -253,7 +263,7 @@ namespace MediaPlayer
             wmp.axWindowsMediaPlayer1.URL = fileInfo.FullName;
             wmp.axWindowsMediaPlayer1.Name = fileInfo.FullName;
             wmp.Location = new Point(0, 28);
-            wmp.calculateDuration(VideoPlayer.isShort?0:(pastPos==0 ? axWindowsMediaPlayer1.Ctlcontrols.currentPosition : pastPos));
+            wmp.calculateDuration(VideoPlayer.isShort? axWindowsMediaPlayer1.Ctlcontrols.currentPosition : (pastPos==0 ? axWindowsMediaPlayer1.Ctlcontrols.currentPosition : pastPos));
 
             wmpSide = new wmpSide(wmp,null, false);
             wmpSide.fillUpFP1(videosPb);
@@ -261,9 +271,57 @@ namespace MediaPlayer
             wmpSide.BackColor = Explorer.darkBackColor;
 
             transpBack = new TranspBack(wmp, wmpSide, null, null);
-            transpBack.Show();
+            //transpBack.Show();
             wmp.Show();
             //wmpSide.Show();
+        }
+
+        private const UInt32 WM_KEYDOWN = 0x0100;
+        private const int WM_MOUSEWHEEL = 0x20a;
+        public bool PreFilterMessage(ref Message m)
+        {
+            if (m.Msg == WM_MOUSEWHEEL)
+            {
+                VScrollProperties vs = videoPlayer.flowLayoutPanel1.VerticalScroll;
+                HScrollProperties hs = videoPlayer.flowLayoutPanel1.HorizontalScroll;
+                if (m.WParam.ToString() == "7864320")
+                {
+
+                    try
+                    {
+                        int vScroll = vs.Value - 90;
+                        if(vScroll>0)
+                            this.Location = new Point(this.Location.X, this.Location.Y + 90);
+                        videoPlayer.flowLayoutPanel1.VerticalScroll.Value = vScroll;
+
+                        videoPlayer.flowLayoutPanel1.AutoScrollPosition = new Point(hs.Value, vScroll);
+                    }
+                    catch
+                    {
+                    }
+                }
+                else
+                {
+                    int vScroll = vs.Value + 90;
+                    if(vScroll<(vs.Maximum - vs.LargeChange))
+                     this.Location = new Point(this.Location.X, this.Location.Y - 90);
+                    videoPlayer.flowLayoutPanel1.VerticalScroll.Value = vScroll;
+
+                    videoPlayer.flowLayoutPanel1.AutoScrollPosition = new Point(hs.Value, vScroll);
+
+                }
+                return true;
+            }
+            else if (m.Msg == WM_KEYDOWN)
+            {
+                    Keys keyCode = (Keys)(int)m.WParam & Keys.KeyCode;
+
+                    if(keyCode == Keys.Up || keyCode == Keys.Right|| keyCode == Keys.Left|| keyCode == Keys.Down || keyCode == Keys.M || keyCode == Keys.NumPad1
+                    || keyCode == Keys.NumPad2 || keyCode == Keys.NumPad3 || keyCode == Keys.NumPad4 || keyCode == Keys.NumPad5 || keyCode == Keys.NumPad6)
+                        videoPlayer.PreFilterMessage(ref m);
+                return true;
+            }
+            return false;
         }
     }
 }

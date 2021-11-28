@@ -79,6 +79,7 @@ namespace MediaPlayer
 
         public static Color darkBackColor = Color.FromArgb(24,24,24);
         public static Color lightBackColor = Color.FromArgb(45, 45, 45);
+        public static Color whiteBackColor = Color.FromArgb(255, 254, 232);
         public static Color kindaDark = Color.FromArgb(64, 64, 64);
         public static Color mouseHoverColor = Color.FromArgb(255, 128, 0);
         public static Color mouseClickColor = Color.FromArgb(255, 128, 0);
@@ -155,8 +156,8 @@ namespace MediaPlayer
             textBox3.Select();
             this.DoubleBuffered = true;
             hoverPointer.Visible = false;
-            DirectoryInfo directory2 = new DirectoryInfo("C:\\Users\\Harsha Vardhan\\Downloads\\Video");
-            DirectoryInfo directory1 = new DirectoryInfo("E:\\VS Code\\CSS");
+            DirectoryInfo directory2 = new DirectoryInfo("H:\\vivado\\rand_name\\rand_name.ir");
+            DirectoryInfo directory1 = new DirectoryInfo("F:\\Calculator");
             pardirectory[1] = directory1;
             pardirectory[0] = directory2;
             if (!File.Exists(directory1.FullName + "\\ThemeColor.txt"))
@@ -378,9 +379,9 @@ namespace MediaPlayer
             searchLabel.ForeColor = Color.White;
             textBox3.BackColor = darkBackColor;
             textBox3.ForeColor = Color.White;
-            button2.BackColor = kindaDark;
-            button3.BackColor = kindaDark;
-            button4.BackColor = kindaDark;
+            button2.BackColor = darkBackColor;
+            button3.BackColor = darkBackColor;
+            button4.BackColor = darkBackColor;
 
             divider.BackColor = kindaDark;
 
@@ -1388,12 +1389,6 @@ namespace MediaPlayer
                 divider.BackColor = ctrl == true ? mouseClickColor : kindaDark;
                 textBox3.Select();
             }
-            else if (Control.ModifierKeys == Keys.Control && e.KeyCode == Keys.Enter)
-            {
-                textBox3.Text = "";
-                textBox3.Text = searchText;
-                disposeAndLoad();
-            }
             else if (e.KeyCode == Keys.Escape || (textBox3.Text.Trim().Length == 0 && e.KeyCode == Keys.Back))
                 closeForm();
             else if (ctrl && e.KeyCode == Keys.Up)
@@ -1791,9 +1786,11 @@ namespace MediaPlayer
                 {
                     textBox3.Text = "";
                     textBox3.Text = searchText;
+
                     disposeAndLoad();
                 }
             }
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -1870,7 +1867,7 @@ namespace MediaPlayer
                 {
                     popUpTextBox.Location = new Point(flowLayoutPanel2.Location.X + newFolder.Location.X + 20 , newFolder.Location.Y + newFolder.Size.Height + 5);
                     popUpTextBox.ShowDialog();
-                    if (popUpTextBox.fileName.Length > 0 && !Directory.Exists((Calculator.globalDirButton.Text.Contains("Best of the") ? pardirectory[0] : pardirectory[1]).FullName + "\\" + (Calculator.globalDirButton.Text.Contains("Best of the") ? "z" : i.ToString()) + Calculator.globalDirButton.Text + "\\" + popUpTextBox.fileName))
+                    if (popUpTextBox.fileName.Length > 0 && !popUpTextBox.fileName.Trim().Equals("URL/Folder Name:") && !Directory.Exists((Calculator.globalDirButton.Text.Contains("Best of the") ? pardirectory[0] : pardirectory[1]).FullName + "\\" + (Calculator.globalDirButton.Text.Contains("Best of the") ? "z" : i.ToString()) + Calculator.globalDirButton.Text + "\\" + popUpTextBox.fileName))
                     {
                         Directory.CreateDirectory((Calculator.globalDirButton.Text.Contains("Best of the") ? pardirectory[0] : pardirectory[1]).FullName + "\\" + (Calculator.globalDirButton.Text.Contains("Best of the") ? "z" : i.ToString()) + Calculator.globalDirButton.Text + "\\" + popUpTextBox.fileName);
                     }

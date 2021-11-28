@@ -83,7 +83,7 @@ namespace MediaPlayer
             newProgressBar.Location = new Point(1, axWindowsMediaPlayer1.Location.Y + axWindowsMediaPlayer1.Size.Height-6);
             newProgressBar.Value = 0;
             newProgressBar.ForeColor = mouseClickColor;
-            newProgressBar.BackColor = mouseClickColor;
+            newProgressBar.BackColor = Color.White;
             newProgressBar.Margin = new Padding(0);
             newProgressBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.miniProgress_MouseMove);
             newProgressBar.MouseEnter += new EventHandler(this.miniProgress_MouseEnter);

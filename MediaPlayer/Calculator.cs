@@ -37,8 +37,9 @@ namespace MediaPlayer
         public static Explorer v;
         public static Boolean disCef = false;
         public static TextBox globalCalcTb = null;
-        public static List<String> staleDeletes = new List<string>(); 
+        public static List<String> staleDeletes = new List<string>();
 
+        Color tempColor = Color.Orange;
 
         public Calculator()
         {
@@ -49,28 +50,43 @@ namespace MediaPlayer
 
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 20, 20));
-            txtDisplay.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, txtDisplay.Width, txtDisplay.Height, 20, 20));
-            button1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button1.Width, button1.Height,15, 15));
-            btnReset.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnReset.Width, btnReset.Height,15, 15));
-            btnDiv.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnDiv.Width, btnDiv.Height,15, 15));
-            btnClear.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnClear.Width, btnClear.Height,15, 15));
-            btnCopy.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnCopy.Width, btnCopy.Height,15, 15));
-            btn7.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn7.Width, btn7.Height,15, 15));
-            btn8.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn8.Width, btn8.Height,15, 15));
-            btn9.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn9.Width, btn9.Height,15, 15));
+            //txtDisplay.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, txtDisplay.Width, txtDisplay.Height, 20, 20));
+            button1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button1.Width, button1.Height,10, 10));
+            btnReset.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnReset.Width, btnReset.Height,10, 10));
+            btnDiv.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnDiv.Width, btnDiv.Height,10, 10));
+            btnClear.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnClear.Width, btnClear.Height,10, 10));
+            btnCopy.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnCopy.Width, btnCopy.Height,10, 10));
+            btn7.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn7.Width, btn7.Height,10, 10));
+            btn8.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn8.Width, btn8.Height,10, 10));
+            btn9.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn9.Width, btn9.Height,10, 10));
 
-            btnMul.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnMul.Width, btnMul.Height,15, 15));
-            btnSub.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnSub.Width, btnSub.Height,15, 15));
-            btn1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn1.Width, btn1.Height,15, 15));
-            btn2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn2.Width, btn2.Height,15, 15));
-            btn3.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn3.Width, btn3.Height,15, 15));
-            btn4.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn4.Width, btn4.Height,15, 15));
-            btn5.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn5.Width, btn5.Height,15, 15));
-            btn6.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn6.Width, btn6.Height,15, 15));
-            btnAdd.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnAdd.Width, btnAdd.Height,15, 15));
-            btn0.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn0.Width, btn0.Height,15, 15));
-            btnDecimal.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnDecimal.Width, btnDecimal.Height,15, 15));
-            btnRes.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnRes.Width, btnRes.Height,15, 15));
+            btnMul.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnMul.Width, btnMul.Height,10, 10));
+            btnSub.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnSub.Width, btnSub.Height,10, 10));
+            btn1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn1.Width, btn1.Height,10, 10));
+            btn2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn2.Width, btn2.Height,10, 10));
+            btn3.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn3.Width, btn3.Height,10, 10));
+            btn4.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn4.Width, btn4.Height,10, 10));
+            btn5.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn5.Width, btn5.Height,10, 10));
+            btn6.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn6.Width, btn6.Height,10, 10));
+            btnAdd.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnAdd.Width, btnAdd.Height,10, 10));
+            btn0.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn0.Width, btn0.Height,10, 10));
+            btnDecimal.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnDecimal.Width, btnDecimal.Height,10, 10));
+            btnRes.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnRes.Width, btnRes.Height,10, 10));
+            String[] defColor = File.ReadAllText("F:\\Calculator\\ThemeColor.txt").Split(',');
+            tempColor = Color.FromArgb(int.Parse(defColor[0]), int.Parse(defColor[1]), int.Parse(defColor[2]));
+            /*btnAdd.BackColor = tempColor;
+            btnSub.BackColor = tempColor;
+            btnMul.BackColor = tempColor;
+            btnDiv.BackColor = tempColor;
+            btnClear.BackColor = tempColor;
+            btnReset.BackColor = tempColor;
+            btnCopy.BackColor = tempColor;*/
+
+            button2.FlatAppearance.MouseOverBackColor = tempColor;
+            button2.FlatAppearance.MouseDownBackColor= tempColor;
+
+            button7.FlatAppearance.MouseOverBackColor = tempColor;
+            button7.FlatAppearance.MouseDownBackColor = tempColor;
 
             this.Location = new Point(1890, 30);
         }
@@ -313,19 +329,8 @@ namespace MediaPlayer
         private void txtDisplay_TextChanged(object sender, EventArgs e)
         {
             TextBox tbx = (TextBox)sender;
-            if (pattern)
-            {
-                if (tbx.Text.Equals("6633+--"))
-                {
-                    tbx.Text = "";
-                    this.Hide();
-                    //SetMonitorState(2);
-                    v.Show();
-                    pattern = !pattern;
-                }
-            }
 
-            if (tbx.Text.Equals("608442786042") || tbx.Text.Equals("/**/-+") || tbx.Text.Equals("6633+--"))
+            if (tbx.Text.Equals("608442786042") || tbx.Text.Equals("/**/-+"))
             {
                 if (!v.Visible)
                 {
@@ -333,23 +338,6 @@ namespace MediaPlayer
                     this.Hide();
                     //SetMonitorState(2);
                     v.Show();
-                }
-            }
-            else if (tbx.Text.Contains("608442786078"))
-            {
-                //SetMonitorState(2);
-
-                if (tbx.Text.Contains("**"))
-                {
-                    v = new Explorer(this);
-                    this.Hide();
-                    String searchTxt = tbx.Text.ToLower().Replace("608442786078", "").Replace("**", "");
-                    tbx.Text = "";
-                    v.searchText = searchTxt;
-                    v.flowLayoutPanel1.Controls.Clear();
-                    GC.Collect();
-                    v.Explorer_Load(null, null);
-                    v.ShowDialog();
                 }
             }
             else if (tbx.Text.Equals("Clear"))
@@ -395,8 +383,8 @@ namespace MediaPlayer
 
             v = new Explorer(this);
             v.Explorer_Load(null, null);
-            button2_Click(null, null);
-            if (txtDisplay.Text.Equals("608442786042") || txtDisplay.Text.Equals("/**/-+") || txtDisplay.Text.Equals("6633+--"))
+            btnRes.BackColor = tempColor;
+            if (txtDisplay.Text.Equals("608442786042") || txtDisplay.Text.Equals("/**/-+"))
             {
                 if (!v.Visible)
                 {
@@ -457,20 +445,278 @@ namespace MediaPlayer
         {
 
         }
+        private bool mouseDown = false;
+        private Point lastLocation;
+        private void Calculator_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+            lastLocation = e.Location;
+        }
+
+        private void Calculator_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+        }
+
+        private void Calculator_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mouseDown)
+            {
+                this.Location = new Point(
+                    (this.Location.X - lastLocation.X) + e.X, (this.Location.Y - lastLocation.Y) + e.Y);
+
+                this.Update();
+            }
+        }
+
+        private void btnReset_Click_1(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
+            txtDisplay.Text = "";
+        }
+
+        private void btnClear_Click_1(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
+            if (txtDisplay.Text.Length > 0)
+            txtDisplay.Text = txtDisplay.Text.Substring(0, txtDisplay.Text.Length-1);
+            txtDisplay.SelectionStart = txtDisplay.Text.Length;
+            txtDisplay.SelectionLength = 0;
+        }
+
+        private void btnDiv_Click_1(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
+            txtDisplay.Focus();
+            if (txtDisplay.Text.Length > 0) {
+                string type = txtDisplay.Text.Substring(txtDisplay.Text.Length - 1);
+                if (type == "0" || type == "1" || type == "2" || type == "3" || type == "4" || type == "5" || type == "6" || type == "7" || type == "8" || type == "9")
+                    txtDisplay.Text = txtDisplay.Text + "/";
+                else
+                    txtDisplay.Text = txtDisplay.Text.Substring(0, txtDisplay.Text.Length - 1) + "/";
+            }
+            txtDisplay.SelectionStart = txtDisplay.Text.Length;
+            txtDisplay.SelectionLength = 0;
+        }
+
+        private void btnMul_Click_1(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
+            txtDisplay.Focus();
+            if (txtDisplay.Text.Length > 0)
+            {
+                string type = txtDisplay.Text.Substring(txtDisplay.Text.Length - 1);
+                if (type == "0" || type == "1" || type == "2" || type == "3" || type == "4" || type == "5" || type == "6" || type == "7" || type == "8" || type == "9")
+                    txtDisplay.Text = txtDisplay.Text + "*";
+                else
+                    txtDisplay.Text = txtDisplay.Text.Substring(0, txtDisplay.Text.Length - 1) + "*";
+            }
+            txtDisplay.SelectionStart = txtDisplay.Text.Length;
+            txtDisplay.SelectionLength = 0;
+        }
+
+        private void btnSub_Click_1(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
+            if (txtDisplay.Text.Length > 0)
+            {
+                string type = txtDisplay.Text.Substring(txtDisplay.Text.Length - 1);
+                if (type == "0" || type == "1" || type == "2" || type == "3" || type == "4" || type == "5" || type == "6" || type == "7" || type == "8" || type == "9")
+                    txtDisplay.Text = txtDisplay.Text + "-";
+                else
+                    txtDisplay.Text = txtDisplay.Text.Substring(0, txtDisplay.Text.Length - 1) + "-";
+            }
+            txtDisplay.SelectionStart = txtDisplay.Text.Length;
+            txtDisplay.SelectionLength = 0;
+        }
+
+        private void btnAdd_Click_1(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
+            if (txtDisplay.Text.Length > 0)
+            {
+                string type = txtDisplay.Text.Substring(txtDisplay.Text.Length - 1);
+                if (type == "0" || type == "1" || type == "2" || type == "3" || type == "4" || type == "5" || type == "6" || type == "7" || type == "8" || type == "9")
+                    txtDisplay.Text = txtDisplay.Text + "+";
+                else
+                    txtDisplay.Text = txtDisplay.Text.Substring(0, txtDisplay.Text.Length - 1) + "+";
+            }
+            txtDisplay.SelectionStart = txtDisplay.Text.Length;
+            txtDisplay.SelectionLength = 0;
+        }
+
+        private void btn7_Click(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
+            txtDisplay.Text = txtDisplay.Text + "7";
+            txtDisplay.SelectionStart = txtDisplay.Text.Length;
+            txtDisplay.SelectionLength = 0;
+        }
+
+        private void btn8_Click(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
+            txtDisplay.Text = txtDisplay.Text + "8";
+            txtDisplay.SelectionStart = txtDisplay.Text.Length;
+            txtDisplay.SelectionLength = 0;
+        }
+
+        private void btn9_Click(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
+            txtDisplay.Text = txtDisplay.Text + "9";
+            txtDisplay.SelectionStart = txtDisplay.Text.Length;
+            txtDisplay.SelectionLength = 0;
+        }
+
+        private void btn4_Click(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
+            txtDisplay.Text = txtDisplay.Text + "4";
+            txtDisplay.SelectionStart = txtDisplay.Text.Length;
+            txtDisplay.SelectionLength = 0;
+        }
+
+        private void btn5_Click(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
+            txtDisplay.Text = txtDisplay.Text + "5";
+            txtDisplay.SelectionStart = txtDisplay.Text.Length;
+            txtDisplay.SelectionLength = 0;
+        }
+
+        private void btn6_Click(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
+            txtDisplay.Text = txtDisplay.Text + "6";
+            txtDisplay.SelectionStart = txtDisplay.Text.Length;
+            txtDisplay.SelectionLength = 0;
+        }
+
+        private void btn1_Click(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
+            txtDisplay.Text = txtDisplay.Text + "1";
+            txtDisplay.SelectionStart = txtDisplay.Text.Length;
+            txtDisplay.SelectionLength = 0;
+        }
+
+        private void btn2_Click(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
+            txtDisplay.Text = txtDisplay.Text + "2";
+            txtDisplay.SelectionStart = txtDisplay.Text.Length;
+            txtDisplay.SelectionLength = 0;
+        }
+
+        private void btn3_Click(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
+            txtDisplay.Text = txtDisplay.Text + "3";
+            txtDisplay.SelectionStart = txtDisplay.Text.Length;
+            txtDisplay.SelectionLength = 0;
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
+            txtDisplay.Text = txtDisplay.Text + "00";
+            txtDisplay.SelectionStart = txtDisplay.Text.Length;
+            txtDisplay.SelectionLength = 0;
+        }
+
+        private void btn0_Click(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
+            txtDisplay.Text = txtDisplay.Text + "0";
+            txtDisplay.SelectionStart = txtDisplay.Text.Length;
+            txtDisplay.SelectionLength = 0;
+        }
+
+        private void btnDecimal_Click_1(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
+            txtDisplay.Focus();
+            if (txtDisplay.Text.Length > 0)
+            {
+                string type = txtDisplay.Text.Substring(txtDisplay.Text.Length - 1);
+                if (type == "0" || type == "1" || type == "2" || type == "3" || type == "4" || type == "5" || type == "6" || type == "7" || type == "8" || type == "9")
+                    txtDisplay.Text = txtDisplay.Text + ".";
+                else
+                    txtDisplay.Text = txtDisplay.Text.Substring(0, txtDisplay.Text.Length - 1) + ".";
+            }
+            txtDisplay.SelectionStart = txtDisplay.Text.Length;
+            txtDisplay.SelectionLength = 0;
+        }
+
+        private void btnRes_Click_1(object sender, EventArgs e)
+        {
+            string type = txtDisplay.Text.Replace("\r\n", "");
+            txtDisplay.Focus();
+            foreach (char tmp in type.ToCharArray())
+            {
+                if (tmp == '0' || tmp == '1' || tmp == '2' || tmp == '3' || tmp == '4' || tmp == '5' || tmp == '6' || tmp == '7' || tmp == '8' ||
+                    tmp == '9' || tmp == '+' || tmp == '-' || tmp == '*' || tmp == '/' || tmp == '.' || tmp == '%')
+                {
+
+                }
+                else
+                {
+                    txtDisplay.Text = "Invalid syn";
+                    return;
+                }
+            }
+
+            DataTable dt = new DataTable();
+            var v = dt.Compute(type, "");
+            String res = v.ToString();
+            if (res.Contains("."))
+            {
+                txtDisplay.Text = Math.Round(decimal.Parse(res), 3).ToString();
+            }
+            else
+            {
+                txtDisplay.Text = res;
+            }
+            txtDisplay.SelectionStart = txtDisplay.Text.Length;
+            txtDisplay.SelectionLength = 0;
+        }
+
+        private void btnCopy_Click_1(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
+            if (txtDisplay.Text.Length > 1)
+            {
+                string type = txtDisplay.Text.Substring(txtDisplay.Text.Length - 1);
+                if (type == "0" || type == "1" || type == "2" || type == "3" || type == "4" || type == "5" || type == "6" || type == "7" || type == "8" || type == "9")
+                    txtDisplay.Text = txtDisplay.Text + "%";
+                else
+                    txtDisplay.Text = txtDisplay.Text.Substring(0, txtDisplay.Text.Length - 1) + "%";
+            }
+            txtDisplay.SelectionStart = txtDisplay.Text.Length;
+            txtDisplay.SelectionLength = 0;
+        }
+
+        private void txtDisplay_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                btnRes_Click_1(null, null);
+            }
+            else if(e.KeyCode == Keys.C)
+            {
+                txtDisplay.Text = "";
+            }
+        }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            pattern = !pattern;
-            if (pattern)
-                button2.BackColor = Color.FromArgb(255, 192, 128);
-            else
-                button2.BackColor = Color.FromArgb(0,0,0);
-            txtDisplay.Focus();
+
         }
 
         private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
         {
-
+            
         }
 
         private void button1_Click(object sender, EventArgs e)

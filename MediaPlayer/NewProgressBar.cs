@@ -25,7 +25,7 @@ namespace MediaPlayer
             
             e.Graphics.FillRectangle(brush, 2, 2, rec.Width, rec.Height);*/
 
-            LinearGradientBrush brush = null;
+            /*LinearGradientBrush brush = null;
             Rectangle rec = new Rectangle(0, 0, this.Width, this.Height);
             double scaleFactor = (((double)Value - (double)Minimum) / ((double)Maximum - (double)Minimum));
 
@@ -35,12 +35,32 @@ namespace MediaPlayer
             rec.Width = (int)(rec.Width * scaleFactor) + 1;
             rec.Height -= 4;
             brush = new LinearGradientBrush(rec, this.ForeColor, this.BackColor, LinearGradientMode.Vertical);
-            e.Graphics.FillRectangle(brush, 2, 2, rec.Width, rec.Height);   
+            e.Graphics.FillRectangle(brush, 2, 2, rec.Width, rec.Height);*/
+
+            Graphics graph = e.Graphics;
+            double scaleFactor = (((double)this.Value - this.Minimum) / ((double)this.Maximum - this.Minimum));
+            int sliderWidth = (int)(this.Width * scaleFactor);
+            Rectangle rectSlider = new Rectangle(0, 0, sliderWidth, this.Height);
+            using (var brushSlider = new SolidBrush(this.ForeColor))
+            {
+                
+                //Painting
+                if (sliderWidth > 1) //Slider
+                    graph.FillRectangle(brushSlider, rectSlider);
+            }
         }
 
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
-            // None... Helps control the flicker.
+            Graphics graph = pevent.Graphics;
+            Rectangle rectChannel = new Rectangle(0, 0, this.Width, this.Height);
+            using (var brushChannel = new SolidBrush(this.BackColor))
+            {
+                
+                //Painting
+                graph.Clear(this.Parent.BackColor);//Surface
+                graph.FillRectangle(brushChannel, rectChannel);//Channel
+            }
         }
 
     }

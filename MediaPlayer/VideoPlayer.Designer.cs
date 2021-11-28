@@ -35,6 +35,7 @@ namespace MediaPlayer
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VideoPlayer));
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem53 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem47 = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem13 = new System.Windows.Forms.ToolStripMenuItem();
@@ -160,7 +161,6 @@ namespace MediaPlayer
             this.toolStripMenuItem72 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem51 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem62 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem53 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
@@ -198,7 +198,16 @@ namespace MediaPlayer
             this.toolStripMenuItem44,
             this.toolStripMenuItem48});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(240, 368);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(240, 340);
+            // 
+            // toolStripMenuItem53
+            // 
+            this.toolStripMenuItem53.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.toolStripMenuItem53.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripMenuItem53.Name = "toolStripMenuItem53";
+            this.toolStripMenuItem53.Size = new System.Drawing.Size(239, 24);
+            this.toolStripMenuItem53.Text = "Move To Affinity";
+            this.toolStripMenuItem53.Click += new System.EventHandler(this.toolStripMenuItem53_Click);
             // 
             // toolStripMenuItem47
             // 
@@ -682,6 +691,7 @@ namespace MediaPlayer
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(267, 1072);
             this.flowLayoutPanel2.TabIndex = 2;
+            this.flowLayoutPanel2.MouseEnter += new System.EventHandler(this.flowLayoutPanel2_MouseEnter);
             // 
             // expBtn
             // 
@@ -711,6 +721,7 @@ namespace MediaPlayer
             this.divider.Name = "divider";
             this.divider.Size = new System.Drawing.Size(264, 8);
             this.divider.TabIndex = 30;
+            this.divider.MouseEnter += new System.EventHandler(this.divider_MouseEnter);
             // 
             // trackBar1
             // 
@@ -881,7 +892,7 @@ namespace MediaPlayer
             this.button6.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Red;
             this.button6.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
             this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button6.Font = new System.Drawing.Font("Consolas", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button6.Font = new System.Drawing.Font("Consolas", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button6.ForeColor = System.Drawing.Color.White;
             this.button6.Location = new System.Drawing.Point(1855, -1);
             this.button6.Margin = new System.Windows.Forms.Padding(0);
@@ -892,6 +903,7 @@ namespace MediaPlayer
             this.button6.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.button6.UseVisualStyleBackColor = false;
             this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.button6.MouseEnter += new System.EventHandler(this.button6_MouseEnter);
             // 
             // button7
             // 
@@ -912,6 +924,7 @@ namespace MediaPlayer
             this.button7.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.button7.UseVisualStyleBackColor = false;
             this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.button7.MouseEnter += new System.EventHandler(this.button7_MouseEnter);
             // 
             // button8
             // 
@@ -921,17 +934,18 @@ namespace MediaPlayer
             this.button8.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button8.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button8.Font = new System.Drawing.Font("Consolas", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button8.Font = new System.Drawing.Font("Consolas", 19.8F, System.Drawing.FontStyle.Bold);
             this.button8.ForeColor = System.Drawing.Color.White;
-            this.button8.Location = new System.Drawing.Point(1721, -1);
+            this.button8.Location = new System.Drawing.Point(1721, -3);
             this.button8.Margin = new System.Windows.Forms.Padding(0);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(67, 40);
+            this.button8.Size = new System.Drawing.Size(67, 42);
             this.button8.TabIndex = 26;
-            this.button8.Text = "<-";
+            this.button8.Text = "🡐";
             this.button8.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.button8.UseVisualStyleBackColor = false;
             this.button8.Click += new System.EventHandler(this.button8_Click);
+            this.button8.MouseEnter += new System.EventHandler(this.button8_MouseEnter);
             // 
             // button10
             // 
@@ -952,6 +966,7 @@ namespace MediaPlayer
             this.button10.Text = "Global";
             this.button10.UseVisualStyleBackColor = false;
             this.button10.Click += new System.EventHandler(this.button10_Click);
+            this.button10.MouseEnter += new System.EventHandler(this.button10_MouseEnter);
             // 
             // contextMenuStrip3
             // 
@@ -1266,7 +1281,7 @@ namespace MediaPlayer
             this.navController.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.navController.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.navController.ForeColor = System.Drawing.Color.White;
-            this.navController.Image = global::MediaPlayer.Properties.Resources.arrow;
+            this.navController.Image = global::Calculator.Properties.Resources.arrow;
             this.navController.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.navController.Location = new System.Drawing.Point(0, 0);
             this.navController.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -1310,7 +1325,7 @@ namespace MediaPlayer
             this.move.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.move.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.move.ForeColor = System.Drawing.Color.White;
-            this.move.Image = global::MediaPlayer.Properties.Resources.icons8_move_32;
+            this.move.Image = global::Calculator.Properties.Resources.icons8_move_32;
             this.move.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.move.Location = new System.Drawing.Point(228, 0);
             this.move.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -1332,7 +1347,7 @@ namespace MediaPlayer
             this.edit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.edit.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.edit.ForeColor = System.Drawing.Color.White;
-            this.edit.Image = global::MediaPlayer.Properties.Resources.edit;
+            this.edit.Image = global::Calculator.Properties.Resources.edit;
             this.edit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.edit.Location = new System.Drawing.Point(342, 0);
             this.edit.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -1398,7 +1413,7 @@ namespace MediaPlayer
             this.multisel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.multisel.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.multisel.ForeColor = System.Drawing.Color.White;
-            this.multisel.Image = global::MediaPlayer.Properties.Resources.icons8_multiple_choice_32__1_;
+            this.multisel.Image = global::Calculator.Properties.Resources.icons8_multiple_choice_32__1_;
             this.multisel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.multisel.Location = new System.Drawing.Point(687, 0);
             this.multisel.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -1420,7 +1435,7 @@ namespace MediaPlayer
             this.setDp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.setDp.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.setDp.ForeColor = System.Drawing.Color.White;
-            this.setDp.Image = global::MediaPlayer.Properties.Resources.picture__1_;
+            this.setDp.Image = global::Calculator.Properties.Resources.picture__1_;
             this.setDp.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.setDp.Location = new System.Drawing.Point(802, 0);
             this.setDp.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -1442,7 +1457,7 @@ namespace MediaPlayer
             this.resetAndSet.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.resetAndSet.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.resetAndSet.ForeColor = System.Drawing.Color.White;
-            this.resetAndSet.Image = global::MediaPlayer.Properties.Resources.dog;
+            this.resetAndSet.Image = global::Calculator.Properties.Resources.dog;
             this.resetAndSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.resetAndSet.Location = new System.Drawing.Point(916, 0);
             this.resetAndSet.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -1464,7 +1479,7 @@ namespace MediaPlayer
             this.theme.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.theme.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.theme.ForeColor = System.Drawing.Color.White;
-            this.theme.Image = global::MediaPlayer.Properties.Resources.icons8_swatch_32__1_;
+            this.theme.Image = global::Calculator.Properties.Resources.icons8_swatch_32__1_;
             this.theme.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.theme.Location = new System.Drawing.Point(1030, 0);
             this.theme.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -1486,7 +1501,7 @@ namespace MediaPlayer
             this.sortSize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.sortSize.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sortSize.ForeColor = System.Drawing.Color.White;
-            this.sortSize.Image = global::MediaPlayer.Properties.Resources.sort__1_;
+            this.sortSize.Image = global::Calculator.Properties.Resources.sort__1_;
             this.sortSize.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.sortSize.Location = new System.Drawing.Point(1145, 0);
             this.sortSize.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -1508,7 +1523,7 @@ namespace MediaPlayer
             this.sortDate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.sortDate.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sortDate.ForeColor = System.Drawing.Color.White;
-            this.sortDate.Image = global::MediaPlayer.Properties.Resources.icons8_sort_by_modified_date_35;
+            this.sortDate.Image = global::Calculator.Properties.Resources.icons8_sort_by_modified_date_35;
             this.sortDate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.sortDate.Location = new System.Drawing.Point(1260, 0);
             this.sortDate.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -1530,7 +1545,7 @@ namespace MediaPlayer
             this.convert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.convert.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.convert.ForeColor = System.Drawing.Color.White;
-            this.convert.Image = global::MediaPlayer.Properties.Resources.Square44x44Logo_targetsize_30;
+            this.convert.Image = global::Calculator.Properties.Resources.Square44x44Logo_targetsize_30;
             this.convert.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.convert.Location = new System.Drawing.Point(1375, 0);
             this.convert.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -1552,7 +1567,7 @@ namespace MediaPlayer
             this.reset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.reset.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.reset.ForeColor = System.Drawing.Color.White;
-            this.reset.Image = global::MediaPlayer.Properties.Resources.reset;
+            this.reset.Image = global::Calculator.Properties.Resources.reset;
             this.reset.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.reset.Location = new System.Drawing.Point(1490, 0);
             this.reset.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -1574,7 +1589,7 @@ namespace MediaPlayer
             this.load4K.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.load4K.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.load4K.ForeColor = System.Drawing.Color.White;
-            this.load4K.Image = global::MediaPlayer.Properties.Resources.loading_bar;
+            this.load4K.Image = global::Calculator.Properties.Resources.loading_bar;
             this.load4K.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.load4K.Location = new System.Drawing.Point(1605, 0);
             this.load4K.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -1613,7 +1628,7 @@ namespace MediaPlayer
             this.rcVid.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.rcVid.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rcVid.ForeColor = System.Drawing.Color.White;
-            this.rcVid.Image = global::MediaPlayer.Properties.Resources.circular_arrow;
+            this.rcVid.Image = global::Calculator.Properties.Resources.circular_arrow;
             this.rcVid.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.rcVid.Location = new System.Drawing.Point(0, 0);
             this.rcVid.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -1635,7 +1650,7 @@ namespace MediaPlayer
             this.rcPics.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.rcPics.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rcPics.ForeColor = System.Drawing.Color.White;
-            this.rcPics.Image = global::MediaPlayer.Properties.Resources.refresh__8_;
+            this.rcPics.Image = global::Calculator.Properties.Resources.refresh__8_;
             this.rcPics.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.rcPics.Location = new System.Drawing.Point(106, 0);
             this.rcPics.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -1657,7 +1672,7 @@ namespace MediaPlayer
             this.rc4K.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.rc4K.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rc4K.ForeColor = System.Drawing.Color.White;
-            this.rc4K.Image = global::MediaPlayer.Properties.Resources.refresh__1_1;
+            this.rc4K.Image = global::Calculator.Properties.Resources.refresh__1_1;
             this.rc4K.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.rc4K.Location = new System.Drawing.Point(212, 0);
             this.rc4K.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -1679,7 +1694,7 @@ namespace MediaPlayer
             this.rcAffinity.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.rcAffinity.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rcAffinity.ForeColor = System.Drawing.Color.White;
-            this.rcAffinity.Image = global::MediaPlayer.Properties.Resources.refresh__6_;
+            this.rcAffinity.Image = global::Calculator.Properties.Resources.refresh__6_;
             this.rcAffinity.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.rcAffinity.Location = new System.Drawing.Point(318, 0);
             this.rcAffinity.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -1701,7 +1716,7 @@ namespace MediaPlayer
             this.rcSVid.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.rcSVid.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rcSVid.ForeColor = System.Drawing.Color.White;
-            this.rcSVid.Image = global::MediaPlayer.Properties.Resources.refresh_arrow;
+            this.rcSVid.Image = global::Calculator.Properties.Resources.refresh_arrow;
             this.rcSVid.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.rcSVid.Location = new System.Drawing.Point(424, 0);
             this.rcSVid.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -1723,7 +1738,7 @@ namespace MediaPlayer
             this.rcGifs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.rcGifs.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rcGifs.ForeColor = System.Drawing.Color.White;
-            this.rcGifs.Image = global::MediaPlayer.Properties.Resources.refresh__4_;
+            this.rcGifs.Image = global::Calculator.Properties.Resources.refresh__4_;
             this.rcGifs.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.rcGifs.Location = new System.Drawing.Point(530, 0);
             this.rcGifs.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -1791,7 +1806,7 @@ namespace MediaPlayer
             this.button9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button9.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button9.ForeColor = System.Drawing.Color.White;
-            this.button9.Image = global::MediaPlayer.Properties.Resources.random;
+            this.button9.Image = global::Calculator.Properties.Resources.random;
             this.button9.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button9.Location = new System.Drawing.Point(1721, 41);
             this.button9.Margin = new System.Windows.Forms.Padding(0, 3, 2, 0);
@@ -1802,6 +1817,7 @@ namespace MediaPlayer
             this.button9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button9.UseVisualStyleBackColor = false;
             this.button9.Click += new System.EventHandler(this.button9_Click);
+            this.button9.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // contextMenuStrip4
             // 
@@ -1873,15 +1889,6 @@ namespace MediaPlayer
             this.toolStripMenuItem62.Text = "Delete";
             this.toolStripMenuItem62.Click += new System.EventHandler(this.toolStripMenuItem62_Click);
             // 
-            // toolStripMenuItem53
-            // 
-            this.toolStripMenuItem53.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.toolStripMenuItem53.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripMenuItem53.Name = "toolStripMenuItem53";
-            this.toolStripMenuItem53.Size = new System.Drawing.Size(239, 24);
-            this.toolStripMenuItem53.Text = "Move To Affinity";
-            this.toolStripMenuItem53.Click += new System.EventHandler(this.toolStripMenuItem53_Click);
-            // 
             // VideoPlayer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1926,7 +1933,6 @@ namespace MediaPlayer
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
@@ -2050,5 +2056,6 @@ namespace MediaPlayer
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem51;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem62;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem53;
+        public System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }

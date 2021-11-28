@@ -69,6 +69,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(358, 30);
             this.textBox1.TabIndex = 2;
+            this.textBox1.Text = "URL/Folder Name:";
             // 
             // nameTextBox
             // 
@@ -79,6 +80,7 @@
             this.nameTextBox.Name = "nameTextBox";
             this.nameTextBox.Size = new System.Drawing.Size(358, 30);
             this.nameTextBox.TabIndex = 3;
+            this.nameTextBox.Text = "Name:";
             // 
             // PopUpTextBox
             // 
@@ -103,10 +105,9 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox nameTextBox;
+        public System.Windows.Forms.TextBox textBox1;
+        public System.Windows.Forms.TextBox nameTextBox;
+        public System.Windows.Forms.Button button1;
+        public System.Windows.Forms.Button button2;
     }
 }

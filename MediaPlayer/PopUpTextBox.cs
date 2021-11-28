@@ -66,10 +66,10 @@ namespace MediaPlayer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(textBox1.Text.Length > 0)
+            if (textBox1.Text.Length > 0 && !textBox1.Text.Trim().Equals("URL/Folder Name:"))
             {
                 fileName = textBox1.Text.Trim();
-                if (nameTextBox.Text.Length > 0)
+                if (nameTextBox.Text.Length > 0 && !nameTextBox.Text.Trim().Equals("Name:"))
                 {
                     name = nameTextBox.Text.Trim();
                 }

@@ -82,7 +82,7 @@
             this.flowLayoutPanel1.Location = new System.Drawing.Point(288, 93);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1642, 985);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1638, 988);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // contextMenuStrip1
@@ -175,7 +175,7 @@
             this.videos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.videos.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.videos.ForeColor = System.Drawing.Color.White;
-            this.videos.Image = global::MediaPlayer.Properties.Resources.video_player;
+            this.videos.Image = global::Calculator.Properties.Resources.video_player;
             this.videos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.videos.Location = new System.Drawing.Point(0, 1);
             this.videos.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
@@ -197,7 +197,7 @@
             this.pictures.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.pictures.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pictures.ForeColor = System.Drawing.Color.White;
-            this.pictures.Image = global::MediaPlayer.Properties.Resources.image_gallery;
+            this.pictures.Image = global::Calculator.Properties.Resources.image_gallery;
             this.pictures.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.pictures.Location = new System.Drawing.Point(180, 1);
             this.pictures.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
@@ -219,7 +219,7 @@
             this.fourK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.fourK.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.fourK.ForeColor = System.Drawing.Color.White;
-            this.fourK.Image = global::MediaPlayer.Properties.Resources._4k;
+            this.fourK.Image = global::Calculator.Properties.Resources._4k;
             this.fourK.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.fourK.Location = new System.Drawing.Point(360, 1);
             this.fourK.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
@@ -241,7 +241,7 @@
             this.affinity.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.affinity.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.affinity.ForeColor = System.Drawing.Color.White;
-            this.affinity.Image = global::MediaPlayer.Properties.Resources._379365_video_camera_icon;
+            this.affinity.Image = global::Calculator.Properties.Resources._379365_video_camera_icon;
             this.affinity.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.affinity.Location = new System.Drawing.Point(540, 1);
             this.affinity.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
@@ -263,7 +263,7 @@
             this.shortVideos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.shortVideos.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.shortVideos.ForeColor = System.Drawing.Color.White;
-            this.shortVideos.Image = global::MediaPlayer.Properties.Resources._1054941_video_film_movie_icon;
+            this.shortVideos.Image = global::Calculator.Properties.Resources._1054941_video_film_movie_icon;
             this.shortVideos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.shortVideos.Location = new System.Drawing.Point(720, 1);
             this.shortVideos.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
@@ -285,7 +285,7 @@
             this.gifs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.gifs.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gifs.ForeColor = System.Drawing.Color.White;
-            this.gifs.Image = global::MediaPlayer.Properties.Resources.gif;
+            this.gifs.Image = global::Calculator.Properties.Resources.gif;
             this.gifs.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.gifs.Location = new System.Drawing.Point(900, 1);
             this.gifs.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
@@ -316,9 +316,9 @@
             // 
             this.searchLabel.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.searchLabel.Location = new System.Drawing.Point(291, 44);
-            this.searchLabel.Margin = new System.Windows.Forms.Padding(12, 8, 0, 5);
+            this.searchLabel.Margin = new System.Windows.Forms.Padding(14, 8, 0, 5);
             this.searchLabel.Name = "searchLabel";
-            this.searchLabel.Size = new System.Drawing.Size(73, 46);
+            this.searchLabel.Size = new System.Drawing.Size(74, 46);
             this.searchLabel.TabIndex = 25;
             this.searchLabel.Text = "Search:";
             this.searchLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -331,7 +331,7 @@
             this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Red;
             this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Consolas", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Font = new System.Drawing.Font("Consolas", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.White;
             this.button2.Location = new System.Drawing.Point(1858, -1);
             this.button2.Margin = new System.Windows.Forms.Padding(0);
@@ -350,7 +350,7 @@
             this.button3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Font = new System.Drawing.Font("Consolas", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.Font = new System.Drawing.Font("Consolas", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button3.ForeColor = System.Drawing.Color.White;
             this.button3.Location = new System.Drawing.Point(1791, -1);
             this.button3.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -369,14 +369,14 @@
             this.button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Font = new System.Drawing.Font("Consolas", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.Font = new System.Drawing.Font("Consolas", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button4.ForeColor = System.Drawing.Color.White;
-            this.button4.Location = new System.Drawing.Point(1724, -1);
+            this.button4.Location = new System.Drawing.Point(1724, -3);
             this.button4.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(67, 42);
+            this.button4.Size = new System.Drawing.Size(67, 44);
             this.button4.TabIndex = 23;
-            this.button4.Text = "<-";
+            this.button4.Text = "🡐";
             this.button4.UseVisualStyleBackColor = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
@@ -488,7 +488,7 @@
             this.navController.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.navController.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.navController.ForeColor = System.Drawing.Color.White;
-            this.navController.Image = global::MediaPlayer.Properties.Resources.arrow;
+            this.navController.Image = global::Calculator.Properties.Resources.arrow;
             this.navController.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.navController.Location = new System.Drawing.Point(0, 0);
             this.navController.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -533,7 +533,7 @@
             this.move.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.move.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.move.ForeColor = System.Drawing.Color.White;
-            this.move.Image = global::MediaPlayer.Properties.Resources.icons8_move_32;
+            this.move.Image = global::Calculator.Properties.Resources.icons8_move_32;
             this.move.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.move.Location = new System.Drawing.Point(358, 0);
             this.move.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -598,7 +598,7 @@
             this.theme.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.theme.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.theme.ForeColor = System.Drawing.Color.White;
-            this.theme.Image = global::MediaPlayer.Properties.Resources.icons8_swatch_32__1_;
+            this.theme.Image = global::Calculator.Properties.Resources.icons8_swatch_32__1_;
             this.theme.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.theme.Location = new System.Drawing.Point(895, 0);
             this.theme.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -620,7 +620,7 @@
             this.reset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.reset.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.reset.ForeColor = System.Drawing.Color.White;
-            this.reset.Image = global::MediaPlayer.Properties.Resources.reset;
+            this.reset.Image = global::Calculator.Properties.Resources.reset;
             this.reset.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.reset.Location = new System.Drawing.Point(1074, 0);
             this.reset.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -642,7 +642,7 @@
             this.stack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.stack.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.stack.ForeColor = System.Drawing.Color.White;
-            this.stack.Image = global::MediaPlayer.Properties.Resources.book_stack;
+            this.stack.Image = global::Calculator.Properties.Resources.book_stack;
             this.stack.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.stack.Location = new System.Drawing.Point(1253, 0);
             this.stack.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
