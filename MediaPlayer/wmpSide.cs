@@ -28,7 +28,16 @@ namespace MediaPlayer
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.isShort = isShort;
         }
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            AppUtils.EnableAcrylic(this, Color.Transparent);
+            base.OnHandleCreated(e);
+        }
 
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.Transparent);
+        }
         public void controlDisposer()
         {
             if (dispPb.Count > 0)

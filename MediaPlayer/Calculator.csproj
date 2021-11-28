@@ -180,6 +180,7 @@
       <DependentUpon>Explorer.cs</DependentUpon>
     </Compile>
     <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="hi.cs" />
     <Compile Include="MiniPlayer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -569,6 +570,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="calculator1.ico" />
+    <None Include="Resources\more %281%29.png" />
+    <None Include="Resources\more %282%29.png" />
+    <None Include="Resources\more.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Web.WebView2.1.0.1020.30\build\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.1020.30\build\Microsoft.Web.WebView2.targets')" />

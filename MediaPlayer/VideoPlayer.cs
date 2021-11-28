@@ -1275,30 +1275,48 @@ namespace MediaPlayer
                 Application.RemoveMessageFilter(this);
                 if (pb.Image.Width > pb.Image.Height || type == "Gifs")
                 {
-                    PicViewer picViewer = new PicViewer(pb.Name, this, type == "4K" ? wpbDupe : (type == "Gifs" ? gpb : wpb), 1920, 970, type == "Gifs" ? true : false);
-
-                    picViewer.Size = new Size(1920, 970); picViewer.Location = new Point(0, 0);
+                    PicViewer picViewer = new PicViewer(pb.Name, this, type == "4K" ? wpbDupe : (type == "Gifs" ? gpb : wpb), 1920, 1080, type == "Gifs" ? true : false);
+                    //picViewer.picPanel.Dock = DockStyle.Fill;
+                    //picViewer.flowLayoutPanel1.Dock = DockStyle.Bottom;
+                    picViewer.flowLayoutPanel1.Size = new Size(1840,110);
+                    picViewer.originalSize = new Size(1840, 110);
+                    picViewer.flowLayoutPanel1.Location = new Point(40, 955);
+                    picViewer.originalPoint = new Point(40, 955);
+                    picViewer.flowLayoutPanel1.Padding = new Padding(0, 0, 0, 0);
+                    picViewer.flowLayoutPanel1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, picViewer.flowLayoutPanel1.Width, picViewer.flowLayoutPanel1.Height, 15, 15));
+                    picViewer.fillUpFP1(type == "4K" ? wpbDupe : (type == "Gifs" ? gpb : wpb), true);
+                    picViewer.hideBtnW.Visible = true;
+                    picViewer.hideBtnW.Location = new Point(960-(picViewer.hideBtnH.Width/2), 1068);
                     picViewer.Show();
-                    wmpSide1 = new wmpSide(null, picViewer, true);
+                    /*wmpSide1 = new wmpSide(null, picViewer, true);
                     wmpSide1.BackColor = darkBackColor;
                     wmpSide1.Location = new Point(0, 970);
                     wmpSide1.fillUpFP1(type == "4K" ? wpbDupe : (type == "Gifs" ? gpb : wpb), true);
-                    wmpSide1.Size = new Size(1920, 110);
+                    wmpSide1.Size = new Size(1920, 110);*/
                 }
                 else
                 {
-                    PicViewer picViewer = new PicViewer(pb.Name, this, type == "4K" ? lpbDupe : (type == "Gifs" ? gpb : lpb), 1750, 1080, false);
-                    picViewer.Size = new Size(1750, 1080);
-                    picViewer.Location = new Point(165, 0);
+                    PicViewer picViewer = new PicViewer(pb.Name, this, type == "4K" ? lpbDupe : (type == "Gifs" ? gpb : lpb), 1920, 1080, false);
+                    //picViewer.picPanel.Dock = DockStyle.Fill;
+                    //picViewer.flowLayoutPanel1.Dock = DockStyle.Left;
+                    picViewer.flowLayoutPanel1.Size = new Size(170, 1030);
+                    picViewer.originalSize = new Size(170, 1030);
+                    picViewer.flowLayoutPanel1.Location = new Point(15,25);
+                    picViewer.originalPoint = new Point(15, 25);
+                    picViewer.flowLayoutPanel1.Padding = new Padding(0, 6, 0, 0);
+                    picViewer.flowLayoutPanel1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, picViewer.flowLayoutPanel1.Width, picViewer.flowLayoutPanel1.Height, 15, 15));
+                    picViewer.fillUpFP1(type == "4K" ? lpbDupe : (type == "Gifs" ? gpb : lpb), false);
+                    picViewer.hideBtnH.Visible = true;
+                    picViewer.hideBtnH.Location = new Point(-2, 540 - (picViewer.hideBtnH.Height/2));
                     picViewer.Show();
-                    wmpSide1 = new wmpSide(null, picViewer, true);
+                    /*wmpSide1 = new wmpSide(null, picViewer, true);
                     wmpSide1.Size = new Size(120, 1080);
                     wmpSide1.BackColor = darkBackColor;
                     wmpSide1.Location = new Point(0, 0);
-                    wmpSide1.fillUpFP1(type == "4K" ? lpbDupe : (type == "Gifs" ? gpb : lpb), false);
+                    wmpSide1.fillUpFP1(type == "4K" ? lpbDupe : (type == "Gifs" ? gpb : lpb), false);*/
 
                 }
-                wmpSide1.Show();
+                //wmpSide1.Show();
             }
             /*else if (type == "4K")
             {
@@ -3995,40 +4013,46 @@ namespace MediaPlayer
         {
             if (type.Equals("Videos"))
             {
+                globalBtn = videosBtn;
                 videosBtn.ForeColor = mouseClickColor;
                 videosBtn_Click(null, null);
             }
             else if (type.Equals("Pictures"))
             {
+                globalBtn = picturesBtn;
                 picturesBtn.ForeColor = mouseClickColor;
                 picturesBtn_Click(null, null);
             }
             else if (type.Equals("4K"))
             {
+                globalBtn = fourKBtn;
                 fourKBtn.ForeColor = mouseClickColor;
                 fourKBtn_Click(null, null);
             }
             else if (type.Equals("Gif Vid"))
             {
+                globalBtn = shortVideosBtn;
                 shortVideosBtn.ForeColor = mouseClickColor;
                 shortVideosBtn_Click(null, null);
             }
             else if (type.Equals("Gifs"))
             {
+                globalBtn = gifsBtn;
                 gifsBtn.ForeColor = mouseClickColor;
                 gifsBtn_Click(null, null);
             }
             else if (type.Equals("Affinity"))
             {
+                globalBtn = bsButton;
                 bsButton.ForeColor = mouseClickColor;
                 bsButton_Click(null, null);
             }
-            if (isFirst)
+            if (isFirst && globalBtn != null)
             {
-                isEnlarged[globalBtn.Text] = false;
-                enlargeEnter(globalBtn);
-                isEnlarged[globalBtn.Text] = true;
-                isFirst = false;
+                    isEnlarged[globalBtn.Text] = false;
+                    enlargeEnter(globalBtn);
+                    isEnlarged[globalBtn.Text] = true;
+                    isFirst = false;
             }
         }
 

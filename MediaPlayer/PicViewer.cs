@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,6 +15,17 @@ namespace MediaPlayer
 {
     public partial class PicViewer : Form, IMessageFilter
     {
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn
+        (
+            int nLeftRect,     // x-coordinate of upper-left corner
+            int nTopRect,      // y-coordinate of upper-left corner
+            int nRightRect,    // x-coordinate of lower-right corner
+            int nBottomRect,   // y-coordinate of lower-right corner
+            int nWidthEllipse, // height of ellipse
+            int nHeightEllipse // width of ellipse
+        );
+
         public String path;
         VideoPlayer f3;
         public static String globalPic;
@@ -21,12 +33,225 @@ namespace MediaPlayer
         public PictureBox pbb;
         List<PictureBox> spb;
         Image img = null;
-        Boolean mouseDown = false, zoomed = false;
+        Boolean mouseDown = false, zoomed = false, singleShown = false;
         private int _xPos;
         private int _yPos;
         int widthh, heightt;
-
+        List<PictureBox> dispPb = new List<PictureBox>(), vidPb = new List<PictureBox>();
+        Boolean[] typeImg = null;
         public Boolean IsGif = false;
+        public Point originalPoint = new Point(0, 0);
+        public Size originalSize = new Size(0,0);
+
+        public void controlDisposer()
+        {
+            if (dispPb.Count > 0)
+            {
+                foreach (PictureBox pb in dispPb)
+                {
+                    if (pb.Image != null)
+                    {
+                        pb.Image.Dispose();
+                        pb.Dispose();
+                    }
+                }
+            }
+            dispPb.Clear();
+            flowLayoutPanel1.Controls.Clear();
+        }
+
+        public void fillUpFP1(List<PictureBox> vidPb, params Boolean[] typeImg)
+        {
+            this.vidPb = vidPb;
+            this.typeImg = typeImg;
+            flowLayoutPanel1.Controls.Clear();
+            int prevX = 0, prevY = 0;
+            if (vidPb != null)
+            {
+                for (int i = 0; i < vidPb.Count; i++)
+                {
+                    if (vidPb[i].Name.Equals(PicViewer.globalPic))
+                    {
+                        int noOfSet = typeImg[0] ? 6 : 2;
+                        List<int> seq = new List<int>();
+                        for (int j = i - noOfSet; j < i; j++)
+                            seq.Add(j < 0 ? vidPb.Count + j : j);
+
+                        for (int j = i; j < i + noOfSet + 1; j++)
+                            seq.Add(j >= vidPb.Count ? j - vidPb.Count : j);
+
+                        for (int j = 0; j < seq.Count; j++)
+                        {
+                            if (seq[j] < 0)
+                            {
+                                seq.RemoveAt(j);
+                                seq.Insert(j, 0);
+                            }
+
+                            if (seq[j] >= vidPb.Count)
+                            {
+                                seq.RemoveAt(j);
+                                seq.Insert(j, vidPb.Count - 1);
+                            }
+                        }
+
+                        foreach (int j in seq)
+                        {
+                            PictureBox smallPb = new PictureBox();
+                            String name = vidPb[j < 0 ? (vidPb.Count + j) : j].Name;
+                            smallPb.Image = Image.FromFile(name.Contains("\\kkkk\\") ?
+                                name.Replace("\\kkkk\\", "\\kkkk\\imgPB\\") : (name.Contains("\\Gifs\\") ?
+                                name.Replace("\\Gifs\\", "\\Gifs\\imgPB\\") : name.Replace("\\Pics\\", "\\Pics\\imgPB\\")));
+                            if (vidPb[j < 0 ? (vidPb.Count + j) : j].Name.Equals(PicViewer.globalPic))
+                            {
+                                Double wratio = (Double)smallPb.Image.Width / (Double)smallPb.Image.Height;
+                                Double lratio = (Double)smallPb.Image.Height / (Double)smallPb.Image.Width;
+                                if (wratio > 1)
+                                {
+                                    smallPb.Size = new Size(152, (int)(152*lratio));
+                                    smallPb.Margin = new Padding(10, 4, 0, 0);
+                                }
+                                else
+                                {
+                                    smallPb.Size = new Size((int)(235 * wratio), 235);
+                                    smallPb.Margin = new Padding(7, 5, 0, 5);
+                                }
+
+                                smallPb.MouseEnter += (s, args) =>
+                                {
+                                    fullZoomOut();
+                                    prevX = 0;
+                                    prevY = 0;
+                                    zoomIn();
+                                };
+
+                                smallPb.MouseMove += (s, args) =>
+                                {
+                                    if (args.X - prevX >= 2 || args.X - prevX <= -2 || args.Y - prevY >= 2 || args.Y - prevY <= -2)
+                                    {
+                                        zoomScroll(args.X, args.Y, smallPb.Width, smallPb.Height);
+                                        prevX = args.X;
+                                        prevY = args.Y;
+                                    }
+                                };
+
+                                smallPb.MouseLeave += (s, args) =>
+                                {
+                                    fullZoomOut();
+                                    prevX = 0;
+                                    prevY = 0;
+                                    return;
+                                };
+
+                            }
+                            else
+                            {
+                                if (singleShown)
+                                    continue;
+                                Double wratio = (Double)smallPb.Image.Width / (Double)smallPb.Image.Height;
+                                Double lratio = (Double)smallPb.Image.Height / (Double)smallPb.Image.Width;
+                                if (wratio > 1)
+                                {
+                                    smallPb.Size = new Size(130, (int)(130 * lratio));
+                                    smallPb.Margin = new Padding(9, 12, 0, 0);
+                                }
+                                else
+                                {
+                                    smallPb.Size = new Size((int)(186 * wratio), 186);
+                                    smallPb.Margin = new Padding(25, 4, 0, 2);
+                                }
+                            }
+                            smallPb.SizeMode = PictureBoxSizeMode.Zoom;
+                            smallPb.Name = vidPb[j < 0 ? (vidPb.Count + j) : j].Name;
+                            smallPb.MouseClick += (s, args) =>
+                            {
+                                if (pbb.Image != null)
+                                {
+                                    pbb.Image.Dispose();
+                                    pbb.Dispose();
+                                }
+                                picPanel.Controls.Clear();
+                                PicViewer.globalPic = smallPb.Name;
+                                path = smallPb.Name;
+                                setPic();
+                                controlDisposer();
+                                fillUpFP1(vidPb, typeImg);
+                            };
+
+                            smallPb.MouseEnter += (s, args) => {
+                                if (PicViewer.globalPic == smallPb.Name)
+                                {
+                                    smallPb.Size = new Size((int)(smallPb.Width * 1.05), (int)(smallPb.Height * 1.05));
+                                    if (smallPb.Width < smallPb.Height)
+                                    {
+                                        int left = (flowLayoutPanel1.Width - smallPb.Width) / 2;
+                                        smallPb.Margin = new Padding(left, 0, smallPb.Margin.Right, 0);
+                                    }
+                                    else
+                                    {
+                                        int top = (flowLayoutPanel1.Height - smallPb.Height) / 2;
+                                        smallPb.Margin = new Padding(5, top, 0, 0);
+                                    }
+                                }
+                                else
+                                {
+                                    smallPb.Size = new Size((int)(smallPb.Width * 1.10), (int)(smallPb.Height * 1.10));
+                                    if (smallPb.Width < smallPb.Height)
+                                    {
+                                        int left = (flowLayoutPanel1.Width - smallPb.Width) / 2;
+                                        smallPb.Margin = new Padding(left, 0, smallPb.Margin.Right, 0);
+                                    }
+                                    else
+                                    {
+                                        int top = (flowLayoutPanel1.Height - smallPb.Height) / 2;
+                                        smallPb.Margin = new Padding(5, top, 0, 0);
+                                    }
+                                }
+                            };
+
+
+                            smallPb.MouseLeave += (s, a) =>
+                            {
+                                Double wratio = (Double)smallPb.Image.Width / (Double)smallPb.Image.Height;
+                                Double lratio = (Double)smallPb.Image.Height / (Double)smallPb.Image.Width;
+                                if (PicViewer.globalPic == smallPb.Name)
+                                {
+                                    if (smallPb.Width < smallPb.Height)
+                                    {
+                                        smallPb.Size = new Size((int)(235.0 * (wratio)), 235);
+                                        smallPb.Margin = new Padding(7, 5, 0, 5);
+                                    }
+                                    else
+                                    {
+                                        smallPb.Size = new Size(152, (int)(152 * lratio));
+                                        smallPb.Margin = new Padding(10, 4, 0, 0);
+
+                                    }
+                                }
+                                else
+                                {
+                                    if (smallPb.Width < smallPb.Height)
+                                    {
+                                        smallPb.Size = new Size((int)(186.0 * (wratio)), 186);
+                                        smallPb.Margin = new Padding(25, 4, 0, 2);
+                                    }
+                                    else
+                                    {
+                                        smallPb.Size = new Size(130, (int)(130.0 * lratio));
+                                        smallPb.Margin = new Padding(9, 12, 0, 0);
+
+                                    }
+                                }
+                            };
+
+                            dispPb.Add(smallPb);
+                            flowLayoutPanel1.Controls.Add(smallPb);
+                        }
+
+                    }
+                }
+            }
+        }
 
         public PicViewer(String path, VideoPlayer f3, List<PictureBox> spb, int width, int height, Boolean IsGif)
         {
@@ -37,11 +262,6 @@ namespace MediaPlayer
             this.path = path;
             globalPic = path;
             this.FormBorderStyle = FormBorderStyle.None;
-            picPanel.Dock = DockStyle.Fill;
-            this.Width = width;
-            this.Height = height;
-            picPanel.Width = width;
-            picPanel.Height = height;
             this.IsGif = IsGif;
             setPic();
         }
@@ -334,6 +554,35 @@ namespace MediaPlayer
             closingProcess();
         }
 
+        private void hideBtnH_Click(object sender, EventArgs e)
+        {
+            if (singleShown)
+            {
+                flowLayoutPanel1.Region = null;
+                flowLayoutPanel1.Location = originalPoint;
+                flowLayoutPanel1.Size = originalSize;
+            }
+            else
+            {
+                flowLayoutPanel1.Region = null;
+                    if(originalSize.Width > originalSize.Height)
+                    {
+                    flowLayoutPanel1.Size = new Size(170,originalSize.Height);
+                        flowLayoutPanel1.Location = new Point(887, originalPoint.Y);
+                    }
+                    else
+                {
+                    flowLayoutPanel1.Size = new Size(originalSize.Width, 259);
+                    flowLayoutPanel1.Location = new Point(originalPoint.X, 407);
+                    }
+            }
+            path = globalPic;
+            singleShown = !singleShown;
+            controlDisposer();
+            fillUpFP1(vidPb, typeImg);
+            flowLayoutPanel1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel1.Width, flowLayoutPanel1.Height, 15, 15));
+        }
+
         private void PicViewer_FormClosing(object sender, FormClosingEventArgs e)
         {
             closingProcess();
@@ -359,8 +608,8 @@ namespace MediaPlayer
                                 pbb.Dispose();
                                 picPanel.Controls.Clear();
                                 setPic();
-                                VideoPlayer.wmpSide1.controlDisposer();
-                                VideoPlayer.wmpSide1.fillUpFP1(VideoPlayer.wmpSide1.vidPb, VideoPlayer.wmpSide1.typeImg);
+                                controlDisposer();
+                                fillUpFP1(VideoPlayer.wmpSide1.vidPb, VideoPlayer.wmpSide1.typeImg);
                             }
                             return true;
                         }
@@ -379,8 +628,8 @@ namespace MediaPlayer
                                 pbb.Dispose();
                                 picPanel.Controls.Clear();
                                 setPic();
-                                VideoPlayer.wmpSide1.controlDisposer();
-                                VideoPlayer.wmpSide1.fillUpFP1(VideoPlayer.wmpSide1.vidPb, VideoPlayer.wmpSide1.typeImg);
+                                controlDisposer();
+                                fillUpFP1(VideoPlayer.wmpSide1.vidPb, VideoPlayer.wmpSide1.typeImg);
                             }
                             return true;
                         }

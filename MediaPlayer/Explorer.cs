@@ -1456,10 +1456,16 @@ namespace MediaPlayer
                     Button tempBut = Calculator.globalTypeButton;
                     int index = typeButtons.IndexOf(tempBut);
                     tempBut = index == 0 ? typeButtons[typeButtons.Count - 1] : typeButtons[index - 1];
+                    if (tempBut.Text.Contains("Short"))
+                        typeName.Text = "Gif Vid";
+                    else if (tempBut.Text.Contains("4K"))
+                        typeName.Text = "4K";
+                    else
+                        typeName.Text = tempBut.Text;
                     Calculator.globalTypeButton.ForeColor = Color.White;
                     Calculator.globalTypeButton = tempBut;
                     tempBut.ForeColor = mouseClickColor;
-                    Calculator.globalType = tempBut.Text;
+                    Calculator.globalType = typeName.Text;
                 }
                 catch { }
 
@@ -1468,11 +1474,19 @@ namespace MediaPlayer
                 {
                     Button tempBut = Calculator.globalTypeButton;
                     int index = typeButtons.IndexOf(tempBut);
-                    tempBut = index == typeButtons.Count - 1 ? typeButtons[0] : typeButtons[index + 1];
+                    tempBut = (index == typeButtons.Count - 1) ? typeButtons[0] : typeButtons[index + 1];
+
+                    if (tempBut.Text.Contains("Short"))
+                        typeName.Text = "Gif Vid";
+                    else if (tempBut.Text.Contains("4K"))
+                        typeName.Text = "4K";
+                    else
+                        typeName.Text = tempBut.Text;
+
                     Calculator.globalTypeButton.ForeColor = Color.White;
                     Calculator.globalTypeButton = tempBut;
                     tempBut.ForeColor = mouseClickColor;
-                    Calculator.globalType = tempBut.Text;
+                    Calculator.globalType = typeName.Text;
                 }
                 catch { }
             else if (Control.ModifierKeys == Keys.Control && e.KeyCode == Keys.Up)
