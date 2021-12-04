@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Calculator));
             this.txtDisplay = new System.Windows.Forms.TextBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
@@ -55,6 +56,7 @@
             this.btnCopy = new System.Windows.Forms.Button();
             this.btn7 = new System.Windows.Forms.Button();
             this.btnDecimal = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -505,6 +507,12 @@
             this.btnDecimal.UseVisualStyleBackColor = false;
             this.btnDecimal.Click += new System.EventHandler(this.btnDecimal_Click_1);
             // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 300;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // Calculator
             // 
             this.AllowDrop = true;
@@ -522,6 +530,7 @@
             this.Name = "Calculator";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Calculator";
+            this.Activated += new System.EventHandler(this.Calculator_Activated);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Calculator_DragEnter);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Calculator_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Calculator_MouseMove);
@@ -559,6 +568,7 @@
         private System.Windows.Forms.Button btn7;
         private System.Windows.Forms.Button btnDecimal;
         private System.Windows.Forms.Button btnDiv;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

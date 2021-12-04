@@ -143,9 +143,29 @@ namespace Calculator.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap clockwise {
+            get {
+                object obj = ResourceManager.GetObject("clockwise", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap convert_3220 {
             get {
                 object obj = ResourceManager.GetObject("convert-3220", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap crop {
+            get {
+                object obj = ResourceManager.GetObject("crop", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -203,6 +223,16 @@ namespace Calculator.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap emergency_exit {
+            get {
+                object obj = ResourceManager.GetObject("emergency-exit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap exit_icon_4600_Windows {
             get {
                 object obj = ResourceManager.GetObject("exit-icon-4600-Windows", resourceCulture);
@@ -216,6 +246,16 @@ namespace Calculator.Properties {
         internal static System.Drawing.Bitmap exit_icon_4619_Windows {
             get {
                 object obj = ResourceManager.GetObject("exit-icon-4619-Windows", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap folder {
+            get {
+                object obj = ResourceManager.GetObject("folder", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -673,6 +713,26 @@ namespace Calculator.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap rotate {
+            get {
+                object obj = ResourceManager.GetObject("rotate", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap save_file {
+            get {
+                object obj = ResourceManager.GetObject("save-file", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap sort {
             get {
                 object obj = ResourceManager.GetObject("sort", resourceCulture);
@@ -743,6 +803,26 @@ namespace Calculator.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap spin {
+            get {
+                object obj = ResourceManager.GetObject("spin", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap spin__1_ {
+            get {
+                object obj = ResourceManager.GetObject("spin (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Square44x44Logo_targetsize_30 {
             get {
                 object obj = ResourceManager.GetObject("Square44x44Logo.targetsize-30", resourceCulture);
@@ -776,6 +856,16 @@ namespace Calculator.Properties {
         internal static System.Drawing.Bitmap video_player {
             get {
                 object obj = ResourceManager.GetObject("video-player", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap wp4676582_4k_pc_wallpapers {
+            get {
+                object obj = ResourceManager.GetObject("wp4676582-4k-pc-wallpapers", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

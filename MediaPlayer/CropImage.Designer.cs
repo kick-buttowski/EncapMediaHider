@@ -28,33 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.picOriginalPicture = new System.Windows.Forms.PictureBox();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
-            this.picCroppedPicture = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.picOriginalPicture)).BeginInit();
+            this.picCroppedPicture = new System.Windows.Forms.PictureBox();
+            this.picOriginalPicture = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.picCroppedPicture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picOriginalPicture)).BeginInit();
             this.SuspendLayout();
-            // 
-            // picOriginalPicture
-            // 
-            this.picOriginalPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picOriginalPicture.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.picOriginalPicture.Location = new System.Drawing.Point(582, 55);
-            this.picOriginalPicture.Margin = new System.Windows.Forms.Padding(0, 4, 4, 4);
-            this.picOriginalPicture.Name = "picOriginalPicture";
-            this.picOriginalPicture.Size = new System.Drawing.Size(910, 1033);
-            this.picOriginalPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picOriginalPicture.TabIndex = 0;
-            this.picOriginalPicture.TabStop = false;
-            this.picOriginalPicture.Paint += new System.Windows.Forms.PaintEventHandler(this.picOriginalPicture_Paint);
-            this.picOriginalPicture.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picOriginalPicture_MouseClick);
-            this.picOriginalPicture.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picOriginalPicture_MouseDown);
-            this.picOriginalPicture.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picOriginalPicture_MouseMove);
-            this.picOriginalPicture.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picOriginalPicture_MouseUp);
             // 
             // button6
             // 
@@ -93,15 +76,6 @@
             this.button7.Text = "Save";
             this.button7.UseVisualStyleBackColor = false;
             this.button7.Click += new System.EventHandler(this.button7_Click);
-            // 
-            // picCroppedPicture
-            // 
-            this.picCroppedPicture.Location = new System.Drawing.Point(401, 200);
-            this.picCroppedPicture.Name = "picCroppedPicture";
-            this.picCroppedPicture.Size = new System.Drawing.Size(100, 50);
-            this.picCroppedPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picCroppedPicture.TabIndex = 30;
-            this.picCroppedPicture.TabStop = false;
             // 
             // label1
             // 
@@ -151,13 +125,39 @@
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // picCroppedPicture
+            // 
+            this.picCroppedPicture.Location = new System.Drawing.Point(401, 200);
+            this.picCroppedPicture.Name = "picCroppedPicture";
+            this.picCroppedPicture.Size = new System.Drawing.Size(100, 50);
+            this.picCroppedPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picCroppedPicture.TabIndex = 30;
+            this.picCroppedPicture.TabStop = false;
+            // 
+            // picOriginalPicture
+            // 
+            this.picOriginalPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picOriginalPicture.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.picOriginalPicture.Location = new System.Drawing.Point(582, 55);
+            this.picOriginalPicture.Margin = new System.Windows.Forms.Padding(0, 4, 4, 4);
+            this.picOriginalPicture.Name = "picOriginalPicture";
+            this.picOriginalPicture.Size = new System.Drawing.Size(910, 1033);
+            this.picOriginalPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picOriginalPicture.TabIndex = 0;
+            this.picOriginalPicture.TabStop = false;
+            this.picOriginalPicture.Paint += new System.Windows.Forms.PaintEventHandler(this.picOriginalPicture_Paint);
+            this.picOriginalPicture.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picOriginalPicture_MouseClick);
+            this.picOriginalPicture.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picOriginalPicture_MouseDown);
+            this.picOriginalPicture.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picOriginalPicture_MouseMove);
+            this.picOriginalPicture.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picOriginalPicture_MouseUp);
+            // 
             // CropImage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(1902, 1055);
+            this.ClientSize = new System.Drawing.Size(1923, 1055);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
@@ -171,8 +171,8 @@
             this.Text = "Image Crop";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.CropImage_MouseClick);
-            ((System.ComponentModel.ISupportInitialize)(this.picOriginalPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCroppedPicture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picOriginalPicture)).EndInit();
             this.ResumeLayout(false);
 
         }

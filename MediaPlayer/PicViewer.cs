@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -26,6 +27,16 @@ namespace MediaPlayer
             int nHeightEllipse // width of ellipse
         );
 
+        Bitmap targetBitmap;
+        private bool _canDraw, _toCrop = false;
+        int cropX;
+        int cropY;
+        int cropWidth;
+        int cropHeight;
+        public Pen cropPen;
+        public DashStyle cropDashStyle = DashStyle.DashDot;
+        FileInfo saveFi = null;
+
         public String path;
         VideoPlayer f3;
         public static String globalPic;
@@ -42,6 +53,7 @@ namespace MediaPlayer
         public Boolean IsGif = false;
         public Point originalPoint = new Point(0, 0);
         public Size originalSize = new Size(0,0);
+
 
         public void controlDisposer()
         {
@@ -170,7 +182,7 @@ namespace MediaPlayer
                                     pbb.Image.Dispose();
                                     pbb.Dispose();
                                 }
-                                picPanel.Controls.Clear();
+                                //picPanel.Controls.Clear();
                                 PicViewer.globalPic = smallPb.Name;
                                 path = smallPb.Name;
                                 setPic();
@@ -179,6 +191,8 @@ namespace MediaPlayer
                             };
 
                             smallPb.MouseEnter += (s, args) => {
+
+                                smallPb.Region = null;
                                 if (PicViewer.globalPic == smallPb.Name)
                                 {
                                     smallPb.Size = new Size((int)(smallPb.Width * 1.05), (int)(smallPb.Height * 1.05));
@@ -207,11 +221,13 @@ namespace MediaPlayer
                                         smallPb.Margin = new Padding(5, top, 0, 0);
                                     }
                                 }
+                                smallPb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, smallPb.Width, smallPb.Height, 15, 15));
                             };
 
 
                             smallPb.MouseLeave += (s, a) =>
                             {
+                                smallPb.Region = null;
                                 Double wratio = (Double)smallPb.Image.Width / (Double)smallPb.Image.Height;
                                 Double lratio = (Double)smallPb.Image.Height / (Double)smallPb.Image.Width;
                                 if (PicViewer.globalPic == smallPb.Name)
@@ -242,8 +258,9 @@ namespace MediaPlayer
 
                                     }
                                 }
+                                smallPb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, smallPb.Width, smallPb.Height, 15, 15));
                             };
-
+                            smallPb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, smallPb.Width, smallPb.Height, 15, 15));
                             dispPb.Add(smallPb);
                             flowLayoutPanel1.Controls.Add(smallPb);
                         }
@@ -263,6 +280,11 @@ namespace MediaPlayer
             globalPic = path;
             this.FormBorderStyle = FormBorderStyle.None;
             this.IsGif = IsGif;
+            crop.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, crop.Width, crop.Height, 6, 6));
+            ccBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, crop.Width, crop.Height, 6, 6));
+            cBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, crop.Width, crop.Height, 6, 6));
+            saveBtn.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, crop.Width, crop.Height, 6, 6));
+            preview.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, crop.Width, crop.Height, 6, 6));
             setPic();
         }
 
@@ -275,12 +297,7 @@ namespace MediaPlayer
                 pbb.Dispose();
             }
 
-            if (VideoPlayer.wmpSide1 != null)
-            {
-                VideoPlayer.wmpSide1.controlDisposer();
-                VideoPlayer.wmpSide1.Dispose();
-                VideoPlayer.wmpSide1.Close();
-            }
+            controlDisposer();
             Application.RemoveMessageFilter(this);
             this.Dispose();
             this.Close();
@@ -398,7 +415,7 @@ namespace MediaPlayer
             Double ratio = (Double)(Height / Width);
             setBestRes(Width, Height, ratio, pbb);
 
-            pbb.Location = new Point((picPanel.Width / 2) - (pbb.Width / 2),
+            pbb.Location = new Point((picPanel.Width / 2) - (pbb.Width / 2) + (pbb.Width>pbb.Height?0:50),
                       (picPanel.Height / 2) - (pbb.Height / 2));
 
             zoomWidth = pbb.Width * 0.25;
@@ -439,13 +456,25 @@ namespace MediaPlayer
                 }
             };
 
+            pbb.Paint += (s, a) =>
+            {
+                if (_toCrop)
+                {
+                    using (Pen pen = new Pen(Explorer.mouseClickColor, 2))
+                    {
+                        pen.DashStyle = DashStyle.DashDot;
+                        a.Graphics.DrawRectangle(pen, new Rectangle(_xPos, _yPos, cropWidth, cropHeight));
+                    }
+                }
+            };
+
             pbb.MouseDown += (senderr, argss) =>
             {
                 if (argss.Button == MouseButtons.Right)
                 {
                     return;
                 }
-                    if (argss.Button == MouseButtons.Middle)
+                if (argss.Button == MouseButtons.Middle)
                 {
                     Bitmap bmp = new Bitmap(pbb.Image);
                     for (int i = 0; i < 100; i++)
@@ -460,6 +489,7 @@ namespace MediaPlayer
                     return;
                 }
 
+                _canDraw = true;
                 if (zoomed)
                 {
                     pbb.Cursor = Cursors.Hand;
@@ -474,34 +504,53 @@ namespace MediaPlayer
             {
                 if (args.Button == MouseButtons.Left)
                 {
-                    /*pbb.Top = args.Y + pbb.Top - _yPos;
-                    pbb.Left = args.X + pbb.Left - _xPos;*/
-                    int newX = _xPos - PointToClient(Cursor.Position).X;
-                    int newY = _yPos - PointToClient(Cursor.Position).Y;
-
-                    if (newX > picPanel.HorizontalScroll.Minimum)
+                    if (_canDraw && _toCrop)
                     {
-                        picPanel.HorizontalScroll.Value = newX < picPanel.HorizontalScroll.Maximum ? newX : picPanel.HorizontalScroll.Maximum;
+                        pbb.Refresh();
+                        cropWidth = args.X - _xPos;
+                        cropHeight = args.Y - _yPos;
+                        Double rat = (Double)cropWidth / (Double)cropHeight;
+                        Double rRat = (Double)cropHeight / (Double)cropWidth;
+                        label1.Text = "X: " + cropWidth + "\nY: " + cropHeight + "\nX/Y: " + Math.Round(rat, 4) + "\nY/X: " + Math.Round(rRat, 4);
+                        label1.Refresh();
+                        pbb.Refresh();
                     }
                     else
                     {
-                        picPanel.HorizontalScroll.Value = picPanel.HorizontalScroll.Minimum;
-                    }
+                        /*pbb.Top = args.Y + pbb.Top - _yPos;
+                        pbb.Left = args.X + pbb.Left - _xPos;*/
+                        int newX = _xPos - PointToClient(Cursor.Position).X;
+                        int newY = _yPos - PointToClient(Cursor.Position).Y;
 
-                    if (newY > picPanel.VerticalScroll.Minimum)
-                    {
-                        picPanel.VerticalScroll.Value = newY < picPanel.VerticalScroll.Maximum ? newY : picPanel.VerticalScroll.Maximum;
+                        if (newX > picPanel.HorizontalScroll.Minimum)
+                        {
+                            picPanel.HorizontalScroll.Value = newX < picPanel.HorizontalScroll.Maximum ? newX : picPanel.HorizontalScroll.Maximum;
+                        }
+                        else
+                        {
+                            picPanel.HorizontalScroll.Value = picPanel.HorizontalScroll.Minimum;
+                        }
+
+                        if (newY > picPanel.VerticalScroll.Minimum)
+                        {
+                            picPanel.VerticalScroll.Value = newY < picPanel.VerticalScroll.Maximum ? newY : picPanel.VerticalScroll.Maximum;
+                        }
+                        else
+                        {
+                            picPanel.VerticalScroll.Value = picPanel.VerticalScroll.Minimum;
+                        }
+                        picPanel.Update();
                     }
-                    else
-                    {
-                        picPanel.VerticalScroll.Value = picPanel.VerticalScroll.Minimum;
-                    }
-                    picPanel.Update();
                 }
             };
 
             pbb.MouseUp += (s, args) =>
             {
+                if (_toCrop)
+                {
+                    _canDraw = false;
+                    return;
+                }
                 if (args.Button == MouseButtons.Right)
                 {
                     return;
@@ -544,9 +593,205 @@ namespace MediaPlayer
 
                 zoomed = true;
                 pbb.Location = new Point(x, y);
+                editBtnH.BringToFront();
             };
 
             picPanel.Controls.Add(pbb);
+        }
+
+        private void crop_Click(object sender, EventArgs e)
+        {
+            _toCrop = !_toCrop;
+            if (_toCrop)
+            {
+                if (picCroppedPicture.Image != null)
+                    picCroppedPicture.Image.Dispose();
+                picCroppedPicture.Visible = false ;
+                pbb.Visible = true ;
+                crop.BackColor = Explorer.mouseClickColor;
+            }
+            else
+            {
+                crop.BackColor = Color.FromArgb(45, 45, 45);
+                if (picCroppedPicture.Image != null)
+                    picCroppedPicture.Image.Dispose();
+                if (pbb.Image != null)
+                    pbb.Image.Dispose();
+                picCroppedPicture.Visible = false;
+                
+                Bitmap bmp = new Bitmap(Image.FromFile(path));
+                setPic(pbb, bmp);
+                pbb.Visible = true;
+            }
+            if (preview.BackColor == Explorer.mouseClickColor)
+            {
+                preview.BackColor = Color.FromArgb(45, 45, 45);
+            }
+            label1.Text = "X:\nY:\nX / Y:\nY / X:";
+        }
+
+        public void setPic(PictureBox pb, Bitmap img)
+        {
+            pb.Image = img;
+            pb.Size = img.Size;
+            pb.Anchor = AnchorStyles.None;
+            pb.SizeMode = PictureBoxSizeMode.StretchImage;
+            Double Width = pb.Image.Width;
+            Double Height = pb.Image.Height;
+
+            if (Width * 1.25 >= 1600 || Height * 1.25 >= 1000)
+            {
+
+            }
+            else
+            {
+                Width = Width * 1.25;
+                Height = Height * 1.25;
+            }
+            Double ratio = (Double)(Height / Width);
+            setBestRes(Width, Height, ratio, pb);
+            pb.Location = new Point((this.Width / 2) - (pb.Width / 2) + (pb.Width > pb.Height ? 0 : 40),
+                      (this.Height / 2) - (pb.Height / 2));
+        }
+
+        private void preview_Click(object sender, EventArgs e)
+        {
+            if (!_toCrop)
+                return;
+            if (preview.BackColor == Explorer.mouseClickColor)
+            {
+                preview.BackColor = Color.FromArgb(45, 45, 45);
+                if (picCroppedPicture.Image != null)
+                    picCroppedPicture.Image.Dispose();
+                picCroppedPicture.Visible = false;
+                pbb.Visible = true;
+            }
+            else
+            {
+                if (cropWidth < 1 || cropHeight < 1)
+                {
+                    return;
+                }
+                preview.BackColor = Explorer.mouseClickColor;
+                //                Rectangle rect = new Rectangle(cropX+28, cropY+73, cropWidth+57, cropHeight+20);
+                Rectangle rect = new Rectangle(_xPos, _yPos, cropWidth, cropHeight);
+                Bitmap OriginalImage = new Bitmap(pbb.Image, pbb.Width, pbb.Height);
+
+                targetBitmap = new Bitmap(cropWidth, cropHeight);
+
+                Graphics g = Graphics.FromImage(targetBitmap);
+                g.SmoothingMode = SmoothingMode.HighQuality;
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                g.CompositingQuality = CompositingQuality.HighQuality;
+
+                g.DrawImage(OriginalImage, 0, 0, rect, GraphicsUnit.Pixel);
+                /* Bitmap bp = new Bitmap(picOriginalPicture.Image);
+                 targetBitmap = bp.Clone(rect, bp.PixelFormat);*/
+
+                if (picCroppedPicture.Image != null)
+                    picCroppedPicture.Image.Dispose();
+
+                setPic(picCroppedPicture, targetBitmap);
+                picCroppedPicture.Visible = true;
+                pbb.Visible = false;
+            }
+        }
+
+        private void saveBtn_Click(object sender, EventArgs e)
+        {
+            VideoPlayer.isCropped = true;
+            if (targetBitmap == null)
+                return;
+            saveFi = new FileInfo(path);
+            String ext = saveFi.Extension;
+            for (int i = 0; i < 100; i++)
+            {
+                if (File.Exists(saveFi.DirectoryName + "\\_cropped" + i + saveFi.Name.Substring(saveFi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1)))
+                    continue;
+                using (MemoryStream memory = new MemoryStream())
+                {
+                    using (FileStream fs = new FileStream(saveFi.DirectoryName + "\\_cropped" + i + saveFi.Name.Substring(saveFi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1), FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                    {
+                        byte[] bytes;
+                        switch (ext)
+                        {
+                            case ".png":
+                                targetBitmap.Save(memory, ImageFormat.Png);
+                                bytes = memory.ToArray();
+                                fs.Write(bytes, 0, bytes.Length);
+                                break;
+                            case ".jpg":
+                            case ".jpeg":
+                            case ".jpe":
+                            case ".jfif":
+                            case ".exif":
+                                targetBitmap.Save(memory, ImageFormat.Jpeg);
+                                bytes = memory.ToArray();
+                                fs.Write(bytes, 0, bytes.Length);
+                                break;
+                            case ".gif":
+                                targetBitmap.Save(memory, ImageFormat.Gif);
+                                bytes = memory.ToArray();
+                                fs.Write(bytes, 0, bytes.Length);
+                                break;
+                            case ".bmp":
+                            case ".dib":
+                            case ".rle":
+                                targetBitmap.Save(memory, ImageFormat.Bmp);
+                                bytes = memory.ToArray();
+                                fs.Write(bytes, 0, bytes.Length);
+                                break;
+                            case ".tiff":
+                            case ".tif":
+                                targetBitmap.Save(memory, ImageFormat.Tiff);
+                                bytes = memory.ToArray();
+                                fs.Write(bytes, 0, bytes.Length);
+                                break;
+                        }
+                    }
+                }
+                break;
+                /*if (File.Exists(saveFi.DirectoryName + "\\_cropped" + i + saveFi.Name.Substring(saveFi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1)))
+                    continue;
+                targetBitmap.Save(saveFi.DirectoryName + "\\_cropped" + i + saveFi.Name.Substring(saveFi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1), ImageFormat.Png);
+                break;*/
+
+                /*ImageCodecInfo myImageCodecInfo;
+                System.Drawing.Imaging.Encoder myEncoder;
+                EncoderParameter myEncoderParameter;
+                EncoderParameters myEncoderParameters;
+                myImageCodecInfo = GetEncoderInfo("image/jpeg");
+                myEncoder = System.Drawing.Imaging.Encoder.Quality;
+                myEncoderParameters = new EncoderParameters(1);
+                myEncoderParameter = new EncoderParameter(myEncoder, 100L);
+                myEncoderParameters.Param[0] = myEncoderParameter;
+
+                targetBitmap.Save(saveFi.DirectoryName + "\\_cropped" + i + saveFi.Name.Substring(saveFi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1), myImageCodecInfo, myEncoderParameters);*/
+
+            }
+        }
+
+        private void cBtn_Click(object sender, EventArgs e)
+        {
+            targetBitmap = new Bitmap(pbb.Image);
+            targetBitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            pbb.Image.Dispose();
+            setPic(pbb, targetBitmap);
+        }
+
+        private void ccBtn_Click(object sender, EventArgs e)
+        {
+            targetBitmap = new Bitmap(pbb.Image);
+            targetBitmap.RotateFlip(RotateFlipType.Rotate270FlipNone);
+            pbb.Image.Dispose();
+            setPic(pbb, targetBitmap);
+        }
+
+        private void editBtnH_Click(object sender, EventArgs e)
+        {
+            editPanel.Visible = !editPanel.Visible;
+            label1.Visible = !label1.Visible;
         }
 
         private void picPanel_MouseClick(object sender, MouseEventArgs e)
@@ -606,10 +851,10 @@ namespace MediaPlayer
                             {
                                 pbb.Image.Dispose();
                                 pbb.Dispose();
-                                picPanel.Controls.Clear();
+                                //picPanel.Controls.Clear();
                                 setPic();
                                 controlDisposer();
-                                fillUpFP1(VideoPlayer.wmpSide1.vidPb, VideoPlayer.wmpSide1.typeImg);
+                                fillUpFP1(vidPb, typeImg);
                             }
                             return true;
                         }
@@ -626,10 +871,10 @@ namespace MediaPlayer
                             {
                                 pbb.Image.Dispose();
                                 pbb.Dispose();
-                                picPanel.Controls.Clear();
+                                //picPanel.Controls.Clear();
                                 setPic();
                                 controlDisposer();
-                                fillUpFP1(VideoPlayer.wmpSide1.vidPb, VideoPlayer.wmpSide1.typeImg);
+                                fillUpFP1(vidPb, typeImg);
                             }
                             return true;
                         }

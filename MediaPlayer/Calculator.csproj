@@ -570,6 +570,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="calculator1.ico" />
+    <None Include="Resources\emergency-exit.png" />
+    <None Include="Resources\save-file.png" />
+    <None Include="Resources\folder.png" />
+    <None Include="Resources\rotate.png" />
+    <None Include="Resources\spin %281%29.png" />
+    <None Include="Resources\clockwise.png" />
+    <None Include="Resources\spin.png" />
+    <None Include="Resources\crop.png" />
+    <None Include="Resources\wp4676582-4k-pc-wallpapers.jpg" />
     <None Include="Resources\more %281%29.png" />
     <None Include="Resources\more %282%29.png" />
     <None Include="Resources\more.png" />

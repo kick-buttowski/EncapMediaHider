@@ -72,7 +72,7 @@ namespace MediaPlayer
             btn0.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn0.Width, btn0.Height,10, 10));
             btnDecimal.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnDecimal.Width, btnDecimal.Height,10, 10));
             btnRes.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnRes.Width, btnRes.Height,10, 10));
-            String[] defColor = File.ReadAllText("F:\\Calculator\\ThemeColor.txt").Split(',');
+            String[] defColor = File.ReadAllText("E:\\VS Code\\CSS\\ThemeColor.txt").Split(',');
             tempColor = Color.FromArgb(int.Parse(defColor[0]), int.Parse(defColor[1]), int.Parse(defColor[2]));
             /*btnAdd.BackColor = tempColor;
             btnSub.BackColor = tempColor;
@@ -329,21 +329,10 @@ namespace MediaPlayer
         private void txtDisplay_TextChanged(object sender, EventArgs e)
         {
             TextBox tbx = (TextBox)sender;
-
-            if (tbx.Text.Equals("608442786042") || tbx.Text.Equals("/**/-+"))
-            {
-                if (!v.Visible)
-                {
-                    txtDisplay.Text = "";
-                    this.Hide();
-                    //SetMonitorState(2);
-                    v.Show();
-                }
-            }
-            else if (tbx.Text.Equals("Clear"))
+            if (tbx.Text.Equals("Clear"))
             {
                 DirectoryInfo di = new DirectoryInfo("F:\\Calculator");
-                    deleteTxtFile(di);
+                deleteTxtFile(di);
                 di = new DirectoryInfo("H:\\vivado\\rand_name\\rand_name.ir");
                 deleteTxtFile(di);
             }
@@ -358,7 +347,7 @@ namespace MediaPlayer
 
                     foreach (String fi in ofd.FileNames)
                     {
-                        WMP wmp = new WMP(null,null,null);
+                        WMP wmp = new WMP(null, null, null);
                         FileInfo fileInfo = new FileInfo(fi);
                         wmp.axWindowsMediaPlayer1.URL = fileInfo.FullName;
                         wmp.axWindowsMediaPlayer1.Name = fileInfo.FullName;
@@ -374,26 +363,20 @@ namespace MediaPlayer
             else if (tbx.Text.Equals("collage"))
             {
                 System.Diagnostics.Process.Start("firefox.exe", "https://www.fotojet.com/apps/?entry=collage");
-            
+
+            }
+            else if (tbx.Text.Equals("firefox"))
+            {
+                System.Diagnostics.Process.Start("firefox.exe", "https://www.google.com");
+
             }
         }
-
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
 
             v = new Explorer(this);
             v.Explorer_Load(null, null);
             btnRes.BackColor = tempColor;
-            if (txtDisplay.Text.Equals("608442786042") || txtDisplay.Text.Equals("/**/-+"))
-            {
-                if (!v.Visible)
-                {
-                    txtDisplay.Text = "";
-                    this.Hide();
-                    //SetMonitorState(2);
-                    v.Show();
-                }
-            }
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -707,6 +690,26 @@ namespace MediaPlayer
             {
                 txtDisplay.Text = "";
             }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            TextBox tbx = txtDisplay;
+
+            if ((tbx.Text.Equals("608442786042") || tbx.Text.Equals("/**/-+")) && (btnRes.BackColor == tempColor) && !v.Visible)
+            {
+                    txtDisplay.Text = "";
+                    this.Hide();
+                    //SetMonitorState(2);
+                    v.Show();
+            }
+
+            tbx.Focus();
+        }
+
+        private void Calculator_Activated(object sender, EventArgs e)
+        {
+            txtDisplay.Focus();
         }
 
         private void button2_Click(object sender, EventArgs e)

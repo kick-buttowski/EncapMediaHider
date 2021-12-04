@@ -156,8 +156,8 @@ namespace MediaPlayer
             textBox3.Select();
             this.DoubleBuffered = true;
             hoverPointer.Visible = false;
-            DirectoryInfo directory2 = new DirectoryInfo("H:\\vivado\\rand_name\\rand_name.ir");
-            DirectoryInfo directory1 = new DirectoryInfo("F:\\Calculator");
+            DirectoryInfo directory2 = new DirectoryInfo("C:\\Users\\Harsha Vardhan\\Downloads\\Video");
+            DirectoryInfo directory1 = new DirectoryInfo("E:\\VS Code\\CSS");
             pardirectory[1] = directory1;
             pardirectory[0] = directory2;
             if (!File.Exists(directory1.FullName + "\\ThemeColor.txt"))

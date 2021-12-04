@@ -295,7 +295,6 @@ namespace MediaPlayer
             }
             Double ratio = (Double)(Height / Width);
             setBestRes(Width, Height, ratio, pb);
-
             pb.Location = new Point((this.Width / 2) - (pb.Width / 2),
                       (this.Height / 2) - (pb.Height / 2));
         }
@@ -338,5 +337,6 @@ namespace MediaPlayer
             picOriginalPicture.Image.Dispose();
             setPic(picOriginalPicture, targetBitmap);
         }
+
     }
 }

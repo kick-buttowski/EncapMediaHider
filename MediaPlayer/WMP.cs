@@ -91,31 +91,33 @@ namespace MediaPlayer
             try
             {
                 this.Hide();
-                Explorer.wmpOnTop.axWindowsMediaPlayer1.URL = this.axWindowsMediaPlayer1.Name;
-                Explorer.wmpOnTop.axWindowsMediaPlayer1.settings.volume = 0;
-                Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition = this.axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
-                Explorer.wmpOnTop.WmpOnTop_Activated((int)this.duration);
-
-                FileInfo fi = new FileInfo(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL);
-                if (File.Exists(fi.DirectoryName + "\\resume.txt"))
+                if (Explorer.wmpOnTop != null)
                 {
-                    String[] resumeFile = File.ReadAllLines(fi.DirectoryName + "\\resume.txt");
-                    String fileStr = "";
-                    foreach (String str in resumeFile)
-                    {
-                        if (str.Contains("@@" + fi.Name + "@@!"))
-                        {
-                            fileStr = fileStr + "@@" + fi.Name + "@@!" + Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
-                            continue;
-                        }
-                        fileStr = fileStr + str + "\n";
-                    }
-                    File.WriteAllText(fi.DirectoryName + "\\resume.txt", fileStr);
-                }
-                this.Hide();
-                Application.RemoveMessageFilter(wmp);
-                //Application.AddMessageFilter(videoPlayer);
+                    Explorer.wmpOnTop.axWindowsMediaPlayer1.URL = this.axWindowsMediaPlayer1.Name;
+                    Explorer.wmpOnTop.axWindowsMediaPlayer1.settings.volume = 0;
+                    Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition = this.axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+                    Explorer.wmpOnTop.WmpOnTop_Activated((int)this.duration);
 
+                    FileInfo fi = new FileInfo(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL);
+                    if (File.Exists(fi.DirectoryName + "\\resume.txt"))
+                    {
+                        String[] resumeFile = File.ReadAllLines(fi.DirectoryName + "\\resume.txt");
+                        String fileStr = "";
+                        foreach (String str in resumeFile)
+                        {
+                            if (str.Contains("@@" + fi.Name + "@@!"))
+                            {
+                                fileStr = fileStr + "@@" + fi.Name + "@@!" + Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
+                                continue;
+                            }
+                            fileStr = fileStr + str + "\n";
+                        }
+                        File.WriteAllText(fi.DirectoryName + "\\resume.txt", fileStr);
+                    }
+                    this.Hide();
+                    Application.RemoveMessageFilter(wmp);
+                    //Application.AddMessageFilter(videoPlayer);
+                }
 
                 foreach (PictureBox pb in this.disposePb)
                 {
@@ -143,12 +145,15 @@ namespace MediaPlayer
                 if (TranspBack.toTop) Explorer.wmpOnTop.Show();
                 else
                 {
-                    Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.pause();
-                    Explorer.wmpOnTop.axWindowsMediaPlayer1.currentPlaylist.clear();
-                    Explorer.wmpOnTop.axWindowsMediaPlayer1.URL = "";
-                    Explorer.wmpOnTop.axWindowsMediaPlayer1.Dispose();
-                    Explorer.wmpOnTop.Dispose();
-                    Explorer.wmpOnTop = null;
+                    if (Explorer.wmpOnTop != null)
+                    {
+                        Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.pause();
+                        Explorer.wmpOnTop.axWindowsMediaPlayer1.currentPlaylist.clear();
+                        Explorer.wmpOnTop.axWindowsMediaPlayer1.URL = "";
+                        Explorer.wmpOnTop.axWindowsMediaPlayer1.Dispose();
+                        Explorer.wmpOnTop.Dispose();
+                        Explorer.wmpOnTop = null;
+                    }
                     return;
                 }
             }
@@ -350,6 +355,8 @@ namespace MediaPlayer
 
         public void fillUpFP1(List<PictureBox> vidPb, params Boolean[] typeImg)
         {
+            if (vidPb == null)
+                return;
             calcXY(vidPb.Count);
             flowLayoutPanel1.Size = new Size(flowLayoutPanel1.Width, layout1Size);
             flowLayoutPanel1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel1.Width, flowLayoutPanel1.Height, 15, 15));

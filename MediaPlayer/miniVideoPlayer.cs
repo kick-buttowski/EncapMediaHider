@@ -43,6 +43,9 @@ namespace MediaPlayer
         Boolean verticalScroll = true;
         Color mouseHoverColor = Explorer.globColor;
         Color mouseClickColor = Explorer.globColor;
+        DirectoryInfo tfDirectoryInfo = null;
+        bool iterateTf = false;
+        List<Double> iterateTframes = new List<double>();
         public miniVideoPlayer(List<PictureBox> videosPb)
         {
             InitializeComponent();
@@ -72,9 +75,9 @@ namespace MediaPlayer
                 duration = axWindowsMediaPlayer1.currentMedia.duration;
                 axWindowsMediaPlayer1.settings.rate = 1.00;
                 newProgressBar.Maximum = (int)duration;
-                loc = (e.fX / 582.0) * duration;
+                loc = (e.fX / videoPlayer.popUpVideoWidth) * duration;
 
-                if (loc - prevX > 16 || loc - prevX < -16)
+                if (loc - prevX > videoPlayer.stepWise || loc - prevX < -1* videoPlayer.stepWise)
                 {
                     prevX = loc;
                     axWindowsMediaPlayer1.Ctlcontrols.currentPosition = loc;
@@ -132,17 +135,30 @@ namespace MediaPlayer
         {
             try
             {
-                if (axWindowsMediaPlayer1.currentMedia == null) return;
-                try { duration = axWindowsMediaPlayer1.currentMedia.duration;
 
+                if (axWindowsMediaPlayer1.currentMedia == null) return;
+                try
+                {
+                    duration = axWindowsMediaPlayer1.currentMedia.duration;
                     newProgressBar.Maximum = (int)duration;
                 }
                 catch { duration = 0; }
-                if (whereAt == 8.0) whereAt = 1.0;
-                double temp = (whereAt / 8.0) * duration;
-                axWindowsMediaPlayer1.Ctlcontrols.currentPosition = temp;
-                newProgressBar.Value = (int)axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
-                whereAt++;
+                if (!iterateTf)
+                {
+                    if (whereAt == 8.0) whereAt = 1.0;
+                    double temp = (whereAt / 8.0) * duration;
+                    axWindowsMediaPlayer1.Ctlcontrols.currentPosition = temp;
+                    newProgressBar.Value = (int)axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+                    whereAt++;
+                }
+                else
+                {
+                    axWindowsMediaPlayer1.Ctlcontrols.currentPosition = ((Double)iterateTframes.ElementAt((int)whereAt) / 1000.0);
+                    newProgressBar.Value = (int)axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+                    whereAt++;
+                    if (whereAt == iterateTframes.Count)
+                        whereAt = 0;
+                }
             }
             catch { }
         }
@@ -151,9 +167,33 @@ namespace MediaPlayer
         {
             if (!VideoPlayer.isShort)
             {
+
+                tfDirectoryInfo = new DirectoryInfo(fileInfo.DirectoryName + "\\TimeFrame");
+                int temp = 0;
+                iterateTframes.Clear();
+                iterateTf = false;
+                whereAt = 1.0;
+                if (Directory.Exists(fileInfo.DirectoryName + "\\TimeFrame"))
+                {
+                    foreach (FileInfo fi in tfDirectoryInfo.GetFiles())
+                    {
+                        if (fi.Name.Contains("placeholder" + fileInfo.Name + ".jpg"))
+                        {
+                            temp = temp + 1;
+                            Double c = Convert.ToDouble(fi.Name.Substring(0, fi.Name.IndexOf("placeholder")));
+                            iterateTframes.Add(c);
+                        }
+                    }
+                    if (temp > 5)
+                    {
+                        iterateTf = true;
+                        iterateTframes.Sort();
+                        whereAt = 0;
+                    }
+                }
                 timer1.Enabled = true;
                 timer1.Interval = 3500;
-                axWindowsMediaPlayer1.settings.rate = 1.6;
+                axWindowsMediaPlayer1.settings.rate = 1.45;
             }
         }
 
@@ -202,8 +242,38 @@ namespace MediaPlayer
 
         public void axWindowsMediaPlayer1_MouseDownEvent(object sender, AxWMPLib._WMPOCXEvents_MouseDownEvent e)
         {
+            /*if (VideoPlayer.prevPB != null)
+            {
+                VideoPlayer.prevPB.BackColor = videoPlayer.darkBackColor;
+                Font myfont1 = new Font("Segoe UI", 9, FontStyle.Regular);
+                videoPlayer.globalDetails.Font = myfont1;
+                videoPlayer.globalDetails.BackColor = videoPlayer.darkBackColor;
+            }
+            VideoPlayer.prevPB = pb;
+            //videoPlayer.globalDetails = vidDetails;
+            Font myfont = new Font("Comic Sans MS", 9, FontStyle.Bold);
+            videoPlayer.globalDetails.Font = myfont;
+            videoPlayer.globalDetails.BackColor = mouseClickColor;
+            videoPlayer.enter = false;*/
+            if (e!=null && e.nButton == 2)
+            {
+                miniVideoPlayer_MouseLeave(null,null);
+                return;
+            }
             if (!isMoved && (!VideoPlayer.isShort || axWindowsMediaPlayer1.currentMedia.duration > 3*60))
             {
+                this.Location = videoPlayer.relativeLoc;
+
+                this.Region = null;
+                this.axWindowsMediaPlayer1.Region = null;
+                this.Size = new Size((int)videoPlayer.popUpVideoWidth, (int)videoPlayer.popUpVideoHeight);
+                this.axWindowsMediaPlayer1.Size = new Size((int)videoPlayer.popUpVideoWidth, (int)videoPlayer.popUpVideoHeight-3);
+                this.axWindowsMediaPlayer1.Location = new Point(0, 4);
+                this.newProgressBar.Location = new Point(0, -3);
+                this.newProgressBar.Size = new Size((int)videoPlayer.popUpVideoWidth, 10);
+                this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 20, 20));
+                this.axWindowsMediaPlayer1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.axWindowsMediaPlayer1.Width, this.axWindowsMediaPlayer1.Height, 20, 20));
+
                 pastPos = 0;
                 timer1.Enabled = false;
                 isMoved = true;
@@ -314,10 +384,10 @@ namespace MediaPlayer
             }
             else if (m.Msg == WM_KEYDOWN)
             {
-                    Keys keyCode = (Keys)(int)m.WParam & Keys.KeyCode;
+                    /*Keys keyCode = (Keys)(int)m.WParam & Keys.KeyCode;
 
                     if(keyCode == Keys.Up || keyCode == Keys.Right|| keyCode == Keys.Left|| keyCode == Keys.Down || keyCode == Keys.M || keyCode == Keys.NumPad1
-                    || keyCode == Keys.NumPad2 || keyCode == Keys.NumPad3 || keyCode == Keys.NumPad4 || keyCode == Keys.NumPad5 || keyCode == Keys.NumPad6)
+                    || keyCode == Keys.NumPad2 || keyCode == Keys.NumPad3 || keyCode == Keys.NumPad4 || keyCode == Keys.NumPad5 || keyCode == Keys.NumPad6 || keyCode == Keys.Shift)*/
                         videoPlayer.PreFilterMessage(ref m);
                 return true;
             }

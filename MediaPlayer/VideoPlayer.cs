@@ -53,8 +53,9 @@ namespace MediaPlayer
         public static List<String> videoUrls = new List<String>();
         public static wmpSide wmpSide1 = null;
         Explorer exp;
-        Label globalDetails = new Label();
+        public Label globalDetails = new Label();
         Double zoom = 1.0;
+        public Point relativeLoc;
         public static PictureBox prevPB = null;
         PictureBox globalPb = new PictureBox(); PictureBox pbb = new PictureBox();
         List<Label> allVidDet = new List<Label>();
@@ -88,7 +89,8 @@ namespace MediaPlayer
         int popUpX = 320;
         Image img3 = null;
         Image img4 = null;
-
+        public Double popUpVideoWidth = 0, popUpVideoHeight = 0;
+        public int stepWise = 14;
         NewProgressBar newProgressBar = null;
         checkBox checkBox = new checkBox();
 
@@ -96,7 +98,7 @@ namespace MediaPlayer
         //static int rand1 = Explorer.rr.Next(0, 256);
         //static int[] color = Explorer.Rand_Color(rand1, 0.5, 0.25);
         static Color globColor = Color.FromArgb(rr.Next(256), rr.Next(256), rr.Next(256));
-        Color darkBackColor = Explorer.darkBackColor;
+        public Color darkBackColor = Explorer.darkBackColor;
         Color lightBackColor = Explorer.lightBackColor;
         Color kindaDark = Explorer.kindaDark;
         Color mouseHoverColor = Explorer.globColor;
@@ -1230,20 +1232,32 @@ namespace MediaPlayer
                 {
                     y = y - ((y + 330) - 1080) - 2;
                 }
-                Point relativeLoc = new Point(x, y);
+                popUpVideoWidth = 582.0;
+                popUpVideoHeight = 330.0;
+                if (type == "Gif Vid" || type == "Affinity")
+                {
+                    popUpVideoWidth = 436.0;
+                    popUpVideoHeight = 247.0;
+                    x = flowLayoutPanel1.Location.X + pb.Location.X - (((int)popUpVideoWidth-pb.Width)/2);
+                    y = flowLayoutPanel1.Location.Y + pb.Location.Y - (((int)popUpVideoHeight - pb.Height) / 2);
+                    stepWise = 8;
+
+                }
+                relativeLoc = new Point(x, y);
                 miniVideoPlayer.setData(pb, new FileInfo(pb.Name), this);
                 miniVideoPlayer.axWindowsMediaPlayer1.enableContextMenu = false;
 
                 miniVideoPlayer.Region = null;
                 miniVideoPlayer.axWindowsMediaPlayer1.Region = null;
-                //miniVideoPlayer.Location = new Point( pb.Location.X + flowLayoutPanel1.Location.X, pb.Location.Y + flowLayoutPanel1.Location.Y);
-                miniVideoPlayer.Location = relativeLoc;
-                miniVideoPlayer.pastPos = 0; 
-                miniVideoPlayer.Size = new Size(582, 330);
-                miniVideoPlayer.axWindowsMediaPlayer1.Size = new Size(582, 327);
+                miniVideoPlayer.Location = new Point( pb.Location.X + flowLayoutPanel1.Location.X, pb.Location.Y + flowLayoutPanel1.Location.Y);
+                //miniVideoPlayer.Location = relativeLoc;
+                miniVideoPlayer.pastPos = 0;
+                //miniVideoPlayer.Size = new Size(582, 330);
+                miniVideoPlayer.Size = pb.Size;
+                miniVideoPlayer.axWindowsMediaPlayer1.Size = new Size(pb.Size.Width, pb.Size.Height-3);
                 miniVideoPlayer.axWindowsMediaPlayer1.Location = new Point(0, 4);
                 miniVideoPlayer.newProgressBar.Location = new Point(0, -3);
-                miniVideoPlayer.newProgressBar.Size = new Size(582, 10);
+                miniVideoPlayer.newProgressBar.Size = new Size(pb.Size.Width, 10);
                 miniVideoPlayer.axWindowsMediaPlayer1.URL = pb.Name;
                 miniVideoPlayer.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, miniVideoPlayer.Width, miniVideoPlayer.Height, 20, 20));
                 miniVideoPlayer.axWindowsMediaPlayer1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, miniVideoPlayer.axWindowsMediaPlayer1.Width, miniVideoPlayer.axWindowsMediaPlayer1.Height, 20, 20));
@@ -1286,7 +1300,14 @@ namespace MediaPlayer
                     picViewer.flowLayoutPanel1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, picViewer.flowLayoutPanel1.Width, picViewer.flowLayoutPanel1.Height, 15, 15));
                     picViewer.fillUpFP1(type == "4K" ? wpbDupe : (type == "Gifs" ? gpb : wpb), true);
                     picViewer.hideBtnW.Visible = true;
-                    picViewer.hideBtnW.Location = new Point(960-(picViewer.hideBtnH.Width/2), 1068);
+                    picViewer.hideBtnW.Location = new Point(960-(picViewer.hideBtnH.Width/2), 1070);
+                    picViewer.editBtnH.Location = new Point(1909, 540 - (picViewer.hideBtnH.Height / 2));
+                    picViewer.editBtnH.Visible = true;
+                    picViewer.editPanel.Location = new Point(1905 - (picViewer.editPanel.Width), 540 - (picViewer.editPanel.Height / 2));
+                    picViewer.editPanel.Visible = false;
+                    picViewer.label1.Location = new Point(1918 - (picViewer.label1.Width), 2);
+                    picViewer.label1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, picViewer.label1.Width, picViewer.label1.Height, 10, 10));
+                    picViewer.label1.Visible = false;
                     picViewer.Show();
                     /*wmpSide1 = new wmpSide(null, picViewer, true);
                     wmpSide1.BackColor = darkBackColor;
@@ -1308,6 +1329,13 @@ namespace MediaPlayer
                     picViewer.fillUpFP1(type == "4K" ? lpbDupe : (type == "Gifs" ? gpb : lpb), false);
                     picViewer.hideBtnH.Visible = true;
                     picViewer.hideBtnH.Location = new Point(-2, 540 - (picViewer.hideBtnH.Height/2));
+                    picViewer.editBtnH.Location = new Point(1909, 540 - (picViewer.hideBtnH.Height / 2));
+                    picViewer.editBtnH.Visible = true;
+                    picViewer.editPanel.Location = new Point(1905 - (picViewer.editPanel.Width), 540 - (picViewer.editPanel.Height / 2));
+                    picViewer.editPanel.Visible = false;
+                    picViewer.label1.Location = new Point(1918 - (picViewer.label1.Width), 2);
+                    picViewer.label1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, picViewer.label1.Width, picViewer.label1.Height, 10, 10));
+                    picViewer.label1.Visible = false;
                     picViewer.Show();
                     /*wmpSide1 = new wmpSide(null, picViewer, true);
                     wmpSide1.Size = new Size(120, 1080);
@@ -1921,11 +1949,10 @@ namespace MediaPlayer
                     meta.Clear();
                 }
 
-                pb.MouseLeave += (s1, a1) =>
+                vidDetails.MouseLeave += (s1, a1) =>
                 {
-                    mouseEnter = false;
-                    if(vidDetails.Font.Name != "Comic Sans MS")
-                    vidDetails.BackColor = darkBackColor;
+                    if (vidDetails.Font.Name != "Comic Sans MS")
+                        vidDetails.BackColor = darkBackColor;
                 };
 
                 pb.MouseEnter += (s1, q1) =>
@@ -1934,8 +1961,8 @@ namespace MediaPlayer
                     if (miniVideoPlayer != null)
                         miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
 
-                    vidDetails.BackColor = mouseClickColor;
-                    timer2.Interval = 100;
+                    //vidDetails.BackColor = mouseClickColor;
+                    //timer2.Interval = 100;
                     /*if (prevPB != null)
                     {
                         prevPB.BackColor = darkBackColor;
@@ -1950,16 +1977,16 @@ namespace MediaPlayer
                     globalDetails.ForeColor = mouseClickColor;*/
                     enter = false;
 
-                    timer2.Enabled = true;
+                    /*timer2.Enabled = true;
                     timer2.Tick += (s2, a) =>
                     {
                         timer2.Enabled = false;
                         if (mouseEnter) ;
-                    };
+                    };*/
                     pbClick(pb);
                 };
 
-                pb.MouseClick += (s, args) =>
+               /* pb.MouseClick += (s, args) =>
                 {
                     if (prevPB != null)
                     {
@@ -1975,6 +2002,22 @@ namespace MediaPlayer
                     globalDetails.BackColor = mouseClickColor;
                     enter = false;
                     pbClick(pb);
+                };*/
+
+                vidDetails.MouseClick += (s, args) =>
+                {
+                    if (prevPB != null)
+                    {
+                        prevPB.BackColor = darkBackColor;
+                        Font myfont1 = new Font("Segoe UI", 9, FontStyle.Regular);
+                        globalDetails.Font = myfont1;
+                        globalDetails.BackColor = darkBackColor;
+                    }
+                    prevPB = pb;
+                    globalDetails = vidDetails;
+                    Font myfont = new Font("Comic Sans MS", 9, FontStyle.Bold);
+                    globalDetails.Font = myfont;
+                    globalDetails.BackColor = mouseClickColor;
                 };
 
             }
@@ -3676,14 +3719,14 @@ namespace MediaPlayer
                 PictureBox pb = new PictureBox();
                 pb.Dock = DockStyle.Top;
                 pb.Name = fileInfo.FullName;
-                pb.Size = new Size(515, 292);
+                pb.Size = new Size(386, 219);
                 pb.SizeMode = PictureBoxSizeMode.Zoom;
                 pb.Cursor = Cursors.Hand;
                 pb.ContextMenuStrip = contextMenuStrip1;
                 pb.SizeMode = PictureBoxSizeMode.Zoom;
                 pb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, pb.Width, pb.Height, 18, 18));
                 pb.Image = setDefaultPic(fileInfo, pb);
-                pb.Margin = new Padding(5, 10, 17, 0);
+                pb.Margin = new Padding(5, 10, 10, 0);
                 videoUrls.Add(fileInfo.Name);
                 shortVideosPb.Add(pb);
                 flowLayoutPanel1.Controls.Add(shortVideosPb.ElementAt(shortVideosPb.Count - 1));
@@ -3696,11 +3739,11 @@ namespace MediaPlayer
                 vidDetails.Text = vidDetText;
                 vidDetails.Font = new Font("Segoe UI", 9, FontStyle.Bold);
                 vidDetails.BackColor = darkBackColor;
-                vidDetails.Size = new Size(515, 24);
+                vidDetails.Size = new Size(386, 24);
                 vidDetails.ForeColor = Color.White;
                 vidDetails.TextAlign = ContentAlignment.TopCenter;
                 vidDetails.Padding = new Padding(0);
-                vidDetails.Margin = new Padding(5, 2, 17, 0);
+                vidDetails.Margin = new Padding(5, 2, 10, 0);
                 allVidDet.Add(vidDetails);
                 vidDetails.MouseEnter += (s1, q1) =>
                 {
@@ -3711,7 +3754,7 @@ namespace MediaPlayer
                 vidDetails.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, vidDetails.Width, vidDetails.Height, 2, 2));
                 meta.Add(vidDetails);
 
-                if (meta.Count == 3)
+                if (meta.Count == 4)
                 {
                     foreach (Label label in meta)
                     {
@@ -3727,11 +3770,11 @@ namespace MediaPlayer
                         dupeLabel.Text = metaData[0];
                         dupeLabel.Font = new Font("Segoe UI", 9, FontStyle.Regular);
                         dupeLabel.BackColor = darkBackColor;
-                        dupeLabel.Size = new Size(515, 24);
+                        dupeLabel.Size = new Size(386, 24);
                         dupeLabel.ForeColor = Color.White;
                         dupeLabel.TextAlign = ContentAlignment.TopCenter;
                         dupeLabel.Padding = new Padding(0);
-                        dupeLabel.Margin = new Padding(5, 0, 17, 6);
+                        dupeLabel.Margin = new Padding(5, 0, 10, 6);
                         dupeLabel.MouseEnter += (s1, q1) =>
                         {
 
@@ -3790,20 +3833,20 @@ namespace MediaPlayer
 
             }
 
-            for (int y = 0; y < 3 - meta.Count; y++)
+            for (int y = 0; y < 4 - meta.Count; y++)
             {
                 PictureBox pb = new PictureBox();
-                pb.Size = new Size(515, 1);
+                pb.Size = new Size(386, 1);
                 flowLayoutPanel1.Controls.Add(pb);
             }
             foreach (Label label in meta)
             {
                 flowLayoutPanel1.Controls.Add(label);
             }
-            for (int y = 0; y < 3 - meta.Count; y++)
+            for (int y = 0; y < 4 - meta.Count; y++)
             {
                 PictureBox pb = new PictureBox();
-                pb.Size = new Size(515, 1);
+                pb.Size = new Size(386, 1);
                 flowLayoutPanel1.Controls.Add(pb);
             }
             foreach (Label label in meta)
@@ -3814,11 +3857,11 @@ namespace MediaPlayer
                 dupeLabel.Text = metaData[0];
                 dupeLabel.Font = new Font("Segoe UI", 9, FontStyle.Regular);
                 dupeLabel.BackColor = darkBackColor;
-                dupeLabel.Size = new Size(515, 24);
+                dupeLabel.Size = new Size(386, 24);
                 dupeLabel.ForeColor = Color.White;
                 dupeLabel.TextAlign = ContentAlignment.TopCenter;
                 dupeLabel.Padding = new Padding(0);
-                dupeLabel.Margin = new Padding(5, 0, 17, 50);
+                dupeLabel.Margin = new Padding(5, 0, 10, 50);
                 dupeLabel.MouseEnter += (s1, q1) =>
                 {
 
@@ -3828,10 +3871,10 @@ namespace MediaPlayer
                 flowLayoutPanel1.Controls.Add(dupeLabel);
             }
 
-            for (int y = 0; y < 3 - meta.Count; y++)
+            for (int y = 0; y < 4 - meta.Count; y++)
             {
                 PictureBox pb = new PictureBox();
-                pb.Size = new Size(515, 1);
+                pb.Size = new Size(386, 1);
                 flowLayoutPanel1.Controls.Add(pb);
             }
             meta.Clear();
@@ -5262,13 +5305,17 @@ namespace MediaPlayer
 
         private void toolStripMenuItem53_Click(object sender, EventArgs e)
         {
-            PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
-            FileInfo fi = new FileInfo(pb.Name);
+            try
+            {
+                PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+                FileInfo fi = new FileInfo(pb.Name);
 
-                        File.Move(fi.FullName, fi.DirectoryName + "\\Pics\\Affinity\\" + fi.Name);
-            pb.Image.Dispose();
-            pb.Dispose();
-            GC.Collect();
+                File.Move(fi.FullName, fi.DirectoryName + "\\Pics\\Affinity\\" + fi.Name);
+                pb.Image.Dispose();
+                pb.Dispose();
+                GC.Collect();
+            }
+            catch { return; }
 
         }
 
@@ -5364,8 +5411,64 @@ namespace MediaPlayer
 
             if (prevPB == null) return;
             PictureBox pb = prevPB;
-            CropImage cropImage = new CropImage(Image.FromFile(pb.Name), pb.Name);
-            cropImage.Show();
+            Application.RemoveMessageFilter(this);
+            if (pb.Image.Width > pb.Image.Height || type == "Gifs")
+            {
+                PicViewer picViewer = new PicViewer(pb.Name, this, type == "4K" ? wpbDupe : (type == "Gifs" ? gpb : wpb), 1920, 1080, type == "Gifs" ? true : false);
+                //picViewer.picPanel.Dock = DockStyle.Fill;
+                //picViewer.flowLayoutPanel1.Dock = DockStyle.Bottom;
+                picViewer.flowLayoutPanel1.Size = new Size(1840, 110);
+                picViewer.originalSize = new Size(1840, 110);
+                picViewer.flowLayoutPanel1.Location = new Point(40, 955);
+                picViewer.originalPoint = new Point(40, 955);
+                picViewer.flowLayoutPanel1.Padding = new Padding(0, 0, 0, 0);
+                picViewer.flowLayoutPanel1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, picViewer.flowLayoutPanel1.Width, picViewer.flowLayoutPanel1.Height, 15, 15));
+                picViewer.fillUpFP1(type == "4K" ? wpbDupe : (type == "Gifs" ? gpb : wpb), true);
+                picViewer.hideBtnW.Visible = true;
+                picViewer.hideBtnW.Location = new Point(960 - (picViewer.hideBtnH.Width / 2), 1070);
+                picViewer.editBtnH.Location = new Point(1909, 540 - (picViewer.hideBtnH.Height / 2));
+                picViewer.editBtnH.Visible = true;
+                picViewer.editPanel.Location = new Point(1905 - (picViewer.editPanel.Width), 540 - (picViewer.editPanel.Height / 2));
+                picViewer.editPanel.Visible = true;
+                picViewer.label1.Location = new Point(1918 - (picViewer.label1.Width), 2);
+                picViewer.label1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, picViewer.label1.Width, picViewer.label1.Height, 10, 10));
+                picViewer.label1.Visible = true;
+                picViewer.Show();
+                /*wmpSide1 = new wmpSide(null, picViewer, true);
+                wmpSide1.BackColor = darkBackColor;
+                wmpSide1.Location = new Point(0, 970);
+                wmpSide1.fillUpFP1(type == "4K" ? wpbDupe : (type == "Gifs" ? gpb : wpb), true);
+                wmpSide1.Size = new Size(1920, 110);*/
+            }
+            else
+            {
+                PicViewer picViewer = new PicViewer(pb.Name, this, type == "4K" ? lpbDupe : (type == "Gifs" ? gpb : lpb), 1920, 1080, false);
+                //picViewer.picPanel.Dock = DockStyle.Fill;
+                //picViewer.flowLayoutPanel1.Dock = DockStyle.Left;
+                picViewer.flowLayoutPanel1.Size = new Size(170, 1030);
+                picViewer.originalSize = new Size(170, 1030);
+                picViewer.flowLayoutPanel1.Location = new Point(15, 25);
+                picViewer.originalPoint = new Point(15, 25);
+                picViewer.flowLayoutPanel1.Padding = new Padding(0, 6, 0, 0);
+                picViewer.flowLayoutPanel1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, picViewer.flowLayoutPanel1.Width, picViewer.flowLayoutPanel1.Height, 15, 15));
+                picViewer.fillUpFP1(type == "4K" ? lpbDupe : (type == "Gifs" ? gpb : lpb), false);
+                picViewer.hideBtnH.Visible = true;
+                picViewer.hideBtnH.Location = new Point(-2, 540 - (picViewer.hideBtnH.Height / 2));
+                picViewer.editBtnH.Location = new Point(1909, 540 - (picViewer.hideBtnH.Height / 2));
+                picViewer.editBtnH.Visible = true;
+                picViewer.editPanel.Location = new Point(1905 - (picViewer.editPanel.Width), 540 - (picViewer.editPanel.Height / 2));
+                picViewer.editPanel.Visible = true;
+                picViewer.label1.Location = new Point(1918 - (picViewer.label1.Width), 2);
+                picViewer.label1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, picViewer.label1.Width, picViewer.label1.Height, 10, 10));
+                picViewer.label1.Visible = true;
+                picViewer.Show();
+                /*wmpSide1 = new wmpSide(null, picViewer, true);
+                wmpSide1.Size = new Size(120, 1080);
+                wmpSide1.BackColor = darkBackColor;
+                wmpSide1.Location = new Point(0, 0);
+                wmpSide1.fillUpFP1(type == "4K" ? lpbDupe : (type == "Gifs" ? gpb : lpb), false);*/
+
+            }
         }
 
         private void toolStripMenuItem47_Click(object sender, EventArgs e)
@@ -5522,10 +5625,11 @@ namespace MediaPlayer
                             {
                                 File.Delete(delPb.Name);
                                 File.Delete(fi.DirectoryName + "\\imgPB\\" + fi.Name.Replace(fi.Extension, "") + ".jpg");
+                                flowLayoutPanel1.Controls.Remove(delPb);
                             }
                             catch { }
                         }
-                        refreshFolder();
+                        //refreshFolder();
                     }
                 }
                 catch { }
