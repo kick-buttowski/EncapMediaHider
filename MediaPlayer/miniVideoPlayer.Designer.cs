@@ -66,6 +66,7 @@ namespace MediaPlayer
             this.ShowInTaskbar = false;
             this.Text = "miniVideoPlayer";
             this.Activated += new System.EventHandler(this.miniVideoPlayer_Activated);
+            this.Deactivate += new System.EventHandler(this.miniVideoPlayer_Deactivate);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.miniVideoPlayer_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.miniVideoPlayer_KeyDown);
             this.MouseLeave += new System.EventHandler(this.miniVideoPlayer_MouseLeave);

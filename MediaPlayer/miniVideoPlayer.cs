@@ -184,16 +184,18 @@ namespace MediaPlayer
                             iterateTframes.Add(c);
                         }
                     }
-                    if (temp > 5)
-                    {
-                        iterateTf = true;
-                        iterateTframes.Sort();
-                        whereAt = 0;
-                    }
                 }
                 timer1.Enabled = true;
                 timer1.Interval = 3500;
                 axWindowsMediaPlayer1.settings.rate = 1.45;
+                if (temp > 3)
+                {
+                    iterateTf = true;
+                    iterateTframes.Sort();
+                    whereAt = 0;
+                    timer1.Interval = 4500;
+                    axWindowsMediaPlayer1.settings.rate = 1.30;
+                }
             }
         }
 
@@ -348,13 +350,19 @@ namespace MediaPlayer
 
         private const UInt32 WM_KEYDOWN = 0x0100;
         private const int WM_MOUSEWHEEL = 0x20a;
+
+        private void miniVideoPlayer_Deactivate(object sender, EventArgs e)
+        {
+            Application.RemoveMessageFilter(this);
+        }
+
         public bool PreFilterMessage(ref Message m)
         {
             if (m.Msg == WM_MOUSEWHEEL)
             {
                 VScrollProperties vs = videoPlayer.flowLayoutPanel1.VerticalScroll;
                 HScrollProperties hs = videoPlayer.flowLayoutPanel1.HorizontalScroll;
-                if (m.WParam.ToString() == "7864320")
+                if (m.WParam.ToString() == "7864320" || m.WParam.ToString() == "196608")
                 {
 
                     try
@@ -380,6 +388,7 @@ namespace MediaPlayer
                     videoPlayer.flowLayoutPanel1.AutoScrollPosition = new Point(hs.Value, vScroll);
 
                 }
+                //miniVideoPlayer_MouseLeave(null,null);
                 return true;
             }
             else if (m.Msg == WM_KEYDOWN)

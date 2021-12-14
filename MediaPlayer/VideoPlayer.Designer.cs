@@ -1292,6 +1292,7 @@ namespace MediaPlayer
             this.navController.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.navController.UseVisualStyleBackColor = false;
             this.navController.Click += new System.EventHandler(this.navController_Click);
+            this.navController.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // addFile
             // 
@@ -1314,6 +1315,7 @@ namespace MediaPlayer
             this.addFile.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.addFile.UseVisualStyleBackColor = false;
             this.addFile.Click += new System.EventHandler(this.addFile_Click);
+            this.addFile.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // move
             // 
@@ -1336,6 +1338,7 @@ namespace MediaPlayer
             this.move.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.move.UseVisualStyleBackColor = false;
             this.move.Click += new System.EventHandler(this.move_Click);
+            this.move.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // edit
             // 
@@ -1358,6 +1361,7 @@ namespace MediaPlayer
             this.edit.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.edit.UseVisualStyleBackColor = false;
             this.edit.Click += new System.EventHandler(this.edit_Click);
+            this.edit.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // refresh
             // 
@@ -1380,6 +1384,7 @@ namespace MediaPlayer
             this.refresh.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.refresh.UseVisualStyleBackColor = false;
             this.refresh.Click += new System.EventHandler(this.refresh_Click);
+            this.refresh.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // delete
             // 
@@ -1402,6 +1407,7 @@ namespace MediaPlayer
             this.delete.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.delete.UseVisualStyleBackColor = false;
             this.delete.Click += new System.EventHandler(this.button11_Click);
+            this.delete.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // multisel
             // 
@@ -1424,6 +1430,7 @@ namespace MediaPlayer
             this.multisel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.multisel.UseVisualStyleBackColor = false;
             this.multisel.Click += new System.EventHandler(this.multisel_Click);
+            this.multisel.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // setDp
             // 
@@ -1446,6 +1453,7 @@ namespace MediaPlayer
             this.setDp.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.setDp.UseVisualStyleBackColor = false;
             this.setDp.Click += new System.EventHandler(this.setDp_Click);
+            this.setDp.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // resetAndSet
             // 
@@ -1468,6 +1476,7 @@ namespace MediaPlayer
             this.resetAndSet.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.resetAndSet.UseVisualStyleBackColor = false;
             this.resetAndSet.Click += new System.EventHandler(this.resetAndSet_Click);
+            this.resetAndSet.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // theme
             // 
@@ -1490,6 +1499,7 @@ namespace MediaPlayer
             this.theme.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.theme.UseVisualStyleBackColor = false;
             this.theme.Click += new System.EventHandler(this.button11_Click_1);
+            this.theme.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // sortSize
             // 
@@ -1512,6 +1522,7 @@ namespace MediaPlayer
             this.sortSize.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.sortSize.UseVisualStyleBackColor = false;
             this.sortSize.Click += new System.EventHandler(this.sortSize_Click);
+            this.sortSize.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // sortDate
             // 
@@ -1534,6 +1545,7 @@ namespace MediaPlayer
             this.sortDate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.sortDate.UseVisualStyleBackColor = false;
             this.sortDate.Click += new System.EventHandler(this.sortDate_Click);
+            this.sortDate.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // convert
             // 
@@ -1556,6 +1568,7 @@ namespace MediaPlayer
             this.convert.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.convert.UseVisualStyleBackColor = false;
             this.convert.Click += new System.EventHandler(this.convert_Click);
+            this.convert.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // reset
             // 
@@ -1578,6 +1591,7 @@ namespace MediaPlayer
             this.reset.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.reset.UseVisualStyleBackColor = false;
             this.reset.Click += new System.EventHandler(this.reset_Click);
+            this.reset.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // load4K
             // 
@@ -1600,6 +1614,7 @@ namespace MediaPlayer
             this.load4K.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.load4K.UseVisualStyleBackColor = false;
             this.load4K.Click += new System.EventHandler(this.load4K_Click);
+            this.load4K.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // flowLayoutPanel5
             // 
@@ -1639,6 +1654,7 @@ namespace MediaPlayer
             this.rcVid.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.rcVid.UseVisualStyleBackColor = false;
             this.rcVid.Click += new System.EventHandler(this.rcVid_Click);
+            this.rcVid.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // rcPics
             // 
@@ -1661,6 +1677,7 @@ namespace MediaPlayer
             this.rcPics.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.rcPics.UseVisualStyleBackColor = false;
             this.rcPics.Click += new System.EventHandler(this.rcPics_Click);
+            this.rcPics.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // rc4K
             // 
@@ -1683,6 +1700,7 @@ namespace MediaPlayer
             this.rc4K.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.rc4K.UseVisualStyleBackColor = false;
             this.rc4K.Click += new System.EventHandler(this.rc4K_Click);
+            this.rc4K.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // rcAffinity
             // 
@@ -1705,6 +1723,7 @@ namespace MediaPlayer
             this.rcAffinity.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.rcAffinity.UseVisualStyleBackColor = false;
             this.rcAffinity.Click += new System.EventHandler(this.rcAffinity_Click);
+            this.rcAffinity.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // rcSVid
             // 
@@ -1727,6 +1746,7 @@ namespace MediaPlayer
             this.rcSVid.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.rcSVid.UseVisualStyleBackColor = false;
             this.rcSVid.Click += new System.EventHandler(this.rcSVid_Click);
+            this.rcSVid.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // rcGifs
             // 
@@ -1749,6 +1769,7 @@ namespace MediaPlayer
             this.rcGifs.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.rcGifs.UseVisualStyleBackColor = false;
             this.rcGifs.Click += new System.EventHandler(this.rcGifs_Click);
+            this.rcGifs.MouseEnter += new System.EventHandler(this.button9_MouseEnter);
             // 
             // button3
             // 

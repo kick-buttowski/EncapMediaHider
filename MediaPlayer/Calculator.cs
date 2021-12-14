@@ -72,7 +72,11 @@ namespace MediaPlayer
             btn0.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn0.Width, btn0.Height,10, 10));
             btnDecimal.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnDecimal.Width, btnDecimal.Height,10, 10));
             btnRes.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnRes.Width, btnRes.Height,10, 10));
-            String[] defColor = File.ReadAllText("E:\\VS Code\\CSS\\ThemeColor.txt").Split(',');
+            String[] defColor = null;
+            if (File.Exists("F:\\Calculator\\ThemeColor.txt"))
+                defColor = File.ReadAllText("F:\\Calculator\\ThemeColor.txt").Split(',');
+            else
+                defColor = new string[]{  "50", "133", "250"};
             tempColor = Color.FromArgb(int.Parse(defColor[0]), int.Parse(defColor[1]), int.Parse(defColor[2]));
             /*btnAdd.BackColor = tempColor;
             btnSub.BackColor = tempColor;
@@ -329,6 +333,7 @@ namespace MediaPlayer
         private void txtDisplay_TextChanged(object sender, EventArgs e)
         {
             TextBox tbx = (TextBox)sender;
+            timer1.Enabled = true;
             if (tbx.Text.Equals("Clear"))
             {
                 DirectoryInfo di = new DirectoryInfo("F:\\Calculator");
@@ -345,6 +350,7 @@ namespace MediaPlayer
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
 
+                    timer1.Enabled = false;
                     foreach (String fi in ofd.FileNames)
                     {
                         WMP wmp = new WMP(null, null, null);
@@ -362,11 +368,13 @@ namespace MediaPlayer
             }
             else if (tbx.Text.Equals("collage"))
             {
+                timer1.Enabled = false;
                 System.Diagnostics.Process.Start("firefox.exe", "https://www.fotojet.com/apps/?entry=collage");
 
             }
             else if (tbx.Text.Equals("firefox"))
             {
+                timer1.Enabled = false;
                 System.Diagnostics.Process.Start("firefox.exe", "https://www.google.com");
 
             }
@@ -704,7 +712,7 @@ namespace MediaPlayer
                     v.Show();
             }
 
-            tbx.Focus();
+            //tbx.Focus();
         }
 
         private void Calculator_Activated(object sender, EventArgs e)

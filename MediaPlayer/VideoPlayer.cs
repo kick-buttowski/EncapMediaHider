@@ -1493,6 +1493,85 @@ namespace MediaPlayer
             }
         }
 
+
+        public void renameVideoFiles(String filePath, String destPath)
+        {
+            FileInfo fi = new FileInfo(filePath);
+                if (fi.Name.Contains("placeholdeerr") || fi.Name.ToLower().EndsWith(".txt"))
+                    return;
+                var inputFile = new MediaFile { Filename = fi.FullName };
+                engine.GetMetadata(inputFile);
+                int seconds = inputFile.Metadata.Duration.Seconds;
+                int min = inputFile.Metadata.Duration.Minutes;
+                int hours = inputFile.Metadata.Duration.Hours;
+                String vidDetText = "Reso^ " + inputFile.Metadata.VideoData.FrameSize + "  " + "Dura^ " + (hours > 0 ? hours + " Hour " : "") + (min > 0 ? min + " Min " : "") + (seconds > 0 ? seconds + " Sec" : "");
+                FileInfo videoFi = new FileInfo(fi.FullName);
+
+                String siz;
+                double gbd = (double)(videoFi.Length) / (1000.0 * 1000.0 * 1000.0);
+                gbd = Math.Round(gbd, 2);
+                double mbd = (double)(videoFi.Length) / (1000.0 * 1000.0);
+                mbd = Math.Round(mbd, 2);
+                long kbd = videoFi.Length / (1000);
+
+                if (gbd > 1)
+                {
+                    siz = gbd + " GB";
+                }
+                else if (mbd > 1)
+                {
+                    siz = mbd + " MB";
+                }
+                else
+                {
+                    siz = kbd + " KB";
+                }
+
+                vidDetText = vidDetText + "  Size^ " + siz;
+
+                String fileName = fi.Name;
+                if (File.Exists(destPath + "\\imgPB\\resized_" + fi.Name + ".jpg"))
+                {
+                    try
+                    {
+                        File.Copy(@destPath + "\\imgPB\\resized_" + fi.Name + ".jpg", @fi.DirectoryName + "\\imgPB\\resized_" + vidDetText + "placeholdeerr" + fi.Name + ".jpg");
+                        File.Delete(@destPath + "\\imgPB\\resized_" + fi.Name + ".jpg");
+                    }
+                    catch
+                    {
+                        
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        File.Copy(@destPath + "\\imgPB\\" + fi.Name + ".jpg", @fi.DirectoryName + "\\imgPB\\" + vidDetText + "placeholdeerr" + fi.Name + ".jpg");
+                        File.Delete(@destPath + "\\imgPB\\" + fi.Name + ".jpg");
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                int o = 0;
+                for (o = 0; o < 100; o++)
+                {
+                    try
+                    {
+                        if (!File.Exists(destPath + "\\" + vidDetText + "placeholdeerr" + o + fi.Name))
+                        {
+                            File.Move(fi.FullName, destPath + "\\" + vidDetText + "placeholdeerr" + o + fi.Name);
+                            fileName = fi.Name;
+                            break;
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+        }
+
         public void renameVideoFiles(String filePath)
         {
             DirectoryInfo di = new DirectoryInfo(filePath);
@@ -2997,6 +3076,11 @@ namespace MediaPlayer
                 foreach (String fi in ofd.FileNames)
                 {
                     FileInfo fileInfo = new FileInfo(fi);
+                    if (globalBtn.Text.Equals("Videos") || globalBtn.Text.Equals("Gif Vid") || globalBtn.Text.Equals("Affinity"))
+                    {
+                        renameVideoFiles(fi, dirPath);
+                        continue;
+                    }
                     for (int k = 0; k < 50; k++)
                     {
                         if (File.Exists(dirPath + "\\" + fileInfo.Name.Substring(0, fileInfo.Name.LastIndexOf(".")) + k + fileInfo.Extension))
