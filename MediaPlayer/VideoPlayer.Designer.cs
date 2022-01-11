@@ -1311,7 +1311,7 @@ namespace MediaPlayer
             this.addFile.Name = "addFile";
             this.addFile.Size = new System.Drawing.Size(112, 41);
             this.addFile.TabIndex = 22;
-            this.addFile.Text = "New file";
+            this.addFile.Text = "New";
             this.addFile.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.addFile.UseVisualStyleBackColor = false;
             this.addFile.Click += new System.EventHandler(this.addFile_Click);

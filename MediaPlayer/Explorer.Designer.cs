@@ -67,6 +67,7 @@
             this.theme = new System.Windows.Forms.Button();
             this.reset = new System.Windows.Forms.Button();
             this.stack = new System.Windows.Forms.Button();
+            this.sizeInfo = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
@@ -412,6 +413,7 @@
             this.flowLayoutPanel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(230)))), ((int)(((byte)(235)))));
             this.flowLayoutPanel3.Controls.Add(this.calcButton);
             this.flowLayoutPanel3.Controls.Add(this.divider);
+            this.flowLayoutPanel3.Controls.Add(this.sizeInfo);
             this.flowLayoutPanel3.Location = new System.Drawing.Point(9, -5);
             this.flowLayoutPanel3.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
@@ -421,9 +423,9 @@
             // divider
             // 
             this.divider.Location = new System.Drawing.Point(0, 140);
-            this.divider.Margin = new System.Windows.Forms.Padding(0, 5, 0, 3);
+            this.divider.Margin = new System.Windows.Forms.Padding(0, 5, 0, 1);
             this.divider.Name = "divider";
-            this.divider.Size = new System.Drawing.Size(279, 8);
+            this.divider.Size = new System.Drawing.Size(275, 8);
             this.divider.TabIndex = 1;
             // 
             // toolTip1
@@ -495,7 +497,7 @@
             this.navController.Name = "navController";
             this.navController.Size = new System.Drawing.Size(177, 41);
             this.navController.TabIndex = 34;
-            this.navController.Text = "Nav Controller";
+            this.navController.Text = "Nav Cont";
             this.navController.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.navController.UseVisualStyleBackColor = false;
             this.navController.Click += new System.EventHandler(this.button12_Click);
@@ -654,6 +656,18 @@
             this.stack.UseVisualStyleBackColor = false;
             this.stack.Click += new System.EventHandler(this.button5_Click);
             // 
+            // sizeInfo
+            // 
+            this.sizeInfo.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sizeInfo.ForeColor = System.Drawing.Color.White;
+            this.sizeInfo.Location = new System.Drawing.Point(0, 149);
+            this.sizeInfo.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
+            this.sizeInfo.Name = "sizeInfo";
+            this.sizeInfo.Size = new System.Drawing.Size(275, 23);
+            this.sizeInfo.TabIndex = 2;
+            this.sizeInfo.Text = "label1";
+            this.sizeInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Explorer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -729,5 +743,6 @@
         private System.Windows.Forms.Button affinity;
         private System.Windows.Forms.Button navController;
         private System.Windows.Forms.Panel divider;
+        private System.Windows.Forms.Label sizeInfo;
     }
 }

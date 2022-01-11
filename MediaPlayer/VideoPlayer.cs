@@ -116,7 +116,7 @@ namespace MediaPlayer
             InitializeComponent();
             if(Explorer.wmpOnTop == null)
             {
-                Explorer.wmpOnTop = new WmpOnTop();
+                Explorer.wmpOnTop = new WmpOnTop(this);
             }
             this.type = type;
             this.exp = exp;
@@ -199,6 +199,11 @@ namespace MediaPlayer
             if (!File.Exists(mainDi + "\\webLinks.txt"))
             {
                 FileStream fi = File.Create(mainDi.FullName + "\\webLinks.txt");
+                fi.Close();
+            }
+            if (!File.Exists(mainDi + "\\inTypes.txt"))
+            {
+                FileStream fi = File.Create(mainDi.FullName + "\\inTypes.txt");
                 fi.Close();
             }
             trackBar1.Value = Explorer.globalVol;
@@ -1815,6 +1820,7 @@ namespace MediaPlayer
             allVidDet.Clear();
             Boolean mouseEnter = false;
             List<String> priorityList = new List<String>();
+            List<String> inBuildTypes = File.ReadAllLines(mainDi.FullName + "\\inTypes.txt").ToList();
             if (!File.Exists(mainDi.FullName + "\\priority.txt"))
             {
                 FileStream fi = File.Create(mainDi.FullName + "\\priority.txt");
@@ -1834,6 +1840,10 @@ namespace MediaPlayer
                 foreach (String str in priorityList)
                     if (str.Contains(fi.Name)) { temp = true; break; }
                 if (temp == false && !fi.Name.EndsWith(".txt")) { priorityList.Add("0@" + fi.FullName); }
+                temp = false;
+                foreach (String str in inBuildTypes)
+                    if (str.Contains(fi.Name)) { temp = true; break; }
+                if (temp == false && !fi.Name.EndsWith(".txt")) { inBuildTypes.Add("Local Videos@" + fi.FullName); }
             }
             String toWriteText = "";
             foreach (String str in priorityList)
@@ -2036,33 +2046,33 @@ namespace MediaPlayer
 
                 pb.MouseEnter += (s1, q1) =>
                 {
-                    mouseEnter = true;
-                    if (miniVideoPlayer != null)
-                        miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
+                        mouseEnter = true;
+                        if (miniVideoPlayer != null)
+                            miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
 
-                    //vidDetails.BackColor = mouseClickColor;
-                    //timer2.Interval = 100;
-                    /*if (prevPB != null)
-                    {
-                        prevPB.BackColor = darkBackColor;
-                        Font myfont1 = new Font("Segoe UI", 9, FontStyle.Regular);
-                        globalDetails.Font = myfont1;
-                        globalDetails.ForeColor = Color.White;
-                    }
-                    prevPB = pb;
-                    globalDetails = vidDetails;
-                    Font myfont = new Font("Comic Sans MS", 9, FontStyle.Regular);
-                    globalDetails.Font = myfont;
-                    globalDetails.ForeColor = mouseClickColor;*/
-                    enter = false;
+                        //vidDetails.BackColor = mouseClickColor;
+                        //timer2.Interval = 100;
+                        /*if (prevPB != null)
+                        {
+                            prevPB.BackColor = darkBackColor;
+                            Font myfont1 = new Font("Segoe UI", 9, FontStyle.Regular);
+                            globalDetails.Font = myfont1;
+                            globalDetails.ForeColor = Color.White;
+                        }
+                        prevPB = pb;
+                        globalDetails = vidDetails;
+                        Font myfont = new Font("Comic Sans MS", 9, FontStyle.Regular);
+                        globalDetails.Font = myfont;
+                        globalDetails.ForeColor = mouseClickColor;*/
+                        enter = false;
 
-                    /*timer2.Enabled = true;
-                    timer2.Tick += (s2, a) =>
-                    {
-                        timer2.Enabled = false;
-                        if (mouseEnter) ;
-                    };*/
-                    pbClick(pb);
+                        /*timer2.Enabled = true;
+                        timer2.Tick += (s2, a) =>
+                        {
+                            timer2.Enabled = false;
+                            if (mouseEnter) ;
+                        };*/
+                        pbClick(pb);
                 };
 
                /* pb.MouseClick += (s, args) =>
@@ -3880,21 +3890,22 @@ namespace MediaPlayer
 
                 pb.MouseEnter += (s1, q1) =>
                 {
-                    mouseEnter = true;
-                    if (miniVideoPlayer != null)
-                        miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
 
-                    vidDetails.BackColor = mouseClickColor;
-                    timer2.Interval = 100;
-                    enter = false;
+                        mouseEnter = true;
+                        if (miniVideoPlayer != null)
+                            miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
 
-                    timer2.Enabled = true;
-                    timer2.Tick += (s2, a) =>
-                    {
-                        timer2.Enabled = false;
-                        if (mouseEnter) ;
-                    };
-                    pbClick(pb);
+                        vidDetails.BackColor = mouseClickColor;
+                        timer2.Interval = 100;
+                        enter = false;
+
+                        timer2.Enabled = true;
+                        timer2.Tick += (s2, a) =>
+                        {
+                            timer2.Enabled = false;
+                            if (mouseEnter) ;
+                        };
+                        pbClick(pb);
                 };
 
                 pb.MouseClick += (s, args) =>
@@ -6075,7 +6086,11 @@ namespace MediaPlayer
             {
                 if (File.Exists(di.FullName + "\\" + fi.Name + ".jpg"))
                 {
-                    File.Delete(di.FullName + "\\resized_" + fi.Name + ".jpg");
+                    try
+                    {
+                        File.Delete(di.FullName + "\\resized_" + fi.Name + ".jpg");
+                    }
+                    catch { }
                 }
                 else
                 {

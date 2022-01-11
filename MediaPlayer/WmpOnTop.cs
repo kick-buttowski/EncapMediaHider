@@ -38,6 +38,7 @@ namespace MediaPlayer
         private const int cGrip = 16;      // Grip size
         private const int cCaption = 32;   // Caption bar height;
         int volCheck = 0;
+        VideoPlayer videoPlayer = null;
 
 
         protected override void WndProc(ref Message m)
@@ -68,10 +69,12 @@ namespace MediaPlayer
         }
 
 
-        public WmpOnTop()
+        public WmpOnTop(VideoPlayer videoPlayer)
         {
             InitializeComponent();
+            this.videoPlayer = videoPlayer;
             this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 20, 20));
+            button1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, button1.Width, button1.Height, 15, 15));
             this.FormBorderStyle = FormBorderStyle.None;
             this.SetStyle(ControlStyles.ResizeRedraw, true);
             this.DoubleBuffered = true;
@@ -142,7 +145,7 @@ namespace MediaPlayer
 
                 if (e.fY - y < -20)
                 {
-                    WMP wmp = new WMP(null,null,null);
+                    WMP wmp = new WMP(null,null,null, videoPlayer);
                     wmp.axWindowsMediaPlayer1.URL = axWindowsMediaPlayer1.URL;
                     wmp.axWindowsMediaPlayer1.Name = axWindowsMediaPlayer1.URL;
                     wmp.Location = new Point(298, 100);
@@ -157,7 +160,7 @@ namespace MediaPlayer
                     Explorer.wmpOnTop.axWindowsMediaPlayer1.URL = "";
                     Explorer.wmpOnTop.axWindowsMediaPlayer1.Dispose();
                     Explorer.wmpOnTop.Dispose();
-                    Explorer.wmpOnTop = new WmpOnTop();
+                    Explorer.wmpOnTop = new WmpOnTop(videoPlayer);
                     return;
                 }
 
@@ -228,6 +231,17 @@ namespace MediaPlayer
             }
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+                Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.pause();
+                Explorer.wmpOnTop.axWindowsMediaPlayer1.currentPlaylist.clear();
+                Explorer.wmpOnTop.axWindowsMediaPlayer1.URL = "";
+                Explorer.wmpOnTop.axWindowsMediaPlayer1.Dispose();
+                Explorer.wmpOnTop.Dispose();
+                Explorer.wmpOnTop = null;
+                videoPlayer.Show();
+        }
+
         private void WmpOnTop_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
 
@@ -239,6 +253,7 @@ namespace MediaPlayer
                 Explorer.wmpOnTop.axWindowsMediaPlayer1.Dispose();
                 Explorer.wmpOnTop.Dispose();
                 Explorer.wmpOnTop = null;
+                videoPlayer.Show();
                 return;
             }
 

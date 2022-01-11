@@ -111,9 +111,11 @@ namespace MediaPlayer
                         {
                             PictureBox smallPb = new PictureBox();
                             String name = vidPb[j < 0 ? (vidPb.Count + j) : j].Name;
+                            try { 
                             smallPb.Image = Image.FromFile(name.Contains("\\kkkk\\") ?
                                 name.Replace("\\kkkk\\", "\\kkkk\\imgPB\\") : (name.Contains("\\Gifs\\") ?
                                 name.Replace("\\Gifs\\", "\\Gifs\\imgPB\\") : name.Replace("\\Pics\\", "\\Pics\\imgPB\\")));
+                        }catch { }
                             if (vidPb[j < 0 ? (vidPb.Count + j) : j].Name.Equals(PicViewer.globalPic))
                             {
                                 Double wratio = (Double)smallPb.Image.Width / (Double)smallPb.Image.Height;

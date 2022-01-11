@@ -74,7 +74,7 @@ namespace MediaPlayer
         //public static Random rr = new Random();
         //static int rand1 = Explorer.rr.Next(0, 256);
         //static int[] color = Rand_Color(rand1, 0.5, 0.25);
-        public static int popUpY = 230;
+        public static int popUpY = 320;
         public static Color globColor = Color.FromArgb(255, 128, 0);
 
         public static Color darkBackColor = Color.FromArgb(24,24,24);
@@ -124,6 +124,17 @@ namespace MediaPlayer
             catch { }
         }
 
+        private double GetTotalFreeSpace(string driveName)
+        {
+            foreach (DriveInfo drive in DriveInfo.GetDrives())
+            {
+                if (drive.IsReady && drive.Name == driveName)
+                {
+                    return Math.Round(((double)drive.AvailableFreeSpace / 1000000000.0),2);
+                }
+            }
+            return -1;
+        }
 
         public Explorer(Calculator calc)
         {
@@ -184,6 +195,10 @@ namespace MediaPlayer
             typeList.Add("Videos");
             setTheme();
 
+            sizeInfo.Text = pardirectory[0].FullName.Substring(0, pardirectory[0].FullName.IndexOf("\\")-1) + ": " + 
+                (GetTotalFreeSpace(pardirectory[0].FullName.Substring(0, pardirectory[0].FullName.IndexOf("\\")) + "\\").ToString() + "GB")
+                 + "     " + pardirectory[1].FullName.Substring(0, pardirectory[1].FullName.IndexOf("\\")-1) + ": " + 
+                (GetTotalFreeSpace(pardirectory[1].FullName.Substring(0, pardirectory[1].FullName.IndexOf("\\")) + "\\").ToString() + "GB");
             loadMiniImages();
             calcButton.MouseEnter += (s, a) =>
             {
@@ -393,6 +408,7 @@ namespace MediaPlayer
             button4.BackColor = darkBackColor;
 
             divider.BackColor = kindaDark;
+            sizeInfo.BackColor = kindaDark;
 
             videos.BackColor = darkBackColor;
             videos.ForeColor = Color.White;

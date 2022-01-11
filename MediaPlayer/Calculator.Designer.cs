@@ -57,7 +57,9 @@
             this.btn7 = new System.Windows.Forms.Button();
             this.btnDecimal = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtDisplay
@@ -130,7 +132,7 @@
             this.button2.Location = new System.Drawing.Point(247, -1);
             this.button2.Margin = new System.Windows.Forms.Padding(0, 0, 2, 2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(65, 45);
+            this.button2.Size = new System.Drawing.Size(65, 46);
             this.button2.TabIndex = 29;
             this.button2.Text = "🗖";
             this.button2.UseVisualStyleBackColor = false;
@@ -513,17 +515,28 @@
             this.timer1.Interval = 300;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.button7);
+            this.panel1.Controls.Add(this.button2);
+            this.panel1.Controls.Add(this.button6);
+            this.panel1.Location = new System.Drawing.Point(-2, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(382, 45);
+            this.panel1.TabIndex = 31;
+            this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Calculator_MouseDown);
+            this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Calculator_MouseMove);
+            this.panel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Calculator_MouseUp);
+            // 
             // Calculator
             // 
             this.AllowDrop = true;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(254)))), ((int)(((byte)(250)))));
             this.ClientSize = new System.Drawing.Size(378, 556);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.tableLayoutPanel2);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.txtDisplay);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button6);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
@@ -536,6 +549,7 @@
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Calculator_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Calculator_MouseUp);
             this.tableLayoutPanel2.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -569,6 +583,7 @@
         private System.Windows.Forms.Button btnDecimal;
         private System.Windows.Forms.Button btnDiv;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 

@@ -123,9 +123,12 @@ namespace MediaPlayer
                 isMoved = false;
                 whereAt = 1.0;
                 this.pb.Image.Dispose();
-                this.axWindowsMediaPlayer1.URL = "";
-                this.axWindowsMediaPlayer1.Dispose();
-                this.axWindowsMediaPlayer1.close();
+                if (axWindowsMediaPlayer1 != null)
+                {
+                    this.axWindowsMediaPlayer1.URL = "";
+                    this.axWindowsMediaPlayer1.Dispose();
+                    this.axWindowsMediaPlayer1.close();
+                }
                 this.Dispose();
             }
             catch { }
@@ -145,8 +148,8 @@ namespace MediaPlayer
                 catch { duration = 0; }
                 if (!iterateTf)
                 {
-                    if (whereAt == 8.0) whereAt = 1.0;
-                    double temp = (whereAt / 8.0) * duration;
+                    if (whereAt == 9.0) whereAt = 1.0;
+                    double temp = (whereAt / 9.0) * duration;
                     axWindowsMediaPlayer1.Ctlcontrols.currentPosition = temp;
                     newProgressBar.Value = (int)axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
                     whereAt++;
@@ -186,15 +189,15 @@ namespace MediaPlayer
                     }
                 }
                 timer1.Enabled = true;
-                timer1.Interval = 3500;
-                axWindowsMediaPlayer1.settings.rate = 1.45;
+                timer1.Interval = 2500;
+                axWindowsMediaPlayer1.settings.rate = 1.20;
                 if (temp > 3)
                 {
                     iterateTf = true;
                     iterateTframes.Sort();
                     whereAt = 0;
-                    timer1.Interval = 4500;
-                    axWindowsMediaPlayer1.settings.rate = 1.30;
+                    timer1.Interval = 3500;
+                    axWindowsMediaPlayer1.settings.rate = 1.15;
                 }
             }
         }
@@ -229,15 +232,16 @@ namespace MediaPlayer
                 }
                 catch { }
 
-                wmp = new WMP(pb,null, videosPb);
+                wmp = new WMP(pb,null, videosPb, videoPlayer);
                 wmp.axWindowsMediaPlayer1.URL = fileInfo.FullName;
                 wmp.axWindowsMediaPlayer1.Name = fileInfo.FullName;
                 wmp.Location = new Point(0, 28);
                 wmp.calculateDuration(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
 
-                transpBack = new TranspBack(wmp, wmpSide, null, null);
+                //transpBack = new TranspBack(wmp, wmpSide, null, null);
                 //transpBack.Show();
                 wmp.Show();
+                videoPlayer.Hide();
                 //wmpSide.Show();
             }
         }
@@ -331,7 +335,7 @@ namespace MediaPlayer
             }
             catch { }
 
-            wmp = new WMP(pb,null, videosPb);
+            wmp = new WMP(pb,null, videosPb, videoPlayer);
             wmp.axWindowsMediaPlayer1.URL = fileInfo.FullName;
             wmp.axWindowsMediaPlayer1.Name = fileInfo.FullName;
             wmp.Location = new Point(0, 28);
@@ -345,6 +349,7 @@ namespace MediaPlayer
             transpBack = new TranspBack(wmp, wmpSide, null, null);
             //transpBack.Show();
             wmp.Show();
+            videoPlayer.Hide();
             //wmpSide.Show();
         }
 
@@ -362,7 +367,7 @@ namespace MediaPlayer
             {
                 VScrollProperties vs = videoPlayer.flowLayoutPanel1.VerticalScroll;
                 HScrollProperties hs = videoPlayer.flowLayoutPanel1.HorizontalScroll;
-                if (m.WParam.ToString() == "7864320" || m.WParam.ToString() == "196608")
+                if (m.WParam.ToString() == "7864320")
                 {
 
                     try

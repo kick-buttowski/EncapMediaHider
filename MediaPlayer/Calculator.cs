@@ -59,6 +59,7 @@ namespace MediaPlayer
             btn7.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn7.Width, btn7.Height,10, 10));
             btn8.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn8.Width, btn8.Height,10, 10));
             btn9.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btn9.Width, btn9.Height,10, 10));
+            //panel1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, panel1.Width, panel1.Height, 20, 20));
 
             btnMul.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnMul.Width, btnMul.Height,10, 10));
             btnSub.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, btnSub.Width, btnSub.Height,10, 10));
@@ -86,12 +87,15 @@ namespace MediaPlayer
             btnReset.BackColor = tempColor;
             btnCopy.BackColor = tempColor;*/
 
-            button2.FlatAppearance.MouseOverBackColor = tempColor;
-            button2.FlatAppearance.MouseDownBackColor= tempColor;
+            button2.FlatAppearance.MouseOverBackColor = this.BackColor;
+            button2.FlatAppearance.MouseDownBackColor= this.BackColor;
 
-            button7.FlatAppearance.MouseOverBackColor = tempColor;
-            button7.FlatAppearance.MouseDownBackColor = tempColor;
-
+            button7.FlatAppearance.MouseOverBackColor = this.BackColor;
+            button7.FlatAppearance.MouseDownBackColor = this.BackColor;
+            button2.BackColor = tempColor;
+            button6.BackColor = tempColor;
+            button7.BackColor = tempColor;
+            panel1.BackColor = this.BackColor;
             this.Location = new Point(1890, 30);
         }
 
@@ -353,7 +357,7 @@ namespace MediaPlayer
                     timer1.Enabled = false;
                     foreach (String fi in ofd.FileNames)
                     {
-                        WMP wmp = new WMP(null, null, null);
+                        WMP wmp = new WMP(null, null, null, null);
                         FileInfo fileInfo = new FileInfo(fi);
                         wmp.axWindowsMediaPlayer1.URL = fileInfo.FullName;
                         wmp.axWindowsMediaPlayer1.Name = fileInfo.FullName;
@@ -385,6 +389,8 @@ namespace MediaPlayer
             v = new Explorer(this);
             v.Explorer_Load(null, null);
             btnRes.BackColor = tempColor;
+
+            panel1.BackColor = tempColor;
         }
 
         private void button6_Click(object sender, EventArgs e)

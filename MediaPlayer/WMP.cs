@@ -35,6 +35,7 @@ namespace MediaPlayer
         );
 
         WMP wmp = null;
+        VideoPlayer videoPlayer = null;
         public Boolean hoveredOver = true, hoveredOver2 = true, toggleFullScreen = true, 
             keyLock = false, playStatus = true, toMute = true, toRepeat = false, playable =true, pressedSpace = true, manualFrameChange = false;
         String directoryPath;
@@ -52,7 +53,7 @@ namespace MediaPlayer
 
         public List<PictureBox> vidPb = new List<PictureBox>();
         public Boolean typeImg = false, repeat = true;
-        public PictureBox globalPb = null;
+        public PictureBox globalPb = null, tempBoxOpen = null, tempBoxClose = null;
         PicViewer picViewer = null;
         public List<PictureBox> dispPb = new List<PictureBox>();
         public Double startRepeatFrom = 0, duration = 0, currPos = 0, endRepeatTo = 0, hoverDuration = 0;
@@ -160,10 +161,11 @@ namespace MediaPlayer
             catch { }
         }
 
-        public WMP(PictureBox refPb, PicViewer picViewer, List<PictureBox> videosPb)
+        public WMP(PictureBox refPb, PicViewer picViewer, List<PictureBox> videosPb, VideoPlayer videoPlayer)
         {
             InitializeComponent();
             wmp = this;
+            this.videoPlayer = videoPlayer;
             this.picViewer = picViewer;
             this.videosPb = videosPb;
             panel2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, panel2.Width, panel2.Height, 12, 12));
@@ -177,7 +179,7 @@ namespace MediaPlayer
             axWindowsMediaPlayer1.settings.autoStart = true;
             axWindowsMediaPlayer1.settings.setMode("loop", true);
             stakImg = 0;
-            panel1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, panel1.Width, panel1.Height, 13, 13));
+            panel1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, panel1.Width, panel1.Height, 14, 14));
             curr.Text = "00:00:00 / ";
             curr.Font = new Font("Consolas", 8, FontStyle.Regular);
             curr.Location = new Point(panel1.Location.X + axWindowsMediaPlayer1.Width - 160, 950);
@@ -423,6 +425,8 @@ namespace MediaPlayer
 
         private void WMP_MouseClick(object sender, MouseEventArgs e)
         {
+           if(videoPlayer!=null)
+            videoPlayer.Show();
             foreach (PictureBox pb in disposePb)
             {
                 pb.Image.Dispose();
@@ -695,7 +699,7 @@ namespace MediaPlayer
         {
             if (Explorer.wmpOnTop == null)
             {
-                Explorer.wmpOnTop = new WmpOnTop();
+                Explorer.wmpOnTop = new WmpOnTop(videoPlayer);
             }
             else
             {
@@ -704,7 +708,7 @@ namespace MediaPlayer
                 Explorer.wmpOnTop.axWindowsMediaPlayer1.URL = "";
                 Explorer.wmpOnTop.axWindowsMediaPlayer1.Dispose();
                 Explorer.wmpOnTop.Dispose();
-                Explorer.wmpOnTop = new WmpOnTop();
+                Explorer.wmpOnTop = new WmpOnTop(videoPlayer);
             }
             WindowsMediaPlayer wmp = new WindowsMediaPlayerClass();
             IWMPMedia mediainfo = wmp.newMedia(axWindowsMediaPlayer1.Name);
@@ -721,7 +725,6 @@ namespace MediaPlayer
             axWindowsMediaPlayer1.uiMode = "none";
             if (VideoPlayer.isShort)
             {
-                timer1.Enabled = true;
                 timer1.Tick += ((timers, timerargs) =>
                 {
                     if (axWindowsMediaPlayer1.Ctlcontrols.currentPosition - duration > -0.05)
@@ -802,14 +805,14 @@ namespace MediaPlayer
                 PictureBox tempBox = new PictureBox();
                 Image img = Image.FromFile(fi.FullName);
                 tempBox.Image = img;
-                tempBox.Size = new Size(147, 83);
+                tempBox.Size = new Size(161, 91);
                 tempBox.SizeMode = PictureBoxSizeMode.StretchImage;
                 tempBox.Name = fi.FullName;
                 //pb.ContextMenuStrip = contextMenuStrip1;
                 tempBox.Margin = new Padding(0, 0, 0, 0);
                 Double c = Convert.ToDouble(fi.Name.Substring(0, fi.Name.IndexOf("placeholder")));
                 tempBox.Location = new Point((int)((c / (Double)(duration * 1000)) * axWindowsMediaPlayer1.Width) + 305,
-                    panel1.Location.Y-tempBox.Height-2);
+                    panel1.Location.Y-tempBox.Height);
                 tempBox.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, tempBox.Width, tempBox.Height, 8, 8));
                 tempBox.ContextMenuStrip = contextMenuStrip1;
 
@@ -834,12 +837,12 @@ namespace MediaPlayer
 
                     miniPlayer.Show();
                     miniPlayer.miniVidPlayer.Ctlcontrols.currentPosition = ((Double)c / 1000.0) - 1.5;
+                    track.Location = new Point(tempBox.Location.X - 72, tempBox.Location.Y);
                 };
 
                 tempBox.MouseMove += (s, args) => {
 
                     track.Visible = true;
-                    track.Location = new Point(tempBox.Location.X - 72, args.Y);
                     int currTrack = (int)(miniPlayer.miniVidPlayer.Ctlcontrols.currentPosition);
                     time = TimeSpan.FromSeconds(currTrack);
                     track.Text = time.ToString(@"hh\:mm\:ss");
@@ -1096,6 +1099,129 @@ namespace MediaPlayer
             }
         }
 
+        private void openBracket(FileInfo wmpFi)
+        {
+            startLabel.Visible = true;
+            startLabel.Location = new Point((int)((startRepeatFrom / axWindowsMediaPlayer1.currentMedia.duration) * axWindowsMediaPlayer1.Width) + panel1.Location.X - (startLabel.Width / 2),
+                textBox1.Location.Y);
+            if (axWindowsMediaPlayer1.Name.Length > 0 && axWindowsMediaPlayer1.Name.Contains("placeholdeerr"))
+            {
+                String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+
+                startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
+                endTime = TimeSpan.FromSeconds((int)endRepeatTo);
+                textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+            "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+            }
+
+            if (File.Exists(wmpFi.DirectoryName + "\\TimeFrame\\tmp.jpg"))
+                File.Delete(wmpFi.DirectoryName + "\\TimeFrame\\tmp.jpg");
+            if (tempBoxOpen != null)
+            {
+                tempBoxOpen.Image.Dispose();
+                tempBoxOpen.Dispose();
+            }
+            long c = (long)(startRepeatFrom * 1000);
+
+            String fileName = axWindowsMediaPlayer1.Name;
+            var engine = new Engine();
+            var inputFile = new MediaFile { Filename = fileName };
+            var options = new ConversionOptions { Seek = TimeSpan.FromMilliseconds(c) };
+            var outputFile = new MediaFile
+            {
+                Filename = wmpFi.DirectoryName + "\\TimeFrame\\tmp.jpg"
+            };
+            engine.GetThumbnail(inputFile, outputFile, options);
+            ResizeImage(wmpFi.DirectoryName + "\\TimeFrame\\tmp.jpg", wmpFi.DirectoryName + "\\TimeFrame\\tmpOpen.jpg"
+                                , 0, 292, 300, 0);
+            tempBoxOpen = new PictureBox();
+            Image img = Image.FromFile(wmpFi.DirectoryName + "\\TimeFrame\\tmpOpen.jpg");
+            tempBoxOpen.Image = img;
+            tempBoxOpen.Size = new Size(197, 110);
+            tempBoxOpen.SizeMode = PictureBoxSizeMode.StretchImage;
+            //pb.ContextMenuStrip = contextMenuStrip1;
+            tempBoxOpen.Margin = new Padding(0, 0, 0, 0);
+            tempBoxOpen.Location = new Point((int)((c / (Double)(duration * 1000)) * axWindowsMediaPlayer1.Width) + 312,
+                    miniProgress.Location.Y - tempBoxOpen.Height - 9);
+            tempBoxOpen.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, tempBoxOpen.Width, tempBoxOpen.Height, 8, 8));
+            tempBoxOpen.ContextMenuStrip = contextMenuStrip1;
+
+
+            tempBoxOpen.MouseClick += (s, args) =>
+            {
+                GC.Collect();
+                trackBar1.Focus();
+                axWindowsMediaPlayer1.Ctlcontrols.currentPosition = startRepeatFrom;
+            };
+            this.Controls.Add(tempBoxOpen);
+            disposePb.Add(tempBoxOpen);
+            tempBoxOpen.BringToFront();
+            axWindowsMediaPlayer1.Focus();
+        }
+
+        private void closeBracket(FileInfo wmpFi)
+        {
+            startLabel.Visible = true;
+            endLabel.Visible = true;
+            endLabel.Location = new Point((int)((endRepeatTo / axWindowsMediaPlayer1.currentMedia.duration) * axWindowsMediaPlayer1.Width) + panel1.Location.X - (endLabel.Width / 2),
+                textBox1.Location.Y);
+            if (axWindowsMediaPlayer1.Name.Length > 0 && axWindowsMediaPlayer1.Name.Contains("placeholdeerr"))
+            {
+                String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+
+                startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
+                endTime = TimeSpan.FromSeconds((int)endRepeatTo);
+
+                textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+            "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+            }
+
+
+            if (File.Exists(wmpFi.DirectoryName + "\\TimeFrame\\tmp.jpg"))
+                File.Delete(wmpFi.DirectoryName + "\\TimeFrame\\tmp.jpg");
+            if (tempBoxClose != null)
+            {
+                tempBoxClose.Image.Dispose();
+                tempBoxClose.Dispose();
+            }
+            long c = (long)(endRepeatTo * 1000);
+
+            String fileName = axWindowsMediaPlayer1.Name;
+            var engine = new Engine();
+            var inputFile = new MediaFile { Filename = fileName };
+            var options = new ConversionOptions { Seek = TimeSpan.FromMilliseconds(c) };
+            var outputFile = new MediaFile
+            {
+                Filename = wmpFi.DirectoryName + "\\TimeFrame\\tmp.jpg"
+            };
+            engine.GetThumbnail(inputFile, outputFile, options);
+            ResizeImage(wmpFi.DirectoryName + "\\TimeFrame\\tmp.jpg", wmpFi.DirectoryName + "\\TimeFrame\\tmpClose.jpg"
+                                , 0, 292, 300, 0);
+            tempBoxClose = new PictureBox();
+            Image img = Image.FromFile(wmpFi.DirectoryName + "\\TimeFrame\\tmpClose.jpg");
+            tempBoxClose.Image = img;
+            tempBoxClose.Size = new Size(197, 110);
+            tempBoxClose.SizeMode = PictureBoxSizeMode.StretchImage;
+            //pb.ContextMenuStrip = contextMenuStrip1;
+            tempBoxClose.Margin = new Padding(0, 0, 0, 0);
+            tempBoxClose.Location = new Point((int)((c / (Double)(duration * 1000)) * axWindowsMediaPlayer1.Width) + 312,
+                    miniProgress.Location.Y + 8);
+            tempBoxClose.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, tempBoxClose.Width, tempBoxClose.Height, 8, 8));
+            tempBoxClose.ContextMenuStrip = contextMenuStrip1;
+
+
+            tempBoxClose.MouseClick += (s, args) =>
+            {
+                GC.Collect();
+                trackBar1.Focus();
+                axWindowsMediaPlayer1.Ctlcontrols.currentPosition = endRepeatTo;
+            };
+            this.Controls.Add(tempBoxClose);
+            disposePb.Add(tempBoxClose);
+            tempBoxClose.BringToFront();
+            axWindowsMediaPlayer1.Focus();
+        }
+
         private const UInt32 WM_KEYDOWN = 0x0100;
         private const int WM_MOUSEWHEEL = 0x20a;
         public bool PreFilterMessage(ref Message m)
@@ -1143,6 +1269,8 @@ namespace MediaPlayer
 
                 if (keyCode == Keys.Back || keyCode == Keys.Escape)
                 {
+                    if(keyCode == Keys.Escape)
+                    videoPlayer.Show();
                     foreach (PictureBox pb in disposePb)
                     {
                         pb.Image.Dispose();
@@ -1166,81 +1294,120 @@ namespace MediaPlayer
                     if (keyCode == Keys.OemOpenBrackets)
                     {
                         startRepeatFrom = axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
-                        startLabel.Visible = true;
-                        startLabel.Location = new Point((int)((startRepeatFrom / axWindowsMediaPlayer1.currentMedia.duration) * axWindowsMediaPlayer1.Width) + panel1.Location.X - (startLabel.Width/2),
-                            textBox1.Location.Y);
-                        if (axWindowsMediaPlayer1.Name.Length > 0 && axWindowsMediaPlayer1.Name.Contains("placeholdeerr"))
-                        {
-                            String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
-
-                            startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
-                            endTime = TimeSpan.FromSeconds((int)endRepeatTo);
-                            textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
-                        "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
-                        }
+                        openBracket(wmpFi);
                     }
                     else if (keyCode == Keys.OemCloseBrackets)
                     {
                         toRepeat = true;
                         endRepeatTo = axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
-                        startLabel.Visible = true;
-                        endLabel.Visible = true;
-                        endLabel.Location = new Point((int)((endRepeatTo / axWindowsMediaPlayer1.currentMedia.duration) * axWindowsMediaPlayer1.Width) + panel1.Location.X - (endLabel.Width / 2),
-                            textBox1.Location.Y);
-                        if (axWindowsMediaPlayer1.Name.Length > 0 && axWindowsMediaPlayer1.Name.Contains("placeholdeerr"))
+                        closeBracket(wmpFi);
+                    }
+
+                    if(keyCode == Keys.Add || keyCode == Keys.Subtract)
+                    {
+                        if (toRepeat)
                         {
-                            String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
-
-                            startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
-                            endTime = TimeSpan.FromSeconds((int)endRepeatTo);
-
-                            textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
-                        "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+                            if (Control.ModifierKeys == Keys.Control && keyCode == Keys.Add)
+                            {
+                                endRepeatTo = endRepeatTo + 0.40;
+                                closeBracket(wmpFi);
+                            }
+                            else if (keyCode == Keys.Add)
+                            {
+                                startRepeatFrom = startRepeatFrom + 0.40;
+                                openBracket(wmpFi);
+                            }
+                            else if (Control.ModifierKeys == Keys.Control && keyCode == Keys.Subtract)
+                            {
+                                endRepeatTo -= 0.40;
+                                closeBracket(wmpFi);
+                            }
+                            else if (keyCode == Keys.Subtract)
+                            {
+                                startRepeatFrom = startRepeatFrom - 0.40;
+                                openBracket(wmpFi);
+                            }
                         }
                     }
 
                     if (keyCode == Keys.O || keyCode == Keys.G || keyCode == Keys.B)
                     {
-                        if (endRepeatTo <= startRepeatFrom || !toRepeat)
-                            return true;
-                        int endTo = (int)(endRepeatTo * 1000 - startRepeatFrom * 1000);
-                        Thread gifThread = new Thread(() =>
+                        String type = "Videos";
+                        if (keyCode == Keys.G)
                         {
-                            try
+                            type = "Gifs";
+                        }
+                        else if (keyCode == Keys.B)
+                        {
+                            type = "Affinity";
+                        }
+
+                        DialogResult dialog = MessageBox.Show("Will be trimmed and saved to "+type+" folder! you sure?", "Info", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                        
+                        if (dialog == DialogResult.Yes)
+                        {
+                            if (tempBoxClose != null)
                             {
-                                String temp = wmpFi.Name.Substring(wmpFi.Name.IndexOf("placeholdeerr") + (wmpFi.Name.Contains("placeholdeerr")?13:1));
-                                var inputFile = new MediaFile { Filename = wmpFi.FullName };
-                                var outputFile = new MediaFile
+                                tempBoxClose.Image.Dispose();
+                                tempBoxClose.Dispose();
+                            }
+                            if (tempBoxOpen != null)
+                            {
+                                tempBoxOpen.Image.Dispose();
+                                tempBoxOpen.Dispose();
+                            }
+
+                            if (endRepeatTo <= startRepeatFrom || !toRepeat)
+                                return true;
+                            int endTo = (int)(endRepeatTo * 1000 - startRepeatFrom * 1000);
+                            Thread gifThread = new Thread(() =>
+                            {
+                                try
                                 {
-                                    Filename = (!VideoPlayer.isShort ? (wmpFi.DirectoryName + "\\" + (keyCode == Keys.G ? "Pics\\Gifs\\" : (keyCode == Keys.B ? "Pics\\Affinity\\" : ""))) :
-                                    (keyCode == Keys.G ? (wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")) + "\\Gifs\\") : (keyCode == Keys.B ? (wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")) + "\\Affinity\\") : wmpFi.DirectoryName + "\\"))) +
-                                      temp.Substring(0, temp.LastIndexOf(".")) + endTo + (keyCode == Keys.G ? ".gif" : ".mp4")
-                            };
+                                    String temp = wmpFi.Name.Substring(wmpFi.Name.IndexOf("placeholdeerr") + (wmpFi.Name.Contains("placeholdeerr") ? 13 : 1));
+                                    var inputFile = new MediaFile { Filename = wmpFi.FullName };
+                                    var outputFile = new MediaFile
+                                    {
+                                        Filename = (!VideoPlayer.isShort ? (wmpFi.DirectoryName + "\\" + (keyCode == Keys.G ? "Pics\\Gifs\\" : (keyCode == Keys.B ? "Pics\\Affinity\\" : ""))) :
+                                        (keyCode == Keys.G ? (wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")) + "\\Gifs\\") : (keyCode == Keys.B ? (wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")) + "\\Affinity\\") : wmpFi.DirectoryName + "\\"))) +
+                                          temp.Substring(0, temp.LastIndexOf(".")) + endTo + (keyCode == Keys.G ? ".gif" : ".mp4")
+                                    };
 
-                                using (var engine = new Engine())
-                                {
-                                    engine.GetMetadata(inputFile);
+                                    using (var engine = new Engine())
+                                    {
+                                        engine.GetMetadata(inputFile);
 
-                                    var options = new ConversionOptions();
-                                    options.CutMedia(TimeSpan.FromMilliseconds(startRepeatFrom * 1000), TimeSpan.FromMilliseconds(endTo));
+                                        var options = new ConversionOptions();
+                                        options.CutMedia(TimeSpan.FromMilliseconds(startRepeatFrom * 1000), TimeSpan.FromMilliseconds(endTo));
 
-                                    engine.Convert(inputFile, outputFile, options);
+                                        engine.Convert(inputFile, outputFile, options);
+                                    }
                                 }
-                            }
-                            catch { }
+                                catch { }
 
-                            finally
-                            {
-                                DialogResult result = MessageBox.Show("Trimmed " + wmpFi.Name, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                finally
+                                {
+                                    DialogResult result = MessageBox.Show("Trimmed " + wmpFi.Name, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                            }
+                                }
 
-                        });
-                        gifThread.Start();
+                            });
+                            gifThread.Start();
+                        }
                     }
 
                     if (keyCode == Keys.P)
                     {
+                        if(tempBoxClose!=null)
+                        {
+                            tempBoxClose.Image.Dispose();
+                            tempBoxClose.Dispose();
+                        }
+                        if (tempBoxOpen != null)
+                        {
+                            tempBoxOpen.Image.Dispose();
+                            tempBoxOpen.Dispose();
+                        }
                         toRepeat = false;
                         startLabel.Visible = false;
                         endLabel.Visible = false;
@@ -1254,7 +1421,7 @@ namespace MediaPlayer
 
                     if (keyCode == Keys.W)
                     {
-                        axWindowsMediaPlayer1.Ctlcontrols.currentPosition = axWindowsMediaPlayer1.Ctlcontrols.currentPosition + 1;
+                        axWindowsMediaPlayer1.Ctlcontrols.currentPosition = axWindowsMediaPlayer1.Ctlcontrols.currentPosition + 0.3;
                         axWindowsMediaPlayer1.Ctlcontrols.pause();
                     }
 
@@ -1266,6 +1433,7 @@ namespace MediaPlayer
 
                     if(keyCode == Keys.R)
                     {
+                        timer1.Enabled = !timer1.Enabled;
                         repeat = !repeat;
                         textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            " + axWindowsMediaPlayer1.playState.ToString().Replace("wmpps", "");
                         if (repeat)
@@ -1605,13 +1773,13 @@ namespace MediaPlayer
                         PictureBox tempBox = new PictureBox();
                         Image img = Image.FromFile(wmpFi.DirectoryName + "\\TimeFrame\\" + c + "placeholder" + wmpFi.Name + ".jpg");
                         tempBox.Image = img;
-                        tempBox.Size = new Size(147, 83);
+                        tempBox.Size = new Size(161, 91);
                         tempBox.SizeMode = PictureBoxSizeMode.StretchImage;
                         tempBox.Name = wmpFi.DirectoryName + "\\TimeFrame\\" + c + "placeholder" + wmpFi.Name + ".jpg";
                         //pb.ContextMenuStrip = contextMenuStrip1;
                         tempBox.Margin = new Padding(0, 0, 0, 0);
                         tempBox.Location = new Point((int)((c / (Double)(duration * 1000)) * axWindowsMediaPlayer1.Width) + 305,
-                                panel1.Location.Y - tempBox.Height - 2);
+                                panel1.Location.Y - tempBox.Height);
                         tempBox.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, tempBox.Width, tempBox.Height, 8, 8));
                         tempBox.ContextMenuStrip = contextMenuStrip1;
 
@@ -1625,7 +1793,7 @@ namespace MediaPlayer
                             GC.Collect();
                             trackBar1.Focus();
                             axWindowsMediaPlayer1.Ctlcontrols.currentPosition = miniPlayer.miniVidPlayer.Ctlcontrols.currentPosition;
-
+                            
                         };
 
                         tempBox.MouseEnter += (s, args) =>
@@ -1635,15 +1803,15 @@ namespace MediaPlayer
                             int x = tempBox.Location.X - (miniPlayer.miniVidPlayer.Width - tempBox.Width) + 85;
                             miniPlayer.miniVidPlayer.Location = new Point(x > 1457 ? 1457 : x, miniPlayer.miniVidPlayer.Location.Y);
                             miniPlayer.Location = new Point(50, panel1.Location.Y-2);
-
                             miniPlayer.Show();
                             miniPlayer.miniVidPlayer.Ctlcontrols.currentPosition = ((Double)c / 1000.0)-1.5;
+                            track.Location = new Point(tempBox.Location.X - 72, tempBox.Location.Y);
+
                         };
 
                         tempBox.MouseMove += (s, args) => {
 
                             track.Visible = true;
-                            track.Location = new Point(tempBox.Location.X - 72, args.Y);
                             int currTrack = (int)(miniPlayer.miniVidPlayer.Ctlcontrols.currentPosition);
                             time = TimeSpan.FromSeconds(currTrack);
                             track.Text = time.ToString(@"hh\:mm\:ss");

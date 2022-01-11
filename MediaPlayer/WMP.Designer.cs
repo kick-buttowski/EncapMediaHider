@@ -261,7 +261,7 @@
             this.label1.Location = new System.Drawing.Point(9, 944);
             this.label1.Margin = new System.Windows.Forms.Padding(5, 5, 0, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(306, 175);
+            this.label1.Size = new System.Drawing.Size(306, 190);
             this.label1.TabIndex = 30;
             this.label1.Text = resources.GetString("label1.Text");
             this.label1.Visible = false;
@@ -270,9 +270,9 @@
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.panel2.Controls.Add(this.label3);
-            this.panel2.Location = new System.Drawing.Point(315, -10);
+            this.panel2.Location = new System.Drawing.Point(315, -15);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1471, 36);
+            this.panel2.Size = new System.Drawing.Size(1471, 35);
             this.panel2.TabIndex = 16;
             this.panel2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseClick);
             // 
@@ -285,8 +285,8 @@
             this.label3.Location = new System.Drawing.Point(0, 0);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
-            this.label3.Padding = new System.Windows.Forms.Padding(0, 0, 0, 4);
-            this.label3.Size = new System.Drawing.Size(1471, 36);
+            this.label3.Padding = new System.Windows.Forms.Padding(0, 0, 0, 2);
+            this.label3.Size = new System.Drawing.Size(1471, 35);
             this.label3.TabIndex = 31;
             this.label3.Text = "Title";
             this.label3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
