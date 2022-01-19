@@ -32,6 +32,7 @@ namespace MediaPlayer
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.addFile = new System.Windows.Forms.Button();
             this.addWebLink = new System.Windows.Forms.Button();
+            this.playListBtn = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -40,9 +41,10 @@ namespace MediaPlayer
             this.flowLayoutPanel1.BackColor = System.Drawing.Color.White;
             this.flowLayoutPanel1.Controls.Add(this.addFile);
             this.flowLayoutPanel1.Controls.Add(this.addWebLink);
+            this.flowLayoutPanel1.Controls.Add(this.playListBtn);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(154, 72);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(154, 107);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // addFile
@@ -89,12 +91,34 @@ namespace MediaPlayer
             this.addWebLink.UseVisualStyleBackColor = false;
             this.addWebLink.Click += new System.EventHandler(this.addWebLink_Click);
             // 
+            // playListBtn
+            // 
+            this.playListBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.playListBtn.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.playListBtn.FlatAppearance.BorderSize = 0;
+            this.playListBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.playListBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.playListBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.playListBtn.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.playListBtn.ForeColor = System.Drawing.Color.White;
+            this.playListBtn.Image = global::Calculator.Properties.Resources.icons8_add_file_20;
+            this.playListBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.playListBtn.Location = new System.Drawing.Point(2, 72);
+            this.playListBtn.Margin = new System.Windows.Forms.Padding(2, 2, 0, 0);
+            this.playListBtn.Name = "playListBtn";
+            this.playListBtn.Size = new System.Drawing.Size(150, 33);
+            this.playListBtn.TabIndex = 25;
+            this.playListBtn.Text = "New Playlist";
+            this.playListBtn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.playListBtn.UseVisualStyleBackColor = false;
+            this.playListBtn.Click += new System.EventHandler(this.playListBtn_Click);
+            // 
             // NewFileForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(155, 73);
+            this.ClientSize = new System.Drawing.Size(155, 108);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "NewFileForm";
             this.ShowIcon = false;
@@ -113,5 +137,6 @@ namespace MediaPlayer
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button addFile;
         private System.Windows.Forms.Button addWebLink;
+        private System.Windows.Forms.Button playListBtn;
     }
 }

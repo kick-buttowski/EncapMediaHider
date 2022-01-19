@@ -59,6 +59,7 @@ namespace MediaPlayer
             this.toolStripMenuItem42 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem44 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem48 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem55 = new System.Windows.Forms.ToolStripMenuItem();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -161,6 +162,8 @@ namespace MediaPlayer
             this.toolStripMenuItem72 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem51 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem62 = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip5 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem56 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
@@ -172,6 +175,7 @@ namespace MediaPlayer
             this.flowLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel5.SuspendLayout();
             this.contextMenuStrip4.SuspendLayout();
+            this.contextMenuStrip5.SuspendLayout();
             this.SuspendLayout();
             // 
             // errorProvider1
@@ -196,9 +200,10 @@ namespace MediaPlayer
             this.toolStripMenuItem43,
             this.toolStripMenuItem42,
             this.toolStripMenuItem44,
-            this.toolStripMenuItem48});
+            this.toolStripMenuItem48,
+            this.toolStripMenuItem55});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(240, 340);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(240, 364);
             // 
             // toolStripMenuItem53
             // 
@@ -206,7 +211,7 @@ namespace MediaPlayer
             this.toolStripMenuItem53.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripMenuItem53.Name = "toolStripMenuItem53";
             this.toolStripMenuItem53.Size = new System.Drawing.Size(239, 24);
-            this.toolStripMenuItem53.Text = "Move To Affinity";
+            this.toolStripMenuItem53.Text = "Move to Affinity";
             this.toolStripMenuItem53.Click += new System.EventHandler(this.toolStripMenuItem53_Click);
             // 
             // toolStripMenuItem47
@@ -401,7 +406,7 @@ namespace MediaPlayer
             this.toolStripMenuItem43.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripMenuItem43.Name = "toolStripMenuItem43";
             this.toolStripMenuItem43.Size = new System.Drawing.Size(239, 24);
-            this.toolStripMenuItem43.Text = "Add a web link";
+            this.toolStripMenuItem43.Text = "Add a Web Link";
             this.toolStripMenuItem43.Click += new System.EventHandler(this.toolStripMenuItem43_Click);
             // 
             // toolStripMenuItem42
@@ -429,8 +434,16 @@ namespace MediaPlayer
             this.toolStripMenuItem48.ForeColor = System.Drawing.Color.Black;
             this.toolStripMenuItem48.Name = "toolStripMenuItem48";
             this.toolStripMenuItem48.Size = new System.Drawing.Size(239, 24);
-            this.toolStripMenuItem48.Text = "Open file location";
+            this.toolStripMenuItem48.Text = "Open File Location";
             this.toolStripMenuItem48.Click += new System.EventHandler(this.toolStripMenuItem48_Click);
+            // 
+            // toolStripMenuItem55
+            // 
+            this.toolStripMenuItem55.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.toolStripMenuItem55.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripMenuItem55.Name = "toolStripMenuItem55";
+            this.toolStripMenuItem55.Size = new System.Drawing.Size(239, 24);
+            this.toolStripMenuItem55.Text = "Copy to Playlist";
             // 
             // flowLayoutPanel1
             // 
@@ -1910,6 +1923,23 @@ namespace MediaPlayer
             this.toolStripMenuItem62.Text = "Delete";
             this.toolStripMenuItem62.Click += new System.EventHandler(this.toolStripMenuItem62_Click);
             // 
+            // contextMenuStrip5
+            // 
+            this.contextMenuStrip5.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip5.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem56});
+            this.contextMenuStrip5.Name = "contextMenuStrip5";
+            this.contextMenuStrip5.Size = new System.Drawing.Size(211, 56);
+            // 
+            // toolStripMenuItem56
+            // 
+            this.toolStripMenuItem56.BackColor = System.Drawing.Color.White;
+            this.toolStripMenuItem56.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripMenuItem56.Name = "toolStripMenuItem56";
+            this.toolStripMenuItem56.Size = new System.Drawing.Size(210, 24);
+            this.toolStripMenuItem56.Text = "Clear the list";
+            this.toolStripMenuItem56.Click += new System.EventHandler(this.toolStripMenuItem56_Click);
+            // 
             // VideoPlayer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1945,6 +1975,7 @@ namespace MediaPlayer
             this.flowLayoutPanel4.ResumeLayout(false);
             this.flowLayoutPanel5.ResumeLayout(false);
             this.contextMenuStrip4.ResumeLayout(false);
+            this.contextMenuStrip5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -2078,5 +2109,8 @@ namespace MediaPlayer
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem62;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem53;
         public System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem55;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip5;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem56;
     }
 }

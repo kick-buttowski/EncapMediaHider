@@ -323,6 +323,16 @@ namespace Calculator.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_dashboard_32 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-dashboard-32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_lock_48 {
             get {
                 object obj = ResourceManager.GetObject("icons8-lock-48", resourceCulture);
@@ -576,6 +586,16 @@ namespace Calculator.Properties {
         internal static System.Drawing.Bitmap random {
             get {
                 object obj = ResourceManager.GetObject("random", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap random__1_ {
+            get {
+                object obj = ResourceManager.GetObject("random (1)", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

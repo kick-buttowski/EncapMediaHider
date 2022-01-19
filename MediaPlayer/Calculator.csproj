@@ -570,6 +570,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="calculator1.ico" />
+    <None Include="Resources\random %281%29.png" />
+    <None Include="Resources\icons8-dashboard-32.png" />
     <None Include="Resources\close-button.png" />
     <None Include="Resources\emergency-exit.png" />
     <None Include="Resources\save-file.png" />

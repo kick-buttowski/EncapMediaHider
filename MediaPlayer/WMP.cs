@@ -771,7 +771,7 @@ namespace MediaPlayer
                 miniProgress_MouseEnter(null, args);
             };
 
-            newProgressBar.MouseMove += (s, args) => {
+            newProgressBar.MouseMove += (s, args) => {  
                 miniProgress_MouseMove(null, args);
             };
 
@@ -782,7 +782,11 @@ namespace MediaPlayer
 
 
             FileInfo wmpFi = new FileInfo(axWindowsMediaPlayer1.Name);
-            label3.Text = wmpFi.Name.Substring(wmpFi.Name.IndexOf("placeholdeerr") + "placeholdeerr".Length);
+            try
+            {
+                label3.Text = wmpFi.Name.Substring(wmpFi.Name.IndexOf("placeholdeerr") + "placeholdeerr".Length);
+            }
+            catch { }
             if (!Directory.Exists(wmpFi.DirectoryName + "\\TimeFrame"))
             {
                 Directory.CreateDirectory(wmpFi.DirectoryName + "\\TimeFrame");
@@ -1269,8 +1273,9 @@ namespace MediaPlayer
 
                 if (keyCode == Keys.Back || keyCode == Keys.Escape)
                 {
-                    if(keyCode == Keys.Escape)
-                    videoPlayer.Show();
+                    if (keyCode == Keys.Escape)
+                        if (videoPlayer != null) 
+                            videoPlayer.Show();
                     foreach (PictureBox pb in disposePb)
                     {
                         pb.Image.Dispose();
@@ -1342,58 +1347,61 @@ namespace MediaPlayer
                             type = "Affinity";
                         }
 
-                        DialogResult dialog = MessageBox.Show("Will be trimmed and saved to "+type+" folder! you sure?", "Info", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                        
-                        if (dialog == DialogResult.Yes)
+                        if (tempBoxClose != null)
                         {
-                            if (tempBoxClose != null)
-                            {
-                                tempBoxClose.Image.Dispose();
-                                tempBoxClose.Dispose();
-                            }
-                            if (tempBoxOpen != null)
-                            {
-                                tempBoxOpen.Image.Dispose();
-                                tempBoxOpen.Dispose();
-                            }
+                            tempBoxClose.Image.Dispose();
+                            tempBoxClose.Dispose();
+                        }
+                        if (tempBoxOpen != null)
+                        {
+                            tempBoxOpen.Image.Dispose();
+                            tempBoxOpen.Dispose();
+                        }
 
-                            if (endRepeatTo <= startRepeatFrom || !toRepeat)
-                                return true;
-                            int endTo = (int)(endRepeatTo * 1000 - startRepeatFrom * 1000);
+                        if (endRepeatTo <= startRepeatFrom || !toRepeat)
+                            return true;
+
+                        
+                        
                             Thread gifThread = new Thread(() =>
                             {
-                                try
+                                DialogResult dialog = MessageBox.Show("Will be trimmed and saved to " + type + " folder! you sure?", "Info", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+                                int endTo = (int)(endRepeatTo * 1000 - startRepeatFrom * 1000);
+                                if (dialog == DialogResult.Yes)
                                 {
-                                    String temp = wmpFi.Name.Substring(wmpFi.Name.IndexOf("placeholdeerr") + (wmpFi.Name.Contains("placeholdeerr") ? 13 : 1));
-                                    var inputFile = new MediaFile { Filename = wmpFi.FullName };
-                                    var outputFile = new MediaFile
+                                    try
                                     {
-                                        Filename = (!VideoPlayer.isShort ? (wmpFi.DirectoryName + "\\" + (keyCode == Keys.G ? "Pics\\Gifs\\" : (keyCode == Keys.B ? "Pics\\Affinity\\" : ""))) :
-                                        (keyCode == Keys.G ? (wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")) + "\\Gifs\\") : (keyCode == Keys.B ? (wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")) + "\\Affinity\\") : wmpFi.DirectoryName + "\\"))) +
-                                          temp.Substring(0, temp.LastIndexOf(".")) + endTo + (keyCode == Keys.G ? ".gif" : ".mp4")
-                                    };
+                                        String temp = wmpFi.Name.Substring(wmpFi.Name.IndexOf("placeholdeerr") + (wmpFi.Name.Contains("placeholdeerr") ? 13 : 1));
+                                        var inputFile = new MediaFile { Filename = wmpFi.FullName };
+                                        var outputFile = new MediaFile
+                                        {
+                                            Filename = (!VideoPlayer.isShort ? (wmpFi.DirectoryName + "\\" + (keyCode == Keys.G ? "Pics\\Gifs\\" : (keyCode == Keys.B ? "Pics\\Affinity\\" : ""))) :
+                                            (keyCode == Keys.G ? (wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")) + "\\Gifs\\") : (keyCode == Keys.B ? (wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")) + "\\Affinity\\") : wmpFi.DirectoryName + "\\"))) +
+                                              temp.Substring(0, temp.LastIndexOf(".")) + endTo + (keyCode == Keys.G ? ".gif" : ".mp4")
+                                        };
 
-                                    using (var engine = new Engine())
-                                    {
-                                        engine.GetMetadata(inputFile);
+                                        using (var engine = new Engine())
+                                        {
+                                            engine.GetMetadata(inputFile);
 
-                                        var options = new ConversionOptions();
-                                        options.CutMedia(TimeSpan.FromMilliseconds(startRepeatFrom * 1000), TimeSpan.FromMilliseconds(endTo));
+                                            var options = new ConversionOptions();
+                                            options.CutMedia(TimeSpan.FromMilliseconds(startRepeatFrom * 1000), TimeSpan.FromMilliseconds(endTo));
 
-                                        engine.Convert(inputFile, outputFile, options);
+                                            engine.Convert(inputFile, outputFile, options);
+                                        }
                                     }
-                                }
-                                catch { }
+                                    catch { }
 
-                                finally
-                                {
-                                    DialogResult result = MessageBox.Show("Trimmed " + wmpFi.Name, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    finally
+                                    {
+                                        DialogResult result = MessageBox.Show("Trimmed " + wmpFi.Name, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                                    }
                                 }
 
                             });
                             gifThread.Start();
-                        }
                     }
 
                     if (keyCode == Keys.P)
@@ -1449,8 +1457,10 @@ namespace MediaPlayer
                         var engine = new Engine();
                         var inputFile = new MediaFile { Filename = fileName };
                         var options = new ConversionOptions { Seek = TimeSpan.FromMilliseconds(c) };
-                        var outputFile = new MediaFile { Filename = (!VideoPlayer.isShort ? (wmpFi.DirectoryName + "\\Pics\\") : 
-                            (wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")+1)))/*"C:\\Users\\Harsha Vardhan\\Videos\\"*/ + wmpDi.Name + "-" + c + ".jpg" };
+                        var outputFile = new MediaFile { Filename = (
+                            //!VideoPlayer.isShort ? (wmpFi.DirectoryName.Replace("\\Pics\\Affinity", "").Replace("\\Pics\\GifVideos", "") + "\\Pics\\") : 
+                            //(wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")+1)))
+                            "C:\\Users\\Harsha Vardhan\\Videos\\" + wmpDi.Name + "-" + c + ".jpg") };
                         engine.GetThumbnail(inputFile, outputFile, options);
                     }
 

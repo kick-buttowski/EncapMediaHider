@@ -75,9 +75,9 @@ namespace MediaPlayer
                 duration = axWindowsMediaPlayer1.currentMedia.duration;
                 axWindowsMediaPlayer1.settings.rate = 1.00;
                 newProgressBar.Maximum = (int)duration;
-                loc = (e.fX / videoPlayer.popUpVideoWidth) * duration;
+                loc = (e.fX / VideoPlayer.popUpVideoWidth) * duration;
 
-                if (loc - prevX > videoPlayer.stepWise || loc - prevX < -1* videoPlayer.stepWise)
+                if (loc - prevX > VideoPlayer.stepWise || loc - prevX < -1* VideoPlayer.stepWise)
                 {
                     prevX = loc;
                     axWindowsMediaPlayer1.Ctlcontrols.currentPosition = loc;
@@ -112,6 +112,11 @@ namespace MediaPlayer
 
         }
 
+        public void setVideosPb(List<PictureBox> videosPb)
+        {
+            this.videosPb = videosPb;
+        }
+
         public void miniVideoPlayer_FormClosing(object sender, FormClosingEventArgs e)
         {
 
@@ -122,7 +127,7 @@ namespace MediaPlayer
                 timer1.Enabled = false;
                 isMoved = false;
                 whereAt = 1.0;
-                this.pb.Image.Dispose();
+                if(pb.Image!=null)this.pb.Image.Dispose();
                 if (axWindowsMediaPlayer1 != null)
                 {
                     this.axWindowsMediaPlayer1.URL = "";
@@ -211,6 +216,9 @@ namespace MediaPlayer
         {
             if (e.nKeyAscii == 13)
             {
+
+                if (videoPlayer == null)
+                    return;
                 miniVideoPlayer_MouseLeave(null, null);
 
                 try
@@ -268,15 +276,15 @@ namespace MediaPlayer
             }
             if (!isMoved && (!VideoPlayer.isShort || axWindowsMediaPlayer1.currentMedia.duration > 3*60))
             {
-                this.Location = videoPlayer.relativeLoc;
+                this.Location = VideoPlayer.relativeLoc;
 
                 this.Region = null;
                 this.axWindowsMediaPlayer1.Region = null;
-                this.Size = new Size((int)videoPlayer.popUpVideoWidth, (int)videoPlayer.popUpVideoHeight);
-                this.axWindowsMediaPlayer1.Size = new Size((int)videoPlayer.popUpVideoWidth, (int)videoPlayer.popUpVideoHeight-3);
+                this.Size = new Size((int)VideoPlayer.popUpVideoWidth, (int)VideoPlayer.popUpVideoHeight);
+                this.axWindowsMediaPlayer1.Size = new Size((int)VideoPlayer.popUpVideoWidth, (int)VideoPlayer.popUpVideoHeight-3);
                 this.axWindowsMediaPlayer1.Location = new Point(0, 4);
                 this.newProgressBar.Location = new Point(0, -3);
-                this.newProgressBar.Size = new Size((int)videoPlayer.popUpVideoWidth, 10);
+                this.newProgressBar.Size = new Size((int)VideoPlayer.popUpVideoWidth, 10);
                 this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 20, 20));
                 this.axWindowsMediaPlayer1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.axWindowsMediaPlayer1.Width, this.axWindowsMediaPlayer1.Height, 20, 20));
 
@@ -349,7 +357,7 @@ namespace MediaPlayer
             transpBack = new TranspBack(wmp, wmpSide, null, null);
             //transpBack.Show();
             wmp.Show();
-            videoPlayer.Hide();
+            if(videoPlayer!=null) videoPlayer.Hide();
             //wmpSide.Show();
         }
 
@@ -365,6 +373,8 @@ namespace MediaPlayer
         {
             if (m.Msg == WM_MOUSEWHEEL)
             {
+                if (videoPlayer == null)
+                    return true;
                 VScrollProperties vs = videoPlayer.flowLayoutPanel1.VerticalScroll;
                 HScrollProperties hs = videoPlayer.flowLayoutPanel1.HorizontalScroll;
                 if (m.WParam.ToString() == "7864320")
@@ -398,11 +408,13 @@ namespace MediaPlayer
             }
             else if (m.Msg == WM_KEYDOWN)
             {
-                    /*Keys keyCode = (Keys)(int)m.WParam & Keys.KeyCode;
+                if (videoPlayer == null)
+                    return true;
+                /*Keys keyCode = (Keys)(int)m.WParam & Keys.KeyCode;
 
-                    if(keyCode == Keys.Up || keyCode == Keys.Right|| keyCode == Keys.Left|| keyCode == Keys.Down || keyCode == Keys.M || keyCode == Keys.NumPad1
-                    || keyCode == Keys.NumPad2 || keyCode == Keys.NumPad3 || keyCode == Keys.NumPad4 || keyCode == Keys.NumPad5 || keyCode == Keys.NumPad6 || keyCode == Keys.Shift)*/
-                        videoPlayer.PreFilterMessage(ref m);
+                if(keyCode == Keys.Up || keyCode == Keys.Right|| keyCode == Keys.Left|| keyCode == Keys.Down || keyCode == Keys.M || keyCode == Keys.NumPad1
+                || keyCode == Keys.NumPad2 || keyCode == Keys.NumPad3 || keyCode == Keys.NumPad4 || keyCode == Keys.NumPad5 || keyCode == Keys.NumPad6 || keyCode == Keys.Shift)*/
+                videoPlayer.PreFilterMessage(ref m);
                 return true;
             }
             return false;

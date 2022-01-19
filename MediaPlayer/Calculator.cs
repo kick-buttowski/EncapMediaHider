@@ -35,6 +35,7 @@ namespace MediaPlayer
         const string syntaxErr = "SYNTAX ERROR!";
         bool decimalPointActive = false;
         public static Explorer v;
+        public static Explorer games;
         public static Boolean disCef = false;
         public static TextBox globalCalcTb = null;
         public static List<String> staleDeletes = new List<string>();
@@ -386,7 +387,7 @@ namespace MediaPlayer
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
 
-            v = new Explorer(this);
+            v = new Explorer(this, false);
             v.Explorer_Load(null, null);
             btnRes.BackColor = tempColor;
 
@@ -717,7 +718,18 @@ namespace MediaPlayer
                     //SetMonitorState(2);
                     v.Show();
             }
+            else if (tbx.Text.Equals("/**/+-"))
+            {
+                txtDisplay.Text = "";
+                this.Hide();
+                //SetMonitorState(2);
+                games = new Explorer(this, true);
+                games.Explorer_Load(null, null);
+                btnRes.BackColor = tempColor;
 
+                panel1.BackColor = tempColor;
+                games.Show();
+            }
             //tbx.Focus();
         }
 
