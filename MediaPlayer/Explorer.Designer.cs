@@ -284,10 +284,6 @@
             // 
             this.toolTip1.AutomaticDelay = 300;
             // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            // 
             // pointer
             // 
             this.pointer.BackColor = System.Drawing.Color.Red;

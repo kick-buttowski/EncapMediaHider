@@ -239,7 +239,7 @@ namespace MediaPlayer
                 Explorer.wmpOnTop.axWindowsMediaPlayer1.Dispose();
                 Explorer.wmpOnTop.Dispose();
                 Explorer.wmpOnTop = null;
-                videoPlayer.Show();
+            if(videoPlayer!=null)videoPlayer.Show();
         }
 
         private void WmpOnTop_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -253,7 +253,7 @@ namespace MediaPlayer
                 Explorer.wmpOnTop.axWindowsMediaPlayer1.Dispose();
                 Explorer.wmpOnTop.Dispose();
                 Explorer.wmpOnTop = null;
-                videoPlayer.Show();
+                if (videoPlayer!=null) videoPlayer.Show();
                 return;
             }
 

@@ -2006,7 +2006,6 @@ namespace MediaPlayer
                     pb.Name = fileInfo.FullName;
                     pb.Size = new Size(767, 435);
                     pb.SizeMode = PictureBoxSizeMode.Zoom;
-                    pb.Cursor = Cursors.Hand;
                     pb.ContextMenuStrip = contextMenuStrip1;
                     pb.SizeMode = PictureBoxSizeMode.Zoom;
                     pb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, pb.Width, pb.Height, 18, 18));
@@ -2081,7 +2080,6 @@ namespace MediaPlayer
                         pb.Name = subDir.FullName;
                         pb.Size = new Size(515, 292);
                         pb.SizeMode = PictureBoxSizeMode.Zoom;
-                        pb.Cursor = Cursors.Hand;
                         pb.ContextMenuStrip = contextMenuStrip1;
                         pb.SizeMode = PictureBoxSizeMode.Zoom;
                         pb.BackColor = mouseClickColor;
@@ -4058,7 +4056,6 @@ namespace MediaPlayer
                 pb.Name = fileInfo.FullName;
                 pb.Size = new Size(386, 219);
                 pb.SizeMode = PictureBoxSizeMode.Zoom;
-                pb.Cursor = Cursors.Hand;
                 pb.ContextMenuStrip = contextMenuStrip1;
                 pb.SizeMode = PictureBoxSizeMode.Zoom;
                 pb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, pb.Width, pb.Height, 18, 18));
@@ -6006,6 +6003,8 @@ namespace MediaPlayer
                 }
             }
             button4.Text = "" + nextFi.Name; disposePb.Clear();
+
+            playListDi = new DirectoryInfo(mainDi + "\\PlayLists");
             if (File.ReadAllText(prevfi.FullName + "\\disPic.txt") != "")
             {
                 try
@@ -6076,6 +6075,8 @@ namespace MediaPlayer
             }
             button3.Text = "" + prevfi.Name;
             globalBtn.BackColor = darkBackColor; disposePb.Clear();
+
+            playListDi = new DirectoryInfo(mainDi + "\\PlayLists");
             if (File.ReadAllText(prevfi.FullName + "\\disPic.txt") != "")
             {
                 try

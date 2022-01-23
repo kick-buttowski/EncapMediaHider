@@ -36,7 +36,7 @@ namespace MediaPlayer
 
         WMP wmp = null;
         VideoPlayer videoPlayer = null;
-        public Boolean hoveredOver = true, hoveredOver2 = true, toggleFullScreen = true, 
+        public Boolean hoveredOver = true, hoveredOver2 = true, toggleFullScreen = true, volumeLock = false, 
             keyLock = false, playStatus = true, toMute = true, toRepeat = false, playable =true, pressedSpace = true, manualFrameChange = false;
         String directoryPath;
         Dictionary<String, Double> timeSpan = new Dictionary<String, Double>();
@@ -425,7 +425,7 @@ namespace MediaPlayer
 
         private void WMP_MouseClick(object sender, MouseEventArgs e)
         {
-           if(videoPlayer!=null)
+            if (videoPlayer!=null)
             videoPlayer.Show();
             foreach (PictureBox pb in disposePb)
             {
@@ -544,7 +544,7 @@ namespace MediaPlayer
                 switch (e.newState)
                 {
                     case 0:    // Undefined
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Undefined";
+                    textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\tVolLock: " + (volumeLock == true ? "On" : "Off") + "\tLoop: " + (repeat ? "On" : "Off") + "\tUndefined";
                         break;
 
                     case 1:    // Stopped
@@ -577,7 +577,7 @@ namespace MediaPlayer
                             }
                             playable = !playable;
                         }
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Stopped";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\tVolLock: " + (volumeLock == true ? "On" : "Off") + "\tLoop: " + (repeat ? "On" : "Off") + "\tStopped";
                         if (!pressedSpace)
                         {
                             axWindowsMediaPlayer1.Ctlcontrols.play();
@@ -587,51 +587,52 @@ namespace MediaPlayer
                     break;
 
                     case 2:    // Paused
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Paused";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\tVolLock: " + (volumeLock == true ? "On" : "Off") + "\tLoop: " + (repeat ? "On" : "Off") + "\tPaused";
                         break;
 
                     case 3:    // Playing
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Playing";
+                    textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\tVolLock: " + (volumeLock == true ? "On" : "Off") + "\tLoop: " + (repeat ? "On" : "Off") + "\tPlaying";
                         break;
 
                     case 4:    // ScanForward
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            ScanForward";
+
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\tVolLock: " + (volumeLock == true ? "On" : "Off") + "\tLoop: " + (repeat ? "On" : "Off") + "\tScanForward";
                         break;
 
                     case 5:    // ScanReverse
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            ScanReverse";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\tVolLock: " + (volumeLock == true ? "On" : "Off") + "\tLoop: " + (repeat ? "On" : "Off") + "\tScanReverse";
                         break;
 
                     case 6:    // Buffering
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Buffering";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\tVolLock: " + (volumeLock == true ? "On" : "Off") + "\tLoop: " + (repeat ? "On" : "Off") + "\tBuffering";
                         break;
 
                     case 7:    // Waiting
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Waiting";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\tVolLock: " + (volumeLock == true ? "On" : "Off") + "\tLoop: " + (repeat ? "On" : "Off") + "\tWaiting";
                         break;
 
                     case 8:    // MediaEnded
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            MediaEnded";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\tVolLock: " + (volumeLock == true ? "On" : "Off") + "\tLoop: " + (repeat ? "On" : "Off") + "\tMediaEnded";
                         break;
 
                     case 9:    // Transitioning
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Transitioning";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\tVolLock: " + (volumeLock == true ? "On" : "Off") + "\tLoop: " + (repeat ? "On" : "Off") + "\tTransitioning";
                         break;
 
                     case 10:   // Ready
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Ready";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\tVolLock: " + (volumeLock == true ? "On" : "Off") + "\tLoop: " + (repeat ? "On" : "Off") + "\tReady";
                         break;
 
                     case 11:   // Reconnecting
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Reconnecting";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\tVolLock: " + (volumeLock == true ? "On" : "Off") + "\tLoop: " + (repeat ? "On" : "Off") + "\tReconnecting";
                         break;
 
                     case 12:   // Last
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            Last";
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\tVolLock: " + (volumeLock == true ? "On" : "Off") + "\tLoop: " + (repeat ? "On" : "Off") + "\tLast";
                         break;
 
                     default:
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            " + ("Unknown State: " + e.newState.ToString());
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\tVolLock: " + (volumeLock == true ? "On" : "Off") + "\tLoop: " + (repeat ? "On" : "Off") + "\t" + ("Unknown State: " + e.newState.ToString());
                         break;
 
                 }
@@ -1232,6 +1233,8 @@ namespace MediaPlayer
         {
             if (m.Msg == WM_MOUSEWHEEL)
             {
+                if (volumeLock)
+                    return true;
                 if(m.WParam.ToString() == "7864320")
                 {
                     if (axWindowsMediaPlayer1.settings.volume <= 98)
@@ -1268,7 +1271,13 @@ namespace MediaPlayer
                 if (Control.ModifierKeys == Keys.Control && keyCode == Keys.A)
                 {
                     keyLock = !keyLock;
-                    textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            " + axWindowsMediaPlayer1.playState.ToString().Replace("wmpps", "");
+                    textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\tVolLock: " + (volumeLock == true ? "On" : "Off") + "\tLoop: " + (repeat ? "On" : "Off") + "\t" + axWindowsMediaPlayer1.playState.ToString().Replace("wmpps", "");
+                }
+
+                if (Control.ModifierKeys == Keys.Control && keyCode == Keys.V)
+                {
+                    volumeLock = !volumeLock;
+                    textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\tVolLock: " + (volumeLock == true ? "On" : "Off") + "\tLoop: " + (repeat ? "On" : "Off") + "\t" + axWindowsMediaPlayer1.playState.ToString().Replace("wmpps", "");
                 }
 
                 if (keyCode == Keys.Back || keyCode == Keys.Escape)
@@ -1335,7 +1344,7 @@ namespace MediaPlayer
                         }
                     }
 
-                    if (keyCode == Keys.O || keyCode == Keys.G || keyCode == Keys.B)
+                    if (keyCode == Keys.O || keyCode == Keys.G || keyCode == Keys.B || keyCode == Keys.S)
                     {
                         String type = "Videos";
                         if (keyCode == Keys.G)
@@ -1345,6 +1354,10 @@ namespace MediaPlayer
                         else if (keyCode == Keys.B)
                         {
                             type = "Affinity";
+                        }
+                        else if (keyCode == Keys.S)
+                        {
+                            type = "Gif Videos";
                         }
 
                         if (tempBoxClose != null)
@@ -1374,11 +1387,46 @@ namespace MediaPlayer
                                     {
                                         String temp = wmpFi.Name.Substring(wmpFi.Name.IndexOf("placeholdeerr") + (wmpFi.Name.Contains("placeholdeerr") ? 13 : 1));
                                         var inputFile = new MediaFile { Filename = wmpFi.FullName };
+                                        String fileName = "";
+                                        if (!VideoPlayer.isShort)
+                                        {
+                                            if (keyCode == Keys.G)
+                                            {
+                                                fileName = wmpFi.DirectoryName + "\\Pics\\Gifs\\";
+                                            }
+                                            else if (keyCode == Keys.B)
+                                            {
+                                                fileName = wmpFi.DirectoryName + "\\Pics\\Affinity\\";
+                                            }
+                                            else if (keyCode == Keys.S)
+                                            {
+                                                fileName = wmpFi.DirectoryName + "\\Pics\\GifVideos\\";
+                                            }
+                                            else
+                                            {
+                                                fileName = wmpFi.DirectoryName + "\\";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (keyCode == Keys.G)
+                                            {
+                                                fileName = wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")) + "\\Gifs\\";
+                                            }
+                                            else if (keyCode == Keys.B)
+                                            {
+                                                fileName = wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")) + "\\Affinity\\";
+                                            }
+                                            else
+                                            {
+                                                fileName = wmpFi.DirectoryName + "\\";
+                                            }
+
+                                        }
+                                        fileName = fileName + temp.Substring(0, temp.LastIndexOf(".")) + endTo + (keyCode == Keys.G ? ".gif" : ".mp4");
                                         var outputFile = new MediaFile
                                         {
-                                            Filename = (!VideoPlayer.isShort ? (wmpFi.DirectoryName + "\\" + (keyCode == Keys.G ? "Pics\\Gifs\\" : (keyCode == Keys.B ? "Pics\\Affinity\\" : ""))) :
-                                            (keyCode == Keys.G ? (wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")) + "\\Gifs\\") : (keyCode == Keys.B ? (wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")) + "\\Affinity\\") : wmpFi.DirectoryName + "\\"))) +
-                                              temp.Substring(0, temp.LastIndexOf(".")) + endTo + (keyCode == Keys.G ? ".gif" : ".mp4")
+                                            Filename = fileName
                                         };
 
                                         using (var engine = new Engine())
@@ -1443,7 +1491,7 @@ namespace MediaPlayer
                     {
                         timer1.Enabled = !timer1.Enabled;
                         repeat = !repeat;
-                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\t      Loop: " + (repeat ? "On" : "Off") + "\t            " + axWindowsMediaPlayer1.playState.ToString().Replace("wmpps", "");
+                        textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\tVolLock: " + (volumeLock == true ? "On" : "Off") + "\tLoop: " + (repeat ? "On" : "Off") + "\t" + axWindowsMediaPlayer1.playState.ToString().Replace("wmpps", "");
                         if (repeat)
                             axWindowsMediaPlayer1.settings.setMode("loop", true);
                         else
@@ -1458,9 +1506,10 @@ namespace MediaPlayer
                         var inputFile = new MediaFile { Filename = fileName };
                         var options = new ConversionOptions { Seek = TimeSpan.FromMilliseconds(c) };
                         var outputFile = new MediaFile { Filename = (
-                            //!VideoPlayer.isShort ? (wmpFi.DirectoryName.Replace("\\Pics\\Affinity", "").Replace("\\Pics\\GifVideos", "") + "\\Pics\\") : 
-                            //(wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")+1)))
-                            "C:\\Users\\Harsha Vardhan\\Videos\\" + wmpDi.Name + "-" + c + ".jpg") };
+                            !VideoPlayer.isShort ? (wmpFi.DirectoryName.Replace("\\Pics\\Affinity", "").Replace("\\Pics\\GifVideos", "") + "\\Pics\\") : 
+                            (wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")+1)))
+                            //"C:\\Users\\Harsha Vardhan\\Videos\\" + wmpDi.Name + "-" + c + ".jpg") 
+                            };
                         engine.GetThumbnail(inputFile, outputFile, options);
                     }
 
@@ -1719,6 +1768,8 @@ namespace MediaPlayer
 
                     else if (keyCode == Keys.Up)
                     {
+                        if (volumeLock)
+                            return true;
                         if (axWindowsMediaPlayer1.settings.volume <= 98)
                             axWindowsMediaPlayer1.settings.volume = (axWindowsMediaPlayer1.settings.volume + 2);
                         else
@@ -1731,6 +1782,8 @@ namespace MediaPlayer
                     }
                     else if (keyCode == Keys.Down)
                     {
+                        if (volumeLock)
+                            return true;
                         if (axWindowsMediaPlayer1.settings.volume >= 2)
                             axWindowsMediaPlayer1.settings.volume = (axWindowsMediaPlayer1.settings.volume - 2);
                         else
@@ -1743,6 +1796,8 @@ namespace MediaPlayer
                     }
                     if (keyCode == Keys.M)
                     {
+                        if (volumeLock)
+                            return true;
                         if (axWindowsMediaPlayer1.settings.volume > 0)
                             axWindowsMediaPlayer1.settings.volume = 0;
                         else
@@ -1752,11 +1807,6 @@ namespace MediaPlayer
                         trackBar1.Value = axWindowsMediaPlayer1.settings.volume;
 
                         Explorer.globalVol = trackBar1.Value;
-                    }
-
-                    if (keyCode == Keys.S)
-                    {
-                        axWindowsMediaPlayer1.stretchToFit = !axWindowsMediaPlayer1.stretchToFit;
                     }
 
                     if (keyCode == Keys.T)

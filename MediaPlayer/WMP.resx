@@ -138,7 +138,7 @@
     <value>433, 17</value>
   </metadata>
   <data name="label1.Text" xml:space="preserve">
-    <value> Ctrl+A - Key lock
+    <value> Ctrl+A - Key lock, Ctrl+V - Vol lock
  C - Capture, D - Set video dp
  F - Next Frame, Q,W - +/- 1sec
  [ ]- Repeat On, P - Repeat Off

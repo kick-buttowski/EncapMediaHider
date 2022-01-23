@@ -149,6 +149,7 @@ namespace MediaPlayer
             this.isGames = isGames;
             this.Location = new Point(0, 0);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            //this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
             calcButton.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, calcButton.Width, calcButton.Height, 20, 20));
             //flowLayoutPanel3.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel3.Width, flowLayoutPanel3.Height, 20, 20));
             resources = new System.ComponentModel.ComponentResourceManager(typeof(VideoPlayer));
@@ -992,16 +993,19 @@ namespace MediaPlayer
                     foreach (DirectoryInfo di2 in di.GetDirectories())
                     {
                         Random r = new Random();
+                        List<FileInfo> tempFileList = di2.GetFiles().ToList();
                         foreach (FileInfo fiii in di2.GetFiles())
                         {
                             if (!fiii.FullName.EndsWith(".txt"))
                             {
-                                String temp = di2.GetFiles().ElementAt(r.Next(di2.GetFiles().Length)).FullName;
+                                String temp = tempFileList.ElementAt(r.Next(tempFileList.Count)).FullName;
                                 while (temp.EndsWith(".txt"))
-                                    temp = di2.GetFiles().ElementAt(r.Next(di2.GetFiles().Length)).FullName;
+                                    temp = tempFileList.ElementAt(r.Next(tempFileList.Count)).FullName;
                                 files.Add(temp);
                                 break;
                             }
+                            else
+                                tempFileList.Remove(fiii);
                         }
 
                     }
@@ -1013,7 +1017,7 @@ namespace MediaPlayer
             Random random1 = new Random();
             int rand = random1.Next(files.Count);
 
-            threhosld = 12;
+            threhosld = 10;
             while (threhosld > 0)
             {
                 while (tempFiles.Contains(files.ElementAt(rand)) || rand > 19)
@@ -1023,7 +1027,7 @@ namespace MediaPlayer
                 tempFiles.Add(files.ElementAt(rand));
                 threhosld--;
             }
-            threhosld = 10;
+            threhosld = 8;
             while (threhosld > 0)
             {
                 while (tempFiles.Contains(files.ElementAt(rand)) || rand < 20 || rand > 40)
@@ -1046,7 +1050,7 @@ namespace MediaPlayer
                 threhosld--;
             }
 
-            threhosld = 28;
+            threhosld = 20;
             while (threhosld > 0)
             {
                 while (tempFiles.Contains(files.ElementAt(rand)) || rand <= 53)
@@ -1529,7 +1533,7 @@ namespace MediaPlayer
                         flowLayoutPanel1.Controls.Add(dupeLabel2);
 
                     Label playRandom = new Label();
-                    playRandom.Text = "Play Something Random";
+                    playRandom.Text = "Play Something Random ";
                     playRandom.Font = new Font("Consolas", 12, FontStyle.Bold);
                     playRandom.BackColor = lightBackColor;
                     playRandom.Size = new Size(380, 44);
@@ -1555,13 +1559,18 @@ namespace MediaPlayer
                         List<String> allFiles = FilesDashboard(true);
                         List<PictureBox> tempList = new List<PictureBox>();
                         Random random = new Random();
-                        foreach (String file in allFiles)
+                        int theme = 10;
+                        while (theme>0)
+                        //foreach (String file in allFiles)
                         {
+                            int rand = random.Next(allFiles.Count);
                             PictureBox tempPb = new PictureBox();
-                            tempPb.Name = file;
-                            tempPb.Image = setDefaultPic(new FileInfo(file), tempPb);
+                            tempPb.Name = allFiles.ElementAt(rand);
+                            tempPb.Image = setDefaultPic(new FileInfo(tempPb.Name), tempPb);
                             if (tempPb.Image != null) tempPb.Image.Dispose();
                             tempList.Add(tempPb);
+                            allFiles.RemoveAt(rand);
+                            theme--;
                         }
 
                         PictureBox pb = tempList.ElementAt(random.Next(tempList.Count));
@@ -1585,7 +1594,6 @@ namespace MediaPlayer
                             pb.Name = fileName;
                         pb.Size = new Size(386, 219);
                         pb.SizeMode = PictureBoxSizeMode.Zoom;
-                            pb.Cursor = Cursors.Hand;
                             pb.ContextMenuStrip = contextMenuStrip1;
                             pb.SizeMode = PictureBoxSizeMode.Zoom;
                             pb.BackColor = lightBackColor;

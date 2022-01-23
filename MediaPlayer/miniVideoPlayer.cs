@@ -367,6 +367,7 @@ namespace MediaPlayer
         private void miniVideoPlayer_Deactivate(object sender, EventArgs e)
         {
             Application.RemoveMessageFilter(this);
+            miniVideoPlayer_MouseLeave(null, null);
         }
 
         public bool PreFilterMessage(ref Message m)
