@@ -36,6 +36,8 @@ namespace MediaPlayer
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem53 = new System.Windows.Forms.ToolStripMenuItem();
+            this.affinityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.shortVideosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem47 = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem13 = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,8 +49,7 @@ namespace MediaPlayer
             this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem20 = new System.Windows.Forms.ToolStripMenuItem();
             this.convertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem60 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem36 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem37 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem38 = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,6 +61,9 @@ namespace MediaPlayer
             this.toolStripMenuItem44 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem48 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem55 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem57 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem58 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem59 = new System.Windows.Forms.ToolStripMenuItem();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -164,6 +168,7 @@ namespace MediaPlayer
             this.toolStripMenuItem62 = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip5 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem56 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
@@ -201,18 +206,38 @@ namespace MediaPlayer
             this.toolStripMenuItem42,
             this.toolStripMenuItem44,
             this.toolStripMenuItem48,
-            this.toolStripMenuItem55});
+            this.toolStripMenuItem55,
+            this.toolStripMenuItem57,
+            this.toolStripMenuItem1});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(240, 364);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(240, 440);
             // 
             // toolStripMenuItem53
             // 
             this.toolStripMenuItem53.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.toolStripMenuItem53.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.affinityToolStripMenuItem,
+            this.shortVideosToolStripMenuItem});
             this.toolStripMenuItem53.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripMenuItem53.Name = "toolStripMenuItem53";
             this.toolStripMenuItem53.Size = new System.Drawing.Size(239, 24);
-            this.toolStripMenuItem53.Text = "Move to Affinity";
-            this.toolStripMenuItem53.Click += new System.EventHandler(this.toolStripMenuItem53_Click);
+            this.toolStripMenuItem53.Text = "Move to";
+            this.toolStripMenuItem53.Click += new System.EventHandler(this.moveToolStripMenuItem_Click);
+            // 
+            // affinityToolStripMenuItem
+            // 
+            this.affinityToolStripMenuItem.Name = "affinityToolStripMenuItem";
+            this.affinityToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
+            this.affinityToolStripMenuItem.Text = "Affinity";
+            this.affinityToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItem53_Click);
+            // 
+            // shortVideosToolStripMenuItem
+            // 
+            this.shortVideosToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.shortVideosToolStripMenuItem.Name = "shortVideosToolStripMenuItem";
+            this.shortVideosToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
+            this.shortVideosToolStripMenuItem.Text = "Short Videos";
+            this.shortVideosToolStripMenuItem.Click += new System.EventHandler(this.shortVideosToolStripMenuItem_Click);
             // 
             // toolStripMenuItem47
             // 
@@ -304,12 +329,11 @@ namespace MediaPlayer
             this.toolStripMenuItem20.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.toolStripMenuItem20.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.convertToolStripMenuItem,
-            this.toolStripMenuItem1,
-            this.moveToolStripMenuItem});
+            this.toolStripMenuItem60});
             this.toolStripMenuItem20.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripMenuItem20.Name = "toolStripMenuItem20";
             this.toolStripMenuItem20.Size = new System.Drawing.Size(239, 24);
-            this.toolStripMenuItem20.Text = "File Operations";
+            this.toolStripMenuItem20.Text = "Convert";
             // 
             // convertToolStripMenuItem
             // 
@@ -317,29 +341,19 @@ namespace MediaPlayer
             this.convertToolStripMenuItem.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.convertToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.convertToolStripMenuItem.Name = "convertToolStripMenuItem";
-            this.convertToolStripMenuItem.Size = new System.Drawing.Size(202, 26);
+            this.convertToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.convertToolStripMenuItem.Text = "Convert to mp4";
             this.convertToolStripMenuItem.Click += new System.EventHandler(this.convertToolStripMenuItem_Click);
             // 
-            // toolStripMenuItem1
+            // toolStripMenuItem60
             // 
-            this.toolStripMenuItem1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.toolStripMenuItem1.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripMenuItem1.ForeColor = System.Drawing.Color.Black;
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(202, 26);
-            this.toolStripMenuItem1.Text = "Delete";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
-            // 
-            // moveToolStripMenuItem
-            // 
-            this.moveToolStripMenuItem.BackColor = System.Drawing.Color.White;
-            this.moveToolStripMenuItem.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.moveToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
-            this.moveToolStripMenuItem.Name = "moveToolStripMenuItem";
-            this.moveToolStripMenuItem.Size = new System.Drawing.Size(202, 26);
-            this.moveToolStripMenuItem.Text = "Move";
-            this.moveToolStripMenuItem.Click += new System.EventHandler(this.moveToolStripMenuItem_Click);
+            this.toolStripMenuItem60.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.toolStripMenuItem60.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripMenuItem60.ForeColor = System.Drawing.Color.Black;
+            this.toolStripMenuItem60.Name = "toolStripMenuItem60";
+            this.toolStripMenuItem60.Size = new System.Drawing.Size(224, 26);
+            this.toolStripMenuItem60.Text = "Convert to Gif";
+            this.toolStripMenuItem60.Click += new System.EventHandler(this.toolStripMenuItem60_Click);
             // 
             // toolStripMenuItem36
             // 
@@ -415,7 +429,7 @@ namespace MediaPlayer
             this.toolStripMenuItem42.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripMenuItem42.Name = "toolStripMenuItem42";
             this.toolStripMenuItem42.Size = new System.Drawing.Size(239, 24);
-            this.toolStripMenuItem42.Text = "Add as link";
+            this.toolStripMenuItem42.Text = "Add as Link";
             this.toolStripMenuItem42.Click += new System.EventHandler(this.toolStripMenuItem42_Click);
             // 
             // toolStripMenuItem44
@@ -444,6 +458,38 @@ namespace MediaPlayer
             this.toolStripMenuItem55.Name = "toolStripMenuItem55";
             this.toolStripMenuItem55.Size = new System.Drawing.Size(239, 24);
             this.toolStripMenuItem55.Text = "Copy to Playlist";
+            // 
+            // toolStripMenuItem57
+            // 
+            this.toolStripMenuItem57.BackColor = System.Drawing.Color.White;
+            this.toolStripMenuItem57.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem58,
+            this.toolStripMenuItem59});
+            this.toolStripMenuItem57.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripMenuItem57.ForeColor = System.Drawing.Color.Black;
+            this.toolStripMenuItem57.Name = "toolStripMenuItem57";
+            this.toolStripMenuItem57.Size = new System.Drawing.Size(239, 24);
+            this.toolStripMenuItem57.Text = "Compress To";
+            // 
+            // toolStripMenuItem58
+            // 
+            this.toolStripMenuItem58.BackColor = System.Drawing.Color.White;
+            this.toolStripMenuItem58.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripMenuItem58.ForeColor = System.Drawing.Color.Black;
+            this.toolStripMenuItem58.Name = "toolStripMenuItem58";
+            this.toolStripMenuItem58.Size = new System.Drawing.Size(128, 26);
+            this.toolStripMenuItem58.Text = "720p";
+            this.toolStripMenuItem58.Click += new System.EventHandler(this.toolStripMenuItem58_Click);
+            // 
+            // toolStripMenuItem59
+            // 
+            this.toolStripMenuItem59.BackColor = System.Drawing.Color.White;
+            this.toolStripMenuItem59.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripMenuItem59.ForeColor = System.Drawing.Color.Black;
+            this.toolStripMenuItem59.Name = "toolStripMenuItem59";
+            this.toolStripMenuItem59.Size = new System.Drawing.Size(128, 26);
+            this.toolStripMenuItem59.Text = "480p";
+            this.toolStripMenuItem59.Click += new System.EventHandler(this.toolStripMenuItem59_Click);
             // 
             // flowLayoutPanel1
             // 
@@ -1929,16 +1975,26 @@ namespace MediaPlayer
             this.contextMenuStrip5.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem56});
             this.contextMenuStrip5.Name = "contextMenuStrip5";
-            this.contextMenuStrip5.Size = new System.Drawing.Size(211, 56);
+            this.contextMenuStrip5.Size = new System.Drawing.Size(169, 28);
             // 
             // toolStripMenuItem56
             // 
             this.toolStripMenuItem56.BackColor = System.Drawing.Color.White;
             this.toolStripMenuItem56.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripMenuItem56.Name = "toolStripMenuItem56";
-            this.toolStripMenuItem56.Size = new System.Drawing.Size(210, 24);
+            this.toolStripMenuItem56.Size = new System.Drawing.Size(168, 24);
             this.toolStripMenuItem56.Text = "Clear the list";
             this.toolStripMenuItem56.Click += new System.EventHandler(this.toolStripMenuItem56_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.toolStripMenuItem1.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripMenuItem1.ForeColor = System.Drawing.Color.Black;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(239, 24);
+            this.toolStripMenuItem1.Text = "Delete";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // VideoPlayer
             // 
@@ -2019,12 +2075,10 @@ namespace MediaPlayer
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem20;
         private System.Windows.Forms.ToolStripMenuItem convertToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem moveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem moveToPicturesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addFilesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem12;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem useThisForStackDpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem10;
         private System.Windows.Forms.ToolStripMenuItem sortByToolStripMenuItem;
@@ -2112,5 +2166,12 @@ namespace MediaPlayer
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem55;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip5;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem56;
+        private System.Windows.Forms.ToolStripMenuItem affinityToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem shortVideosToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem57;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem58;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem59;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem60;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }

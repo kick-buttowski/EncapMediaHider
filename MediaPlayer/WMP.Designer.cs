@@ -47,7 +47,6 @@
             this.clearAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.track = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.keyS = new System.Windows.Forms.Button();
@@ -55,6 +54,9 @@
             this.startLabel = new System.Windows.Forms.Label();
             this.endLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.skipFlowPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.autoSkip = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -253,19 +255,6 @@
             this.flowLayoutPanel1.Size = new System.Drawing.Size(294, 815);
             this.flowLayoutPanel1.TabIndex = 14;
             // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.label1.Font = new System.Drawing.Font("Consolas", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(9, 944);
-            this.label1.Margin = new System.Windows.Forms.Padding(5, 5, 0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(306, 190);
-            this.label1.TabIndex = 30;
-            this.label1.Text = resources.GetString("label1.Text");
-            this.label1.Visible = false;
-            // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
@@ -348,6 +337,47 @@
             this.panel1.Size = new System.Drawing.Size(1471, 825);
             this.panel1.TabIndex = 0;
             // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.label1.Font = new System.Drawing.Font("Consolas", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(0, 944);
+            this.label1.Margin = new System.Windows.Forms.Padding(5, 5, 0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(306, 210);
+            this.label1.TabIndex = 31;
+            this.label1.Text = resources.GetString("label1.Text");
+            this.label1.Visible = false;
+            // 
+            // skipFlowPanel
+            // 
+            this.skipFlowPanel.BackColor = System.Drawing.Color.Black;
+            this.skipFlowPanel.Location = new System.Drawing.Point(3, 891);
+            this.skipFlowPanel.Name = "skipFlowPanel";
+            this.skipFlowPanel.Size = new System.Drawing.Size(294, 100);
+            this.skipFlowPanel.TabIndex = 33;
+            // 
+            // autoSkip
+            // 
+            this.autoSkip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(10)))));
+            this.autoSkip.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.autoSkip.FlatAppearance.BorderSize = 0;
+            this.autoSkip.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.autoSkip.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.autoSkip.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.autoSkip.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.autoSkip.ForeColor = System.Drawing.Color.White;
+            this.autoSkip.Location = new System.Drawing.Point(1794, -10);
+            this.autoSkip.Name = "autoSkip";
+            this.autoSkip.Padding = new System.Windows.Forms.Padding(0, 0, 0, 1);
+            this.autoSkip.Size = new System.Drawing.Size(121, 36);
+            this.autoSkip.TabIndex = 1;
+            this.autoSkip.Text = "Auto Skip On";
+            this.autoSkip.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.autoSkip.UseVisualStyleBackColor = false;
+            this.autoSkip.Click += new System.EventHandler(this.autoSkip_Click);
+            // 
             // WMP
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -355,11 +385,13 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(1902, 1055);
+            this.Controls.Add(this.autoSkip);
+            this.Controls.Add(this.skipFlowPanel);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.endLabel);
             this.Controls.Add(this.startLabel);
             this.Controls.Add(this.keyS);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.track);
@@ -377,6 +409,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "WMP";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Activated += new System.EventHandler(this.WMP_Activated);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.WMP_MouseClick);
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
@@ -409,7 +442,6 @@
         private System.Windows.Forms.ToolStripMenuItem clearAllToolStripMenuItem;
         private System.Windows.Forms.Label track;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button keyS;
         private System.Windows.Forms.Label label3;
@@ -417,5 +449,8 @@
         private System.Windows.Forms.Label startLabel;
         private System.Windows.Forms.Label endLabel;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.FlowLayoutPanel skipFlowPanel;
+        private System.Windows.Forms.Button autoSkip;
     }
 }

@@ -37,8 +37,9 @@ namespace MediaPlayer
         WMP wmp = null;
         VideoPlayer videoPlayer = null;
         public Boolean hoveredOver = true, hoveredOver2 = true, toggleFullScreen = true, volumeLock = false, 
-            keyLock = false, playStatus = true, toMute = true, toRepeat = false, playable =true, pressedSpace = true, manualFrameChange = false;
+            keyLock = false, playStatus = true, toMute = true, toRepeat = false, playable =true, pressedSpace = true, manualFrameChange = false, toAutoSkip = true;
         String directoryPath;
+        FileInfo fileName = null;
         Dictionary<String, Double> timeSpan = new Dictionary<String, Double>();
         Thread countThread = null, imgStackThread = null, miniPlayerThread = null;
         Explorer exp;
@@ -48,6 +49,8 @@ namespace MediaPlayer
         NewProgressBar newProgressBar = null;
         TimeSpan time = new TimeSpan(), time1 = new TimeSpan();
         String durInFor = null;
+        List<double> startPoint = new List<double>();
+        List<double> endPoint = new List<double>();
         //CustomToolTip tip = null;
         public List<PictureBox> disposePb = new List<PictureBox>();
 
@@ -115,6 +118,42 @@ namespace MediaPlayer
                         }
                         File.WriteAllText(fi.DirectoryName + "\\resume.txt", fileStr);
                     }
+
+                    if (!Explorer.wmpOnTop.axWindowsMediaPlayer1.URL.Contains("\\Pics\\") && File.Exists(Explorer.directory3.FullName + "\\resumeDb.txt"))
+                    {
+                        String[] resumeFile = File.ReadAllLines(Explorer.directory3.FullName + "\\resumeDb.txt");
+                        Boolean doesExist = false;
+                        String fileStr = "";
+                        foreach (String str in resumeFile)
+                        {
+                            if (str.Contains(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL + "@@!"))
+                            {
+                                doesExist = true;
+                                fileStr = fileStr + Explorer.wmpOnTop.axWindowsMediaPlayer1.URL + "@@!" +
+                                    Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
+                            }
+                        }
+                        foreach (String str in resumeFile)
+                        {
+                            if (!str.Contains(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL + "@@!"))
+                            {
+                                fileStr = fileStr + str + "\n";
+                            }
+                        }
+                        if (!doesExist)
+                        {
+                            int max = resumeFile.Length >= 8 ? 7 : resumeFile.Length;
+                            fileStr = Explorer.wmpOnTop.axWindowsMediaPlayer1.URL + 
+                                "@@!" + Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
+
+                            for (int i = 0; i < max; i++)
+                            {
+                                fileStr = fileStr + resumeFile[i] + "\n";
+                            }
+                        }
+                        File.WriteAllText(Explorer.directory3.FullName + "\\resumeDb.txt", fileStr);
+                    }
+
                     this.Hide();
                     Application.RemoveMessageFilter(wmp);
                     //Application.AddMessageFilter(videoPlayer);
@@ -214,9 +253,12 @@ namespace MediaPlayer
             newProgressBar.BackColor = Color.White;
             newProgressBar.Margin = new Padding(0);
 
-
             this.Controls.Add(newProgressBar);
-
+            skipFlowPanel.Location = new Point(12,944);
+            skipFlowPanel.BackColor = flowLayoutPanel1.BackColor;
+            skipFlowPanel.Size = new Size(flowLayoutPanel1.Width, 113);
+            skipFlowPanel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, skipFlowPanel.Width, skipFlowPanel.Height, 12, 12));
+            autoSkip.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, autoSkip.Width, autoSkip.Height, 12, 12));
         }
 
         public void controlDisposer()
@@ -323,6 +365,19 @@ namespace MediaPlayer
             flowLayoutPanel1.Controls.Add(smallPb);
         }
 
+        private void WMP_Activated(object sender, EventArgs e)
+        {
+
+            if (VideoPlayer.miniVideoPlayer!=null && VideoPlayer.miniVideoPlayer.staticExp != null)
+                VideoPlayer.miniVideoPlayer.staticExp.Hide();
+        }
+
+        private void autoSkip_Click(object sender, EventArgs e)
+        {
+            toAutoSkip = !toAutoSkip;
+            autoSkip.Text = "Auto Skip " + (toAutoSkip ? "On" : "Off");
+        }
+
         public void calcXY(int count)
         {
             if(count == 4)
@@ -427,6 +482,8 @@ namespace MediaPlayer
         {
             if (videoPlayer!=null)
             videoPlayer.Show();
+            if (VideoPlayer.miniVideoPlayer!=null && VideoPlayer.miniVideoPlayer.staticExp != null)
+                VideoPlayer.miniVideoPlayer.staticExp.Show();
             foreach (PictureBox pb in disposePb)
             {
                 pb.Image.Dispose();
@@ -754,11 +811,23 @@ namespace MediaPlayer
                 try
                 {
                     int currTrack = (int)(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
+                    double currTrackDouble = axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
                     if (toRepeat && endRepeatTo > startRepeatFrom)
                     {
                         if (axWindowsMediaPlayer1.Ctlcontrols.currentPosition >= endRepeatTo || axWindowsMediaPlayer1.Ctlcontrols.currentPosition<startRepeatFrom)
                         {
                             axWindowsMediaPlayer1.Ctlcontrols.currentPosition = startRepeatFrom;
+                        }
+                    }
+                    if(toAutoSkip && startPoint.Count > 0)
+                    {
+                        for(int k=0; k<startPoint.Count; k++)
+                        {
+                            if (currTrackDouble > startPoint[k] && currTrackDouble < endPoint[k])
+                            {
+                                    axWindowsMediaPlayer1.Ctlcontrols.currentPosition = endPoint[k];
+                                break;
+                            }
                         }
                     }
                     time = TimeSpan.FromSeconds(currTrack);
@@ -874,6 +943,92 @@ namespace MediaPlayer
             }
             axWindowsMediaPlayer1.Select();
             fillUpFP1(videosPb);
+
+            mainDi = Directory.GetParent(axWindowsMediaPlayer1.Name);
+            if (!File.Exists(mainDi + "\\ToSkipParts.txt"))
+            {
+                FileStream fi = File.Create(mainDi.FullName + "\\ToSkipParts.txt");
+                fi.Close();
+            }
+            List<string> list = File.ReadAllLines(mainDi.FullName + "\\ToSkipParts.txt").ToList();
+
+            fileName = new FileInfo(axWindowsMediaPlayer1.Name);
+            skipFlowPanel.Controls.Clear();
+            foreach (String s in list)
+            {
+                if (s.Split('@').Length != 3)
+                    continue;
+                try
+                {
+                    if (!fileName.Name.Equals(s.Split('@')[0]))
+                        continue;
+                    startPoint.Add(Double.Parse(s.Split('@')[1]));
+                    endPoint.Add(Double.Parse(s.Split('@')[2]));
+
+                    Label dupeLabel2 = new Label();
+                    dupeLabel2.Text = TimeSpan.FromSeconds(startPoint.ElementAt(startPoint.Count-1)).ToString(@"hh\:mm\:ss") + " to " + TimeSpan.FromSeconds(endPoint.ElementAt(endPoint.Count-1)).ToString(@"hh\:mm\:ss");
+                    dupeLabel2.Font = new Font("Consolas", 7, FontStyle.Regular);
+                    dupeLabel2.BackColor = miniProgress.BackColor;
+                    dupeLabel2.Size = new Size(skipFlowPanel.Width - 80, 20);
+                    dupeLabel2.ForeColor = Color.White;
+                    dupeLabel2.TextAlign = ContentAlignment.MiddleCenter;
+                    dupeLabel2.Margin = new Padding(10, 4, 0, 0);
+                    dupeLabel2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, dupeLabel2.Width, dupeLabel2.Height, 5, 5));
+
+                    dupeLabel2.MouseEnter += (s1, a1) =>
+                    {
+                        miniPlayer.miniVidPlayer.URL = axWindowsMediaPlayer1.currentMedia.sourceURL;
+                        miniPlayer.miniVidPlayer.settings.volume = 0;
+                        miniPlayer.miniVidPlayer.Location = new Point(0, 0);
+                        miniPlayer.Location = new Point(3, skipFlowPanel.Location.Y - miniPlayer.miniVidPlayer.Size.Height);
+                        miniPlayer.Show();
+                        miniPlayer.miniVidPlayer.Ctlcontrols.currentPosition = Double.Parse(s.Split('@')[1]);
+                    };
+
+                    dupeLabel2.MouseLeave += (s1, args) =>
+                    {
+                        miniPlayer.miniVidPlayer.Ctlcontrols.pause();
+                        miniPlayer.Hide();
+                        GC.Collect();
+                        trackBar1.Focus();
+                    };
+
+                    skipFlowPanel.Controls.Add(dupeLabel2);
+
+                    Button butt2 = new Button();
+                    butt2.Text = "Del";
+                    butt2.Font = new Font("Arial", 7, FontStyle.Regular);
+                    butt2.ForeColor = Color.White;
+                    butt2.BackColor = miniProgress.BackColor;
+                    butt2.Size = new Size(55, 20);
+                    butt2.FlatStyle = FlatStyle.Flat;
+                    butt2.FlatAppearance.BorderSize = 0;
+                    butt2.TextAlign = ContentAlignment.TopCenter;
+                    butt2.Margin = new Padding(3, 4, 0, 0);
+                    //butt2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, butt2.Width, butt2.Height, 5, 5));
+
+                    butt2.FlatAppearance.MouseOverBackColor = miniProgress.BackColor;
+                    butt2.FlatAppearance.MouseDownBackColor = miniProgress.BackColor;
+                    butt2.MouseClick += (s1, a1) =>
+                    {
+                        List<String> lala = File.ReadAllLines(mainDi.FullName + "\\ToSkipParts.txt").ToList();
+                        String toPersist = "";
+                        foreach(String ss in lala)
+                        {
+                            if (ss.Contains("@" + Double.Parse(s.Split('@')[1]) + "@" + Double.Parse(s.Split('@')[2])))
+                                continue;
+                            toPersist = toPersist + ss + "\n";
+                        }
+                        File.WriteAllText(mainDi.FullName + "\\ToSkipParts.txt", toPersist);
+                        skipFlowPanel.Controls.Remove(dupeLabel2);
+                        skipFlowPanel.Controls.Remove(butt2);
+                        startPoint.Remove(Double.Parse(s.Split('@')[1]));
+                        endPoint.Remove(Double.Parse(s.Split('@')[2]));
+                    };
+                    skipFlowPanel.Controls.Add(butt2);
+                }
+                catch { }
+            }
         }
 
         private void miniProgress_MouseLeave(object sender, EventArgs e)
@@ -1268,7 +1423,7 @@ namespace MediaPlayer
 
                 Keys keyCode = (Keys)(int)m.WParam & Keys.KeyCode;
 
-                if (Control.ModifierKeys == Keys.Control && keyCode == Keys.A)
+                if (Control.ModifierKeys == Keys.Control && keyCode == Keys.L)
                 {
                     keyLock = !keyLock;
                     textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\tVolLock: " + (volumeLock == true ? "On" : "Off") + "\tLoop: " + (repeat ? "On" : "Off") + "\t" + axWindowsMediaPlayer1.playState.ToString().Replace("wmpps", "");
@@ -1283,8 +1438,13 @@ namespace MediaPlayer
                 if (keyCode == Keys.Back || keyCode == Keys.Escape)
                 {
                     if (keyCode == Keys.Escape)
-                        if (videoPlayer != null) 
+                    {
+                        if (videoPlayer != null)
                             videoPlayer.Show();
+
+                        if (VideoPlayer.miniVideoPlayer.staticExp != null)
+                            VideoPlayer.miniVideoPlayer.staticExp.Show();
+                    }
                     foreach (PictureBox pb in disposePb)
                     {
                         pb.Image.Dispose();
@@ -1344,8 +1504,60 @@ namespace MediaPlayer
                         }
                     }
 
-                    if (keyCode == Keys.O || keyCode == Keys.G || keyCode == Keys.B || keyCode == Keys.S)
+                    if (keyCode == Keys.O || keyCode == Keys.G || keyCode == Keys.B || keyCode == Keys.A || keyCode == Keys.S)
                     {
+                        if (endRepeatTo <= startRepeatFrom || !toRepeat)
+                            return true;
+                        if (keyCode == Keys.S)
+                        {
+                            File.AppendAllText(mainDi.FullName + "\\ToSkipParts.txt", "\n" + fileName.Name + "@" + startRepeatFrom + "@" + endRepeatTo);
+                            startPoint.Add(startRepeatFrom);
+                            endPoint.Add(endRepeatTo);
+                            toRepeat = false;
+                            Label dupeLabel2 = new Label();
+                            dupeLabel2.Text = TimeSpan.FromSeconds(startRepeatFrom).ToString(@"hh\:mm\:ss") + " to " + TimeSpan.FromSeconds(endRepeatTo).ToString(@"hh\:mm\:ss");
+                            dupeLabel2.Font = new Font("Consolas", 7, FontStyle.Regular);
+                            dupeLabel2.BackColor = miniProgress.BackColor;
+                            dupeLabel2.Size = new Size(skipFlowPanel.Width - 80, 20);
+                            dupeLabel2.ForeColor = Color.White;
+                            dupeLabel2.TextAlign = ContentAlignment.MiddleCenter;
+                            dupeLabel2.Margin = new Padding(10, 4, 0, 0);
+                            dupeLabel2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, dupeLabel2.Width, dupeLabel2.Height, 5, 5));
+                            skipFlowPanel.Controls.Add(dupeLabel2);
+
+                            Button butt2 = new Button();
+                            butt2.Text = "Del";
+                            butt2.Font = new Font("Arial", 7, FontStyle.Regular);
+                            butt2.ForeColor = Color.White;
+                            butt2.BackColor = miniProgress.BackColor;
+                            butt2.Size = new Size(55, 20);
+                            butt2.FlatStyle = FlatStyle.Flat;
+                            butt2.FlatAppearance.BorderSize = 0;
+                            butt2.TextAlign = ContentAlignment.TopCenter;
+                            butt2.Margin = new Padding(3, 4, 0, 0);
+                            //butt2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, butt2.Width, butt2.Height, 5, 5));
+
+                            butt2.FlatAppearance.MouseOverBackColor = miniProgress.BackColor;
+                            butt2.FlatAppearance.MouseDownBackColor = miniProgress.BackColor;
+                            butt2.MouseClick += (s1, a1) =>
+                            {
+                                List<String> lala = File.ReadAllLines(mainDi.FullName + "\\ToSkipParts.txt").ToList();
+                                String toPersist = "";
+                                foreach (String ss in lala)
+                                {
+                                    if (ss.Contains("@" + startRepeatFrom + "@" + endRepeatTo))
+                                        continue;
+                                    toPersist = toPersist + ss + "\n";
+                                }
+                                File.WriteAllText(mainDi.FullName + "\\ToSkipParts.txt", toPersist);
+                                skipFlowPanel.Controls.Remove(dupeLabel2);
+                                skipFlowPanel.Controls.Remove(butt2);
+                                startPoint.Remove(startRepeatFrom);
+                                endPoint.Remove(endRepeatTo);
+                            };
+                            skipFlowPanel.Controls.Add(butt2);
+                            return true;
+                        }
                         String type = "Videos";
                         if (keyCode == Keys.G)
                         {
@@ -1355,7 +1567,7 @@ namespace MediaPlayer
                         {
                             type = "Affinity";
                         }
-                        else if (keyCode == Keys.S)
+                        else if (keyCode == Keys.A)
                         {
                             type = "Gif Videos";
                         }
@@ -1370,10 +1582,6 @@ namespace MediaPlayer
                             tempBoxOpen.Image.Dispose();
                             tempBoxOpen.Dispose();
                         }
-
-                        if (endRepeatTo <= startRepeatFrom || !toRepeat)
-                            return true;
-
                         
                         
                             Thread gifThread = new Thread(() =>
@@ -1398,7 +1606,7 @@ namespace MediaPlayer
                                             {
                                                 fileName = wmpFi.DirectoryName + "\\Pics\\Affinity\\";
                                             }
-                                            else if (keyCode == Keys.S)
+                                            else if (keyCode == Keys.A)
                                             {
                                                 fileName = wmpFi.DirectoryName + "\\Pics\\GifVideos\\";
                                             }
@@ -1506,8 +1714,8 @@ namespace MediaPlayer
                         var inputFile = new MediaFile { Filename = fileName };
                         var options = new ConversionOptions { Seek = TimeSpan.FromMilliseconds(c) };
                         var outputFile = new MediaFile { Filename = (
-                            !VideoPlayer.isShort ? (wmpFi.DirectoryName.Replace("\\Pics\\Affinity", "").Replace("\\Pics\\GifVideos", "") + "\\Pics\\") : 
-                            (wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")+1)))
+                            (!VideoPlayer.isShort ? (wmpFi.DirectoryName.Replace("\\Pics\\Affinity", "").Replace("\\Pics\\GifVideos", "") + "\\Pics\\") : 
+                            (wmpFi.DirectoryName.Substring(0, wmpFi.DirectoryName.LastIndexOf("\\")+1))) + wmpDi.Name + "-" + c + ".jpg")
                             //"C:\\Users\\Harsha Vardhan\\Videos\\" + wmpDi.Name + "-" + c + ".jpg") 
                             };
                         engine.GetThumbnail(inputFile, outputFile, options);

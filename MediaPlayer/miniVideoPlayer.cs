@@ -44,6 +44,7 @@ namespace MediaPlayer
         Color mouseHoverColor = Explorer.globColor;
         Color mouseClickColor = Explorer.globColor;
         DirectoryInfo tfDirectoryInfo = null;
+        public Explorer staticExp = null;
         bool iterateTf = false;
         List<Double> iterateTframes = new List<double>();
         public miniVideoPlayer(List<PictureBox> videosPb)
@@ -63,7 +64,28 @@ namespace MediaPlayer
             newProgressBar.Location = new Point(0, axWindowsMediaPlayer1.Height);
             this.Controls.Add(newProgressBar);
             axWindowsMediaPlayer1.settings.rate = 1.5;
-            this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 25, 25));
+            //this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 25, 25));
+        }
+
+        public miniVideoPlayer(List<PictureBox> videosPb, Explorer staticExp)
+        {
+            InitializeComponent();
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Size = new Size(515, 301);
+            axWindowsMediaPlayer1.uiMode = "none";
+            axWindowsMediaPlayer1.settings.volume = 0;
+            this.videosPb = videosPb;
+            axWindowsMediaPlayer1.settings.setMode("loop", true);
+            newProgressBar = new NewProgressBar();
+            newProgressBar.Value = 0;
+            newProgressBar.ForeColor = Color.FromArgb(0, 0, 10);
+            newProgressBar.BackColor = Color.White;
+            newProgressBar.Margin = new Padding(0);
+            newProgressBar.Location = new Point(0, axWindowsMediaPlayer1.Height);
+            this.Controls.Add(newProgressBar);
+            axWindowsMediaPlayer1.settings.rate = 1.5;
+            this.staticExp = staticExp;
+            //this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 25, 25));
         }
 
         private void axWindowsMediaPlayer1_MouseMoveEvent(object sender, AxWMPLib._WMPOCXEvents_MouseMoveEvent e)
@@ -90,6 +112,10 @@ namespace MediaPlayer
         {
             try
             {
+                /*foreach (var key in Explorer.videoHoverEnabler.Keys.ToList())
+                {
+                    Explorer.videoHoverEnabler[key] = false;
+                }*/
                 Application.RemoveMessageFilter(this);
                 axWindowsMediaPlayer1.Ctlcontrols.pause();
                 this.Hide();
@@ -101,6 +127,7 @@ namespace MediaPlayer
             }
             catch { }
         }
+
 
         public void setData(PictureBox pb, FileInfo fileInfo, VideoPlayer videoPlayer)
         {
@@ -117,6 +144,12 @@ namespace MediaPlayer
             this.videosPb = videosPb;
         }
 
+        public void setVideosPb(List<PictureBox> videosPb, Explorer staticExp)
+        {
+            this.videosPb = videosPb;
+            this.staticExp = staticExp;
+        }
+
         public void miniVideoPlayer_FormClosing(object sender, FormClosingEventArgs e)
         {
 
@@ -130,9 +163,13 @@ namespace MediaPlayer
                 if(pb.Image!=null)this.pb.Image.Dispose();
                 if (axWindowsMediaPlayer1 != null)
                 {
-                    this.axWindowsMediaPlayer1.URL = "";
-                    this.axWindowsMediaPlayer1.Dispose();
-                    this.axWindowsMediaPlayer1.close();
+                    try
+                    {
+                        this.axWindowsMediaPlayer1.URL = "";
+                        this.axWindowsMediaPlayer1.Dispose();
+                        this.axWindowsMediaPlayer1.close();
+                    }
+                    catch { }
                 }
                 this.Dispose();
             }
@@ -143,7 +180,6 @@ namespace MediaPlayer
         {
             try
             {
-
                 if (axWindowsMediaPlayer1.currentMedia == null) return;
                 try
                 {
@@ -193,18 +229,20 @@ namespace MediaPlayer
                         }
                     }
                 }
+                duration = axWindowsMediaPlayer1.currentMedia.duration;
                 timer1.Enabled = true;
-                timer1.Interval = 2500;
+                timer1.Interval = 2100;
                 axWindowsMediaPlayer1.settings.rate = 1.20;
                 if (temp > 3)
                 {
                     iterateTf = true;
                     iterateTframes.Sort();
                     whereAt = 0;
-                    timer1.Interval = 3500;
+                    timer1.Interval = 3000;
                     axWindowsMediaPlayer1.settings.rate = 1.15;
                 }
             }
+
         }
 
         private void miniVideoPlayer_KeyDown(object sender, KeyEventArgs e)
@@ -274,7 +312,7 @@ namespace MediaPlayer
                 miniVideoPlayer_MouseLeave(null,null);
                 return;
             }
-            if (!isMoved && (!VideoPlayer.isShort || axWindowsMediaPlayer1.currentMedia.duration > 3*60))
+            if (!isMoved && (!VideoPlayer.isShort))
             {
                 this.Location = VideoPlayer.relativeLoc;
 
@@ -375,7 +413,43 @@ namespace MediaPlayer
             if (m.Msg == WM_MOUSEWHEEL)
             {
                 if (videoPlayer == null)
+                {
+                    if (!Explorer.stackedDb)
+                    {
+                        if(Cursor.Position.X < 240)
+                            Cursor.Position = new Point(7, Cursor.Position.Y);
+
+                        else if (Cursor.Position.X > 240 && Cursor.Position.X < 720)
+                            Cursor.Position = new Point(480, Cursor.Position.Y);
+
+                        else if (Cursor.Position.X > 720 && Cursor.Position.X < 1195)
+                            Cursor.Position = new Point(955, Cursor.Position.Y);
+
+                        else if (Cursor.Position.X > 1195 && Cursor.Position.X < 1670)
+                            Cursor.Position = new Point(1430, Cursor.Position.Y);
+
+                        else
+                            Cursor.Position = new Point(1910, Cursor.Position.Y);
+                    }
+                    else
+                    {
+                        if (Cursor.Position.X < 435)
+                            Cursor.Position = new Point(292, Cursor.Position.Y);
+
+                        else if (Cursor.Position.X > 435 && Cursor.Position.X < 880)
+                            Cursor.Position = new Point(695, Cursor.Position.Y);
+
+                        else if (Cursor.Position.X > 880 && Cursor.Position.X < 1325)
+                            Cursor.Position = new Point(1098, Cursor.Position.Y);
+
+                        else if (Cursor.Position.X > 1325 && Cursor.Position.X < 1770)
+                            Cursor.Position = new Point(1501, Cursor.Position.Y);
+
+                        else
+                            Cursor.Position = new Point(1910, Cursor.Position.Y);
+                    }
                     return true;
+                }
                 VScrollProperties vs = videoPlayer.flowLayoutPanel1.VerticalScroll;
                 HScrollProperties hs = videoPlayer.flowLayoutPanel1.HorizontalScroll;
                 if (m.WParam.ToString() == "7864320")

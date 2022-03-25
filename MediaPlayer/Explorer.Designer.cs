@@ -37,15 +37,21 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.videos = new System.Windows.Forms.Button();
+            this.pictures = new System.Windows.Forms.Button();
+            this.fourK = new System.Windows.Forms.Button();
+            this.affinity = new System.Windows.Forms.Button();
+            this.shortVideos = new System.Windows.Forms.Button();
+            this.gifs = new System.Windows.Forms.Button();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.searchLabel = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-            this.divider = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.pointer = new System.Windows.Forms.Label();
@@ -60,19 +66,17 @@
             this.theme = new System.Windows.Forms.Button();
             this.reset = new System.Windows.Forms.Button();
             this.stack = new System.Windows.Forms.Button();
+            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.menuBtn1 = new System.Windows.Forms.Button();
             this.dashBoard = new System.Windows.Forms.Button();
             this.calcButton = new System.Windows.Forms.Button();
-            this.videos = new System.Windows.Forms.Button();
-            this.pictures = new System.Windows.Forms.Button();
-            this.fourK = new System.Windows.Forms.Button();
-            this.affinity = new System.Windows.Forms.Button();
-            this.shortVideos = new System.Windows.Forms.Button();
-            this.gifs = new System.Windows.Forms.Button();
+            this.divider = new System.Windows.Forms.Panel();
+            this.menuBtn2 = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
-            this.flowLayoutPanel3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
+            this.flowLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -83,7 +87,7 @@
             this.flowLayoutPanel1.Location = new System.Drawing.Point(288, 93);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(13, 0, 0, 0);
+            this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(14, 0, 0, 0);
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1638, 988);
             this.flowLayoutPanel1.TabIndex = 0;
             this.flowLayoutPanel1.MouseEnter += new System.EventHandler(this.flowLayoutPanel1_MouseEnter);
@@ -97,9 +101,11 @@
             this.resetPriorityToolStripMenuItem,
             this.toolStripMenuItem3,
             this.toolStripMenuItem2,
-            this.toolStripMenuItem4});
+            this.toolStripMenuItem4,
+            this.toolStripMenuItem5,
+            this.toolStripMenuItem6});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(234, 124);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(252, 172);
             // 
             // toolStripMenuItem1
             // 
@@ -107,7 +113,7 @@
             this.toolStripMenuItem1.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripMenuItem1.ForeColor = System.Drawing.Color.Black;
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(233, 24);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(251, 24);
             this.toolStripMenuItem1.Text = "Go Back";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
@@ -140,7 +146,7 @@
             this.toolStripMenuItem2.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripMenuItem2.ForeColor = System.Drawing.Color.Black;
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(233, 24);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(251, 24);
             this.toolStripMenuItem2.Text = "Add Folder";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
@@ -150,9 +156,29 @@
             this.toolStripMenuItem4.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripMenuItem4.ForeColor = System.Drawing.Color.Black;
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(233, 24);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(251, 24);
             this.toolStripMenuItem4.Text = "Change Theme Color";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
+            // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.BackColor = System.Drawing.Color.White;
+            this.toolStripMenuItem5.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripMenuItem5.ForeColor = System.Drawing.Color.Black;
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(251, 24);
+            this.toolStripMenuItem5.Text = "Open Containing Folder";
+            this.toolStripMenuItem5.Click += new System.EventHandler(this.toolStripMenuItem5_Click);
+            // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.toolStripMenuItem6.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripMenuItem6.ForeColor = System.Drawing.Color.Black;
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(251, 24);
+            this.toolStripMenuItem6.Text = "Remove From Recent";
+            this.toolStripMenuItem6.Click += new System.EventHandler(this.toolStripMenuItem6_Click);
             // 
             // flowLayoutPanel4
             // 
@@ -167,6 +193,138 @@
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
             this.flowLayoutPanel4.Size = new System.Drawing.Size(1081, 48);
             this.flowLayoutPanel4.TabIndex = 2;
+            // 
+            // videos
+            // 
+            this.videos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.videos.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.videos.FlatAppearance.BorderSize = 0;
+            this.videos.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.videos.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.videos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.videos.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.videos.ForeColor = System.Drawing.Color.White;
+            this.videos.Image = global::Calculator.Properties.Resources.video_player;
+            this.videos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.videos.Location = new System.Drawing.Point(0, 1);
+            this.videos.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
+            this.videos.Name = "videos";
+            this.videos.Size = new System.Drawing.Size(178, 47);
+            this.videos.TabIndex = 34;
+            this.videos.Text = "Videos";
+            this.videos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.videos.UseVisualStyleBackColor = false;
+            this.videos.Click += new System.EventHandler(this.videos_Click);
+            // 
+            // pictures
+            // 
+            this.pictures.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.pictures.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.pictures.FlatAppearance.BorderSize = 0;
+            this.pictures.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.pictures.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.pictures.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pictures.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pictures.ForeColor = System.Drawing.Color.White;
+            this.pictures.Image = global::Calculator.Properties.Resources.image_gallery;
+            this.pictures.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.pictures.Location = new System.Drawing.Point(180, 1);
+            this.pictures.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
+            this.pictures.Name = "pictures";
+            this.pictures.Size = new System.Drawing.Size(178, 47);
+            this.pictures.TabIndex = 35;
+            this.pictures.Text = "Pictures";
+            this.pictures.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.pictures.UseVisualStyleBackColor = false;
+            this.pictures.Click += new System.EventHandler(this.videos_Click);
+            // 
+            // fourK
+            // 
+            this.fourK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.fourK.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.fourK.FlatAppearance.BorderSize = 0;
+            this.fourK.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.fourK.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.fourK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.fourK.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.fourK.ForeColor = System.Drawing.Color.White;
+            this.fourK.Image = global::Calculator.Properties.Resources._4k;
+            this.fourK.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.fourK.Location = new System.Drawing.Point(360, 1);
+            this.fourK.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
+            this.fourK.Name = "fourK";
+            this.fourK.Size = new System.Drawing.Size(178, 47);
+            this.fourK.TabIndex = 36;
+            this.fourK.Text = "4K Pictures";
+            this.fourK.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.fourK.UseVisualStyleBackColor = false;
+            this.fourK.Click += new System.EventHandler(this.videos_Click);
+            // 
+            // affinity
+            // 
+            this.affinity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.affinity.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.affinity.FlatAppearance.BorderSize = 0;
+            this.affinity.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.affinity.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.affinity.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.affinity.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.affinity.ForeColor = System.Drawing.Color.White;
+            this.affinity.Image = global::Calculator.Properties.Resources._379365_video_camera_icon;
+            this.affinity.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.affinity.Location = new System.Drawing.Point(540, 1);
+            this.affinity.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
+            this.affinity.Name = "affinity";
+            this.affinity.Size = new System.Drawing.Size(178, 47);
+            this.affinity.TabIndex = 39;
+            this.affinity.Text = "Affinity";
+            this.affinity.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.affinity.UseVisualStyleBackColor = false;
+            this.affinity.Click += new System.EventHandler(this.videos_Click);
+            // 
+            // shortVideos
+            // 
+            this.shortVideos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.shortVideos.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.shortVideos.FlatAppearance.BorderSize = 0;
+            this.shortVideos.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.shortVideos.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.shortVideos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.shortVideos.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.shortVideos.ForeColor = System.Drawing.Color.White;
+            this.shortVideos.Image = global::Calculator.Properties.Resources._1054941_video_film_movie_icon;
+            this.shortVideos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.shortVideos.Location = new System.Drawing.Point(720, 1);
+            this.shortVideos.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
+            this.shortVideos.Name = "shortVideos";
+            this.shortVideos.Size = new System.Drawing.Size(178, 47);
+            this.shortVideos.TabIndex = 37;
+            this.shortVideos.Text = "Short videos";
+            this.shortVideos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.shortVideos.UseVisualStyleBackColor = false;
+            this.shortVideos.Click += new System.EventHandler(this.videos_Click);
+            // 
+            // gifs
+            // 
+            this.gifs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.gifs.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.gifs.FlatAppearance.BorderSize = 0;
+            this.gifs.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.gifs.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.gifs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.gifs.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gifs.ForeColor = System.Drawing.Color.White;
+            this.gifs.Image = global::Calculator.Properties.Resources.gif;
+            this.gifs.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.gifs.Location = new System.Drawing.Point(900, 1);
+            this.gifs.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
+            this.gifs.Name = "gifs";
+            this.gifs.Size = new System.Drawing.Size(178, 47);
+            this.gifs.TabIndex = 38;
+            this.gifs.Text = "Gifs";
+            this.gifs.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.gifs.UseVisualStyleBackColor = false;
+            this.gifs.Click += new System.EventHandler(this.videos_Click);
             // 
             // textBox3
             // 
@@ -258,27 +416,6 @@
             // 
             this.colorDialog1.AnyColor = true;
             this.colorDialog1.FullOpen = true;
-            // 
-            // flowLayoutPanel3
-            // 
-            this.flowLayoutPanel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(230)))), ((int)(((byte)(235)))));
-            this.flowLayoutPanel3.Controls.Add(this.dashBoard);
-            this.flowLayoutPanel3.Controls.Add(this.calcButton);
-            this.flowLayoutPanel3.Controls.Add(this.divider);
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(9, -5);
-            this.flowLayoutPanel3.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(281, 1085);
-            this.flowLayoutPanel3.TabIndex = 3;
-            this.flowLayoutPanel3.MouseEnter += new System.EventHandler(this.flowLayoutPanel1_MouseEnter);
-            // 
-            // divider
-            // 
-            this.divider.Location = new System.Drawing.Point(0, 172);
-            this.divider.Margin = new System.Windows.Forms.Padding(0, 5, 0, 1);
-            this.divider.Name = "divider";
-            this.divider.Size = new System.Drawing.Size(275, 8);
-            this.divider.TabIndex = 1;
             // 
             // toolTip1
             // 
@@ -512,6 +649,32 @@
             this.stack.Click += new System.EventHandler(this.button5_Click);
             this.stack.MouseEnter += new System.EventHandler(this.flowLayoutPanel1_MouseEnter);
             // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(230)))), ((int)(((byte)(235)))));
+            this.flowLayoutPanel3.Controls.Add(this.menuBtn1);
+            this.flowLayoutPanel3.Controls.Add(this.dashBoard);
+            this.flowLayoutPanel3.Controls.Add(this.calcButton);
+            this.flowLayoutPanel3.Controls.Add(this.divider);
+            this.flowLayoutPanel3.Controls.Add(this.menuBtn2);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(9, -5);
+            this.flowLayoutPanel3.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(281, 1085);
+            this.flowLayoutPanel3.TabIndex = 3;
+            this.flowLayoutPanel3.MouseEnter += new System.EventHandler(this.flowLayoutPanel1_MouseEnter);
+            // 
+            // menuBtn1
+            // 
+            this.menuBtn1.Image = global::Calculator.Properties.Resources.icons8_menu_40;
+            this.menuBtn1.Location = new System.Drawing.Point(2, 5);
+            this.menuBtn1.Margin = new System.Windows.Forms.Padding(2, 5, 2, 0);
+            this.menuBtn1.Name = "menuBtn1";
+            this.menuBtn1.Size = new System.Drawing.Size(41, 38);
+            this.menuBtn1.TabIndex = 36;
+            this.menuBtn1.UseVisualStyleBackColor = true;
+            this.menuBtn1.Click += new System.EventHandler(this.menuBtn1_Click);
+            // 
             // dashBoard
             // 
             this.dashBoard.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
@@ -524,10 +687,10 @@
             this.dashBoard.ForeColor = System.Drawing.Color.White;
             this.dashBoard.Image = global::Calculator.Properties.Resources.icons8_dashboard_32;
             this.dashBoard.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.dashBoard.Location = new System.Drawing.Point(5, 5);
-            this.dashBoard.Margin = new System.Windows.Forms.Padding(5, 5, 2, 0);
+            this.dashBoard.Location = new System.Drawing.Point(47, 5);
+            this.dashBoard.Margin = new System.Windows.Forms.Padding(2, 5, 2, 0);
             this.dashBoard.Name = "dashBoard";
-            this.dashBoard.Size = new System.Drawing.Size(270, 38);
+            this.dashBoard.Size = new System.Drawing.Size(225, 38);
             this.dashBoard.TabIndex = 35;
             this.dashBoard.Text = "Dashboard Refresh";
             this.dashBoard.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -557,137 +720,24 @@
             this.calcButton.MouseEnter += new System.EventHandler(this.calcButton_MouseEnter);
             this.calcButton.MouseLeave += new System.EventHandler(this.calcButton_MouseLeave);
             // 
-            // videos
+            // divider
             // 
-            this.videos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.videos.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.videos.FlatAppearance.BorderSize = 0;
-            this.videos.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.videos.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.videos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.videos.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.videos.ForeColor = System.Drawing.Color.White;
-            this.videos.Image = global::Calculator.Properties.Resources.video_player;
-            this.videos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.videos.Location = new System.Drawing.Point(0, 1);
-            this.videos.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
-            this.videos.Name = "videos";
-            this.videos.Size = new System.Drawing.Size(178, 47);
-            this.videos.TabIndex = 34;
-            this.videos.Text = "Videos";
-            this.videos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.videos.UseVisualStyleBackColor = false;
-            this.videos.Click += new System.EventHandler(this.videos_Click);
+            this.divider.Location = new System.Drawing.Point(0, 172);
+            this.divider.Margin = new System.Windows.Forms.Padding(0, 5, 0, 1);
+            this.divider.Name = "divider";
+            this.divider.Size = new System.Drawing.Size(275, 8);
+            this.divider.TabIndex = 1;
             // 
-            // pictures
+            // menuBtn2
             // 
-            this.pictures.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.pictures.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.pictures.FlatAppearance.BorderSize = 0;
-            this.pictures.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.pictures.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.pictures.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pictures.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pictures.ForeColor = System.Drawing.Color.White;
-            this.pictures.Image = global::Calculator.Properties.Resources.image_gallery;
-            this.pictures.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.pictures.Location = new System.Drawing.Point(180, 1);
-            this.pictures.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
-            this.pictures.Name = "pictures";
-            this.pictures.Size = new System.Drawing.Size(178, 47);
-            this.pictures.TabIndex = 35;
-            this.pictures.Text = "Pictures";
-            this.pictures.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.pictures.UseVisualStyleBackColor = false;
-            this.pictures.Click += new System.EventHandler(this.videos_Click);
-            // 
-            // fourK
-            // 
-            this.fourK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.fourK.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.fourK.FlatAppearance.BorderSize = 0;
-            this.fourK.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.fourK.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.fourK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.fourK.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.fourK.ForeColor = System.Drawing.Color.White;
-            this.fourK.Image = global::Calculator.Properties.Resources._4k;
-            this.fourK.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.fourK.Location = new System.Drawing.Point(360, 1);
-            this.fourK.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
-            this.fourK.Name = "fourK";
-            this.fourK.Size = new System.Drawing.Size(178, 47);
-            this.fourK.TabIndex = 36;
-            this.fourK.Text = "4K Pictures";
-            this.fourK.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.fourK.UseVisualStyleBackColor = false;
-            this.fourK.Click += new System.EventHandler(this.videos_Click);
-            // 
-            // affinity
-            // 
-            this.affinity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.affinity.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.affinity.FlatAppearance.BorderSize = 0;
-            this.affinity.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.affinity.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.affinity.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.affinity.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.affinity.ForeColor = System.Drawing.Color.White;
-            this.affinity.Image = global::Calculator.Properties.Resources._379365_video_camera_icon;
-            this.affinity.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.affinity.Location = new System.Drawing.Point(540, 1);
-            this.affinity.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
-            this.affinity.Name = "affinity";
-            this.affinity.Size = new System.Drawing.Size(178, 47);
-            this.affinity.TabIndex = 39;
-            this.affinity.Text = "Affinity";
-            this.affinity.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.affinity.UseVisualStyleBackColor = false;
-            this.affinity.Click += new System.EventHandler(this.videos_Click);
-            // 
-            // shortVideos
-            // 
-            this.shortVideos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.shortVideos.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.shortVideos.FlatAppearance.BorderSize = 0;
-            this.shortVideos.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.shortVideos.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.shortVideos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.shortVideos.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.shortVideos.ForeColor = System.Drawing.Color.White;
-            this.shortVideos.Image = global::Calculator.Properties.Resources._1054941_video_film_movie_icon;
-            this.shortVideos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.shortVideos.Location = new System.Drawing.Point(720, 1);
-            this.shortVideos.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
-            this.shortVideos.Name = "shortVideos";
-            this.shortVideos.Size = new System.Drawing.Size(178, 47);
-            this.shortVideos.TabIndex = 37;
-            this.shortVideos.Text = "Short videos";
-            this.shortVideos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.shortVideos.UseVisualStyleBackColor = false;
-            this.shortVideos.Click += new System.EventHandler(this.videos_Click);
-            // 
-            // gifs
-            // 
-            this.gifs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.gifs.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.gifs.FlatAppearance.BorderSize = 0;
-            this.gifs.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.gifs.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.gifs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.gifs.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gifs.ForeColor = System.Drawing.Color.White;
-            this.gifs.Image = global::Calculator.Properties.Resources.gif;
-            this.gifs.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.gifs.Location = new System.Drawing.Point(900, 1);
-            this.gifs.Margin = new System.Windows.Forms.Padding(0, 1, 2, 0);
-            this.gifs.Name = "gifs";
-            this.gifs.Size = new System.Drawing.Size(178, 47);
-            this.gifs.TabIndex = 38;
-            this.gifs.Text = "Gifs";
-            this.gifs.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.gifs.UseVisualStyleBackColor = false;
-            this.gifs.Click += new System.EventHandler(this.videos_Click);
+            this.menuBtn2.Image = global::Calculator.Properties.Resources.icons8_menu_40;
+            this.menuBtn2.Location = new System.Drawing.Point(2, 183);
+            this.menuBtn2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 0);
+            this.menuBtn2.Name = "menuBtn2";
+            this.menuBtn2.Size = new System.Drawing.Size(41, 38);
+            this.menuBtn2.TabIndex = 37;
+            this.menuBtn2.UseVisualStyleBackColor = true;
+            this.menuBtn2.Click += new System.EventHandler(this.menuBtn2_Click);
             // 
             // Explorer
             // 
@@ -718,9 +768,9 @@
             this.Enter += new System.EventHandler(this.Explorer_Enter);
             this.contextMenuStrip1.ResumeLayout(false);
             this.flowLayoutPanel4.ResumeLayout(false);
-            this.flowLayoutPanel3.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -765,5 +815,9 @@
         private System.Windows.Forms.Button navController;
         private System.Windows.Forms.Panel divider;
         private System.Windows.Forms.Button dashBoard;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
+        private System.Windows.Forms.Button menuBtn1;
+        private System.Windows.Forms.Button menuBtn2;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
     }
 }

@@ -571,6 +571,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="calculator1.ico" />
+    <None Include="Resources\icons8-menu-40.png" />
+    <None Include="Resources\icons8-menu-50.png" />
     <None Include="Resources\random %281%29.png" />
     <None Include="Resources\icons8-dashboard-32.png" />
     <None Include="Resources\close-button.png" />

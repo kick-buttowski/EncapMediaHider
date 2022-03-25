@@ -90,10 +90,10 @@ namespace MediaPlayer
         Image img3 = null;
         Image img4 = null;
         public static Double popUpVideoWidth = 0, popUpVideoHeight = 0;
-        public static int stepWise = 14;
+        public static int stepWise = 15;
         NewProgressBar newProgressBar = null;
-        checkBox checkBox = new checkBox();
-
+        checkBox checkBox = new checkBox(); 
+        
         static Random rr = new Random();
         //static int rand1 = Explorer.rr.Next(0, 256);
         //static int[] color = Explorer.Rand_Color(rand1, 0.5, 0.25);
@@ -296,6 +296,48 @@ namespace MediaPlayer
             setTheme();
             loadMiniImages();
             enlargeImage = true;
+
+            populateContextMenuForLink();
+        }
+
+        private void populateContextMenuForLink()
+        {
+            int id = 0, subId = 0;
+            ToolStripMenuItem[] tempStripMenuItem = new ToolStripMenuItem[exp.allFoldersDict.Count];
+            this.toolStripMenuItem42.DropDownItems.Clear();
+            foreach (String keys in exp.allFoldersDict.Keys)
+            {
+                tempStripMenuItem[id] = new System.Windows.Forms.ToolStripMenuItem();
+                tempStripMenuItem[id].BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+                tempStripMenuItem[id].Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                tempStripMenuItem[id].Name = keys;
+                tempStripMenuItem[id].Size = new System.Drawing.Size(239, 24);
+                tempStripMenuItem[id].Text = keys.Substring(1);
+
+                ToolStripMenuItem[] subTempStripMenuItem = new ToolStripMenuItem[exp.allFoldersDict[keys].Count];
+                subId = 0;
+                foreach (String folder in exp.allFoldersDict[keys])
+                {
+                    subTempStripMenuItem[subId] = new System.Windows.Forms.ToolStripMenuItem();
+                    subTempStripMenuItem[subId].BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+                    subTempStripMenuItem[subId].Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    subTempStripMenuItem[subId].Name = folder;
+                    subTempStripMenuItem[subId].Size = new System.Drawing.Size(239, 24);
+                    subTempStripMenuItem[subId].Text = folder.Substring(folder.LastIndexOf("\\") + 1);
+                    subTempStripMenuItem[subId].MouseDown += (s, args) =>
+                    {
+                        PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+                        File.AppendAllText(folder + "\\links.txt", "\n" + pb.Name);
+                    };
+                    subTempStripMenuItem[subId].Tag = subId++;
+
+                }
+
+                tempStripMenuItem[id].DropDownItems.AddRange(subTempStripMenuItem);
+                tempStripMenuItem[id].Tag = id++;
+            }
+            this.toolStripMenuItem42.DropDownItems.AddRange(tempStripMenuItem);
+
         }
 
         private int correctFit(int width, int height)
@@ -1250,7 +1292,10 @@ namespace MediaPlayer
                     isShort = true;
                 }
                 else
+                {
+                    miniVideoPlayer.axWindowsMediaPlayer1.Dock = DockStyle.None;
                     isShort = false;
+                }
 
                 Application.RemoveMessageFilter(this);
                 Point controlLoc = this.PointToScreen(pb.Location);
@@ -1282,9 +1327,13 @@ namespace MediaPlayer
                 }
                 relativeLoc = new Point(x, y);
                 miniVideoPlayer.setData(pb, new FileInfo(fileName), this);
-                miniVideoPlayer.axWindowsMediaPlayer1.enableContextMenu = false;
+                try
+                {
+                    miniVideoPlayer.axWindowsMediaPlayer1.enableContextMenu = false;
+                }
+                catch { return; }
 
-                miniVideoPlayer.Region = null;
+                //miniVideoPlayer.Region = null;
                 miniVideoPlayer.axWindowsMediaPlayer1.Region = null;
                 miniVideoPlayer.Location = new Point( pb.Location.X + flowLayoutPanel1.Location.X, pb.Location.Y + flowLayoutPanel1.Location.Y);
                 //miniVideoPlayer.Location = relativeLoc;
@@ -1296,7 +1345,7 @@ namespace MediaPlayer
                 miniVideoPlayer.newProgressBar.Location = new Point(0, -3);
                 miniVideoPlayer.newProgressBar.Size = new Size(pb.Size.Width, 10);
                 miniVideoPlayer.axWindowsMediaPlayer1.URL = fileName;
-                miniVideoPlayer.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, miniVideoPlayer.Width, miniVideoPlayer.Height, 20, 20));
+                //miniVideoPlayer.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, miniVideoPlayer.Width, miniVideoPlayer.Height, 20, 20));
                 miniVideoPlayer.axWindowsMediaPlayer1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, miniVideoPlayer.axWindowsMediaPlayer1.Width, miniVideoPlayer.axWindowsMediaPlayer1.Height, 20, 20));
                 //miniVideoPlayer.duration = miniVideoPlayer.axWindowsMediaPlayer1.currentMedia.duration;
                 //miniVideoPlayer.newProgressBar.Maximum = (int)miniVideoPlayer.duration;
@@ -1989,7 +2038,7 @@ namespace MediaPlayer
                 foreach (DirectoryInfo fi in mainDi.GetDirectories().OrderByDescending(f => f.LastWriteTime)
                                                       .ToList())
                 {
-                    if (fi.Name.Contains("imgPB") || fi.Name.Contains("Online") || fi.Name.Contains("Pics")) { }
+                    if (fi.Name.Contains("imgPB") || fi.Name.Contains("Online") || fi.Name.Contains("Pics") || fi.Name.Contains("PlayLists")) { }
                     else
                         priorityList.Add("0@" + fi.FullName);
                 }
@@ -2015,7 +2064,8 @@ namespace MediaPlayer
 
                     pb.MouseClick += (s, args) =>
                     {
-                        Process.Start(Directory.GetParent(fileInfo.Parent.FullName).Parent.FullName + "\\flashplayer_25_sa.exe");
+                        System.Diagnostics.Process.Start(fileInfo.FullName + "\\SuslikX.com.swf");
+                        //Process.Start(Directory.GetParent(fileInfo.Parent.FullName).Parent.FullName + "\\flashplayer_25_sa.exe");
                     };
 
                     flowLayoutPanel1.Controls.Add(videosPb.ElementAt(videosPb.Count - 1));
@@ -2176,7 +2226,6 @@ namespace MediaPlayer
                         miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
                 };
                 flowLayoutPanel1.Controls.Add(dupeLabel2);
-
                 for (int i = 0; i < priorityList.Count; i++)
                 {
                     FileInfo fileInfo = null;
@@ -2309,7 +2358,7 @@ namespace MediaPlayer
                             timer2.Enabled = false;
                             if (mouseEnter) ;
                         };*/
-                        pbClick(pb);
+                                pbClick(pb);
                     };
 
                     /* pb.MouseClick += (s, args) =>
@@ -3371,10 +3420,10 @@ namespace MediaPlayer
         private void expBtn_Click(object sender, EventArgs e)
         {
             Application.RemoveMessageFilter(this);
+                exp.Show();
+                exp.textBox3.Focus();
             this.Hide();
             exitForm();
-            exp.Show();
-            exp.textBox3.Focus();
         }
 
         private void VideoPlayer_Enter(object sender, EventArgs e)
@@ -3797,31 +3846,34 @@ namespace MediaPlayer
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
         {
-            PictureBox pb = (PictureBox)contextMenuStrip3.SourceControl;
-            FileInfo fi = new FileInfo(pb.Name);
-            DirectoryInfo di = new DirectoryInfo(fi.DirectoryName);
-            foreach (FileInfo di1 in di.GetFiles())
+            if (globalBtn.Text.Equals("Pictures") || globalBtn.Text.Equals("4K"))
             {
-                if (di1.Name.StartsWith("_resized"))
-                    try
-                    {
-                        File.Delete(di1.FullName);
-                    }
-                    catch { }
-
-            }
-            for (int i = 0; i < 10; i++)
-            {
-                if (!File.Exists(fi.DirectoryName + "\\_resized" + i + fi.Name.Substring(fi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1)))
+                PictureBox pb = (PictureBox)contextMenuStrip3.SourceControl;
+                FileInfo fi = new FileInfo(pb.Name);
+                DirectoryInfo di = new DirectoryInfo(fi.DirectoryName);
+                foreach (FileInfo di1 in di.GetFiles())
                 {
-                    try { ResizeImage(fi.FullName, fi.DirectoryName + "\\_resized" + i + fi.Name.Substring(fi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1), 308, 0, 513, 0); } catch { return; }
-                    String newFileName = renameFile(i, new FileInfo(fi.DirectoryName + "\\_resized" + i + fi.Name.Substring(fi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1)));
-                    File.WriteAllText(mainDi.FullName + "\\disPic.txt", newFileName);
-                    imagePBLink = newFileName;
-                    break;
+                    if (di1.Name.StartsWith("_resized"))
+                        try
+                        {
+                            File.Delete(di1.FullName);
+                        }
+                        catch { }
+
                 }
+                for (int i = 0; i < 10; i++)
+                {
+                    if (!File.Exists(fi.DirectoryName + "\\_resized" + i + fi.Name.Substring(fi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1)))
+                    {
+                        try { ResizeImage(fi.FullName, fi.DirectoryName + "\\_resized" + i + fi.Name.Substring(fi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1), 308, 0, 513, 0); } catch { return; }
+                        String newFileName = renameFile(i, new FileInfo(fi.DirectoryName + "\\_resized" + i + fi.Name.Substring(fi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1)));
+                        File.WriteAllText(mainDi.FullName + "\\disPic.txt", newFileName);
+                        imagePBLink = newFileName;
+                        break;
+                    }
+                }
+                toRefresh = true;
             }
-            toRefresh = true;
         }
 
         public void refreshFolder()
@@ -3894,9 +3946,41 @@ namespace MediaPlayer
         private void toolStripMenuItem5_Click(object sender, EventArgs e)
         {
             PictureBox pb = (PictureBox)contextMenuStrip3.SourceControl;
-            File.WriteAllText(mainDi.FullName + "\\disPic.txt", pb.Name);
-            toRefresh = true;
-            imagePBLink = pb.Name;
+            if (globalBtn.Text.Equals("Pictures") || globalBtn.Text.Equals("4K"))
+            {
+                File.WriteAllText(mainDi.FullName + "\\disPic.txt", pb.Name);
+                toRefresh = true;
+                imagePBLink = pb.Name;
+            }
+            else if (globalBtn.Text.Equals("Gifs"))
+            {
+                if (File.Exists(mainDi.FullName + "\\disGifPic.txt"))
+                {
+                    String[] resumeFile = File.ReadAllLines(mainDi.FullName + "\\disGifPic.txt");
+                    Boolean doesExist = false;
+                    String fileStr = "";
+                    foreach (String str in resumeFile)
+                    {
+                        if (str.Contains(pb.Name))
+                        {
+                            doesExist = true;
+                            return;
+                        }
+                    }
+
+                    if (!doesExist)
+                    {
+                        int max = resumeFile.Length >= 3 ? 2 : resumeFile.Length;
+                        fileStr = pb.Name + "\n";
+
+                        for (int i = 0; i < max; i++)
+                        {
+                            fileStr = fileStr + resumeFile[i] + "\n";
+                        }
+                    }
+                    File.WriteAllText(mainDi.FullName + "\\disGifPic.txt", fileStr);
+                }
+            }
         }
 
         private void toolStripMenuItem6_Click(object sender, EventArgs e)
@@ -4616,7 +4700,7 @@ namespace MediaPlayer
                     using (Font myFont = new Font("Microsoft Sans Serif", 8, FontStyle.Regular))
                     {
                         FileInfo fi = new FileInfo(pb.Name);
-                        args.Graphics.DrawString("Size:" + fi.Name.Substring(0, fi.Name.IndexOf("placeholdderr")).Replace("^^", "\t\t  Reso:").Replace("x", "*").Replace("_", "").Replace("resized", "").Replace("cropped", ""), myFont, Brushes.White, new Point(25, pb.Height - 15));
+                        if(fi.Name.Contains("placeholdderr")) args.Graphics.DrawString("Size:" + fi.Name.Substring(0, fi.Name.IndexOf("placeholdderr")).Replace("^^", "\t\t  Reso:").Replace("x", "*").Replace("_", "").Replace("resized", "").Replace("cropped", ""), myFont, Brushes.White, new Point(25, pb.Height - 15));
                     }
                 };
                 flowLayoutPanel1.Controls.Add(gpb.ElementAt(gpb.Count - 1));
@@ -4839,10 +4923,10 @@ namespace MediaPlayer
         private void button8_Click(object sender, EventArgs e)
         {
             Application.RemoveMessageFilter(this);
+                exp.Show();
+                exp.textBox3.Focus();
             this.Hide();
             exitForm();
-            exp.Show();
-            exp.textBox3.Focus();
         }
 
         private void toolStripMenuItem25_Click(object sender, EventArgs e)
@@ -4970,8 +5054,15 @@ namespace MediaPlayer
 
         private void button6_Click(object sender, EventArgs e)
         {
-
-            Application.Exit();
+            try
+            {
+                this.Close();
+                Application.Exit();
+            }
+            catch (Exception ex)
+            {
+                Environment.Exit(0);
+            }
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -5704,6 +5795,122 @@ namespace MediaPlayer
             catch { }
         }
 
+        private void shortVideosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+                FileInfo fi = new FileInfo(pb.Name);
+
+                File.Move(fi.FullName, fi.DirectoryName + "\\Pics\\GifVideos\\" + fi.Name);
+                pb.Image.Dispose();
+                pb.Dispose();
+                GC.Collect();
+            }
+            catch { return; }
+        }
+
+        private void toolStripMenuItem58_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Are you sure?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                Thread convert = new Thread(() =>
+                {
+                    try
+                    {
+                        PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+                        FileInfo file = new FileInfo(pb.Name);
+                        var inputFile = new MediaFile { Filename = pb.Name };
+                        var outputFile = new MediaFile { Filename = file.DirectoryName + "\\converted_" + file.Name.Substring(file.Name.IndexOf("placeholdeerr") + 13) };
+
+                        var conversionOptions = new ConversionOptions
+                        {
+                            VideoSize = VideoSize.Hd720
+                        };
+
+                        using (var engine = new Engine())
+                        {
+                            engine.Convert(inputFile, outputFile, conversionOptions);
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Unable to compress!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                });
+                convert.Start();
+            }
+        }
+
+        private void toolStripMenuItem59_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Are you sure?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                Thread convert = new Thread(() =>
+                {
+                    try
+                    {
+
+                        PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+                        FileInfo file = new FileInfo(pb.Name);
+                        var inputFile = new MediaFile { Filename = pb.Name };
+                        var outputFile = new MediaFile { Filename = file.DirectoryName + "\\converted_" + file.Name.Substring(file.Name.IndexOf("placeholdeerr") + 13) };
+
+                        var conversionOptions = new ConversionOptions
+                        {
+                            VideoSize = VideoSize.Hd480
+                        };
+
+                        using (var engine = new Engine())
+                        {
+                            engine.Convert(inputFile, outputFile, conversionOptions);
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Unable to compress!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                });
+                convert.Start();
+            }
+
+        }
+
+        private void toolStripMenuItem60_Click(object sender, EventArgs e)
+        {
+            PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+
+            FileInfo fi = new FileInfo(pb.Name);
+
+            DialogResult result = MessageBox.Show("Are you sure?", "Converting to Gif", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                Thread convert = new Thread(() =>
+                {
+                    try
+                    {
+                        var inputFile = new MediaFile { Filename = fi.FullName };
+                        var outputFile = new MediaFile { Filename = pb.Name.Substring(0, pb.Name.LastIndexOf("\\")).Replace("\\Pics\\GifVideos", "").Replace("\\Pics\\Affinity", "") + "\\Pics\\Gifs\\1" + fi.Name.Substring(fi.Name.IndexOf("placeholdeerr") + 13).Substring(0, fi.Name.Substring(fi.Name.IndexOf("placeholdeerr") + 13).LastIndexOf('.')) + ".gif" };
+
+                        using (var eng = new Engine())
+                        {
+                            eng.Convert(inputFile, outputFile);
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Unable to convert!", "Failed gif convert", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                });
+                convert.Start();
+            }
+        }
+
         private void button8_MouseEnter(object sender, EventArgs e)
         {
 
@@ -5714,41 +5921,79 @@ namespace MediaPlayer
         private void setDp_Click(object sender, EventArgs e)
         {
             if (prevPB == null) return;
-            PictureBox pb = prevPB;
-            File.WriteAllText(mainDi.FullName + "\\disPic.txt", pb.Name);
-            toRefresh = true;
-            imagePBLink = pb.Name;
+
+            if (globalBtn.Text.Equals("Pictures") || globalBtn.Text.Equals("4K"))
+            {
+                PictureBox pb = prevPB;
+                File.WriteAllText(mainDi.FullName + "\\disPic.txt", pb.Name);
+                toRefresh = true;
+                imagePBLink = pb.Name;
+            }
+            else if (globalBtn.Text.Equals("Gifs"))
+            {
+                PictureBox pb = prevPB;
+
+                if (File.Exists(mainDi.FullName + "\\disGifPic.txt"))
+                {
+                    String[] resumeFile = File.ReadAllLines(mainDi.FullName + "\\disGifPic.txt");
+                    Boolean doesExist = false;
+                    String fileStr = "";
+                    foreach (String str in resumeFile)
+                    {
+                        if (str.Contains(pb.Name))
+                        {
+                            doesExist = true;
+                            return;
+                        }
+                    }
+
+                    if (!doesExist)
+                    {
+                        int max = resumeFile.Length >= 3 ? 2 : resumeFile.Length;
+                        fileStr = pb.Name + "\n";
+
+                        for (int i = 0; i < max; i++)
+                        {
+                            fileStr = fileStr + resumeFile[i] + "\n";
+                        }
+                    }
+                    File.WriteAllText(mainDi.FullName + "\\disGifPic.txt", fileStr);
+                }
+            }
         }
 
         private void resetAndSet_Click(object sender, EventArgs e)
         {
-
             if (prevPB == null) return;
-            PictureBox pb = prevPB;
-            FileInfo fi = new FileInfo(pb.Name);
-            DirectoryInfo di = new DirectoryInfo(fi.DirectoryName);
-            foreach (FileInfo di1 in di.GetFiles())
-            {
-                if (di1.Name.StartsWith("_resized"))
-                    try
-                    {
-                        File.Delete(di1.FullName);
-                    }
-                    catch { }
 
-            }
-            for (int i = 0; i < 10; i++)
+            if (globalBtn.Text.Equals("Pictures") || globalBtn.Text.Equals("4K"))
             {
-                if (!File.Exists(fi.DirectoryName + "\\_resized" + i + fi.Name.Substring(fi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1)))
+                PictureBox pb = prevPB;
+                FileInfo fi = new FileInfo(pb.Name);
+                DirectoryInfo di = new DirectoryInfo(fi.DirectoryName);
+                foreach (FileInfo di1 in di.GetFiles())
                 {
-                    try { ResizeImage(fi.FullName, fi.DirectoryName + "\\_resized" + i + fi.Name.Substring(fi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1), 308, 0, 513, 0); } catch { return; }
-                    String newFileName = renameFile(i, new FileInfo(fi.DirectoryName + "\\_resized" + i + fi.Name.Substring(fi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1)));
-                    File.WriteAllText(mainDi.FullName + "\\disPic.txt", newFileName);
-                    imagePBLink = newFileName;
-                    break;
+                    if (di1.Name.StartsWith("_resized"))
+                        try
+                        {
+                            File.Delete(di1.FullName);
+                        }
+                        catch { }
+
                 }
+                for (int i = 0; i < 10; i++)
+                {
+                    if (!File.Exists(fi.DirectoryName + "\\_resized" + i + fi.Name.Substring(fi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1)))
+                    {
+                        try { ResizeImage(fi.FullName, fi.DirectoryName + "\\_resized" + i + fi.Name.Substring(fi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1), 308, 0, 513, 0); } catch { return; }
+                        String newFileName = renameFile(i, new FileInfo(fi.DirectoryName + "\\_resized" + i + fi.Name.Substring(fi.Name.IndexOf("placeholdderr") + "placeholdderr".Length + 1)));
+                        File.WriteAllText(mainDi.FullName + "\\disPic.txt", newFileName);
+                        imagePBLink = newFileName;
+                        break;
+                    }
+                }
+                toRefresh = true;
             }
-            toRefresh = true;
         }
 
         private void edit_Click(object sender, EventArgs e)
@@ -5868,7 +6113,7 @@ namespace MediaPlayer
             hoverPointer.Visible = false;
             expBtn.ForeColor = Color.White; try
             {
-                expBtn.Image = miniImages[expBtn.Text];
+                expBtn.Image = miniImages[expBtn.Text] != null ? miniImages[expBtn.Text] : null;
                 Padding p = expBtn.Margin;
                 expBtn.Region = null;
                 expBtn.Margin = new Padding(p.Left + 8, p.Top + 4, p.Right, p.Bottom);
@@ -6431,7 +6676,15 @@ namespace MediaPlayer
             if (new StackTrace().GetFrames().Any(x => x.GetMethod().Name == "Close")) { }
             else
             {
-                Application.Exit();
+                try
+                {
+                    this.Close();
+                    Application.Exit();
+                }
+                catch (Exception ex)
+                {
+                    Environment.Exit(0);
+                }
             }
         }
 
@@ -6561,8 +6814,8 @@ namespace MediaPlayer
                 }
                 else if (keyCode == Keys.Delete)
                 {
-                    File.Delete(prevPB.Name);
-                    refreshToolStripMenuItem_Click(null, null);
+                    if (type == "Videos" || type == "Gif Vid" || type == "Affinity")
+                        toolStripMenuItem1_Click(null, null);
                 }
                 else if (keyCode == Keys.NumPad1 || keyCode == Keys.NumPad6 || keyCode == Keys.NumPad2 || keyCode == Keys.NumPad3 || keyCode == Keys.NumPad4 || keyCode == Keys.NumPad5)
                 {

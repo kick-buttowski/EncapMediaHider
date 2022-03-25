@@ -100,7 +100,11 @@ namespace MediaPlayer
             isEnabled = true;
         }
 
-        private void axWindowsMediaPlayer1_MouseDownEvent(object sender, AxWMPLib._WMPOCXEvents_MouseDownEvent e)
+        public WmpOnTop()
+        {
+        }
+
+            private void axWindowsMediaPlayer1_MouseDownEvent(object sender, AxWMPLib._WMPOCXEvents_MouseDownEvent e)
         {
             if (e.nButton == 2)
             {
@@ -240,6 +244,8 @@ namespace MediaPlayer
                 Explorer.wmpOnTop.Dispose();
                 Explorer.wmpOnTop = null;
             if(videoPlayer!=null)videoPlayer.Show();
+            if (VideoPlayer.miniVideoPlayer.staticExp != null)
+                VideoPlayer.miniVideoPlayer.staticExp.Show();
         }
 
         private void WmpOnTop_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -254,6 +260,8 @@ namespace MediaPlayer
                 Explorer.wmpOnTop.Dispose();
                 Explorer.wmpOnTop = null;
                 if (videoPlayer!=null) videoPlayer.Show();
+                if (VideoPlayer.miniVideoPlayer.staticExp != null)
+                    VideoPlayer.miniVideoPlayer.staticExp.Show();
                 return;
             }
 
