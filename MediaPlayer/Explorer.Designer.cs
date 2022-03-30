@@ -72,11 +72,14 @@
             this.calcButton = new System.Windows.Forms.Button();
             this.divider = new System.Windows.Forms.Panel();
             this.menuBtn2 = new System.Windows.Forms.Button();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             this.contextMenuStrip1.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
             this.panel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -421,6 +424,11 @@
             // 
             this.toolTip1.AutomaticDelay = 300;
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 3000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // pointer
             // 
             this.pointer.BackColor = System.Drawing.Color.Red;
@@ -435,7 +443,7 @@
             this.panel1.BackColor = System.Drawing.Color.Black;
             this.panel1.Controls.Add(this.hoverPointer);
             this.panel1.Controls.Add(this.pointer);
-            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Location = new System.Drawing.Point(0, 40);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(9, 1080);
             this.panel1.TabIndex = 0;
@@ -652,10 +660,10 @@
             // flowLayoutPanel3
             // 
             this.flowLayoutPanel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(230)))), ((int)(((byte)(235)))));
-            this.flowLayoutPanel3.Controls.Add(this.menuBtn1);
             this.flowLayoutPanel3.Controls.Add(this.dashBoard);
             this.flowLayoutPanel3.Controls.Add(this.calcButton);
             this.flowLayoutPanel3.Controls.Add(this.divider);
+            this.flowLayoutPanel3.Controls.Add(this.axWindowsMediaPlayer1);
             this.flowLayoutPanel3.Controls.Add(this.menuBtn2);
             this.flowLayoutPanel3.Location = new System.Drawing.Point(9, -5);
             this.flowLayoutPanel3.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
@@ -667,8 +675,8 @@
             // menuBtn1
             // 
             this.menuBtn1.Image = global::Calculator.Properties.Resources.icons8_menu_40;
-            this.menuBtn1.Location = new System.Drawing.Point(2, 5);
-            this.menuBtn1.Margin = new System.Windows.Forms.Padding(2, 5, 2, 0);
+            this.menuBtn1.Location = new System.Drawing.Point(0, 0);
+            this.menuBtn1.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
             this.menuBtn1.Name = "menuBtn1";
             this.menuBtn1.Size = new System.Drawing.Size(41, 38);
             this.menuBtn1.TabIndex = 36;
@@ -687,8 +695,8 @@
             this.dashBoard.ForeColor = System.Drawing.Color.White;
             this.dashBoard.Image = global::Calculator.Properties.Resources.icons8_dashboard_32;
             this.dashBoard.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.dashBoard.Location = new System.Drawing.Point(47, 5);
-            this.dashBoard.Margin = new System.Windows.Forms.Padding(2, 5, 2, 0);
+            this.dashBoard.Location = new System.Drawing.Point(42, 5);
+            this.dashBoard.Margin = new System.Windows.Forms.Padding(42, 5, 2, 3);
             this.dashBoard.Name = "dashBoard";
             this.dashBoard.Size = new System.Drawing.Size(225, 38);
             this.dashBoard.TabIndex = 35;
@@ -708,7 +716,7 @@
             this.calcButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.calcButton.Font = new System.Drawing.Font("Consolas", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.calcButton.ForeColor = System.Drawing.Color.Black;
-            this.calcButton.Location = new System.Drawing.Point(13, 45);
+            this.calcButton.Location = new System.Drawing.Point(13, 48);
             this.calcButton.Margin = new System.Windows.Forms.Padding(13, 2, 10, 0);
             this.calcButton.Name = "calcButton";
             this.calcButton.Size = new System.Drawing.Size(254, 122);
@@ -722,7 +730,7 @@
             // 
             // divider
             // 
-            this.divider.Location = new System.Drawing.Point(0, 172);
+            this.divider.Location = new System.Drawing.Point(0, 175);
             this.divider.Margin = new System.Windows.Forms.Padding(0, 5, 0, 1);
             this.divider.Name = "divider";
             this.divider.Size = new System.Drawing.Size(275, 8);
@@ -731,13 +739,29 @@
             // menuBtn2
             // 
             this.menuBtn2.Image = global::Calculator.Properties.Resources.icons8_menu_40;
-            this.menuBtn2.Location = new System.Drawing.Point(2, 183);
-            this.menuBtn2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 0);
+            this.menuBtn2.Location = new System.Drawing.Point(0, 184);
+            this.menuBtn2.Margin = new System.Windows.Forms.Padding(0, 0, 16, 0);
             this.menuBtn2.Name = "menuBtn2";
             this.menuBtn2.Size = new System.Drawing.Size(41, 38);
             this.menuBtn2.TabIndex = 37;
             this.menuBtn2.UseVisualStyleBackColor = true;
             this.menuBtn2.Click += new System.EventHandler(this.menuBtn2_Click);
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            // 
+            // axWindowsMediaPlayer1
+            // 
+            this.axWindowsMediaPlayer1.ContextMenuStrip = this.contextMenuStrip1;
+            this.axWindowsMediaPlayer1.Enabled = true;
+            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(275, 170);
+            this.axWindowsMediaPlayer1.Margin = new System.Windows.Forms.Padding(0);
+            this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
+            this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
+            this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(0, 0);
+            this.axWindowsMediaPlayer1.TabIndex = 38;
+            this.axWindowsMediaPlayer1.MouseDownEvent += new AxWMPLib._WMPOCXEvents_MouseDownEventHandler(this.axWindowsMediaPlayer1_MouseDownEvent);
             // 
             // Explorer
             // 
@@ -746,6 +770,7 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(1902, 1033);
+            this.Controls.Add(this.menuBtn1);
             this.Controls.Add(this.searchLabel);
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.button2);
@@ -771,6 +796,7 @@
             this.panel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -819,5 +845,7 @@
         private System.Windows.Forms.Button menuBtn1;
         private System.Windows.Forms.Button menuBtn2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
     }
 }

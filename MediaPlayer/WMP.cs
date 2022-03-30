@@ -36,9 +36,12 @@ namespace MediaPlayer
 
         WMP wmp = null;
         VideoPlayer videoPlayer = null;
-        public Boolean hoveredOver = true, hoveredOver2 = true, toggleFullScreen = true, volumeLock = false, 
+        public Boolean hoveredOver = true, hoveredOver2 = true, toggleFullScreen = true, saveResume = true,
             keyLock = false, playStatus = true, toMute = true, toRepeat = false, playable =true, pressedSpace = true, manualFrameChange = false, toAutoSkip = true;
         String directoryPath;
+        public static Boolean volumeLock = false;
+
+        WindowsMediaPlayer wmpSmallPb = new WindowsMediaPlayerClass();
         FileInfo fileName = null;
         Dictionary<String, Double> timeSpan = new Dictionary<String, Double>();
         Thread countThread = null, imgStackThread = null, miniPlayerThread = null;
@@ -62,6 +65,7 @@ namespace MediaPlayer
         public Double startRepeatFrom = 0, duration = 0, currPos = 0, endRepeatTo = 0, hoverDuration = 0;
         double whereAt = 1;
         TimeSpan startTime, endTime;
+        Boolean overWmpSide = false;
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
@@ -92,6 +96,7 @@ namespace MediaPlayer
         public void formClosingDispoer()
         {
             this.timer3.Enabled = false;
+            Application.RemoveMessageFilter(this);
             try
             {
                 this.Hide();
@@ -111,7 +116,7 @@ namespace MediaPlayer
                         {
                             if (str.Contains("@@" + fi.Name + "@@!"))
                             {
-                                fileStr = fileStr + "@@" + fi.Name + "@@!" + Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
+                                fileStr = fileStr + "@@" + fi.Name + "@@!" + axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
                                 continue;
                             }
                             fileStr = fileStr + str + "\n";
@@ -119,43 +124,82 @@ namespace MediaPlayer
                         File.WriteAllText(fi.DirectoryName + "\\resume.txt", fileStr);
                     }
 
-                    if (!Explorer.wmpOnTop.axWindowsMediaPlayer1.URL.Contains("\\Pics\\") && File.Exists(Explorer.directory3.FullName + "\\resumeDb.txt"))
+                    if (!Explorer.wmpOnTop.axWindowsMediaPlayer1.URL.Contains("\\Pics\\") && File.Exists(Explorer.directory3.FullName + "\\resumeDb.txt")
+                         && File.Exists(Explorer.directory3.FullName + "\\resumeDbBest.txt") && saveResume)
                     {
-                        String[] resumeFile = File.ReadAllLines(Explorer.directory3.FullName + "\\resumeDb.txt");
-                        Boolean doesExist = false;
-                        String fileStr = "";
-                        foreach (String str in resumeFile)
+                        if (!Directory.GetParent(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL).FullName.Contains("\\zBest of the Best")
+                            && !Directory.GetParent(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL).FullName.Contains("\\xdm\\"))
                         {
-                            if (str.Contains(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL + "@@!"))
+                            String[] resumeFile = File.ReadAllLines(Explorer.directory3.FullName + "\\resumeDb.txt");
+                            Boolean doesExist = false;
+                            String fileStr = "";
+                            foreach (String str in resumeFile)
                             {
-                                doesExist = true;
-                                fileStr = fileStr + Explorer.wmpOnTop.axWindowsMediaPlayer1.URL + "@@!" +
-                                    Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
+                                if (str.Contains(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL + "@@!"))
+                                {
+                                    doesExist = true;
+                                    fileStr = fileStr + Explorer.wmpOnTop.axWindowsMediaPlayer1.URL + "@@!" +
+                                        Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
+                                    break;
+                                }
                             }
-                        }
-                        foreach (String str in resumeFile)
-                        {
-                            if (!str.Contains(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL + "@@!"))
+                            foreach (String str in resumeFile)
                             {
-                                fileStr = fileStr + str + "\n";
+                                if (!str.Contains(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL + "@@!"))
+                                {
+                                    fileStr = fileStr + str + "\n";
+                                }
                             }
-                        }
-                        if (!doesExist)
-                        {
-                            int max = resumeFile.Length >= 8 ? 7 : resumeFile.Length;
-                            fileStr = Explorer.wmpOnTop.axWindowsMediaPlayer1.URL + 
-                                "@@!" + Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
+                            if (!doesExist)
+                            {
+                                int max = resumeFile.Length >= 5 ? 4 : resumeFile.Length;
+                                fileStr = Explorer.wmpOnTop.axWindowsMediaPlayer1.URL +
+                                    "@@!" + Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
 
-                            for (int i = 0; i < max; i++)
-                            {
-                                fileStr = fileStr + resumeFile[i] + "\n";
+                                for (int i = 0; i < max; i++)
+                                {
+                                    fileStr = fileStr + resumeFile[i] + "\n";
+                                }
                             }
+                            File.WriteAllText(Explorer.directory3.FullName + "\\resumeDb.txt", fileStr);
                         }
-                        File.WriteAllText(Explorer.directory3.FullName + "\\resumeDb.txt", fileStr);
+                        else
+                        {
+                            String[] resumeFile = File.ReadAllLines(Explorer.directory3.FullName + "\\resumeDbBest.txt");
+                            Boolean doesExist = false;
+                            String fileStr = "";
+                            foreach (String str in resumeFile)
+                            {
+                                if (str.Contains(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL + "@@!"))
+                                {
+                                    doesExist = true;
+                                    fileStr = fileStr + Explorer.wmpOnTop.axWindowsMediaPlayer1.URL + "@@!" +
+                                        Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
+                                    break;
+                                }
+                            }
+                            foreach (String str in resumeFile)
+                            {
+                                if (!str.Contains(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL + "@@!"))
+                                {
+                                    fileStr = fileStr + str + "\n";
+                                }
+                            }
+                            if (!doesExist)
+                            {
+                                int max = resumeFile.Length >= 3 ? 2 : resumeFile.Length;
+                                fileStr = Explorer.wmpOnTop.axWindowsMediaPlayer1.URL +
+                                    "@@!" + Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
+
+                                for (int i = 0; i < max; i++)
+                                {
+                                    fileStr = fileStr + resumeFile[i] + "\n";
+                                }
+                            }
+                            File.WriteAllText(Explorer.directory3.FullName + "\\resumeDbBest.txt", fileStr);
+                        }
                     }
 
-                    this.Hide();
-                    Application.RemoveMessageFilter(wmp);
                     //Application.AddMessageFilter(videoPlayer);
                 }
 
@@ -167,21 +211,19 @@ namespace MediaPlayer
                 }
                 this.disposePb.Clear();
 
-                this.timer1.Enabled = false;
+                //this.timer1.Enabled = false;
                 this.axWindowsMediaPlayer1.Ctlcontrols.pause();
                 this.axWindowsMediaPlayer1.currentPlaylist.clear();
                 this.axWindowsMediaPlayer1.URL = "";
-                this.axWindowsMediaPlayer1.Dispose();
+                //this.axWindowsMediaPlayer1.Dispose();
                 this.miniPlayer.miniVidPlayer.currentPlaylist.clear();
                 this.miniPlayer.URL = "";
-                this.miniPlayer.miniVidPlayer.Dispose();
-                this.miniPlayer.Dispose();
-                this.Dispose();
-                this.Close();
+                //this.miniPlayer.miniVidPlayer.Dispose();
+                //this.miniPlayer.Dispose();
+                //this.Dispose();
+                //this.Close();
 
-                this.Dispose();
                 GC.Collect();
-                this.Close();
                 if (TranspBack.toTop) Explorer.wmpOnTop.Show();
                 else
                 {
@@ -200,6 +242,31 @@ namespace MediaPlayer
             catch { }
         }
 
+        public void setRefPb(PictureBox refPb, List<PictureBox> videosPb, VideoPlayer videoPlayer)
+        {
+            this.refPb = refPb;
+            this.videosPb = videosPb;
+            this.videoPlayer = videoPlayer;
+        }
+
+        public void setRefPb(PictureBox refPb, List<PictureBox> videosPb, VideoPlayer videoPlayer, Boolean saveResume)
+        {
+            this.refPb = refPb;
+            this.videosPb = videosPb;
+            this.videoPlayer = videoPlayer;
+            this.saveResume = saveResume;
+        }
+
+        private void flowLayoutPanel1_MouseEnter(object sender, EventArgs e)
+        {
+            overWmpSide = true;
+        }
+
+        private void flowLayoutPanel1_MouseLeave(object sender, EventArgs e)
+        {
+            overWmpSide = false;
+        }
+
         public WMP(PictureBox refPb, PicViewer picViewer, List<PictureBox> videosPb, VideoPlayer videoPlayer)
         {
             InitializeComponent();
@@ -207,13 +274,13 @@ namespace MediaPlayer
             this.videoPlayer = videoPlayer;
             this.picViewer = picViewer;
             this.videosPb = videosPb;
+            miniPlayer = new MiniPlayer(this);
             panel2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, panel2.Width, panel2.Height, 12, 12));
             keyS.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, keyS.Width, keyS.Height, 12, 12));
             label1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, label1.Width, label1.Height, 9, 9));
             this.refPb = refPb;
             mouseClickColor = Explorer.globColor;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            Application.AddMessageFilter(this);
             videoUrls = VideoPlayer.videoUrls;
             axWindowsMediaPlayer1.settings.autoStart = true;
             axWindowsMediaPlayer1.settings.setMode("loop", true);
@@ -307,15 +374,15 @@ namespace MediaPlayer
 
             smallPb.MouseEnter += (s, args) =>
             {
-                miniPlayer.miniVidPlayer.URL = smallPb.Name;
+                overWmpSide = true;
+                /*miniPlayer.miniVidPlayer.URL = smallPb.Name;
                 miniPlayer.miniVidPlayer.settings.volume = 0;
                 miniPlayer.miniVidPlayer.Location = new Point(0,0);
                 miniPlayer.Location = new Point(smallPb.Location.X + smallPb.Width + 10 + flowLayoutPanel1.Location.X
                                                         , flowLayoutPanel1.Location.Y + smallPb.Location.Y - ((miniPlayer.miniVidPlayer.Height- smallPb.Height)/2));
 
                 miniPlayer.Show();
-                WindowsMediaPlayer wmp = new WindowsMediaPlayerClass();
-                IWMPMedia mediainfo = wmp.newMedia(smallPb.Name);
+                IWMPMedia mediainfo = wmpSmallPb.newMedia(smallPb.Name);
 
                 this.hoverDuration = mediainfo.duration;
                 timer4.Enabled = true;
@@ -323,28 +390,42 @@ namespace MediaPlayer
                 miniPlayer.miniVidPlayer.Ctlcontrols.currentPosition = (1.0 / 8.0) * hoverDuration;
                 miniPlayer.miniVidPlayer.settings.rate = 1.60;
                 whereAt = 2.0;
-                timer4.Start();
-
+                timer4.Start();*/
             };
 
 
             smallPb.MouseLeave += (s, args) =>
             {
-                timer4.Stop();
+                overWmpSide = false;
+                /*timer4.Stop();
                 timer4.Enabled = false;
                 miniPlayer.miniVidPlayer.Ctlcontrols.pause();
                 miniPlayer.miniVidPlayer.settings.rate = 1.0;
                 miniPlayer.Hide();
-                GC.Collect();
+                GC.Collect();*/
             };
 
             smallPb.MouseClick += (s, args) =>
             {
-                timer4.Stop();
-                timer4.Enabled = false;
-                miniPlayer.miniVidPlayer.settings.rate = 1.0;
-                miniPlayer.miniVidPlayer.Ctlcontrols.pause();
-                miniPlayer.Hide();
+                overWmpSide = false;
+
+                if (File.Exists(Directory.GetParent(refPb.Name).FullName + "\\resume.txt"))
+                {
+                    String[] resumeFileTemp = File.ReadAllLines(Directory.GetParent(refPb.Name).FullName + "\\resume.txt");
+                    String fileStr = "";
+                    foreach (String str in resumeFileTemp)
+                    {
+                        if (str.Contains("@@" + refPb.Name.Substring(refPb.Name.LastIndexOf("\\") + 1) + "@@!"))
+                        {
+                            fileStr = fileStr + "@@" + refPb.Name.Substring(refPb.Name.LastIndexOf("\\") + 1) + "@@!" + axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
+                            continue;
+                        }
+                        fileStr = fileStr + str + "\n";
+                    }
+                    File.WriteAllText(Directory.GetParent(refPb.Name).FullName + "\\resume.txt", fileStr);
+                }
+
+                refPb = smallPb;
                 wmp.axWindowsMediaPlayer1.URL = smallPb.Name;
                 wmp.axWindowsMediaPlayer1.Name = smallPb.Name;
                 String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
@@ -354,12 +435,27 @@ namespace MediaPlayer
                 textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") + 
                     "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
 
-                wmp.calculateDuration(miniPlayer.miniVidPlayer.Ctlcontrols.currentPosition);
+                Double currPosition = 0;
+                IWMPMedia mediainfo = wmpSmallPb.newMedia(smallPb.Name);
+                this.hoverDuration = mediainfo.duration;
+                currPosition = (1.0 / 8.0) * hoverDuration;
+
+                if (File.Exists(Directory.GetParent(smallPb.Name).FullName + "\\resume.txt"))
+                {
+                    String[] resumeFile = File.ReadAllLines(Directory.GetParent(smallPb.Name).FullName + "\\resume.txt");
+                    FileInfo fi = new FileInfo(smallPb.Name);
+                    foreach (String str in resumeFile)
+                        if (str.Contains("@@" + fi.Name + "@@!"))
+                        {
+                            currPosition = Double.Parse(str.Substring(str.IndexOf("@@!") + 3));
+                        }
+                }
+
+                wmp.calculateDuration(currPosition);
 
                 controlDisposer();
                 fillUpFP1(vidPb);
             };
-
 
             dispPb.Add(smallPb);
             flowLayoutPanel1.Controls.Add(smallPb);
@@ -368,8 +464,8 @@ namespace MediaPlayer
         private void WMP_Activated(object sender, EventArgs e)
         {
 
-            if (VideoPlayer.miniVideoPlayer!=null && VideoPlayer.miniVideoPlayer.staticExp != null)
-                VideoPlayer.miniVideoPlayer.staticExp.Hide();
+            if (Explorer.staticExp != null)
+                Explorer.staticExp.Hide();
         }
 
         private void autoSkip_Click(object sender, EventArgs e)
@@ -456,21 +552,6 @@ namespace MediaPlayer
             }
         }
 
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
 
@@ -480,10 +561,14 @@ namespace MediaPlayer
 
         private void WMP_MouseClick(object sender, MouseEventArgs e)
         {
+            if (this.axWindowsMediaPlayer1.fullScreen)
+            {
+                this.axWindowsMediaPlayer1.fullScreen = false;
+            }
             if (videoPlayer!=null)
-            videoPlayer.Show();
-            if (VideoPlayer.miniVideoPlayer!=null && VideoPlayer.miniVideoPlayer.staticExp != null)
-                VideoPlayer.miniVideoPlayer.staticExp.Show();
+                videoPlayer.Show();
+            if (Explorer.staticExp != null)
+                Explorer.staticExp.Show();
             foreach (PictureBox pb in disposePb)
             {
                 pb.Image.Dispose();
@@ -493,17 +578,9 @@ namespace MediaPlayer
             disposePb.Clear();
             controlDisposer();
             TranspBack.toTop = false;
-            if (this.axWindowsMediaPlayer1.fullScreen)
-            {
-                this.axWindowsMediaPlayer1.fullScreen = false;
-            }
             formClosingDispoer();
         }
 
-        private void axWindowsMediaPlayer1_MouseUpEvent(object sender, _WMPOCXEvents_MouseUpEvent e)
-        {
-
-        }
 
         PictureBox prevPB = new PictureBox();
 
@@ -698,8 +775,8 @@ namespace MediaPlayer
         private void timer4_Tick(object sender, EventArgs e)
         {
             if (miniPlayer.miniVidPlayer.currentMedia == null) return;
-            if (whereAt == 10.0) whereAt = 1.0;
-            double temp = (whereAt / 10.0) * hoverDuration;
+            if (whereAt == 8.0) whereAt = 1.0;
+            double temp = (whereAt / 8.0) * hoverDuration;
             miniPlayer.miniVidPlayer.Ctlcontrols.currentPosition = temp;
             whereAt++;
         }
@@ -755,6 +832,7 @@ namespace MediaPlayer
         
         public void calculateDuration(Double duration1)
         {
+            Application.AddMessageFilter(this);
             if (Explorer.wmpOnTop == null)
             {
                 Explorer.wmpOnTop = new WmpOnTop(videoPlayer);
@@ -773,7 +851,6 @@ namespace MediaPlayer
 
             axWindowsMediaPlayer1.stretchToFit = true;
             this.duration = mediainfo.duration;
-            miniPlayer = new MiniPlayer(this);
             miniPlayer.Location = new Point(50, 699);
 
             axWindowsMediaPlayer1.settings.volume = Explorer.globalVol;
@@ -783,11 +860,11 @@ namespace MediaPlayer
             axWindowsMediaPlayer1.uiMode = "none";
             if (VideoPlayer.isShort)
             {
-                timer1.Tick += ((timers, timerargs) =>
+               /* timer1.Tick += ((timers, timerargs) =>
                 {
                     if (axWindowsMediaPlayer1.Ctlcontrols.currentPosition - duration > -0.05)
                     axWindowsMediaPlayer1.Ctlcontrols.currentPosition = 0.007;
-                });
+                });*/
                 shift = 200;
                 timer3.Interval = 50;
             }
@@ -807,7 +884,6 @@ namespace MediaPlayer
             timer3.Enabled = true;
             timer3.Tick += (s, args) =>
             {
-                
                 try
                 {
                     int currTrack = (int)(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
@@ -1029,6 +1105,11 @@ namespace MediaPlayer
                 }
                 catch { }
             }
+
+            if (repeat)
+                axWindowsMediaPlayer1.settings.setMode("loop", true);
+            else
+                axWindowsMediaPlayer1.settings.setMode("loop", false);
         }
 
         private void miniProgress_MouseLeave(object sender, EventArgs e)
@@ -1388,6 +1469,133 @@ namespace MediaPlayer
         {
             if (m.Msg == WM_MOUSEWHEEL)
             {
+                if (overWmpSide)
+                {
+                    /*timer4.Stop();
+                    timer4.Enabled = false;
+                    miniPlayer.miniVidPlayer.Ctlcontrols.pause();
+                    miniPlayer.miniVidPlayer.settings.rate = 1.0;
+                    miniPlayer.Hide();
+                    GC.Collect();*/
+                    overWmpSide = false;
+                    if (m.WParam.ToString() == "7864320")
+                    {
+                        for (int i = 0; i < vidPb.Count; i++)
+                        {
+                            if (vidPb[i].Name.Equals(wmp.axWindowsMediaPlayer1.Name))
+                            {
+                                if (File.Exists(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt"))
+                                {
+                                    String[] resumeFileTemp = File.ReadAllLines(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt");
+                                    String fileStr = "";
+                                    foreach (String str in resumeFileTemp)
+                                    {
+                                        if (str.Contains("@@" + vidPb.ElementAt(i).Name.Substring(vidPb.ElementAt(i).Name.LastIndexOf("\\") + 1) + "@@!"))
+                                        {
+                                            fileStr = fileStr + "@@" + vidPb.ElementAt(i).Name.Substring(vidPb.ElementAt(i).Name.LastIndexOf("\\") + 1) + "@@!" + axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
+                                            continue;
+                                        }
+                                        fileStr = fileStr + str + "\n";
+                                    }
+                                    File.WriteAllText(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt", fileStr);
+                                }
+
+                                if (i == 0) i = vidPb.Count - 1;
+                                else i = i - 1;
+                                refPb = vidPb.ElementAt(i);
+                                wmp.axWindowsMediaPlayer1.URL = vidPb.ElementAt(i).Name;
+                                wmp.axWindowsMediaPlayer1.Name = vidPb.ElementAt(i).Name;
+                                String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+
+                                startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
+                                endTime = TimeSpan.FromSeconds((int)endRepeatTo);
+                                textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                                    "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+
+                                Double currPosition = 0;
+                                IWMPMedia mediainfo = wmpSmallPb.newMedia(vidPb.ElementAt(i).Name);
+                                this.hoverDuration = mediainfo.duration;
+                                currPosition = (1.0 / 8.0) * hoverDuration;
+
+                                if (File.Exists(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt"))
+                                {
+                                    String[] resumeFile = File.ReadAllLines(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt");
+                                    FileInfo fi = new FileInfo(vidPb.ElementAt(i).Name);
+                                    foreach (String str in resumeFile)
+                                        if (str.Contains("@@" + fi.Name + "@@!"))
+                                        {
+                                            currPosition = Double.Parse(str.Substring(str.IndexOf("@@!") + 3));
+                                        }
+                                }
+
+                                wmp.calculateDuration(currPosition);
+
+                                controlDisposer();
+                                fillUpFP1(vidPb);
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < vidPb.Count; i++)
+                        {
+                            if (vidPb[i].Name.Equals(wmp.axWindowsMediaPlayer1.Name))
+                            {
+                                if (File.Exists(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt"))
+                                {
+                                    String[] resumeFileTemp = File.ReadAllLines(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt");
+                                    String fileStr = "";
+                                    foreach (String str in resumeFileTemp)
+                                    {
+                                        if (str.Contains("@@" + vidPb.ElementAt(i).Name.Substring(vidPb.ElementAt(i).Name.LastIndexOf("\\") + 1) + "@@!"))
+                                        {
+                                            fileStr = fileStr + "@@" + vidPb.ElementAt(i).Name.Substring(vidPb.ElementAt(i).Name.LastIndexOf("\\") + 1) + "@@!" + axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
+                                            continue;
+                                        }
+                                        fileStr = fileStr + str + "\n";
+                                    }
+                                    File.WriteAllText(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt", fileStr);
+                                }
+
+                                if (i == vidPb.Count - 1) i = 0;
+                                else i = i + 1;
+                                refPb = vidPb.ElementAt(i);
+                                wmp.axWindowsMediaPlayer1.URL = vidPb.ElementAt(i).Name;
+                                wmp.axWindowsMediaPlayer1.Name = vidPb.ElementAt(i).Name;
+                                String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+
+                                startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
+                                endTime = TimeSpan.FromSeconds((int)endRepeatTo);
+                                textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                                    "               \t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+
+                                Double currPosition = 0;
+                                IWMPMedia mediainfo = wmpSmallPb.newMedia(vidPb.ElementAt(i).Name);
+                                this.hoverDuration = mediainfo.duration;
+                                currPosition = (1.0 / 8.0) * hoverDuration;
+
+                                if (File.Exists(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt"))
+                                {
+                                    String[] resumeFile = File.ReadAllLines(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt");
+                                    FileInfo fi = new FileInfo(vidPb.ElementAt(i).Name);
+                                    foreach (String str in resumeFile)
+                                        if (str.Contains("@@" + fi.Name + "@@!"))
+                                        {
+                                            currPosition = Double.Parse(str.Substring(str.IndexOf("@@!") + 3));
+                                        }
+                                }
+
+                                wmp.calculateDuration(currPosition);
+
+                                controlDisposer();
+                                fillUpFP1(vidPb);
+                                break;
+                            }
+                        }
+                    }
+                    return true;
+                }
                 if (volumeLock)
                     return true;
                 if(m.WParam.ToString() == "7864320")
@@ -1437,13 +1645,17 @@ namespace MediaPlayer
 
                 if (keyCode == Keys.Back || keyCode == Keys.Escape)
                 {
+                    if (this.axWindowsMediaPlayer1.fullScreen)
+                    {
+                        this.axWindowsMediaPlayer1.fullScreen = false;
+                    }
                     if (keyCode == Keys.Escape)
                     {
                         if (videoPlayer != null)
                             videoPlayer.Show();
 
-                        if (VideoPlayer.miniVideoPlayer.staticExp != null)
-                            VideoPlayer.miniVideoPlayer.staticExp.Show();
+                        if (Explorer.staticExp != null)
+                            Explorer.staticExp.Show();
                     }
                     foreach (PictureBox pb in disposePb)
                     {
@@ -1454,10 +1666,6 @@ namespace MediaPlayer
                     disposePb.Clear();
                     controlDisposer();
                     TranspBack.toTop = keyCode == Keys.Back?true:false;
-                    if (this.axWindowsMediaPlayer1.fullScreen)
-                    {
-                        this.axWindowsMediaPlayer1.fullScreen = false;
-                    }
                     formClosingDispoer();
                     TranspBack.toTop = false;
                 }
@@ -1697,7 +1905,7 @@ namespace MediaPlayer
 
                     if(keyCode == Keys.R)
                     {
-                        timer1.Enabled = !timer1.Enabled;
+                        //timer1.Enabled = !timer1.Enabled;
                         repeat = !repeat;
                         textBox3.Text = "\tKeyLock: " + (keyLock == true ? "On" : "Off") + "\tVolLock: " + (volumeLock == true ? "On" : "Off") + "\tLoop: " + (repeat ? "On" : "Off") + "\t" + axWindowsMediaPlayer1.playState.ToString().Replace("wmpps", "");
                         if (repeat)
@@ -1880,9 +2088,25 @@ namespace MediaPlayer
                         {
                             if (vidPb[i].Name.Equals(wmp.axWindowsMediaPlayer1.Name))
                             {
+                                if (File.Exists(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt"))
+                                {
+                                    String[] resumeFileTemp = File.ReadAllLines(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt");
+                                    String fileStr = "";
+                                    foreach (String str in resumeFileTemp)
+                                    {
+                                        if (str.Contains("@@" + vidPb.ElementAt(i).Name.Substring(vidPb.ElementAt(i).Name.LastIndexOf("\\") + 1) + "@@!"))
+                                        {
+                                            fileStr = fileStr + "@@" + vidPb.ElementAt(i).Name.Substring(vidPb.ElementAt(i).Name.LastIndexOf("\\") + 1) + "@@!" + axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
+                                            continue;
+                                        }
+                                        fileStr = fileStr + str + "\n";
+                                    }
+                                    File.WriteAllText(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt", fileStr);
+                                }
+
                                 if (i == 0) i = vidPb.Count - 1;
                                 else i = i - 1;
-
+                                refPb = vidPb.ElementAt(i);
                                 wmp.axWindowsMediaPlayer1.URL = vidPb.ElementAt(i).Name;
                                 wmp.axWindowsMediaPlayer1.Name = vidPb.ElementAt(i).Name;
                                 String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
@@ -1890,9 +2114,26 @@ namespace MediaPlayer
                                 startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
                                 endTime = TimeSpan.FromSeconds((int)endRepeatTo);
                                 textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
-                    "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss"); 
-                                wmp.calculateDuration(0);
+                    "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
 
+                                Double currPosition = 0;
+                                IWMPMedia mediainfo = wmpSmallPb.newMedia(vidPb.ElementAt(i).Name);
+                                this.hoverDuration = mediainfo.duration;
+                                currPosition = (1.0 / 8.0) * hoverDuration;
+
+
+                                if (File.Exists(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt"))
+                                {
+                                    String[] resumeFile = File.ReadAllLines(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt");
+                                    FileInfo fi = new FileInfo(vidPb.ElementAt(i).Name);
+                                    foreach (String str in resumeFile)
+                                        if (str.Contains("@@" + fi.Name + "@@!"))
+                                        {
+                                            currPosition = Double.Parse(str.Substring(str.IndexOf("@@!") + 3));
+                                        }
+                                }
+
+                                wmp.calculateDuration(currPosition);
                                 controlDisposer();
                                 fillUpFP1(vidPb);
                                 break;
@@ -1926,9 +2167,26 @@ namespace MediaPlayer
                         {
                             if (vidPb[i].Name.Equals(wmp.axWindowsMediaPlayer1.Name))
                             {
+                                if (File.Exists(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt"))
+                                {
+                                    String[] resumeFileTemp = File.ReadAllLines(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt");
+                                    String fileStr = "";
+                                    foreach (String str in resumeFileTemp)
+                                    {
+                                        if (str.Contains("@@" + vidPb.ElementAt(i).Name.Substring(vidPb.ElementAt(i).Name.LastIndexOf("\\") + 1) + "@@!"))
+                                        {
+                                            fileStr = fileStr + "@@" + vidPb.ElementAt(i).Name.Substring(vidPb.ElementAt(i).Name.LastIndexOf("\\") + 1) + "@@!" + axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
+                                            continue;
+                                        }
+                                        fileStr = fileStr + str + "\n";
+                                    }
+                                    File.WriteAllText(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt", fileStr);
+                                }
+
                                 if (i == vidPb.Count-1) i = 0;
                                 else i = i + 1;
 
+                                refPb = vidPb.ElementAt(i);
                                 wmp.axWindowsMediaPlayer1.URL = vidPb.ElementAt(i).Name;
                                 wmp.axWindowsMediaPlayer1.Name = vidPb.ElementAt(i).Name;
                                 String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
@@ -1937,7 +2195,24 @@ namespace MediaPlayer
                                 endTime = TimeSpan.FromSeconds((int)endRepeatTo);
                                 textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
                     "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
-                                wmp.calculateDuration(0);
+
+                                Double currPosition = 0;
+                                IWMPMedia mediainfo = wmpSmallPb.newMedia(vidPb.ElementAt(i).Name);
+                                this.hoverDuration = mediainfo.duration;
+                                currPosition = (1.0 / 8.0) * hoverDuration;
+
+                                if (File.Exists(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt"))
+                                {
+                                    String[] resumeFile = File.ReadAllLines(Directory.GetParent(vidPb.ElementAt(i).Name).FullName + "\\resume.txt");
+                                    FileInfo fi = new FileInfo(vidPb.ElementAt(i).Name);
+                                    foreach (String str in resumeFile)
+                                        if (str.Contains("@@" + fi.Name + "@@!"))
+                                        {
+                                            currPosition = Double.Parse(str.Substring(str.IndexOf("@@!") + 3));
+                                        }
+                                }
+
+                                wmp.calculateDuration(currPosition);
 
                                 controlDisposer();
                                 fillUpFP1(vidPb);

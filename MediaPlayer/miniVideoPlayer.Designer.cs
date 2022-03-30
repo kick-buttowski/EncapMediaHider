@@ -1,7 +1,7 @@
 ﻿
 namespace MediaPlayer
 {
-    partial class miniVideoPlayer
+    partial class miniVideoPlayer1
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@ namespace MediaPlayer
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(miniVideoPlayer));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(miniVideoPlayer1));
             this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();

@@ -17,17 +17,15 @@ namespace MediaPlayer
         VideoPlayer videoPlayer = null;
         int k = 0;
         List<PictureBox> vidPb = null;
-        wmpSide wmpSide = null;
         public static Boolean toTop = false;
 
-        public TranspBack(WMP wmp, wmpSide wmpSide, VideoPlayer videoPlayer, List<PictureBox> vidPb)
+        public TranspBack(WMP wmp, VideoPlayer videoPlayer, List<PictureBox> vidPb)
         {
             InitializeComponent();
             this.wmp = wmp;
             this.videoPlayer = videoPlayer;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.vidPb = vidPb;
-            this.wmpSide = wmpSide;
         }
 
         public void TranspBack_MouseClick(object sender, MouseEventArgs e)
@@ -70,7 +68,6 @@ namespace MediaPlayer
                 }
                 wmp.disposePb.Clear();
 
-                wmp.timer1.Enabled = false;
                     wmp.axWindowsMediaPlayer1.Ctlcontrols.pause();
                     wmp.axWindowsMediaPlayer1.currentPlaylist.clear();
                     wmp.axWindowsMediaPlayer1.URL = "";
@@ -82,12 +79,6 @@ namespace MediaPlayer
                     wmp.Dispose();
                     wmp.Close();
 
-                    if (wmpSide != null)
-                    {
-                        wmpSide.controlDisposer();
-                        wmpSide.Dispose();
-                        wmpSide.Close();
-                    }
                     this.Dispose();
                     GC.Collect();
                     this.Close();

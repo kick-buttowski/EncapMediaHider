@@ -44,17 +44,17 @@ namespace MediaPlayer
         public Dictionary<String, Boolean> isEnlarged = new Dictionary<string, bool>(), tipForFirstTime = new Dictionary<string, bool>();
         String directoryPath;
         public static Boolean toRefresh = false, toChangeTheme = false; 
-        public static bool isChecked = false, isGlobalChecked = false, isShort = false;
-
+        public static bool isChecked = false, isGlobalChecked = false, isShort = false, isHoveredOverPb = false;
+        WindowsMediaPlayer wmpDura = new WindowsMediaPlayerClass();
         public static String imagePBLink = "";
         List<Button> typeButtons = new List<Button>();
         Dictionary<String, Double> timeSpan = new Dictionary<String, Double>();
         List<Image> videosImg = new List<Image>();
         public static List<String> videoUrls = new List<String>();
-        public static wmpSide wmpSide1 = null;
         Explorer exp;
+        int randNo = 0;
         public Label globalDetails = new Label();
-        Double zoom = 1.0;
+        Double zoom = 1.0, loc = 0, prevX = -12, inWmpDuration = 0, whereAtMp = 1.0;
         public static Point relativeLoc;
         public static PictureBox prevPB = null;
         PictureBox globalPb = new PictureBox(); PictureBox pbb = new PictureBox();
@@ -82,7 +82,7 @@ namespace MediaPlayer
         TranspBack transpBack = null;
         Double durationDupe = 0, block = 0;
         List<PictureBox> deletePb = new List<PictureBox>();
-        public static miniVideoPlayer miniVideoPlayer = null;
+        //public static miniVideoPlayer miniVideoPlayer = null;
         DirectoryInfo prevfi = null, nextFi = null;
         Engine engine = new Engine();
         int popUpY = 270;
@@ -91,9 +91,11 @@ namespace MediaPlayer
         Image img4 = null;
         public static Double popUpVideoWidth = 0, popUpVideoHeight = 0;
         public static int stepWise = 15;
-        NewProgressBar newProgressBar = null;
-        checkBox checkBox = new checkBox(); 
-        
+        NewProgressBar newProgressBar = null, newProgressBarNew = null;
+        checkBox checkBox = new checkBox();
+        FlowLayoutPanel prevFlowLayoutPanel = null;
+        Label prevVidDetails = null;
+        PictureBox prevPb = null;
         static Random rr = new Random();
         //static int rand1 = Explorer.rr.Next(0, 256);
         //static int[] color = Explorer.Rand_Color(rand1, 0.5, 0.25);
@@ -293,9 +295,20 @@ namespace MediaPlayer
             newProgressBar.Location = new Point(-2, -3);
             newProgressBar.Value = 0;
             newProgressBar.Margin = new Padding(0);
+
+            newProgressBarNew = new NewProgressBar();
+            newProgressBarNew.Value = 0;
+            newProgressBarNew.BackColor = Color.White;
+            newProgressBarNew.ForeColor = Color.Black;
+            newProgressBarNew.Margin = new Padding(0);
+
             setTheme();
             loadMiniImages();
             enlargeImage = true;
+
+            axWindowsMediaPlayer1.uiMode = "none";
+            axWindowsMediaPlayer1.settings.volume = 0;
+            axWindowsMediaPlayer1.settings.setMode("loop", true);
 
             populateContextMenuForLink();
         }
@@ -1059,7 +1072,7 @@ namespace MediaPlayer
             }
             bySort = false;
 
-            if (miniVideoPlayer != null)
+            /*if (miniVideoPlayer != null)
             {
                 try
                 {
@@ -1074,7 +1087,6 @@ namespace MediaPlayer
                 {
                     miniVideoPlayer.wmp.Hide();
                     Application.RemoveMessageFilter(wmp);
-                    miniVideoPlayer.wmp.timer1.Enabled = false;
                     try
                     {
                         miniVideoPlayer.wmp.axWindowsMediaPlayer1.Ctlcontrols.pause();
@@ -1103,7 +1115,7 @@ namespace MediaPlayer
                 miniVideoPlayer.Close();
                 miniVideoPlayer = null;
                 GC.Collect();
-            }
+            }*/
             button1.Text = trackBar1.Value.ToString();
             if (deletePb.Count > 0)
             {
@@ -1249,7 +1261,7 @@ namespace MediaPlayer
         }
 
         private void pbClick(PictureBox pb)
-        {
+        {/*
             if (type == "Videos" || type == "Gif Vid" || type == "Affinity")
             {
                 String fileName = pb.Name;
@@ -1369,7 +1381,7 @@ namespace MediaPlayer
                     miniVideoPlayer.axWindowsMediaPlayer1_MouseDownEvent(null, null);
                 }
             }
-            else if (type == "Pictures" || type == "4K" || type == "Gifs")
+            else */if (type == "Pictures" || type == "4K" || type == "Gifs")
             {
 
                 Application.RemoveMessageFilter(this);
@@ -1483,100 +1495,6 @@ namespace MediaPlayer
                 Calculator.disCef = true;
                 disCef = true;
             }*/
-            else if (type == "Gif Vid" || type == "Affinity")
-            {
-                /*Application.RemoveMessageFilter(this);
-                WMP wmp = null;
-
-                wmp = new WMP(pb);
-                //wmp.axWindowsMediaPlayer1.URL = fileInfo.FullName;
-                wmp.axWindowsMediaPlayer1.Name = pb.Name;
-                WMPLib.IWMPPlaylist playlist = wmp.axWindowsMediaPlayer1.playlistCollection.newPlaylist("myplaylist");
-                WMPLib.IWMPMedia media;
-                WMPLib.IWMPMedia currMedia = null;
-                int i = 0;
-                DirectoryInfo shortVideoDi = new DirectoryInfo(new FileInfo(pb.Name).DirectoryName);
-
-                List<FileInfo> filesFi = shortVideoDi.GetFiles().OrderByDescending(f => f.LastWriteTime)
-                                                  .ToList();
-                if (sortBySize)
-                    filesFi = shortVideoDi.GetFiles().OrderByDescending(f => f.Length).ToList();
-                if (sortByDate)
-                    filesFi = shortVideoDi.GetFiles().OrderByDescending(f => f.LastWriteTime).ToList();
-
-
-                foreach (FileInfo file in filesFi)
-                {
-                    media = wmp.axWindowsMediaPlayer1.newMedia(file.FullName);
-                    playlist.appendItem(media);
-
-                    if (file.FullName.Equals(pb.Name))
-                        currMedia = media;
-                }
-
-                wmp.axWindowsMediaPlayer1.currentPlaylist = playlist;
-                wmp.axWindowsMediaPlayer1.Ctlcontrols.playItem(currMedia);
-
-                wmp.Location = new Point(298, 100);
-                wmp.calculateDuration(0, true);
-
-                wmpSide1 = new wmpSide(wmp, null, true);
-                wmpSide1.fillUpFP1(shortVideosPb);
-                wmpSide1.Location = new Point(0, 55);
-
-                TranspBack transpBack = new TranspBack(wmp, wmpSide1, this, shortVideosPb);
-                transpBack.Show();
-                wmp.Show();
-                wmpSide1.Show();*/
-                Application.RemoveMessageFilter(this);
-                timer2.Interval = 50;
-                isShort = true;
-                Point controlLoc = this.PointToScreen(pb.Location);
-                int x = controlLoc.X - this.Location.X + 221, y = controlLoc.Y - this.Location.Y - 10 + 76;
-                if (x + 515 > 1920)
-                {
-                    x = x - ((x + 515) - 1920) - 2;
-                }
-
-                if (y < 0)
-                {
-                    y = 1;
-                }
-                else
-                if (y + 292 > 1080)
-                {
-                    y = y - ((y + 292) - 1080) - 2;
-                }
-                Point relativeLoc = new Point(x, y);
-                miniVideoPlayer.Region = null;
-                miniVideoPlayer.axWindowsMediaPlayer1.Region = null;
-                miniVideoPlayer.setData(pb, new FileInfo(pb.Name), this);
-                miniVideoPlayer.axWindowsMediaPlayer1.enableContextMenu = false;
-                double width = 515 * 1, height = 292 * 1, increment = 0.01;
-                miniVideoPlayer.Location = relativeLoc;
-                miniVideoPlayer.Size = new Size((int)width, (int)height);
-                miniVideoPlayer.axWindowsMediaPlayer1.Size = new Size((int)width, (int)height);
-                miniVideoPlayer.axWindowsMediaPlayer1.Location = new Point(0, 0);
-                miniVideoPlayer.axWindowsMediaPlayer1.URL = pb.Name;
-                miniVideoPlayer.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, miniVideoPlayer.Width, miniVideoPlayer.Height, 20, 20));
-                miniVideoPlayer.axWindowsMediaPlayer1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, miniVideoPlayer.axWindowsMediaPlayer1.Width, miniVideoPlayer.axWindowsMediaPlayer1.Height, 20, 20));
-                miniVideoPlayer.Show();
-                /*timer2.Tick += (s1, a1) =>
-                {
-                    width = 515 * (0.9 + increment); height = 292 * (0.9 + increment);
-                    miniVideoPlayer.Size = new Size((int)width, (int)height);
-                    miniVideoPlayer.axWindowsMediaPlayer1.Size = new Size((int)width, (int)height);
-                    increment = increment + 0.01;
-                    if ((int)width == 515)
-                    {
-                        timer2.Stop();
-                        miniVideoPlayer.axWindowsMediaPlayer1.URL = pb.Name;
-                    }
-                };*/
-                //timer2.Start();
-                if (enter == true)
-                    miniVideoPlayer.axWindowsMediaPlayer1_MouseDownEvent(null, null);
-            }
         }
 
 
@@ -2083,10 +2001,19 @@ namespace MediaPlayer
                 dupeLabel3.Margin = new Padding(0, 8, 0, 0);
                 dupeLabel3.MouseEnter += (s, a) =>
                 {
-                    if (miniVideoPlayer != null)
-                        miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
+                    if (prevFlowLayoutPanel != null)
+                    {
+                        prevFlowLayoutPanel.Controls.Clear();
+
+                        prevFlowLayoutPanel.Controls.Add(prevPb);
+                        prevFlowLayoutPanel.Controls.Add(prevVidDetails);
+                        prevFlowLayoutPanel = null;
+                        isHoveredOverPb = false;
+                        timer1.Stop();
+                    }
+                    GC.Collect();
                 };
-                flowLayoutPanel1.Controls.Add(dupeLabel3);
+                if(playListDi.GetFiles().Length!=0) flowLayoutPanel1.Controls.Add(dupeLabel3);
 
                 int id = 0;
                 ToolStripMenuItem[] tempStripMenuItem = new ToolStripMenuItem[playListDi.GetFiles().Length];
@@ -2125,93 +2052,182 @@ namespace MediaPlayer
                             };
 
                     tempStripMenuItem[id].Tag = id++;
+
                     PictureBox pb = new PictureBox();
                         pb.Dock = DockStyle.Top;
-                        pb.Name = subDir.FullName;
                         pb.Size = new Size(515, 292);
                         pb.SizeMode = PictureBoxSizeMode.Zoom;
                         pb.ContextMenuStrip = contextMenuStrip1;
                         pb.SizeMode = PictureBoxSizeMode.Zoom;
-                        pb.BackColor = mouseClickColor;
                     pb.ContextMenuStrip = contextMenuStrip5;
-                    pb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, pb.Width, pb.Height, 18, 18));
                         DirectoryInfo di = new DirectoryInfo(subDir.FullName);
                         Random random = new Random();
-                        int randNo = 0;
                         if (files.Count > 0)
                         {
                             randNo = random.Next(files.Count);
                             pb.Image = setDefaultPic(new FileInfo(files.ElementAt(randNo)), pb);
                         }
-                        pb.Margin = new Padding(5, 10, 17, 0);
+                        pb.Margin = new Padding(0,0,0,0);
+                    pb.Name = subDir.FullName;
 
-                        pb.MouseEnter += (s1, q1) =>
-                        {
-                            if (miniVideoPlayer != null)
-                                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
-
-                            //vidDetails.BackColor = mouseClickColor;
-                            //timer2.Interval = 100;
-                            /*if (prevPB != null)
-                            {
-                                prevPB.BackColor = darkBackColor;
-                                Font myfont1 = new Font("Segoe UI", 9, FontStyle.Regular);
-                                globalDetails.Font = myfont1;
-                                globalDetails.ForeColor = Color.White;
-                            }
-                            prevPB = pb;
-                            globalDetails = vidDetails;
-                            Font myfont = new Font("Comic Sans MS", 9, FontStyle.Regular);
-                            globalDetails.Font = myfont;
-                            globalDetails.ForeColor = mouseClickColor;*/
-                            enter = false;
-
-                            /*timer2.Enabled = true;
-                            timer2.Tick += (s2, a) =>
-                            {
-                                timer2.Enabled = false;
-                                if (mouseEnter) ;
-                            };*/
-                            pbClick(pb);
-                        };
-
-                        flowLayoutPanel1.Controls.Add(pb);
-
-                        Label vidDetails = new Label();
+                    Label vidDetails = new Label();
                         vidDetails.Text = subDir.Name.Replace(subDir.Extension,"");
                         vidDetails.Font = new Font("Segoe UI", 9, FontStyle.Bold);
-                        vidDetails.BackColor = darkBackColor;
-                        vidDetails.Size = new Size(515, 24);
+                        vidDetails.BackColor = flowLayoutPanel2.BackColor;
+                        vidDetails.Size = new Size(515, 29);
                         vidDetails.ForeColor = Color.White;
                         vidDetails.TextAlign = ContentAlignment.TopCenter;
                         vidDetails.Padding = new Padding(0);
-                        vidDetails.Margin = new Padding(5, 2, 17, 0);
-                        vidDetails.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, vidDetails.Width, vidDetails.Height, 2, 2));
-                        meta.Add(vidDetails);
+                        vidDetails.Margin = new Padding(0,2,0,0);
 
-                        if (meta.Count == 3)
+
+                    FlowLayoutPanel flowLayoutPanel = new FlowLayoutPanel();
+                    flowLayoutPanel.FlowDirection = FlowDirection.LeftToRight;
+                    flowLayoutPanel.BackColor = flowLayoutPanel2.BackColor;
+                    flowLayoutPanel.Margin = new Padding(15, 0, 0, 15);
+                    flowLayoutPanel.Size = new Size(pb.Width, pb.Height + vidDetails.Height + 3);
+                    flowLayoutPanel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel.Width, flowLayoutPanel.Height, 12, 12));
+
+                    flowLayoutPanel.Controls.Add(pb);
+                    flowLayoutPanel.Controls.Add(vidDetails);
+                    flowLayoutPanel1.Controls.Add(flowLayoutPanel);
+
+
+                    vidDetails.MouseEnter += (s, e) =>
+                    {
+                        if (isHoveredOverPb)
                         {
-                            foreach (Label label in meta)
-                            {
-                                flowLayoutPanel1.Controls.Add(label);
-                            }
-                            meta.Clear();
+                            timer1.Stop();
+                            axWindowsMediaPlayer1.settings.rate = 1.0;
                         }
+                    };
+
+                    vidDetails.MouseMove += (s, e) =>
+                    {
+                        if (isHoveredOverPb)
+                        {
+                            loc = e.X;
+
+                            if (loc - prevX > 5 || loc - prevX < -5)
+                            {
+                                prevX = loc;
+                                axWindowsMediaPlayer1.Ctlcontrols.currentPosition = ((double)loc / (double)vidDetails.Width) * inWmpDuration;
+                                newProgressBarNew.Value = (int)axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+                            }
+                        }
+                    };
+
+                    vidDetails.MouseClick += (s, e) =>
+                    {
+                        if (isHoveredOverPb)
+                        {
+                            Application.RemoveMessageFilter(this);
+
+                            if (pb.Name.EndsWith(".txt"))
+                            {
+                                List<PictureBox> tempList = new List<PictureBox>();
+                                List<String> dir = File.ReadAllLines(pb.Name).ToList();
+                                if (dir.Count == 0)
+                                    return;
+
+                                foreach (String file in dir)
+                                {
+                                    PictureBox tempPb = new PictureBox();
+                                    tempPb.Name = file;
+                                    tempPb.Image = setDefaultPic(new FileInfo(file), tempPb);
+                                    if (tempPb.Image != null) tempPb.Image.Dispose();
+                                    tempList.Add(tempPb);
+                                }
+
+                                this.Hide();
+                                Explorer.wmp.Location = new Point(0, 28);
+                                Explorer.wmp.setRefPb(pb, tempList, this);
+                                Explorer.wmp.axWindowsMediaPlayer1.URL = files.ElementAt(randNo);
+                                Explorer.wmp.axWindowsMediaPlayer1.Name = files.ElementAt(randNo);
+                                Explorer.wmp.calculateDuration(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
+                                Explorer.wmp.Show();
+                                axWindowsMediaPlayer1.Ctlcontrols.pause();
+                            }
+                        }
+                    };
+
+                    vidDetails.MouseLeave += (s, e) =>
+                    {
+                        whereAtMp = 1.0;
+                        while ((whereAtMp / 9.0) * inWmpDuration < axWindowsMediaPlayer1.Ctlcontrols.currentPosition)
+                        {
+                            whereAtMp++;
+                        }
+                        axWindowsMediaPlayer1.settings.rate = 1.35;
+                        timer1.Start();
+                    };
+
+                    pb.MouseEnter += (s1, q1) =>
+                    {
+                        GC.Collect();
+                        timer1.Stop();
+                        IWMPMedia mediainfo = wmpDura.newMedia(files.ElementAt(randNo));
+                        inWmpDuration = mediainfo.duration;
+
+                        if (prevFlowLayoutPanel != null)
+                        {
+                            prevFlowLayoutPanel.Controls.Clear();
+
+                            prevFlowLayoutPanel.Controls.Add(prevPb);
+                            prevFlowLayoutPanel.Controls.Add(prevVidDetails);
+                            isHoveredOverPb = false;
+                            timer1.Stop();
+                        }
+
+                        isHoveredOverPb = true;
+                        prevFlowLayoutPanel = flowLayoutPanel;
+                        prevPb = pb;
+                        prevVidDetails = vidDetails;
+
+                        flowLayoutPanel.Controls.Clear();
+
+                        whereAtMp = 1.0;
+                        axWindowsMediaPlayer1.URL = files.ElementAt(randNo);
+                        axWindowsMediaPlayer1.settings.rate = 1.35;
+                        newProgressBarNew.Maximum = (int)inWmpDuration;
+
+                        Double currPosition = 0;
+
+                        if (File.Exists(mainDi.FullName + "\\resume.txt"))
+                        {
+                            String[] resumeFile = File.ReadAllLines(mainDi.FullName + "\\resume.txt");
+                            FileInfo fi = new FileInfo(files.ElementAt(randNo));
+                            foreach (String str in resumeFile)
+                                if (str.Contains("@@" + fi.Name + "@@!"))
+                                {
+                                    currPosition = Double.Parse(str.Substring(str.IndexOf("@@!") + 3));
+                                    while ((whereAtMp / 9.0) * inWmpDuration < currPosition)
+                                    {
+                                        whereAtMp++;
+                                    }
+                                }
+                        }
+
+                        if (currPosition == 0)
+                        {
+                            whereAtMp = 1.0;
+                            currPosition = (whereAtMp / 9.0) * inWmpDuration;
+                            whereAtMp++;
+                        }
+                        axWindowsMediaPlayer1.Ctlcontrols.currentPosition = currPosition;
+
+                        newProgressBarNew.Value = (int)axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+
+                        //VideoPlayer.axWindowsMediaPlayer1.URL = pb.Name;
+                        flowLayoutPanel.Controls.Add(axWindowsMediaPlayer1);
+                        flowLayoutPanel.Controls.Add(newProgressBarNew);
+                        flowLayoutPanel.Controls.Add(vidDetails);
+                        timer1.Start();
+                    };
                 }
 
                 this.toolStripMenuItem55.DropDownItems.AddRange(tempStripMenuItem);
-                for (int y = 0; y < 3 - meta.Count; y++)
-                {
-                    PictureBox pb = new PictureBox();
-                    pb.Size = new Size(515, 1);
-                    flowLayoutPanel1.Controls.Add(pb);
-                }
-                foreach (Label label in meta)
-                {
-                    flowLayoutPanel1.Controls.Add(label);
-                }
 
-                meta.Clear();
                 Label dupeLabel2 = new Label();
                 dupeLabel2.Text = "Local Videos";
                 dupeLabel2.Font = new Font("Segoe UI", 22, FontStyle.Bold);
@@ -2219,13 +2235,24 @@ namespace MediaPlayer
                 dupeLabel2.Size = new Size(1610, 55);
                 dupeLabel2.ForeColor = Color.White;
                 dupeLabel2.TextAlign = ContentAlignment.MiddleLeft;
-                dupeLabel2.Margin = new Padding(0, 8, 0, 0);
+                dupeLabel2.Margin = new Padding(0, 8, 0, 8);
                 dupeLabel2.MouseEnter += (s, a) =>
                 {
-                    if (miniVideoPlayer != null)
-                        miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
+                    if (prevFlowLayoutPanel != null)
+                    {
+                        prevFlowLayoutPanel.Controls.Clear();
+
+                        prevFlowLayoutPanel.Controls.Add(prevPb);
+                        prevFlowLayoutPanel.Controls.Add(prevVidDetails);
+                        prevFlowLayoutPanel = null;
+                        isHoveredOverPb = false;
+                        timer1.Stop();
+                    }
+                    GC.Collect();
                 };
                 flowLayoutPanel1.Controls.Add(dupeLabel2);
+                newProgressBarNew.Size = new Size(515, 3);
+                axWindowsMediaPlayer1.Size = new Size(515, 292);
                 for (int i = 0; i < priorityList.Count; i++)
                 {
                     FileInfo fileInfo = null;
@@ -2246,6 +2273,7 @@ namespace MediaPlayer
                         catch { }
                         continue;
                     }
+
                     PictureBox pb = new PictureBox();
                     pb.Dock = DockStyle.Top;
                     pb.Name = fileInfo.FullName;
@@ -2254,9 +2282,8 @@ namespace MediaPlayer
                     pb.Cursor = Cursors.Hand;
                     pb.ContextMenuStrip = contextMenuStrip1;
                     pb.SizeMode = PictureBoxSizeMode.Zoom;
-                    pb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, pb.Width, pb.Height, 18, 18));
                     pb.Image = setDefaultPic(fileInfo, pb);
-                    pb.Margin = new Padding(5, 10, 17, 0);
+                    pb.Margin = new Padding(0, 0, 0, 0);
 
                     if (!resumeTxt.Contains("@@" + fileInfo.Name + "@@!"))
                     {
@@ -2264,7 +2291,8 @@ namespace MediaPlayer
                     }
                     videoUrls.Add(fileInfo.Name);
                     videosPb.Add(pb);
-                    flowLayoutPanel1.Controls.Add(videosPb.ElementAt(videosPb.Count - 1));
+
+                    //flowLayoutPanel1.Controls.Add(videosPb.ElementAt(videosPb.Count - 1));
                     newProgressBar.PerformStep();
 
                     String vidDetText = fileInfo.Name.Contains("placeholdeerr") ? fileInfo.Name.Replace("placeholdeerr00", "\n").Replace("placeholdeerr0", "\n")
@@ -2274,24 +2302,34 @@ namespace MediaPlayer
 
                     Label vidDetails = new Label();
                     vidDetails.Text = vidDetText;
-                    vidDetails.Font = new Font("Segoe UI", 9, FontStyle.Bold);
-                    vidDetails.BackColor = darkBackColor;
-                    vidDetails.Size = new Size(515, 24);
+                    vidDetails.Font = new Font("Segoe UI", 9, FontStyle.Regular);
+                    vidDetails.BackColor = flowLayoutPanel2.BackColor;
+                    vidDetails.Size = new Size(515, 48);
                     vidDetails.ForeColor = Color.White;
                     vidDetails.TextAlign = ContentAlignment.TopCenter;
-                    vidDetails.Padding = new Padding(0);
-                    vidDetails.Margin = new Padding(5, 2, 17, 0);
+                    vidDetails.Padding = new Padding(0,3,0,0);
+                    vidDetails.Margin = new Padding(0, 0, 0, 0);
                     allVidDet.Add(vidDetails);
-                    vidDetails.MouseEnter += (s1, q1) =>
+                    /*vidDetails.MouseEnter += (s1, q1) =>
                     {
 
                         if (miniVideoPlayer != null)
                             miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
-                    };
-                    vidDetails.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, vidDetails.Width, vidDetails.Height, 2, 2));
-                    meta.Add(vidDetails);
+                    };*/
+                    //meta.Add(vidDetails);
 
-                    if (meta.Count == 3)
+                    FlowLayoutPanel flowLayoutPanel = new FlowLayoutPanel();
+                    flowLayoutPanel.FlowDirection = FlowDirection.LeftToRight;
+                    flowLayoutPanel.BackColor = flowLayoutPanel2.BackColor;
+                    flowLayoutPanel.Margin = new Padding(15, 0, 0, 15);
+                    flowLayoutPanel.Size = new Size(pb.Width, pb.Height + vidDetails.Height + 3);
+                    flowLayoutPanel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel.Width, flowLayoutPanel.Height, 12, 12));
+
+                    flowLayoutPanel.Controls.Add(videosPb.ElementAt(videosPb.Count - 1));
+                    flowLayoutPanel.Controls.Add(vidDetails);
+                    flowLayoutPanel1.Controls.Add(flowLayoutPanel);
+
+                    /*if (meta.Count == 3)
                     {
                         foreach (Label label in meta)
                         {
@@ -2322,15 +2360,151 @@ namespace MediaPlayer
                             flowLayoutPanel1.Controls.Add(dupeLabel);
                         }
                         meta.Clear();
-                    }
+                    }*/
 
-                    vidDetails.MouseLeave += (s1, a1) =>
+                    vidDetails.MouseEnter += (s, e) =>
                     {
-                        if (vidDetails.Font.Name != "Comic Sans MS")
-                            vidDetails.BackColor = darkBackColor;
+                        if (isHoveredOverPb)
+                        {
+                            timer1.Stop();
+                            axWindowsMediaPlayer1.settings.rate = 1.0;
+                        }
+                    };
+
+                    vidDetails.MouseMove += (s, e) =>
+                    {
+                        if (isHoveredOverPb)
+                        {
+                            loc = e.X;
+
+                            if (loc - prevX > 5 || loc - prevX < -5)
+                            {
+                                prevX = loc;
+                                axWindowsMediaPlayer1.Ctlcontrols.currentPosition = ((double)loc / (double)vidDetails.Width) * inWmpDuration;
+                                newProgressBarNew.Value = (int)axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+                            }
+                        }
+                    };
+
+                    vidDetails.MouseClick += (s, e) =>
+                    {
+                        if (isHoveredOverPb)
+                        {
+                            Application.RemoveMessageFilter(this);
+
+                            this.Hide();
+                            Explorer.wmp.Location = new Point(0, 28);
+                            Explorer.wmp.setRefPb(pb, videosPb, this);
+                            Explorer.wmp.axWindowsMediaPlayer1.URL = pb.Name;
+                            Explorer.wmp.axWindowsMediaPlayer1.Name = pb.Name;
+                            Explorer.wmp.calculateDuration(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
+                            Explorer.wmp.Show();
+                            axWindowsMediaPlayer1.Ctlcontrols.pause();
+                        }
+                    };
+
+                    vidDetails.MouseLeave += (s, e) =>
+                    {
+                        whereAtMp = 1.0;
+                        while ((whereAtMp / 9.0) * inWmpDuration < axWindowsMediaPlayer1.Ctlcontrols.currentPosition)
+                        {
+                            whereAtMp++;
+                        }
+                        axWindowsMediaPlayer1.settings.rate = 1.35;
+                        timer1.Start();
                     };
 
                     pb.MouseEnter += (s1, q1) =>
+                    {
+                        GC.Collect();
+                        timer1.Stop();
+                        IWMPMedia mediainfo = wmpDura.newMedia(fileInfo.FullName);
+                        inWmpDuration = mediainfo.duration;
+
+                        if (prevFlowLayoutPanel != null)
+                        {
+                            prevFlowLayoutPanel.Controls.Clear();
+
+                            prevFlowLayoutPanel.Controls.Add(prevPb);
+                            prevFlowLayoutPanel.Controls.Add(prevVidDetails);
+                            isHoveredOverPb = false;
+                            timer1.Stop();
+                        }
+
+                        isHoveredOverPb = true;
+                        prevFlowLayoutPanel = flowLayoutPanel;
+                        prevPb = pb;
+                        prevVidDetails = vidDetails;
+
+                        flowLayoutPanel.Controls.Clear();
+
+                        whereAtMp = 1.0;
+                        axWindowsMediaPlayer1.URL = pb.Name;
+                        axWindowsMediaPlayer1.settings.rate = 1.35;
+                        newProgressBarNew.Maximum = (int)inWmpDuration;
+
+                        Double currPosition = 0;
+
+                        if (File.Exists(mainDi.FullName + "\\resume.txt"))
+                        {
+                            String[] resumeFile = File.ReadAllLines(mainDi.FullName + "\\resume.txt");
+                            FileInfo fi = new FileInfo(pb.Name);
+                            foreach (String str in resumeFile)
+                                if (str.Contains("@@" + fi.Name + "@@!"))
+                                {
+                                    currPosition = Double.Parse(str.Substring(str.IndexOf("@@!") + 3));
+                                    while ((whereAtMp / 9.0) * inWmpDuration < currPosition)
+                                    {
+                                        whereAtMp++;
+                                    }
+                                }
+                        }
+
+                        if (currPosition == 0)
+                        {
+                            whereAtMp = 1.0;
+                            currPosition = (whereAtMp / 9.0) * inWmpDuration;
+                            whereAtMp++;
+                        }
+                        axWindowsMediaPlayer1.Ctlcontrols.currentPosition = currPosition;
+                        newProgressBarNew.Value = (int)axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+
+                        //VideoPlayer.axWindowsMediaPlayer1.URL = pb.Name;
+                        flowLayoutPanel.Controls.Add(axWindowsMediaPlayer1);
+                        flowLayoutPanel.Controls.Add(newProgressBarNew);
+                        flowLayoutPanel.Controls.Add(vidDetails);
+                            timer1.Start();
+                        /* if (VideoPlayer.miniVideoPlayer != null)
+                             VideoPlayer.miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
+                         pbClick(pb, isShort, fileName);*/
+                        //timer.Start();
+                        /*timer.Stop();
+                        videoHoverEnabler[pb.Name] = true;
+                        timer.Start();
+                        timer.Tick += (s2, a2) =>
+                        {
+                            if (videoHoverEnabler[fileName] == true)
+                            {
+                                pbClick(pb);
+                                timer.Enabled = false;
+                                timer.Dispose();
+                            }
+                            else
+                            {
+                                timer.Enabled = false;
+                                timer.Dispose();
+                                GC.Collect();
+                            }
+                        };*/
+                    };
+
+                    /*vidDetails.MouseLeave += (s1, a1) =>
+                    {
+                        if (vidDetails.Font.Name != "Comic Sans MS")
+                            vidDetails.BackColor = darkBackColor;
+                    };*/
+
+                    /*pb.MouseEnter += (s1, q1) =>
                     {
                         mouseEnter = true;
                         if (miniVideoPlayer != null)
@@ -2349,7 +2523,7 @@ namespace MediaPlayer
                         globalDetails = vidDetails;
                         Font myfont = new Font("Comic Sans MS", 9, FontStyle.Regular);
                         globalDetails.Font = myfont;
-                        globalDetails.ForeColor = mouseClickColor;*/
+                        globalDetails.ForeColor = mouseClickColor;
                         enter = false;
 
                         /*timer2.Enabled = true;
@@ -2357,9 +2531,9 @@ namespace MediaPlayer
                         {
                             timer2.Enabled = false;
                             if (mouseEnter) ;
-                        };*/
+                        };
                                 pbClick(pb);
-                    };
+                    };*/
 
                     /* pb.MouseClick += (s, args) =>
                      {
@@ -2379,7 +2553,7 @@ namespace MediaPlayer
                          pbClick(pb);
                      };*/
 
-                    vidDetails.MouseClick += (s, args) =>
+                    /*vidDetails.MouseClick += (s, args) =>
                     {
                         if (prevPB != null)
                         {
@@ -2393,14 +2567,13 @@ namespace MediaPlayer
                         Font myfont = new Font("Comic Sans MS", 9, FontStyle.Bold);
                         globalDetails.Font = myfont;
                         globalDetails.BackColor = mouseClickColor;
-                    };
+                    };*/
 
                 }
             }
 
-
             File.WriteAllText(mainDi.FullName + "\\resume.txt", resumeTxt);
-            for (int y = 0; y < 3 - meta.Count; y++)
+            /*for (int y = 0; y < 3 - meta.Count; y++)
             {
                 PictureBox pb = new PictureBox();
                 pb.Size = new Size(515, 1);
@@ -2429,12 +2602,6 @@ namespace MediaPlayer
                 dupeLabel.TextAlign = ContentAlignment.TopCenter;
                 dupeLabel.Padding = new Padding(0);
                 dupeLabel.Margin = new Padding(5, 0, 17, 50);
-                dupeLabel.MouseEnter += (s1, q1) =>
-                {
-
-                    if (miniVideoPlayer != null)
-                        miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
-                };
                 flowLayoutPanel1.Controls.Add(dupeLabel);
             }
 
@@ -2444,7 +2611,7 @@ namespace MediaPlayer
                 pb.Size = new Size(515, 1);
                 flowLayoutPanel1.Controls.Add(pb);
             }
-            meta.Clear();
+            meta.Clear();*/
             /*Button dummy = new Button();
             dummy.Text = "";
             dummy.Font = new Font("Segoe UI", 13, FontStyle.Bold);
@@ -2463,12 +2630,7 @@ namespace MediaPlayer
             dupeLabel1.ForeColor = Color.White;
             dupeLabel1.TextAlign = ContentAlignment.MiddleLeft;
             dupeLabel1.Margin = new Padding(0, 15, 0, 5);
-            dupeLabel1.MouseEnter += (s, a) =>
-            {
-                if (miniVideoPlayer != null)
-                    miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
-            };
-            flowLayoutPanel1.Controls.Add(dupeLabel1);
+            if(webLinkStr.Length != 0) flowLayoutPanel1.Controls.Add(dupeLabel1);
             meta.Clear();
             for (int i = 0; i < webLinkStr.Length; i++)
             {
@@ -4090,13 +4252,10 @@ namespace MediaPlayer
             dupeLabel2.ForeColor = Color.White;
             dupeLabel2.TextAlign = ContentAlignment.MiddleLeft;
             dupeLabel2.Margin = new Padding(0, 8, 0, 0);
-            dupeLabel2.MouseEnter += (s, a) =>
-            {
-                if (miniVideoPlayer != null)
-                    miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
-            };
             flowLayoutPanel1.Controls.Add(dupeLabel2);
 
+            newProgressBarNew.Size = new Size(386, 3);
+            axWindowsMediaPlayer1.Size = new Size(386, 219);
             List<Label> meta = new List<Label>();
             foreach (FileInfo fileInfo in filesFi)
             {
@@ -4142,12 +4301,11 @@ namespace MediaPlayer
                 pb.SizeMode = PictureBoxSizeMode.Zoom;
                 pb.ContextMenuStrip = contextMenuStrip1;
                 pb.SizeMode = PictureBoxSizeMode.Zoom;
-                pb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, pb.Width, pb.Height, 18, 18));
                 pb.Image = setDefaultPic(fileInfo, pb);
-                pb.Margin = new Padding(5, 10, 10, 0);
+                pb.Margin = new Padding(0);
                 videoUrls.Add(fileInfo.Name);
                 shortVideosPb.Add(pb);
-                flowLayoutPanel1.Controls.Add(shortVideosPb.ElementAt(shortVideosPb.Count - 1));
+                //flowLayoutPanel1.Controls.Add(shortVideosPb.ElementAt(shortVideosPb.Count - 1));
                 newProgressBar.PerformStep();
 
                 String vidDetText = fileInfo.Name.Contains("placeholdeerr") ? fileInfo.Name.Replace("placeholdeerr00", "\n").Replace("placeholdeerr0", "\n")
@@ -4155,22 +4313,26 @@ namespace MediaPlayer
 
                 Label vidDetails = new Label();
                 vidDetails.Text = vidDetText;
-                vidDetails.Font = new Font("Segoe UI", 9, FontStyle.Bold);
-                vidDetails.BackColor = darkBackColor;
-                vidDetails.Size = new Size(386, 24);
+                vidDetails.Font = new Font("Segoe UI", 9, FontStyle.Regular);
+                vidDetails.BackColor = flowLayoutPanel2.BackColor;
+                vidDetails.Size = new Size(386, 45);
                 vidDetails.ForeColor = Color.White;
                 vidDetails.TextAlign = ContentAlignment.TopCenter;
-                vidDetails.Padding = new Padding(0);
-                vidDetails.Margin = new Padding(5, 2, 10, 0);
+                vidDetails.Padding = new Padding(0,2,0,0);
+                vidDetails.Margin = new Padding(0,0,0,0);
                 allVidDet.Add(vidDetails);
-                vidDetails.MouseEnter += (s1, q1) =>
-                {
 
-                    if (miniVideoPlayer != null)
-                        miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
-                };
-                vidDetails.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, vidDetails.Width, vidDetails.Height, 2, 2));
-                meta.Add(vidDetails);
+                FlowLayoutPanel flowLayoutPanel = new FlowLayoutPanel();
+                flowLayoutPanel.FlowDirection = FlowDirection.LeftToRight;
+                flowLayoutPanel.BackColor = flowLayoutPanel2.BackColor;
+                flowLayoutPanel.Margin = new Padding(15, 0, 0, 10);
+                flowLayoutPanel.Size = new Size(pb.Width, pb.Height + vidDetails.Height + 3);
+                flowLayoutPanel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel.Width, flowLayoutPanel.Height, 9, 9));
+
+                flowLayoutPanel.Controls.Add(pb);
+                flowLayoutPanel.Controls.Add(vidDetails);
+                flowLayoutPanel1.Controls.Add(flowLayoutPanel);
+                /*meta.Add(vidDetails);
 
                 if (meta.Count == 4)
                 {
@@ -4210,29 +4372,46 @@ namespace MediaPlayer
                     mouseEnter = false;
                     if (vidDetails.Font.Name != "Comic Sans MS")
                         vidDetails.BackColor = darkBackColor;
-                };
+                };*/
 
                 pb.MouseEnter += (s1, q1) =>
                 {
+                    GC.Collect();
+                    timer1.Stop();
+                    IWMPMedia mediainfo = wmpDura.newMedia(pb.Name);
+                    inWmpDuration = mediainfo.duration;
 
-                        mouseEnter = true;
-                        if (miniVideoPlayer != null)
-                            miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
+                    if (prevFlowLayoutPanel != null)
+                    {
+                        prevFlowLayoutPanel.Controls.Clear();
 
-                        vidDetails.BackColor = mouseClickColor;
-                        timer2.Interval = 100;
-                        enter = false;
+                        prevFlowLayoutPanel.Controls.Add(prevPb);
+                        prevFlowLayoutPanel.Controls.Add(prevVidDetails);
+                        isHoveredOverPb = false;
+                        timer1.Stop();
+                    }
 
-                        timer2.Enabled = true;
-                        timer2.Tick += (s2, a) =>
-                        {
-                            timer2.Enabled = false;
-                            if (mouseEnter) ;
-                        };
-                        pbClick(pb);
+                    isHoveredOverPb = true;
+                    prevFlowLayoutPanel = flowLayoutPanel;
+                    prevPb = pb;
+                    prevVidDetails = vidDetails;
+
+                    flowLayoutPanel.Controls.Clear();
+
+                    axWindowsMediaPlayer1.URL = pb.Name;
+                    axWindowsMediaPlayer1.settings.rate = 1.35;
+                    newProgressBarNew.Maximum = (int)inWmpDuration;
+                    axWindowsMediaPlayer1.Ctlcontrols.currentPosition = 0;
+
+                    newProgressBarNew.Value = (int)axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+
+                    //VideoPlayer.axWindowsMediaPlayer1.URL = pb.Name;
+                    flowLayoutPanel.Controls.Add(axWindowsMediaPlayer1);
+                    flowLayoutPanel.Controls.Add(newProgressBarNew);
+                    flowLayoutPanel.Controls.Add(vidDetails);
                 };
 
-                pb.MouseClick += (s, args) =>
+                /*pb.MouseClick += (s, args) =>
                 {
                     if (prevPB != null)
                     {
@@ -4248,11 +4427,11 @@ namespace MediaPlayer
                     globalDetails.BackColor = mouseClickColor;
                     enter = false;
                     pbClick(pb);
-                };
+                };*/
 
             }
 
-            for (int y = 0; y < 4 - meta.Count; y++)
+           /* for (int y = 0; y < 4 - meta.Count; y++)
             {
                 PictureBox pb = new PictureBox();
                 pb.Size = new Size(386, 1);
@@ -4281,12 +4460,6 @@ namespace MediaPlayer
                 dupeLabel.TextAlign = ContentAlignment.TopCenter;
                 dupeLabel.Padding = new Padding(0);
                 dupeLabel.Margin = new Padding(5, 0, 10, 50);
-                dupeLabel.MouseEnter += (s1, q1) =>
-                {
-
-                    if (miniVideoPlayer != null)
-                        miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
-                };
                 flowLayoutPanel1.Controls.Add(dupeLabel);
             }
 
@@ -4296,21 +4469,7 @@ namespace MediaPlayer
                 pb.Size = new Size(386, 1);
                 flowLayoutPanel1.Controls.Add(pb);
             }
-            meta.Clear();
-            Label dupeLabel1 = new Label();
-            dupeLabel1.Text = "Online Videos";
-            dupeLabel1.Font = new Font("Segoe UI", 22, FontStyle.Bold);
-            dupeLabel1.BackColor = darkBackColor;
-            dupeLabel1.Size = new Size(1610, 55);
-            dupeLabel1.ForeColor = Color.White;
-            dupeLabel1.TextAlign = ContentAlignment.MiddleLeft;
-            dupeLabel1.Margin = new Padding(0, 15, 0, 5);
-            dupeLabel1.MouseEnter += (s, a) =>
-            {
-                if (miniVideoPlayer != null)
-                    miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
-            };
-            flowLayoutPanel1.Controls.Add(dupeLabel1);
+            meta.Clear();*/
             /*foreach (FileInfo fileInfo in filesFi)
             {
                 if (fileInfo.Length == 0)
@@ -4764,7 +4923,6 @@ namespace MediaPlayer
                 {
                     wmp.Hide();
                     Application.RemoveMessageFilter(wmp);
-                    wmp.timer1.Enabled = false;
                     wmp.axWindowsMediaPlayer1.Ctlcontrols.pause();
                     wmp.axWindowsMediaPlayer1.currentPlaylist.clear();
                     wmp.axWindowsMediaPlayer1.Dispose();
@@ -4909,7 +5067,7 @@ namespace MediaPlayer
             Application.RemoveMessageFilter(this);
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        /*private void timer1_Tick(object sender, EventArgs e)
         {
             if (scrollZero == true && noOfTimerRuns <= 10)
             {
@@ -4918,7 +5076,7 @@ namespace MediaPlayer
                 scrollZero = false;
                 noOfTimerRuns++;
             }
-        }
+        }*/
 
         private void button8_Click(object sender, EventArgs e)
         {
@@ -5161,8 +5319,6 @@ namespace MediaPlayer
 
         private void videosBtn_MouseEnter(object sender, EventArgs e)
         {
-            if (miniVideoPlayer != null)
-                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
             enlargeEnter((Button)sender);
             hoverPointer.Location = new Point(0, videosBtn.Location.Y + ((videosBtn.Size.Height - hoverPointer.Size.Height) / 2) - 3);
             hoverPointer.Visible = true;
@@ -5170,8 +5326,6 @@ namespace MediaPlayer
 
         private void picturesBtn_MouseEnter(object sender, EventArgs e)
         {
-            if (miniVideoPlayer != null)
-                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
             enlargeEnter((Button)sender);
             hoverPointer.Location = new Point(0, picturesBtn.Location.Y + ((picturesBtn.Size.Height - hoverPointer.Size.Height) / 2) - 3);
             hoverPointer.Visible = true;
@@ -5179,8 +5333,6 @@ namespace MediaPlayer
 
         private void fourKBtn_MouseEnter(object sender, EventArgs e)
         {
-            if (miniVideoPlayer != null)
-                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
             enlargeEnter((Button)sender);
             hoverPointer.Location = new Point(0, fourKBtn.Location.Y + ((fourKBtn.Size.Height - hoverPointer.Size.Height) / 2) - 3);
             hoverPointer.Visible = true;
@@ -5188,8 +5340,6 @@ namespace MediaPlayer
 
         private void shortVideosBtn_MouseEnter(object sender, EventArgs e)
         {
-            if (miniVideoPlayer != null)
-                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
             enlargeEnter((Button)sender);
             hoverPointer.Location = new Point(0, shortVideosBtn.Location.Y + ((shortVideosBtn.Size.Height - hoverPointer.Size.Height) / 2) - 3);
             hoverPointer.Visible = true;
@@ -5197,8 +5347,6 @@ namespace MediaPlayer
 
         private void gifsBtn_MouseEnter(object sender, EventArgs e)
         {
-            if (miniVideoPlayer != null)
-                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
             enlargeEnter((Button)sender);
             hoverPointer.Location = new Point(0, gifsBtn.Location.Y + ((gifsBtn.Size.Height - hoverPointer.Size.Height) / 2) - 3);
             hoverPointer.Visible = true;
@@ -5214,8 +5362,6 @@ namespace MediaPlayer
         private void flowLayoutPanel1_MouseHover(object sender, EventArgs e)
         {
 
-            if (miniVideoPlayer != null)
-                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
         }
 
 
@@ -5487,16 +5633,12 @@ namespace MediaPlayer
         private void button3_MouseMove(object sender, EventArgs e)
         {
 
-            if (miniVideoPlayer != null)
-                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
             button3.ForeColor = mouseClickColor;
         }
 
         private void button5_MouseEnter(object sender, EventArgs e)
         {
 
-            if (miniVideoPlayer != null)
-                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
             button5.ForeColor = mouseClickColor;
         }
 
@@ -5509,8 +5651,6 @@ namespace MediaPlayer
         private void button4_MouseEnter(object sender, EventArgs e)
         {
 
-            if (miniVideoPlayer != null)
-                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
             button4.ForeColor = mouseClickColor;
         }
 
@@ -5746,42 +5886,84 @@ namespace MediaPlayer
 
         private void flowLayoutPanel2_MouseEnter(object sender, EventArgs e)
         {
-            if (miniVideoPlayer != null)
-                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
         }
 
         private void divider_MouseEnter(object sender, EventArgs e)
         {
-            if (miniVideoPlayer != null)
-                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
         }
 
         private void button6_MouseEnter(object sender, EventArgs e)
         {
 
-            if (miniVideoPlayer != null)
-                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
         }
 
         private void button7_MouseEnter(object sender, EventArgs e)
         {
 
-            if (miniVideoPlayer != null)
-                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
         }
 
         private void button9_MouseEnter(object sender, EventArgs e)
         {
 
-            if (miniVideoPlayer != null)
-                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
+        }
+
+        private void axWindowsMediaPlayer1_MouseDownEvent(object sender, _WMPOCXEvents_MouseDownEvent e)
+        {
+            if (e.nButton == 2)
+                return;
+
+            if (prevPb.Name.EndsWith(".txt"))
+            {Application.RemoveMessageFilter(this);
+                List<PictureBox> tempList = new List<PictureBox>();
+                List<String> dir = File.ReadAllLines(prevPb.Name).ToList();
+                if (dir.Count == 0)
+                    return;
+
+                foreach (String file in dir)
+                {
+                    PictureBox tempPb = new PictureBox();
+                    tempPb.Name = file;
+                    tempPb.Image = setDefaultPic(new FileInfo(file), tempPb);
+                    if (tempPb.Image != null) tempPb.Image.Dispose();
+                    tempList.Add(tempPb);
+                }
+
+                this.Hide();
+                Explorer.wmp.Location = new Point(0, 28);
+                Explorer.wmp.setRefPb(prevPb, tempList, this);
+                List<String> files = File.ReadAllLines(prevPb.Name).ToList();
+                Explorer.wmp.axWindowsMediaPlayer1.URL = files.ElementAt(randNo);
+                Explorer.wmp.axWindowsMediaPlayer1.Name = files.ElementAt(randNo);
+                Explorer.wmp.calculateDuration(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
+                Explorer.wmp.Show();
+                axWindowsMediaPlayer1.Ctlcontrols.pause();
+            }
+            else if (isHoveredOverPb)
+            {
+                Application.RemoveMessageFilter(this);
+
+                this.Hide();
+                Explorer.wmp.Location = new Point(0, 28);
+                Explorer.wmp.setRefPb(prevPb, type == "Videos"?videosPb:shortVideosPb, this);
+                Explorer.wmp.axWindowsMediaPlayer1.URL = prevPb.Name;
+                Explorer.wmp.axWindowsMediaPlayer1.Name = prevPb.Name;
+                Explorer.wmp.calculateDuration(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
+                Explorer.wmp.Show();
+                axWindowsMediaPlayer1.Ctlcontrols.pause();
+            }
+        }
+
+        private void timer1_Tick_1(object sender, EventArgs e)
+        {
+            if (whereAtMp >= 9.0) whereAtMp = 1.0;
+            axWindowsMediaPlayer1.Ctlcontrols.currentPosition = (whereAtMp / 9.0) * inWmpDuration;
+            newProgressBarNew.Value = (int)axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+            whereAtMp++;
         }
 
         private void button10_MouseEnter(object sender, EventArgs e)
         {
 
-            if (miniVideoPlayer != null)
-                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
         }
 
         private void toolStripMenuItem56_Click(object sender, EventArgs e)
@@ -5914,8 +6096,6 @@ namespace MediaPlayer
         private void button8_MouseEnter(object sender, EventArgs e)
         {
 
-            if (miniVideoPlayer != null)
-                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
         }
 
         private void setDp_Click(object sender, EventArgs e)
@@ -6064,19 +6244,25 @@ namespace MediaPlayer
         private void toolStripMenuItem47_Click(object sender, EventArgs e)
         {
             PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
-            String[] resumeFile = File.ReadAllLines(mainDi.FullName + "\\resume.txt");
-            FileInfo fi = new FileInfo(pb.Name);
-            isShort = false;
-            foreach (String str in resumeFile)
-            if (str.Contains("@@" + fi.Name + "@@!"))
+            if (File.Exists(mainDi.FullName + "\\resume.txt"))
             {
-                miniVideoPlayer.pastPos = Double.Parse(str.Substring(str.IndexOf("@@!") + 3));
-                Application.RemoveMessageFilter(this);
-                miniVideoPlayer.setData(pb, new FileInfo(pb.Name), this);
-                miniVideoPlayer.isMoved = true;
-                //miniVideoPlayer.duration = miniVideoPlayer.axWindowsMediaPlayer1.currentMedia.duration;
-                //miniVideoPlayer.newProgressBar.Maximum = (int)miniVideoPlayer.duration;
-                miniVideoPlayer.axWindowsMediaPlayer1_MouseDownEvent(null,null);
+                String[] resumeFile = File.ReadAllLines(mainDi.FullName + "\\resume.txt");
+                FileInfo fi = new FileInfo(pb.Name);
+                isShort = false;
+                foreach (String str in resumeFile)
+                    if (str.Contains("@@" + fi.Name + "@@!"))
+                    {
+                        Application.RemoveMessageFilter(this);
+
+                        this.Hide();
+                        Explorer.wmp.Location = new Point(0, 28);
+                        Explorer.wmp.setRefPb(pb, videosPb, this);
+                        Explorer.wmp.axWindowsMediaPlayer1.URL = pb.Name;
+                        Explorer.wmp.axWindowsMediaPlayer1.Name = pb.Name;
+                        Explorer.wmp.calculateDuration(Double.Parse(str.Substring(str.IndexOf("@@!") + 3)));
+                        Explorer.wmp.Show();
+                        axWindowsMediaPlayer1.Ctlcontrols.pause();
+                    }
             }
         }
 
@@ -6089,8 +6275,6 @@ namespace MediaPlayer
 
         private void expBtn_MouseEnter(object sender, EventArgs e)
         {
-            if (miniVideoPlayer != null)
-                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
             hoverPointer.Visible = false;
             expBtn.ForeColor = mouseClickColor;
             try
@@ -6373,9 +6557,18 @@ namespace MediaPlayer
 
         private void flowLayoutPanel1_MouseEnter(object sender, EventArgs e)
         {
-            if (miniVideoPlayer != null)
-                miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
 
+            if (prevFlowLayoutPanel != null)
+            {
+                prevFlowLayoutPanel.Controls.Clear();
+
+                prevFlowLayoutPanel.Controls.Add(prevPb);
+                prevFlowLayoutPanel.Controls.Add(prevVidDetails);
+                prevFlowLayoutPanel = null;
+                isHoveredOverPb = false;
+                timer1.Stop();
+            }
+            GC.Collect();
         }
 
         private void toolStripMenuItem24_Click(object sender, EventArgs e)
@@ -6787,7 +6980,33 @@ namespace MediaPlayer
                 {
                     enter = true;
                     if (prevPB != null)
-                        pbClick(prevPB);
+                    {
+                        Application.RemoveMessageFilter(this);
+
+                        this.Hide();
+                        Explorer.wmp.Location = new Point(0, 28);
+                        Explorer.wmp.setRefPb(prevPB, videosPb, this);
+                        Explorer.wmp.axWindowsMediaPlayer1.URL = prevPB.Name;
+                        Explorer.wmp.axWindowsMediaPlayer1.Name = prevPB.Name;
+
+                        Double currPosition = (1.0 / 9.0) * inWmpDuration;
+
+                        if (File.Exists(mainDi.FullName + "\\resume.txt"))
+                        {
+                            String[] resumeFile = File.ReadAllLines(mainDi.FullName + "\\resume.txt");
+                            FileInfo fi = new FileInfo(prevPB.Name);
+                            foreach (String str in resumeFile)
+                                if (str.Contains("@@" + fi.Name + "@@!"))
+                                {
+                                    currPosition = Double.Parse(str.Substring(str.IndexOf("@@!") + 3));
+                                    break;
+                                }
+                        }
+
+                        Explorer.wmp.calculateDuration(currPosition);
+                        Explorer.wmp.Show();
+                        axWindowsMediaPlayer1.Ctlcontrols.pause();
+                    }
                 }
                 else if (keyCode == Keys.Escape || keyCode == Keys.Back)
                 {
@@ -6819,8 +7038,6 @@ namespace MediaPlayer
                 }
                 else if (keyCode == Keys.NumPad1 || keyCode == Keys.NumPad6 || keyCode == Keys.NumPad2 || keyCode == Keys.NumPad3 || keyCode == Keys.NumPad4 || keyCode == Keys.NumPad5)
                 {
-                    if (miniVideoPlayer != null)
-                        miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
                     isEnlarged[globalBtn.Text] = false;
                     enlargeLeave(globalBtn, type);
                     if (keyCode == Keys.NumPad1)
@@ -7048,7 +7265,7 @@ namespace MediaPlayer
                     prevPB = videosPb.ElementAt(0);
                     prevPB.BackColor = mouseClickColor;
                     //allVidDet.ElementAt(0).ForeColor = mouseClickColor;
-                    Font myfont = new Font("Comic Sans MS", 10, FontStyle.Bold);
+                    Font myfont = new Font("Comic Sans MS", 9, FontStyle.Regular);
                     allVidDet.ElementAt(0).BackColor = mouseClickColor;
                     globalDetails.Font = myfont;
                     return;
@@ -7059,13 +7276,13 @@ namespace MediaPlayer
                 {
                     globalDetails.ForeColor = Color.White;
                     globalDetails.BackColor = darkBackColor;
-                    Font myfont = new Font("Segoe UI", 10, FontStyle.Bold);
+                    Font myfont = new Font("Segoe UI", 9, FontStyle.Regular);
                     globalDetails.Font = myfont;
                     globalDetails = allVidDet.ElementAt(videosPb.Count - 1);
                     prevPB = videosPb.ElementAt(videosPb.Count - 1);
                     //allVidDet.ElementAt(videosPb.Count - 1).ForeColor = mouseClickColor;
                     allVidDet.ElementAt(videosPb.Count - 1).BackColor = mouseClickColor;
-                    myfont = new Font("Comic Sans MS", 10, FontStyle.Bold);
+                    myfont = new Font("Comic Sans MS", 9, FontStyle.Regular);
                     globalDetails.Font = myfont;
                     index = videosPb.Count - 1;
                 }
@@ -7073,10 +7290,10 @@ namespace MediaPlayer
                 {
                     globalDetails.ForeColor = Color.White;
                     globalDetails.BackColor = darkBackColor;
-                    Font myfont = new Font("Segoe UI", 10, FontStyle.Bold);
+                    Font myfont = new Font("Segoe UI", 9, FontStyle.Regular);
                     globalDetails.Font = myfont;
                     globalDetails = allVidDet.ElementAt(0);
-                    myfont = new Font("Comic Sans MS", 10, FontStyle.Bold);
+                    myfont = new Font("Comic Sans MS", 9, FontStyle.Regular);
                     globalDetails.Font = myfont;
                     prevPB = videosPb.ElementAt(0);
                     //allVidDet.ElementAt(0).ForeColor = mouseClickColor;
@@ -7087,10 +7304,10 @@ namespace MediaPlayer
                 {
                     globalDetails.ForeColor = Color.White;
                     globalDetails.BackColor = darkBackColor;
-                    Font myfont = new Font("Segoe UI", 10, FontStyle.Bold);
+                    Font myfont = new Font("Segoe UI", 9, FontStyle.Regular);
                     globalDetails.Font = myfont;
                     globalDetails = allVidDet.ElementAt(index);
-                    myfont = new Font("Comic Sans MS", 10, FontStyle.Bold);
+                    myfont = new Font("Comic Sans MS", 9, FontStyle.Regular);
                     globalDetails.Font = myfont;
                     prevPB = videosPb.ElementAt(index);
                     //allVidDet.ElementAt(index).ForeColor = mouseClickColor;

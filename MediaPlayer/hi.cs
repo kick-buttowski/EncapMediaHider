@@ -1,6 +1,0 @@
-﻿namespace Calculator
-{
-    class hi
-    {
-    }
-}

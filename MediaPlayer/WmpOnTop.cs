@@ -155,7 +155,7 @@ namespace MediaPlayer
                     wmp.Location = new Point(298, 100);
                     wmp.calculateDuration(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
 
-                    TranspBack transpBack = new TranspBack(wmp, null, null, null);
+                    TranspBack transpBack = new TranspBack(wmp, null, null);
                     transpBack.Show();
                     wmp.Show();
 
@@ -244,8 +244,8 @@ namespace MediaPlayer
                 Explorer.wmpOnTop.Dispose();
                 Explorer.wmpOnTop = null;
             if(videoPlayer!=null)videoPlayer.Show();
-            if (VideoPlayer.miniVideoPlayer.staticExp != null)
-                VideoPlayer.miniVideoPlayer.staticExp.Show();
+            if (Explorer.staticExp != null)
+                Explorer.staticExp.Show();
         }
 
         private void WmpOnTop_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -260,8 +260,8 @@ namespace MediaPlayer
                 Explorer.wmpOnTop.Dispose();
                 Explorer.wmpOnTop = null;
                 if (videoPlayer!=null) videoPlayer.Show();
-                if (VideoPlayer.miniVideoPlayer.staticExp != null)
-                    VideoPlayer.miniVideoPlayer.staticExp.Show();
+                if (Explorer.staticExp != null)
+                    Explorer.staticExp.Show();
                 return;
             }
 

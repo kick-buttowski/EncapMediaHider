@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WMP));
             this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
@@ -50,13 +49,13 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.keyS = new System.Windows.Forms.Button();
-            this.timer4 = new System.Windows.Forms.Timer(this.components);
             this.startLabel = new System.Windows.Forms.Label();
             this.endLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.skipFlowPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.autoSkip = new System.Windows.Forms.Button();
+            this.timer4 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -78,11 +77,6 @@
             this.axWindowsMediaPlayer1.TabIndex = 0;
             this.axWindowsMediaPlayer1.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.axWindowsMediaPlayer1_PlayStateChange);
             // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 2;
-            // 
             // textBox2
             // 
             this.textBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(10)))));
@@ -96,7 +90,6 @@
             this.textBox2.Size = new System.Drawing.Size(160, 30);
             this.textBox2.TabIndex = 4;
             this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // textBox3
             // 
@@ -111,7 +104,6 @@
             this.textBox3.Size = new System.Drawing.Size(604, 30);
             this.textBox3.TabIndex = 5;
             this.textBox3.Text = "\tKeyLock: Off\t      Loop: On";
-            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // textBox4
             // 
@@ -127,7 +119,6 @@
             this.textBox4.TabIndex = 6;
             this.textBox4.Text = "Playback Speed: 1x";
             this.textBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox4.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
             // 
             // textBox5
             // 
@@ -254,6 +245,8 @@
             this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
             this.flowLayoutPanel1.Size = new System.Drawing.Size(294, 815);
             this.flowLayoutPanel1.TabIndex = 14;
+            this.flowLayoutPanel1.MouseEnter += new System.EventHandler(this.flowLayoutPanel1_MouseEnter);
+            this.flowLayoutPanel1.MouseLeave += new System.EventHandler(this.flowLayoutPanel1_MouseLeave);
             // 
             // panel2
             // 
@@ -301,11 +294,6 @@
             this.keyS.UseVisualStyleBackColor = false;
             this.keyS.MouseEnter += new System.EventHandler(this.keyS_DragEnter);
             this.keyS.MouseLeave += new System.EventHandler(this.keyS_MouseLeave);
-            // 
-            // timer4
-            // 
-            this.timer4.Interval = 3500;
-            this.timer4.Tick += new System.EventHandler(this.timer4_Tick);
             // 
             // startLabel
             // 
@@ -378,6 +366,10 @@
             this.autoSkip.UseVisualStyleBackColor = false;
             this.autoSkip.Click += new System.EventHandler(this.autoSkip_Click);
             // 
+            // timer4
+            // 
+            this.timer4.Interval = 3500;
+            // 
             // WMP
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -426,7 +418,6 @@
         #endregion
 
         public AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
-        public System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.TextBox textBox4;
@@ -445,12 +436,12 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button keyS;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Timer timer4;
         private System.Windows.Forms.Label startLabel;
         private System.Windows.Forms.Label endLabel;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.FlowLayoutPanel skipFlowPanel;
         private System.Windows.Forms.Button autoSkip;
+        private System.Windows.Forms.Timer timer4;
     }
 }

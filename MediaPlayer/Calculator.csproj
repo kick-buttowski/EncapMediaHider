@@ -180,24 +180,17 @@
       <DependentUpon>Explorer.cs</DependentUpon>
     </Compile>
     <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="hi.cs" />
     <Compile Include="MiniPlayer.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MiniPlayer.Designer.cs">
       <DependentUpon>MiniPlayer.cs</DependentUpon>
     </Compile>
-    <Compile Include="miniVideoPlayer.cs">
+    <Compile Include="MiniVideoPlayer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="miniVideoPlayer.Designer.cs">
-      <DependentUpon>miniVideoPlayer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ModernCalci.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ModernCalci.Designer.cs">
-      <DependentUpon>ModernCalci.cs</DependentUpon>
+    <Compile Include="MiniVideoPlayer.Designer.cs">
+      <DependentUpon>MiniVideoPlayer.cs</DependentUpon>
     </Compile>
     <Compile Include="NewFileForm.cs">
       <SubType>Form</SubType>
@@ -231,12 +224,6 @@
     <Compile Include="TranspBack.Designer.cs">
       <DependentUpon>TranspBack.cs</DependentUpon>
     </Compile>
-    <Compile Include="PopupVideosPlayer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PopupVideosPlayer.Designer.cs">
-      <DependentUpon>PopupVideosPlayer.cs</DependentUpon>
-    </Compile>
     <Compile Include="PopUpTextBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -263,12 +250,6 @@
     <Compile Include="WmpOnTop.Designer.cs">
       <DependentUpon>WmpOnTop.cs</DependentUpon>
     </Compile>
-    <Compile Include="wmpSide.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wmpSide.Designer.cs">
-      <DependentUpon>wmpSide.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Browser.resx">
       <DependentUpon>Browser.cs</DependentUpon>
     </EmbeddedResource>
@@ -283,15 +264,13 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Explorer.resx">
       <DependentUpon>Explorer.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MiniPlayer.resx">
       <DependentUpon>MiniPlayer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="miniVideoPlayer.resx">
-      <DependentUpon>miniVideoPlayer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ModernCalci.resx">
-      <DependentUpon>ModernCalci.cs</DependentUpon>
+    <EmbeddedResource Include="MiniVideoPlayer.resx">
+      <DependentUpon>MiniVideoPlayer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NewFileForm.resx">
       <DependentUpon>NewFileForm.cs</DependentUpon>
@@ -301,9 +280,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PopUpTextBox.resx">
       <DependentUpon>PopUpTextBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PopupVideosPlayer.resx">
-      <DependentUpon>PopupVideosPlayer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -315,6 +291,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="VideoPlayer.resx">
       <DependentUpon>VideoPlayer.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="WMP.resx">
       <DependentUpon>WMP.cs</DependentUpon>
@@ -322,9 +299,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="WmpOnTop.resx">
       <DependentUpon>WmpOnTop.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wmpSide.resx">
-      <DependentUpon>wmpSide.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

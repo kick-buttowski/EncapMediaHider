@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MediaPlayer
-{ 
+{
     public partial class Calculator : Form
     {
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
@@ -47,7 +47,6 @@ namespace MediaPlayer
             InitializeComponent();
 
             this.DoubleBuffered = true;
-            this.backgroundWorker1.RunWorkerAsync(100);
 
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 20, 20));
@@ -80,13 +79,6 @@ namespace MediaPlayer
             else
                 defColor = new string[]{  "50", "133", "250"};
             tempColor = Color.FromArgb(int.Parse(defColor[0]), int.Parse(defColor[1]), int.Parse(defColor[2]));
-            /*btnAdd.BackColor = tempColor;
-            btnSub.BackColor = tempColor;
-            btnMul.BackColor = tempColor;
-            btnDiv.BackColor = tempColor;
-            btnClear.BackColor = tempColor;
-            btnReset.BackColor = tempColor;
-            btnCopy.BackColor = tempColor;*/
 
             button2.FlatAppearance.MouseOverBackColor = this.BackColor;
             button2.FlatAppearance.MouseDownBackColor= this.BackColor;
@@ -98,6 +90,10 @@ namespace MediaPlayer
             button7.BackColor = tempColor;
             panel1.BackColor = this.BackColor;
             this.Location = new Point(1890, 30);
+
+            btnRes.BackColor = tempColor;
+
+            panel1.BackColor = tempColor;
         }
 
         private void BtnCopy_Click(object sender, EventArgs e)
@@ -338,8 +334,28 @@ namespace MediaPlayer
         private void txtDisplay_TextChanged(object sender, EventArgs e)
         {
             TextBox tbx = (TextBox)sender;
-            timer1.Enabled = true;
-            if (tbx.Text.Equals("Clear"))
+
+            if ((tbx.Text.Equals("608442786042") || tbx.Text.Equals("/**/-+")))
+            {
+                if(v==null)
+                    v = new Explorer(this, false);
+                v.Explorer_Load(null, null);
+                txtDisplay.Text = "";
+                this.Hide();
+                //SetMonitorState(2);
+                v.Show();
+            }
+            else if (tbx.Text.Equals("/**/+-"))
+            {
+                txtDisplay.Text = "";
+                this.Hide();
+                //SetMonitorState(2);
+                if (games == null)
+                    games = new Explorer(this, true);
+                games.Explorer_Load(null, null);
+                games.Show();
+            }
+            else if (tbx.Text.Equals("Clear"))
             {
                 DirectoryInfo di = new DirectoryInfo("F:\\Calculator");
                 deleteTxtFile(di);
@@ -355,7 +371,6 @@ namespace MediaPlayer
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
 
-                    timer1.Enabled = false;
                     foreach (String fi in ofd.FileNames)
                     {
                         WMP wmp = new WMP(null, null, null, null);
@@ -365,7 +380,7 @@ namespace MediaPlayer
                         wmp.Location = new Point(298, 50);
                         wmp.calculateDuration(0);
 
-                        TranspBack transpBack = new TranspBack(wmp, null, null, null);
+                        TranspBack transpBack = new TranspBack(wmp, null, null);
                         transpBack.Show();
                         wmp.Show();
                     }
@@ -373,31 +388,26 @@ namespace MediaPlayer
             }
             else if (tbx.Text.Equals("collage"))
             {
-                timer1.Enabled = false;
                 System.Diagnostics.Process.Start("firefox.exe", "https://www.fotojet.com/apps/?entry=collage");
 
             }
             else if (tbx.Text.Equals("firefox"))
             {
-                timer1.Enabled = false;
                 System.Diagnostics.Process.Start("firefox.exe", "https://www.google.com");
 
             }
         }
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {
-
-            v = new Explorer(this, false);
-            v.Explorer_Load(null, null);
-            btnRes.BackColor = tempColor;
-
-            panel1.BackColor = tempColor;
-        }
-
         private void button6_Click(object sender, EventArgs e)
         {
-
-            Application.Exit();
+            try
+            {
+                this.Close();
+                Application.Exit();
+            }
+            catch (Exception ex)
+            {
+                Environment.Exit(0);
+            }
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -439,10 +449,6 @@ namespace MediaPlayer
 
         }
 
-        private void Calculator_FormClosed(object sender, FormClosedEventArgs e)
-        {
-
-        }
         private bool mouseDown = false;
         private Point lastLocation;
         private void Calculator_MouseDown(object sender, MouseEventArgs e)
@@ -707,50 +713,10 @@ namespace MediaPlayer
             }
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            TextBox tbx = txtDisplay;
-
-            if ((tbx.Text.Equals("608442786042") || tbx.Text.Equals("/**/-+")) && (btnRes.BackColor == tempColor) && !v.Visible)
-            {
-                    txtDisplay.Text = "";
-                    this.Hide();
-                    //SetMonitorState(2);
-                    v.Show();
-            }
-            else if (tbx.Text.Equals("/**/+-"))
-            {
-                txtDisplay.Text = "";
-                this.Hide();
-                //SetMonitorState(2);
-                games = new Explorer(this, true);
-                games.Explorer_Load(null, null);
-                btnRes.BackColor = tempColor;
-
-                panel1.BackColor = tempColor;
-                games.Show();
-            }
-            //tbx.Focus();
-        }
-
         private void Calculator_Activated(object sender, EventArgs e)
         {
             txtDisplay.Focus();
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
-        {
-            
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

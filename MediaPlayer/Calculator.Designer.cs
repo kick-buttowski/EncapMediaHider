@@ -28,10 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Calculator));
             this.txtDisplay = new System.Windows.Forms.TextBox();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -56,7 +54,6 @@
             this.btnCopy = new System.Windows.Forms.Button();
             this.btn7 = new System.Windows.Forms.Button();
             this.btnDecimal = new System.Windows.Forms.Button();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -76,10 +73,6 @@
             this.txtDisplay.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtDisplay.TextChanged += new System.EventHandler(this.txtDisplay_TextChanged);
             this.txtDisplay.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtDisplay_KeyUp);
-            // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
             // button6
             // 
@@ -509,12 +502,6 @@
             this.btnDecimal.UseVisualStyleBackColor = false;
             this.btnDecimal.Click += new System.EventHandler(this.btnDecimal_Click_1);
             // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 300;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.button7);
@@ -557,7 +544,6 @@
 
         #endregion
         private System.Windows.Forms.TextBox txtDisplay;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button2;
@@ -582,7 +568,6 @@
         private System.Windows.Forms.Button btn7;
         private System.Windows.Forms.Button btnDecimal;
         private System.Windows.Forms.Button btnDiv;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Panel panel1;
     }
 }

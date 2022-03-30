@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 namespace MediaPlayer
 {
-    public partial class miniVideoPlayer : Form, IMessageFilter
+    public partial class miniVideoPlayer1 : Form, IMessageFilter
     {
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
@@ -34,7 +34,6 @@ namespace MediaPlayer
         public TranspBack transpBack;
         VideoPlayer videoPlayer = null;
         List<PictureBox> videosPb = null;
-        public static wmpSide wmpSide = null;
         double whereAt = 1.0;
         public bool isMoved = false;
         public NewProgressBar newProgressBar = null;
@@ -47,7 +46,7 @@ namespace MediaPlayer
         public Explorer staticExp = null;
         bool iterateTf = false;
         List<Double> iterateTframes = new List<double>();
-        public miniVideoPlayer(List<PictureBox> videosPb)
+        public miniVideoPlayer1(List<PictureBox> videosPb)
         {
             InitializeComponent();
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -67,7 +66,7 @@ namespace MediaPlayer
             //this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 25, 25));
         }
 
-        public miniVideoPlayer(List<PictureBox> videosPb, Explorer staticExp)
+        public miniVideoPlayer1(List<PictureBox> videosPb, Explorer staticExp)
         {
             InitializeComponent();
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -387,12 +386,7 @@ namespace MediaPlayer
             wmp.Location = new Point(0, 28);
             wmp.calculateDuration(VideoPlayer.isShort? axWindowsMediaPlayer1.Ctlcontrols.currentPosition : (pastPos==0 ? axWindowsMediaPlayer1.Ctlcontrols.currentPosition : pastPos));
 
-            wmpSide = new wmpSide(wmp,null, false);
-            wmpSide.fillUpFP1(videosPb);
-            wmpSide.Location = new Point(0, 0);
-            wmpSide.BackColor = Explorer.darkBackColor;
-
-            transpBack = new TranspBack(wmp, wmpSide, null, null);
+            transpBack = new TranspBack(wmp, null, null);
             //transpBack.Show();
             wmp.Show();
             if(videoPlayer!=null) videoPlayer.Hide();
