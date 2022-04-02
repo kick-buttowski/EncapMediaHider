@@ -247,6 +247,7 @@ namespace MediaPlayer
             this.refPb = refPb;
             this.videosPb = videosPb;
             this.videoPlayer = videoPlayer;
+            saveResume = true;
         }
 
         public void setRefPb(PictureBox refPb, List<PictureBox> videosPb, VideoPlayer videoPlayer, Boolean saveResume)

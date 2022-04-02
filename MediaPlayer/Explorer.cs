@@ -52,6 +52,8 @@ namespace MediaPlayer
 
         public static Explorer staticExp = null;
         FlowLayoutPanel flowLayoutPanel = null;
+        Label dupeLabel2 = null, playRandom = null, shorts = null;
+        List<FlowLayoutPanel> flowLayoutPanels = new List<FlowLayoutPanel>();
         public String searchText = "";
         CustomToolTip tip = null;
         public static DirectoryInfo[] pardirectory = new DirectoryInfo[2];
@@ -87,6 +89,7 @@ namespace MediaPlayer
         public static WmpOnTop wmpOnTop = null;
         public static WmpOnTop wmpOnTopDummy = new WmpOnTop();
         List<PictureBox> videosPb = new List<PictureBox>();
+        List<Label> vidDetailsStack = new List<Label>();
         List<String> randomFiles = new List<string>();
         //PopupVideosPlayer popupVideosPlayer;
         //public static Random rr = new Random();
@@ -1703,7 +1706,7 @@ namespace MediaPlayer
                     button2.BackColor = lightBackColor;
                     button3.BackColor = lightBackColor;
                     button4.BackColor = lightBackColor;
-                    Label dupeLabel2 = new Label();
+                    if(dupeLabel2==null) dupeLabel2 = new Label();
                     dupeLabel2.Text = "Dashboard Refresh";
                     dupeLabel2.Image = global::Calculator.Properties.Resources.icons8_dashboard_32;
                     dupeLabel2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1729,7 +1732,7 @@ namespace MediaPlayer
                     //if (!stackedDb) flowLayoutPanel1.Controls.Add(menuBtn2);
                     //flowLayoutPanel1.Controls.Add(dupeLabel2);
 
-                    Label playRandom = new Label();
+                    if (playRandom == null) playRandom = new Label();
                     playRandom.Text = "Play Something Random ";
                     playRandom.Font = new Font("Consolas", 12, FontStyle.Bold);
                     playRandom.BackColor = lightBackColor;
@@ -1765,7 +1768,7 @@ namespace MediaPlayer
                     };
                     //flowLayoutPanel1.Controls.Add(playRandom);
 
-                    Label shorts = new Label();
+                    if (shorts == null) shorts = new Label();
                     shorts.Text = "Play Shorts";
                     shorts.Font = new Font("Consolas", 12, FontStyle.Bold);
                     shorts.BackColor = lightBackColor;
@@ -1807,12 +1810,13 @@ namespace MediaPlayer
                     //flowLayoutPanel1.Controls.Add(button3);
                     //flowLayoutPanel1.Controls.Add(button2);
 
-                    flowLayoutPanel = new FlowLayoutPanel();
+                    if(flowLayoutPanel == null) flowLayoutPanel = new FlowLayoutPanel();
                     flowLayoutPanel.FlowDirection = FlowDirection.LeftToRight;
                     flowLayoutPanel.BackColor = flowLayoutPanel1.BackColor;
                     flowLayoutPanel.Margin = new Padding(0, 3, 0, 8);
                     flowLayoutPanel.Size = new Size(flowLayoutPanel1.Width, shorts.Height + 2);
                     flowLayoutPanel.Location = new Point(stackedDb?288:0, 0);
+
                     if (!stackedDb)flowLayoutPanel.Controls.Add(menuBtn2);
                     flowLayoutPanel.Controls.Add(dupeLabel2);
                     flowLayoutPanel.Controls.Add(playRandom);
@@ -1820,6 +1824,7 @@ namespace MediaPlayer
                     flowLayoutPanel.Controls.Add(button4);
                     flowLayoutPanel.Controls.Add(button3);
                     flowLayoutPanel.Controls.Add(button2);
+
                     this.Controls.Add(flowLayoutPanel);
                     flowLayoutPanel.BringToFront();
 
@@ -2323,7 +2328,7 @@ namespace MediaPlayer
                 vidDetails.Padding = new Padding(0,3,0,0);
                 vidDetails.Margin = new Padding(0);
                 vidDetails.ContextMenuStrip = contextMenuStrip1;
-
+                vidDetailsStack.Add(vidDetails);
                 vidDetails.MouseEnter += (s, e) =>
                 {
                     if (isHoveredOverPb)
@@ -2352,8 +2357,6 @@ namespace MediaPlayer
                 {
                     if (isHoveredOverPb)
                     {
-                        
-
                         this.Hide();
                         wmp.Location = new Point(0, 28);
                         staticExp = this;
@@ -2377,7 +2380,6 @@ namespace MediaPlayer
                     timer1.Start();
                 };
                 //vidDetails.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, vidDetails.Width, vidDetails.Height, 4, 4));
-                meta.Add(vidDetails);
 
                 FlowLayoutPanel flowLayoutPanel = new FlowLayoutPanel();
                 flowLayoutPanel.FlowDirection = FlowDirection.LeftToRight;
@@ -2387,8 +2389,8 @@ namespace MediaPlayer
                 flowLayoutPanel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel.Width, flowLayoutPanel.Height, 12, 12));
                 flowLayoutPanel.Controls.Add(pb);
                 flowLayoutPanel.Controls.Add(vidDetails);
-
                 flowLayoutPanel1.Controls.Add(flowLayoutPanel);
+                flowLayoutPanels.Add(flowLayoutPanel);
 
                 pb.MouseHover += (s1, q1) =>
                 {
@@ -2468,6 +2470,20 @@ namespace MediaPlayer
                     {
                         timer1.Start();
                     }
+                    /*int idx = videosPb.IndexOf(pb);
+                    pb.Parent.Margin = new Padding(0);
+                    videosPb.ElementAt(idx - 1).Parent.Margin = new Padding(0);
+                    videosPb.ElementAt(idx + 1).Parent.Margin = new Padding(0);
+                    flowLayoutPanel.Region = null;
+                    pb.Size = new Size(pb.Width + 20, pb.Height + 20);
+                    flowLayoutPanel.Size = new Size(flowLayoutPanel.Width + 30, flowLayoutPanel.Height + 30);
+                    /*int index = flowLayoutPanels.IndexOf(flowLayoutPanel);
+                    flowLayoutPanels.ElementAt(index).Region = null;
+                    flowLayoutPanels.ElementAt(index - 1).Margin = new Padding(0);
+                    flowLayoutPanels.ElementAt(index + 1).Margin = new Padding(0);
+                    flowLayoutPanels.ElementAt(index).Size = new Size(flowLayoutPanels.ElementAt(index).Width + 40, flowLayoutPanels.ElementAt(index).Height + 40);
+                    axWindowsMediaPlayer1.Size = new Size(axWindowsMediaPlayer1.Width+ 40, axWindowsMediaPlayer1.Height + 40);*/
+
                     /* if (VideoPlayer.miniVideoPlayer != null)
                          VideoPlayer.miniVideoPlayer.miniVideoPlayer_MouseLeave(null, null);
                      pbClick(pb, isShort, fileName);*/
@@ -2560,6 +2576,7 @@ namespace MediaPlayer
             textBox3.Focus();
             textBox3.Select();
             videosPb.Clear();
+            vidDetailsStack.Clear();
             this.Explorer_Load(null, null);
         }
 
@@ -3241,9 +3258,43 @@ namespace MediaPlayer
         {
             Calculator.globalFilt = "";
             stackedDb = !stackedDb;
-            disposeAndLoad();
+            dupeLabel2.Region = null;
+            shorts.Region = null;
+            playRandom.Region = null;
+            //disposeAndLoad();
+            if (stackedDb)
+                flowLayoutPanel.Controls.Remove(menuBtn2);
+            else {
+                flowLayoutPanel.Controls.Add(menuBtn2);
+                flowLayoutPanel.Controls.SetChildIndex(menuBtn2,0);
+            }
+            dupeLabel2.Size = stackedDb ? stackedSizeDbBtn : unStackedSizeDbBtn;
+            playRandom.Size = stackedDb ? stackedSizeRandBtn : unStackedSizeRandBtn;
+            shorts.Size = stackedDb ? stackedSizeRandBtn : unStackedSizeRandBtn;
+            flowLayoutPanel.Location = new Point(stackedDb ? 288 : 0, 0);
+            flowLayoutPanel1.Location = stackedDb ? flowPanel1Loc : new Point(0, 44);
+            flowLayoutPanel.Size = new Size(flowLayoutPanel1.Width, shorts.Height + 2);
+            flowLayoutPanel.BringToFront();
+
+            foreach(PictureBox pb in videosPb)
+            {
+                pb.Parent.Region = null;
+                pb.Parent.Size = new Size(stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width, (stackedDb ? stackedSizePbDb.Height : unStackedSizePbDb.Height) + 50);
+                pb.Size = stackedDb ? stackedSizePbDb : unStackedSizePbDb;
+            }
+            foreach(Label lbl in vidDetailsStack)
+            {
+                lbl.Size = new Size(stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width, 50);
+                lbl.Parent.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, lbl.Parent.Width, lbl.Parent.Height, 12, 12));
+            }
+
+            axWindowsMediaPlayer1.Size = stackedDb ? stackedSizePbDb : unStackedSizePbDb;
+            newProgressBar.Size = new Size(stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width, 3);
             hoverPointer.Visible = false;
             pointer.Location = new Point(0, dashBoard.Location.Y + ((dashBoard.Size.Height - pointer.Size.Height) / 2) - 3);
+            dupeLabel2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, dupeLabel2.Width, dupeLabel2.Height, 8, 8));
+            shorts.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, shorts.Width, shorts.Height, 8, 8));
+            playRandom.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, playRandom.Width, playRandom.Height, 8, 8));
         }
 
         private void toolStripMenuItem6_Click(object sender, EventArgs e)

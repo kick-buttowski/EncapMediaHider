@@ -4332,6 +4332,53 @@ namespace MediaPlayer
                 flowLayoutPanel.Controls.Add(pb);
                 flowLayoutPanel.Controls.Add(vidDetails);
                 flowLayoutPanel1.Controls.Add(flowLayoutPanel);
+
+
+                vidDetails.MouseEnter += (s, e) =>
+                {
+                    if (isHoveredOverPb)
+                    {
+                        axWindowsMediaPlayer1.settings.rate = 1.0;
+                    }
+                };
+
+                vidDetails.MouseMove += (s, e) =>
+                {
+                    if (isHoveredOverPb)
+                    {
+                        loc = e.X;
+
+                        if (loc - prevX > 4 || loc - prevX < -4)
+                        {
+                            prevX = loc;
+                            axWindowsMediaPlayer1.Ctlcontrols.currentPosition = ((double)loc / (double)vidDetails.Width) * inWmpDuration;
+                            newProgressBarNew.Value = (int)axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+                        }
+                    }
+                };
+
+                vidDetails.MouseClick += (s, e) =>
+                {
+                    if (isHoveredOverPb)
+                    {
+                        Application.RemoveMessageFilter(this);
+
+                        this.Hide();
+                        Explorer.wmp.Location = new Point(0, 28);
+                        Explorer.wmp.setRefPb(pb, videosPb, this);
+                        Explorer.wmp.axWindowsMediaPlayer1.URL = pb.Name;
+                        Explorer.wmp.axWindowsMediaPlayer1.Name = pb.Name;
+                        Explorer.wmp.calculateDuration(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
+                        Explorer.wmp.Show();
+                        axWindowsMediaPlayer1.Ctlcontrols.pause();
+                    }
+                };
+
+                vidDetails.MouseLeave += (s, e) =>
+                {
+                    axWindowsMediaPlayer1.settings.rate = 1.35;
+                };
+
                 /*meta.Add(vidDetails);
 
                 if (meta.Count == 4)
