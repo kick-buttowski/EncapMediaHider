@@ -67,13 +67,13 @@
             this.reset = new System.Windows.Forms.Button();
             this.stack = new System.Windows.Forms.Button();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-            this.menuBtn1 = new System.Windows.Forms.Button();
             this.dashBoard = new System.Windows.Forms.Button();
             this.calcButton = new System.Windows.Forms.Button();
             this.divider = new System.Windows.Forms.Panel();
-            this.menuBtn2 = new System.Windows.Forms.Button();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
+            this.menuBtn2 = new System.Windows.Forms.Button();
+            this.menuBtn1 = new System.Windows.Forms.Button();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.contextMenuStrip1.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -90,7 +90,6 @@
             this.flowLayoutPanel1.Location = new System.Drawing.Point(288, 93);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(14, 0, 0, 0);
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1638, 988);
             this.flowLayoutPanel1.TabIndex = 0;
             this.flowLayoutPanel1.MouseEnter += new System.EventHandler(this.flowLayoutPanel1_MouseEnter);
@@ -672,17 +671,6 @@
             this.flowLayoutPanel3.TabIndex = 3;
             this.flowLayoutPanel3.MouseEnter += new System.EventHandler(this.flowLayoutPanel1_MouseEnter);
             // 
-            // menuBtn1
-            // 
-            this.menuBtn1.Image = global::Calculator.Properties.Resources.icons8_menu_40;
-            this.menuBtn1.Location = new System.Drawing.Point(0, 0);
-            this.menuBtn1.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.menuBtn1.Name = "menuBtn1";
-            this.menuBtn1.Size = new System.Drawing.Size(41, 38);
-            this.menuBtn1.TabIndex = 36;
-            this.menuBtn1.UseVisualStyleBackColor = true;
-            this.menuBtn1.Click += new System.EventHandler(this.menuBtn1_Click);
-            // 
             // dashBoard
             // 
             this.dashBoard.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
@@ -736,6 +724,18 @@
             this.divider.Size = new System.Drawing.Size(275, 8);
             this.divider.TabIndex = 1;
             // 
+            // axWindowsMediaPlayer1
+            // 
+            this.axWindowsMediaPlayer1.ContextMenuStrip = this.contextMenuStrip1;
+            this.axWindowsMediaPlayer1.Enabled = true;
+            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(275, 170);
+            this.axWindowsMediaPlayer1.Margin = new System.Windows.Forms.Padding(0,0,0,0);
+            this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
+            this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
+            this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(0, 0);
+            this.axWindowsMediaPlayer1.TabIndex = 38;
+            this.axWindowsMediaPlayer1.MouseDownEvent += new AxWMPLib._WMPOCXEvents_MouseDownEventHandler(this.axWindowsMediaPlayer1_MouseDownEvent);
+            // 
             // menuBtn2
             // 
             this.menuBtn2.Image = global::Calculator.Properties.Resources.icons8_menu_40;
@@ -747,21 +747,20 @@
             this.menuBtn2.UseVisualStyleBackColor = true;
             this.menuBtn2.Click += new System.EventHandler(this.menuBtn2_Click);
             // 
+            // menuBtn1
+            // 
+            this.menuBtn1.Image = global::Calculator.Properties.Resources.icons8_menu_40;
+            this.menuBtn1.Location = new System.Drawing.Point(0, 0);
+            this.menuBtn1.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.menuBtn1.Name = "menuBtn1";
+            this.menuBtn1.Size = new System.Drawing.Size(41, 38);
+            this.menuBtn1.TabIndex = 36;
+            this.menuBtn1.UseVisualStyleBackColor = true;
+            this.menuBtn1.Click += new System.EventHandler(this.menuBtn1_Click);
+            // 
             // backgroundWorker1
             // 
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            // 
-            // axWindowsMediaPlayer1
-            // 
-            this.axWindowsMediaPlayer1.ContextMenuStrip = this.contextMenuStrip1;
-            this.axWindowsMediaPlayer1.Enabled = true;
-            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(275, 170);
-            this.axWindowsMediaPlayer1.Margin = new System.Windows.Forms.Padding(0);
-            this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
-            this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
-            this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(0, 0);
-            this.axWindowsMediaPlayer1.TabIndex = 38;
-            this.axWindowsMediaPlayer1.MouseDownEvent += new AxWMPLib._WMPOCXEvents_MouseDownEventHandler(this.axWindowsMediaPlayer1_MouseDownEvent);
             // 
             // Explorer
             // 

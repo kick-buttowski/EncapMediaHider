@@ -512,7 +512,6 @@ namespace MediaPlayer
             this.flowLayoutPanel1.Controls.Add(this.axWindowsMediaPlayer1);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(276, 94);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(16, 0, 0, 0);
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1648, 990);
             this.flowLayoutPanel1.TabIndex = 1;
             this.flowLayoutPanel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.flowLayoutPanel1_MouseClick);
@@ -729,7 +728,7 @@ namespace MediaPlayer
             // axWindowsMediaPlayer1
             // 
             this.axWindowsMediaPlayer1.Enabled = true;
-            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(16, 0);
+            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(0, 0);
             this.axWindowsMediaPlayer1.Margin = new System.Windows.Forms.Padding(0);
             this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
             this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
