@@ -36,7 +36,7 @@ namespace MediaPlayer
 
         WMP wmp = null;
         VideoPlayer videoPlayer = null;
-        public Boolean hoveredOver = true, hoveredOver2 = true, toggleFullScreen = true, saveResume = true,
+        public Boolean hoveredOver = true, hoveredOver2 = true, toggleFullScreen = true, saveResume = true, toAddMessageFilter = true,
             keyLock = false, playStatus = true, toMute = true, toRepeat = false, playable =true, pressedSpace = true, manualFrameChange = false, toAutoSkip = true;
         String directoryPath;
         public static Boolean volumeLock = false;
@@ -96,6 +96,7 @@ namespace MediaPlayer
         public void formClosingDispoer()
         {
             this.timer3.Enabled = false;
+            toAddMessageFilter = true;
             Application.RemoveMessageFilter(this);
             try
             {
@@ -833,7 +834,11 @@ namespace MediaPlayer
         
         public void calculateDuration(Double duration1)
         {
-            Application.AddMessageFilter(this);
+            if (toAddMessageFilter)
+            {
+                toAddMessageFilter = false;
+                Application.AddMessageFilter(this);
+            }
             if (Explorer.wmpOnTop == null)
             {
                 Explorer.wmpOnTop = new WmpOnTop(videoPlayer);

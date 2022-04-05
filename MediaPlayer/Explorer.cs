@@ -2301,7 +2301,7 @@ namespace MediaPlayer
                     indFlowLayoutPanel.FlowDirection = FlowDirection.LeftToRight;
                     indFlowLayoutPanel.BackColor = flowLayoutPanel1.BackColor;
                     indFlowLayoutPanel.Margin = new Padding(0, 0, 0, 0);
-                    indFlowLayoutPanel.Size = new Size(flowLayoutPanel1.Width, (stackedDb ? stackedSizePbDb.Height : unStackedSizePbDb.Height) + 69);
+                    indFlowLayoutPanel.Size = new Size(flowLayoutPanel1.Width, (stackedDb ? stackedSizePbDb.Height : unStackedSizePbDb.Height) + 73);
 
                 indFlowLayoutPanel.MouseEnter += new EventHandler(flowLayoutPanel1_MouseEnter);
                 for (int j = 0; j < 4; j++) {
@@ -2417,24 +2417,7 @@ namespace MediaPlayer
 
                         if (prevFlowLayoutPanel != null)
                         {
-                            foreach (Control tempPanel1 in prevFlowLayoutPanel.Parent.Controls)
-                            {
-                                tempPanel1.Margin = new Padding(15, 0, 0, 0);
-                            }
-
-                            newProgressBar.Size = new Size(stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width, 3);
-                            prevVidDetails.Size = new Size(stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width, 50);
-                            prevVidDetails.ForeColor = Color.White;
-                            prevFlowLayoutPanel.Region = null;
-                            prevFlowLayoutPanel.Size = new Size(stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width, (stackedDb ? stackedSizePbDb.Height : unStackedSizePbDb.Height) + 53);
-                            prevFlowLayoutPanel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, prevFlowLayoutPanel.Width, prevFlowLayoutPanel.Height, 12, 12));
-                            prevVidDetails.Padding = new Padding(0, 3, 0, 0);
-                            prevFlowLayoutPanel.Controls.Clear();
-                            prevFlowLayoutPanel.Parent.Size = new Size(flowLayoutPanel1.Width, (stackedDb ? stackedSizePbDb.Height : unStackedSizePbDb.Height) + 69);
-                            prevFlowLayoutPanel.Controls.Add(prevPb);
-                            prevFlowLayoutPanel.Controls.Add(prevVidDetails);
-                            isHoveredOverPb = false;
-                            timer1.Stop();
+                            flowLayoutPanel1_MouseEnter(null, null);
                         }
 
                         isHoveredOverPb = true;
@@ -2446,14 +2429,14 @@ namespace MediaPlayer
                         {
                             tempPanel1.Margin = new Padding(2, 0, 0, 0);
                         }
-                        flowLayoutPanel.Parent.Size = new Size(flowLayoutPanel1.Width, (stackedDb ? stackedSizePbDb.Height : unStackedSizePbDb.Height) + 90);
+                        //flowLayoutPanel.Parent.Size = new Size(flowLayoutPanel1.Width, (stackedDb ? stackedSizePbDb.Height : unStackedSizePbDb.Height) + 90);
                         flowLayoutPanel.Margin = new Padding(3, 0, 2, 0);
                         vidDetails.Size = new Size(flowLayoutPanel.Width + 74, 50);
-                        vidDetails.Padding = new Padding(0, 1, 0, 0);
+                        //vidDetails.Padding = new Padding(0, 5, 0, 0);
                         //vidDetails.ForeColor = vidDetails.BackColor;
                         newProgressBar.Size = new Size(flowLayoutPanel.Width + 74, 3);
                         flowLayoutPanel.Region = null;
-                        flowLayoutPanel.Size = new Size(flowLayoutPanel.Width + 74, (int)((flowLayoutPanel.Width + 74) * 0.567) + 45);
+                        flowLayoutPanel.Size = new Size(flowLayoutPanel.Width + 74, (int)((flowLayoutPanel.Width + 74) * 0.567) + 29);
                         flowLayoutPanel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel.Width, flowLayoutPanel.Height, 12, 12));
 
                         flowLayoutPanel.Controls.Clear();
@@ -3332,7 +3315,10 @@ namespace MediaPlayer
                 lbl.Size = new Size(stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width, 50);
                 lbl.Parent.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, lbl.Parent.Width, lbl.Parent.Height, 12, 12));
             }
-
+            foreach(FlowLayoutPanel flowLayoutPanel in flowLayoutPanels)
+            {
+                flowLayoutPanel.Parent.Size = new Size(flowLayoutPanel1.Width, (stackedDb ? stackedSizePbDb.Height + 73: unStackedSizePbDb.Height + 73));
+            }
             axWindowsMediaPlayer1.Size = new Size((stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width) + 74, (int)(((stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width) + 74) * 0.567));
             newProgressBar.Size = new Size((stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width) + 74, 3);
             hoverPointer.Visible = false;
@@ -3460,31 +3446,26 @@ namespace MediaPlayer
         {
             if (prevFlowLayoutPanel != null)
             {
-                int index = flowLayoutPanels.IndexOf(prevFlowLayoutPanel);
-                while (index % 4 != 0)
+                foreach (Control tempPanel1 in prevFlowLayoutPanel.Parent.Controls)
                 {
-                    index--;
+                    tempPanel1.Margin = new Padding(15, 0, 0, 0);
                 }
-                int thres = 0;
-                while (thres <= 3)
-                {
-                    flowLayoutPanels.ElementAt(index + thres).Margin = new Padding(15,0,0,0);
-                    thres++;
-                }
+
+                newProgressBar.Size = new Size(stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width, 3);
                 prevVidDetails.Size = new Size(stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width, 50);
                 prevVidDetails.ForeColor = Color.White;
                 prevFlowLayoutPanel.Region = null;
                 prevFlowLayoutPanel.Size = new Size(stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width, (stackedDb ? stackedSizePbDb.Height : unStackedSizePbDb.Height) + 53);
                 prevFlowLayoutPanel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, prevFlowLayoutPanel.Width, prevFlowLayoutPanel.Height, 12, 12));
                 prevVidDetails.Padding = new Padding(0, 3, 0, 0);
-                prevFlowLayoutPanel.Parent.Size = new Size(flowLayoutPanel1.Width, (stackedDb ? stackedSizePbDb.Height : unStackedSizePbDb.Height) + 69);
                 prevFlowLayoutPanel.Controls.Clear();
-
+                //prevFlowLayoutPanel.Parent.Size = new Size(flowLayoutPanel1.Width, (stackedDb ? stackedSizePbDb.Height : unStackedSizePbDb.Height) + 69);
                 prevFlowLayoutPanel.Controls.Add(prevPb);
                 prevFlowLayoutPanel.Controls.Add(prevVidDetails);
                 prevFlowLayoutPanel = null;
                 isHoveredOverPb = false;
                 timer1.Stop();
+
             }
             GC.Collect();
         }
