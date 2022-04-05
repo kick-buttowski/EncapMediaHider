@@ -96,7 +96,8 @@ namespace MediaPlayer
         //static int rand1 = Explorer.rr.Next(0, 256);
         //static int[] color = Rand_Color(rand1, 0.5, 0.25);
         public static int popUpY = 320;
-        Size globalSize = new Size();
+        int padding = 0;
+        Size globalSize = new Size(), globalSizePanel = new Size();
         Double inWmpDuration = 0, loc = 0, prevX = -12;
         NewProgressBar newProgressBar = new NewProgressBar();
         double whereAt = 1.0;
@@ -1216,24 +1217,60 @@ namespace MediaPlayer
 
                 countFiles.Text = "No of folders: 0";
 
-                
-                    foreach (DirectoryInfo directory in pardirectory)
-                        foreach (DirectoryInfo subDi in directory.GetDirectories().OrderBy(f => f.Name).ToList())
-                        {
-                            if (subDi.Name.Substring(1).Equals(Calculator.globalFilt))
-                            {
-                                countFiles.Text = "No of folders: " + subDi.GetDirectories().Length;
-                                String writePriorStr = "";
-                                StreamReader sr1 = new StreamReader(subDi.FullName + "\\priority.txt");
 
-                                foreach (DirectoryInfo di in subDi.GetDirectories().OrderByDescending(f => f.GetFiles().Sum(k => k.Length)).ToList())
+                foreach (DirectoryInfo directory in pardirectory)
+                {
+                    foreach (DirectoryInfo subDi in directory.GetDirectories().OrderBy(f => f.Name).ToList())
+                    {
+                        if (subDi.Name.Substring(1).Equals(Calculator.globalFilt))
+                        {
+                            countFiles.Text = "No of folders: " + subDi.GetDirectories().Length;
+                            String writePriorStr = "";
+                            StreamReader sr1 = new StreamReader(subDi.FullName + "\\priority.txt");
+
+                            foreach (DirectoryInfo di in subDi.GetDirectories().OrderByDescending(f => f.GetFiles().Sum(k => k.Length)).ToList())
+                            {
+                                if (!File.Exists(di.FullName + "\\disPic.txt"))
+                                {
+                                    FileStream fs = File.Create(di.FullName + "\\disPic.txt");
+                                    fs.Close();
+                                }
+
+                                if (!File.Exists(di.FullName + "\\disGifPic.txt"))
+                                {
+                                    FileStream fs = File.Create(di.FullName + "\\disGifPic.txt");
+                                    fs.Close();
+                                }
+
+                                if (!File.Exists(di.FullName + "\\links.txt"))
+                                {
+                                    FileStream fi = File.Create(di.FullName + "\\links.txt");
+                                    fi.Close();
+                                }
+
+                                int priority = 0;
+                                String singLine = "";
+                                while ((singLine = sr1.ReadLine()) != null)
+                                {
+                                    if (singLine.Contains(di.FullName))
+                                    {
+                                        priority = int.Parse(singLine.Replace("-" + di.FullName, ""));
+                                        break;
+                                    }
+                                }
+                                writePriorStr = writePriorStr + priority + "-" + di.FullName + "\n";
+                                namePriorityPairs.Add(di.FullName, priority);
+                            }
+                            if (subDi.Name.Contains("Best of the Best") && Directory.Exists(directory3.FullName))
+                            {
+
+                                foreach (DirectoryInfo di in directory3.GetDirectories().OrderByDescending(f => f.GetFiles().Sum(k => k.Length)).ToList())
                                 {
                                     if (!File.Exists(di.FullName + "\\disPic.txt"))
                                     {
                                         FileStream fs = File.Create(di.FullName + "\\disPic.txt");
                                         fs.Close();
                                     }
-
                                     if (!File.Exists(di.FullName + "\\disGifPic.txt"))
                                     {
                                         FileStream fs = File.Create(di.FullName + "\\disGifPic.txt");
@@ -1259,76 +1296,79 @@ namespace MediaPlayer
                                     writePriorStr = writePriorStr + priority + "-" + di.FullName + "\n";
                                     namePriorityPairs.Add(di.FullName, priority);
                                 }
-                                if (subDi.Name.Contains("Best of the Best") && Directory.Exists(directory3.FullName))
+                            }
+                            sr1.Close();
+
+                            try { File.WriteAllText(subDi.FullName + "\\priority.txt", writePriorStr); } catch { }
+                            namePriorityPairs = namePriorityPairs.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+
+                            Label dirName = new Label();
+                            dirName.Text = Calculator.globalFilt;
+                            dirName.Font = new Font("Arial", 35, FontStyle.Bold);
+                            dirName.BackColor = lightBackColor;
+                            dirName.Size = new Size(1300, 80);
+                            dirName.ForeColor = Color.White;
+                            dirName.TextAlign = ContentAlignment.MiddleLeft;
+                            //flowLayoutPanel1.Controls.Add(dirName);
+
+                            Label spaceBar = new Label();
+                            spaceBar.BackColor = darkBackColor;
+                            spaceBar.Size = new Size(1500, 20);
+                            flowLayoutPanel1.Controls.Add(spaceBar);
+
+                            typeName.Text = Calculator.globalType;
+                            typeName.Font = new Font("Arial", 35, FontStyle.Bold);
+                            typeName.BackColor = lightBackColor;
+                            typeName.ForeColor = Color.White;
+                            typeName.Size = new Size(275, 80);
+                            typeName.FlatStyle = FlatStyle.Flat;
+                            typeName.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, typeName.Width, typeName.Height, 20, 20));
+                            typeName.FlatAppearance.BorderSize = 0;
+                            //flowLayoutPanel1.Controls.Add(typeName);
+
+                            for (int i=0;i<namePriorityPairs.Count; i++)
+                            {
+                                int max = 4;
+                                FlowLayoutPanel indFlowLayoutPanel = new FlowLayoutPanel();
+                                indFlowLayoutPanel.FlowDirection = FlowDirection.LeftToRight;
+                                indFlowLayoutPanel.BackColor = flowLayoutPanel1.BackColor;
+                                indFlowLayoutPanel.Margin = new Padding(0, 0, 0, 0);
+
+                                if (subDi.Name.Substring(0, 1).Equals("z") || subDi.Name.Substring(0, 1).Equals("0") || subDi.Name.Substring(0, 1).Equals("2") || subDi.Name.Substring(0, 1).Equals("3"))
                                 {
-
-                                    foreach (DirectoryInfo di in directory3.GetDirectories().OrderByDescending(f => f.GetFiles().Sum(k => k.Length)).ToList())
+                                    if (compact)
                                     {
-                                        if (!File.Exists(di.FullName + "\\disPic.txt"))
-                                        {
-                                            FileStream fs = File.Create(di.FullName + "\\disPic.txt");
-                                            fs.Close();
-                                        }
-                                        if (!File.Exists(di.FullName + "\\disGifPic.txt"))
-                                        {
-                                            FileStream fs = File.Create(di.FullName + "\\disGifPic.txt");
-                                            fs.Close();
-                                        }
-
-                                        if (!File.Exists(di.FullName + "\\links.txt"))
-                                        {
-                                            FileStream fi = File.Create(di.FullName + "\\links.txt");
-                                            fi.Close();
-                                        }
-
-                                        int priority = 0;
-                                        String singLine = "";
-                                        while ((singLine = sr1.ReadLine()) != null)
-                                        {
-                                            if (singLine.Contains(di.FullName))
-                                            {
-                                                priority = int.Parse(singLine.Replace("-" + di.FullName, ""));
-                                                break;
-                                            }
-                                        }
-                                        writePriorStr = writePriorStr + priority + "-" + di.FullName + "\n";
-                                        namePriorityPairs.Add(di.FullName, priority);
+                                        indFlowLayoutPanel.Size = new Size(flowLayoutPanel1.Width - 22, 357 + 18);
+                                        max = 4;
+                                    }
+                                    else
+                                    {
+                                        indFlowLayoutPanel.Size = new Size(flowLayoutPanel1.Width - 22, 450 + 18);
+                                        max = 3;
                                     }
                                 }
-                                sr1.Close();
-
-                                try { File.WriteAllText(subDi.FullName + "\\priority.txt", writePriorStr); } catch { }
-                                namePriorityPairs = namePriorityPairs.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
-
-                                Label dirName = new Label();
-                                dirName.Text = Calculator.globalFilt;
-                                dirName.Font = new Font("Arial", 35, FontStyle.Bold);
-                                dirName.BackColor = lightBackColor;
-                                dirName.Size = new Size(1300, 80);
-                                dirName.ForeColor = Color.White;
-                                dirName.TextAlign = ContentAlignment.MiddleLeft;
-                                //flowLayoutPanel1.Controls.Add(dirName);
-
-                                Label spaceBar = new Label();
-                                spaceBar.BackColor = darkBackColor;
-                                spaceBar.Size = new Size(1500, 20);
-                                flowLayoutPanel1.Controls.Add(spaceBar);
-
-                                typeName.Text = Calculator.globalType;
-                                typeName.Font = new Font("Arial", 35, FontStyle.Bold);
-                                typeName.BackColor = lightBackColor;
-                                typeName.ForeColor = Color.White;
-                                typeName.Size = new Size(275, 80);
-                                typeName.FlatStyle = FlatStyle.Flat;
-                                typeName.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, typeName.Width, typeName.Height, 20, 20));
-                                typeName.FlatAppearance.BorderSize = 0;
-                                //flowLayoutPanel1.Controls.Add(typeName);
-
-                                foreach (KeyValuePair<String, int> keyValuePair in namePriorityPairs)
+                                else
                                 {
+                                    if (compact)
+                                    {
+                                        indFlowLayoutPanel.Size = new Size(flowLayoutPanel1.Width - 22, 246 + 30);
+                                        max = 3;
+                                    }
+                                    else
+                                    {
+                                        indFlowLayoutPanel.Size = new Size(flowLayoutPanel1.Width - 22, 327 + 30);
+                                        max = 2;
+                                    }
+                                }
+                                for (int k = 0; k < max; k++)
+                                {
+                                    if (i + k >= namePriorityPairs.Count)
+                                        break;
+                                    KeyValuePair<String, int> keyValuePair = namePriorityPairs.ElementAt(i + k);
                                     if (searchText.Length > 0)
                                         if (!keyValuePair.Key.Replace(subDi.FullName, "").ToLower().Contains(searchText.ToLower()))
                                         {
+                                            max = max + 1;
                                             continue;
                                         }
 
@@ -1380,7 +1420,6 @@ namespace MediaPlayer
                                     dirPb.Margin = new Padding(0, 8, 0, 0);
                                     dirPb.Name = keyValuePair.Key;
 
-
                                     /*DirectoryInfo picsDir = new DirectoryInfo(keyValuePair.Key + "\\Pics\\imgPB");
                                     try
                                     {
@@ -1429,8 +1468,8 @@ namespace MediaPlayer
                                             vidDetails.Font = new Font("Consolas", 7, FontStyle.Regular);
 
                                             flowLayoutPanel.Padding = new Padding(0, 0, 0, 0);
-                                            flowLayoutPanel.Margin = new Padding(0, 10, 0, 0);
-                                            flowLayoutPanel.Size = new Size(dirPb.Width + vidDetails.Width + 25, dirPb.Height);
+                                            flowLayoutPanel.Margin = new Padding(32, 0, 0, 0);
+                                            flowLayoutPanel.Size = new Size(dirPb.Width + vidDetails.Width, dirPb.Height);
                                         }
                                         else
                                         {
@@ -1438,12 +1477,12 @@ namespace MediaPlayer
                                             dirPb.Margin = new Padding(0, 0, 0, 0);
                                             vidDetails.Size = new Size(175, 405);
                                             vidDetails.Padding = new Padding(7, 0, 0, 0);
-                                            vidDetails.Margin = new Padding(0, 20, 35, 0);
+                                            vidDetails.Margin = new Padding(0, 20, 0, 0);
                                             vidDetails.Font = new Font("Consolas", 8, FontStyle.Regular);
 
                                             flowLayoutPanel.Padding = new Padding(0, 0, 0, 0);
-                                            flowLayoutPanel.Margin = new Padding(0, 10, 0, 0);
-                                            flowLayoutPanel.Size = new Size(dirPb.Width + vidDetails.Width + 59, dirPb.Height);
+                                            flowLayoutPanel.Margin = new Padding(65, 0, 0, 0);
+                                            flowLayoutPanel.Size = new Size(dirPb.Width + vidDetails.Width, dirPb.Height);
                                         }
                                     }
                                     else
@@ -1458,8 +1497,8 @@ namespace MediaPlayer
                                             vidDetails.Font = new Font("Consolas", 7, FontStyle.Regular);
 
                                             flowLayoutPanel.Padding = new Padding(0, 0, 0, 0);
-                                            flowLayoutPanel.Margin = new Padding(0, 10, 0, 0);
-                                            flowLayoutPanel.Size = new Size(dirPb.Width + vidDetails.Width + 13, dirPb.Height);
+                                            flowLayoutPanel.Margin = new Padding(18, 0, 0, 0);
+                                            flowLayoutPanel.Size = new Size(dirPb.Width + vidDetails.Width + 1, dirPb.Height + 32);
                                         }
                                         else
                                         {
@@ -1467,12 +1506,12 @@ namespace MediaPlayer
                                             dirPb.Margin = new Padding(0, 0, 0, 8);
                                             vidDetails.Size = new Size(180, 310);
                                             vidDetails.Padding = new Padding(8, 0, 0, 0);
-                                            vidDetails.Margin = new Padding(2, 10, 50, 0);
+                                            vidDetails.Margin = new Padding(2, 10, 0, 0);
                                             vidDetails.Font = new Font("Consolas", 9, FontStyle.Regular);
 
                                             flowLayoutPanel.Padding = new Padding(0, 0, 0, 0);
-                                            flowLayoutPanel.Margin = new Padding(0, 10, 0, 0);
-                                            flowLayoutPanel.Size = new Size(dirPb.Width + vidDetails.Width + 115, dirPb.Height);
+                                            flowLayoutPanel.Margin = new Padding(90, 0, 0, 0);
+                                            flowLayoutPanel.Size = new Size(dirPb.Width + vidDetails.Width + 2, dirPb.Height + 65);
                                         }
                                     }
 
@@ -1529,15 +1568,16 @@ namespace MediaPlayer
                                     catch { }
 
                                     vidDetails.Text = vidDetText;
-                                    vidDetails.BackColor = darkBackColor;
+                                    vidDetails.BackColor = lightBackColor;
                                     vidDetails.ForeColor = Color.White;
                                     vidDetails.TextAlign = ContentAlignment.TopLeft;
-                                    vidDetails.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, vidDetails.Width, vidDetails.Height, 5, 5));
+                                    //vidDetails.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, vidDetails.Width, vidDetails.Height, 5, 5));
 
                                     //flowLayoutPanel1.Controls.Add(vidDetails);
                                     flowLayoutPanel.Controls.Add(vidDetails);
-                                    flowLayoutPanel.BackColor = flowLayoutPanel1.BackColor;
-                                    flowLayoutPanel1.Controls.Add(flowLayoutPanel);
+                                    flowLayoutPanel.BackColor = lightBackColor;
+                                    flowLayoutPanel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel.Width, flowLayoutPanel.Height, 30, 30));
+                                    indFlowLayoutPanel.Controls.Add(flowLayoutPanel);
                                     grpLabels.Add(vidDetails);
 
                                     disposableBoxes.Add(dirPb);
@@ -1587,27 +1627,59 @@ namespace MediaPlayer
 
                                     dirPb.MouseEnter += (s, args) =>
                                     {
-                                    //timer1.Interval = 10;
-                                    //timer1.Start();
-                                    //queue = 1;
-                                    //floatingGif.Size = new Size((int)(dirPb.Size.Height * 1.7777), dirPb.Size.Height);
-                                    //floatingGif.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, floatingGif.Width, floatingGif.Height, 12, 12));
-                                    //floatingGif.Location = new Point(dirPb.Location.X + dirPb.Size.Width, dirPb.Location.Y);
-                                    //floatingGif.Show();
-                                    globalSize = dirPb.Size;
+                                        //timer1.Interval = 10;
+                                        //timer1.Start();
+                                        //queue = 1;
+                                        //floatingGif.Size = new Size((int)(dirPb.Size.Height * 1.7777), dirPb.Size.Height);
+                                        //floatingGif.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, floatingGif.Width, floatingGif.Height, 12, 12));
+                                        //floatingGif.Location = new Point(dirPb.Location.X + dirPb.Size.Width, dirPb.Location.Y);
+                                        //floatingGif.Show();
+                                        
+                                        globalSize = dirPb.Size;
+                                        globalSizePanel = flowLayoutPanel.Size;
+                                        padding = (subDi.Name.Substring(0, 1).Equals("z") || subDi.Name.Substring(0, 1).Equals("0") || subDi.Name.Substring(0, 1).Equals("2") || subDi.Name.Substring(0, 1).Equals("3")) ? 
+                                        flowLayoutPanel.Margin.Left:(flowLayoutPanel.Margin.Bottom-4);
                                         imgg = dirPb.Image;
                                         dirPb.SizeMode = PictureBoxSizeMode.CenterImage;
+                                        flowLayoutPanel.Region = null;
+                                        dirPb.Region = null;
                                         if (compact)
                                         {
                                             gif = arrGif.Count() != 0 ?
                                                 arrGif[r.Next(0, arrGif.Count())] : "";
                                             if (gif != "" && File.Exists(gif))
                                             {
-                                                dirPb.SizeMode = PictureBoxSizeMode.Zoom;
-                                                dirPb.Image = Image.FromFile(gif);
-                                                dirPb.Region = null;
-                                                dirPb.Size = new Size(flowLayoutPanel.Width, dirPb.Height);
-                                                vidDetails.Hide();
+                                                if (subDi.Name.Substring(0, 1).Equals("z") || subDi.Name.Substring(0, 1).Equals("0") || subDi.Name.Substring(0, 1).Equals("2") || subDi.Name.Substring(0, 1).Equals("3"))
+                                                {
+                                                    for (int z = 0; z < dirPb.Parent.Parent.Controls.Count; z++)
+                                                    {
+                                                        //if (z != 0)
+                                                        dirPb.Parent.Parent.Controls[z].Margin = new Padding(0);
+                                                        /*if (z== dirPb.Parent.Parent.Controls.Count-1 && dirPb.Parent == dirPb.Parent.Parent.Controls[z])
+                                                        {
+                                                            dirPb.Parent.Parent.Controls[z-1].Controls[1].Hide();
+                                                            dirPb.Parent.Parent.Controls[z - 1].Size = globalSize;
+                                                        }
+                                                        else if(dirPb.Parent == dirPb.Parent.Parent.Controls[z])
+                                                        {
+                                                            dirPb.Parent.Parent.Controls[z + 1].Controls[1].Hide();
+                                                            dirPb.Parent.Parent.Controls[z + 1].Size = globalSize;
+                                                        }*/
+                                                    }
+                                                    dirPb.SizeMode = PictureBoxSizeMode.Zoom;
+                                                    dirPb.Image = Image.FromFile(gif);
+                                                    dirPb.Size = new Size(globalSizePanel.Width + ((dirPb.Parent.Parent.Controls.Count) * padding), dirPb.Height);
+                                                    dirPb.Parent.Size = new Size(globalSizePanel.Width + ((dirPb.Parent.Parent.Controls.Count) * padding), dirPb.Parent.Height);
+                                                    vidDetails.Hide();
+                                                }
+                                                else
+                                                {
+                                                    dirPb.SizeMode = PictureBoxSizeMode.Zoom;
+                                                    dirPb.Image = Image.FromFile(gif);
+                                                    dirPb.Size = new Size(globalSizePanel.Width, globalSizePanel.Height + padding);
+                                                    vidDetails.Hide();
+                                                    
+                                                }
                                             }
                                             else
                                                 dirPb.Image = resizedImage(imgg, 248, 0, 388, 0);
@@ -1618,11 +1690,37 @@ namespace MediaPlayer
                                                 arrGif[r.Next(0, arrGif.Count())] : "";
                                             if (gif != "" && File.Exists(gif))
                                             {
-                                                dirPb.SizeMode = PictureBoxSizeMode.Zoom;
-                                                dirPb.Image = Image.FromFile(gif);
-                                                dirPb.Region = null;
-                                                dirPb.Size = new Size(flowLayoutPanel.Width, dirPb.Height);
-                                                vidDetails.Hide();
+                                                if (subDi.Name.Substring(0, 1).Equals("z") || subDi.Name.Substring(0, 1).Equals("0") || subDi.Name.Substring(0, 1).Equals("2") || subDi.Name.Substring(0, 1).Equals("3"))
+                                                {
+                                                    for (int z = 0; z < dirPb.Parent.Parent.Controls.Count; z++)
+                                                    {
+                                                        //if (z != 0)
+                                                        dirPb.Parent.Parent.Controls[z].Margin = new Padding(0);
+                                                        /*if (z== dirPb.Parent.Parent.Controls.Count-1 && dirPb.Parent == dirPb.Parent.Parent.Controls[z])
+                                                        {
+                                                            dirPb.Parent.Parent.Controls[z-1].Controls[1].Hide();
+                                                            dirPb.Parent.Parent.Controls[z - 1].Size = globalSize;
+                                                        }
+                                                        else if(dirPb.Parent == dirPb.Parent.Parent.Controls[z])
+                                                        {
+                                                            dirPb.Parent.Parent.Controls[z + 1].Controls[1].Hide();
+                                                            dirPb.Parent.Parent.Controls[z + 1].Size = globalSize;
+                                                        }*/
+                                                    }
+                                                    dirPb.SizeMode = PictureBoxSizeMode.Zoom;
+                                                    dirPb.Image = Image.FromFile(gif);
+                                                    dirPb.Size = new Size(globalSizePanel.Width + ((dirPb.Parent.Parent.Controls.Count) * padding), dirPb.Height);
+                                                    dirPb.Parent.Size = new Size(globalSizePanel.Width + ((dirPb.Parent.Parent.Controls.Count) * padding), dirPb.Parent.Height);
+                                                    vidDetails.Hide();
+                                                }
+                                                else
+                                                {
+                                                    dirPb.SizeMode = PictureBoxSizeMode.Zoom;
+                                                    dirPb.Image = Image.FromFile(gif);
+                                                    dirPb.Size = new Size(globalSizePanel.Width, globalSizePanel.Height + padding);
+                                                    vidDetails.Hide();
+
+                                                }
                                             }
                                             else
                                                 dirPb.Image = resizedImage(imgg, 308, 0, 513, 0);
@@ -1672,10 +1770,31 @@ namespace MediaPlayer
 
                                             if (gif != "" && File.Exists(gif))
                                             {
-                                                dirPb.Size = globalSize;
-                                                dirPb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, dirPb.Width, dirPb.Height, 30, 30));
-                                                vidDetails.Show();
+                                                if (subDi.Name.Substring(0, 1).Equals("z") || subDi.Name.Substring(0, 1).Equals("0") || subDi.Name.Substring(0, 1).Equals("2") || subDi.Name.Substring(0, 1).Equals("3"))
+                                                {
+                                                    for (int z = 0; z < dirPb.Parent.Parent.Controls.Count; z++)
+                                                    {
+                                                        //if (z != 0)
+                                                        dirPb.Parent.Parent.Controls[z].Margin = new Padding(padding, 0, 0, 0);
+                                                        /*if (z == dirPb.Parent.Parent.Controls.Count - 1 && dirPb.Parent == dirPb.Parent.Parent.Controls[z])
+                                                        {
+                                                            dirPb.Parent.Parent.Controls[z - 1].Controls[1].Show();
+                                                            dirPb.Parent.Parent.Controls[z - 1].Size = dirPb.Parent.Size;
+                                                        }
+                                                        else if (dirPb.Parent == dirPb.Parent.Parent.Controls[z])
+                                                        {
+                                                            dirPb.Parent.Parent.Controls[z + 1].Controls[1].Show();
+                                                            dirPb.Parent.Parent.Controls[z + 1].Size = dirPb.Parent.Size;
+                                                        }*/
+                                                    }
+
+                                                }
                                             }
+                                            dirPb.Parent.Size = globalSizePanel;
+                                            dirPb.Size = globalSize;
+                                            dirPb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, dirPb.Width, dirPb.Height, 30, 30));
+                                            flowLayoutPanel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel.Width, flowLayoutPanel.Height, 30, 30));
+                                            vidDetails.Show();
                                         }
                                         dirPb.SizeMode = PictureBoxSizeMode.Zoom;
                                     };
@@ -1688,9 +1807,35 @@ namespace MediaPlayer
                                         pbClick(keyValuePair.Key, subDi, prevStr, nextStr);
                                     };
                                 }
-                            }
 
+                                if (subDi.Name.Substring(0, 1).Equals("z") || subDi.Name.Substring(0, 1).Equals("0") || subDi.Name.Substring(0, 1).Equals("2") || subDi.Name.Substring(0, 1).Equals("3"))
+                                {
+                                    if (compact)
+                                    {
+                                        i = i + 3;
+                                    }
+                                    else
+                                    {
+                                        i = i + 2;
+                                    }
+                                }
+                                else
+                                {
+                                    if (compact)
+                                    {
+                                        i = i + 2;
+                                    }
+                                    else
+                                    {
+                                        i = i + 1;
+                                    }
+                                }
+                                flowLayoutPanel1.Controls.Add(indFlowLayoutPanel);
+                            }
                         }
+
+                    }
+                }
 
                 hoverPointer.Visible = true;
                 pointer.Visible = true;
@@ -2400,7 +2545,7 @@ namespace MediaPlayer
                     FlowLayoutPanel flowLayoutPanel = new FlowLayoutPanel();
                     flowLayoutPanel.FlowDirection = FlowDirection.LeftToRight;
                     flowLayoutPanel.BackColor = flowLayoutPanel1.BackColor;
-                    flowLayoutPanel.Margin = new Padding(15, 0, 0, 0);
+                    flowLayoutPanel.Margin = new Padding(17, 0, 0, 0);
                     flowLayoutPanel.Size = new Size(stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width, (stackedDb ? stackedSizePbDb.Height : unStackedSizePbDb.Height) + 53);
                     flowLayoutPanel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel.Width, flowLayoutPanel.Height, 12, 12));
                     flowLayoutPanel.Controls.Add(pb);
@@ -2430,7 +2575,6 @@ namespace MediaPlayer
                             tempPanel1.Margin = new Padding(2, 0, 0, 0);
                         }
                         //flowLayoutPanel.Parent.Size = new Size(flowLayoutPanel1.Width, (stackedDb ? stackedSizePbDb.Height : unStackedSizePbDb.Height) + 90);
-                        flowLayoutPanel.Margin = new Padding(3, 0, 2, 0);
                         vidDetails.Size = new Size(flowLayoutPanel.Width + 74, 50);
                         //vidDetails.Padding = new Padding(0, 5, 0, 0);
                         //vidDetails.ForeColor = vidDetails.BackColor;
@@ -2562,7 +2706,7 @@ namespace MediaPlayer
             flowLayoutPanel1.Controls.Clear();
             flowLayoutPanel.Controls.Clear();
             this.Controls.Remove(flowLayoutPanel);
-            flowLayoutPanel1.Size = new Size(1638, 988);
+            flowLayoutPanel1.Size = new Size(1655, 988);
             flowLayoutPanel1.Location = new Point(288, 93);
             button4.Location = new Point(1724, -1);
             button3.Location = new Point(1791, -1);
@@ -3448,7 +3592,7 @@ namespace MediaPlayer
             {
                 foreach (Control tempPanel1 in prevFlowLayoutPanel.Parent.Controls)
                 {
-                    tempPanel1.Margin = new Padding(15, 0, 0, 0);
+                    tempPanel1.Margin = new Padding(17, 0, 0, 0);
                 }
 
                 newProgressBar.Size = new Size(stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width, 3);
