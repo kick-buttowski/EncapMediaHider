@@ -64,7 +64,7 @@ namespace MediaPlayer
         private Point flowPanel1Loc = new Point(288,44);
         private Size stackedSizePbDb = new Size(386, 219), unStackedSizePbDb = new Size(458, 260), stackedSizeDbBtn = new Size(773, 44), unStackedSizeDbBtn = new Size(880, 44)
             , stackedSizeRandBtn = new Size(288, 44), unStackedSizeRandBtn = new Size(348, 44);
-        public static Boolean stackedDb = false, isHoveredOverPb = false, playedRandom = false, playedShorts = false;
+        public static Boolean stackedDb = false, isHoveredOverPb = false, playedRandom = false, playedShorts = false, inDb = true;
         List<String> randomFilesPreloaded, shortFilesPreloaded;
         List <PictureBox> tempRandomFilesPreloaded, tempShortFilesPreloaded;
         public Button butt1 = new Button(), globalTypeButton = null;
@@ -88,7 +88,7 @@ namespace MediaPlayer
         Boolean compact = true, dashBoardRefresh = true;
         public static WmpOnTop wmpOnTop = null;
         public static WmpOnTop wmpOnTopDummy = new WmpOnTop();
-        List<PictureBox> videosPb = new List<PictureBox>();
+        public List<PictureBox> videosPb = new List<PictureBox>();
         List<Label> vidDetailsStack = new List<Label>();
         List<String> randomFiles = new List<string>();
         //PopupVideosPlayer popupVideosPlayer;
@@ -114,7 +114,7 @@ namespace MediaPlayer
         Dictionary<String, Image> miniImages = new Dictionary<String, Image>(), largeImages = new Dictionary<string, Image>();
         Dictionary<String, bool> isEnlarged = new Dictionary<string, bool>();
         FlowLayoutPanel prevFlowLayoutPanel = null;
-        PictureBox prevPb = null;
+        public PictureBox prevPb = null;
 
         WindowsMediaPlayer wmpDura = new WindowsMediaPlayerClass();
         Label prevVidDetails = null;
@@ -194,7 +194,7 @@ namespace MediaPlayer
             affinity.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, affinity.Width, affinity.Height, 5, 5));
 
             newFolder.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, newFolder.Width, newFolder.Height, 5, 5));
-            move.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, move.Width, move.Height, 5, 5));
+            //move.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, move.Width, move.Height, 5, 5));
             reset.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, reset.Width, reset.Height, 5, 5));
             refresh.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, refresh.Width, refresh.Height, 5, 5));
             navController.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, navController.Width, navController.Height, 5, 5));
@@ -475,6 +475,10 @@ namespace MediaPlayer
             button3.BackColor = darkBackColor;
             button4.BackColor = darkBackColor;
 
+            button1.BackColor = lightBackColor;
+            button5.BackColor = lightBackColor;
+            button6.BackColor = lightBackColor;
+
             divider.BackColor = kindaDark;
             sizeInfo.BackColor = kindaDark;
 
@@ -528,10 +532,10 @@ namespace MediaPlayer
             theme.FlatAppearance.MouseOverBackColor = kindaDark;
             theme.FlatAppearance.MouseDownBackColor = kindaDark;
 
-            move.BackColor = darkBackColor;
+            /*move.BackColor = darkBackColor;
             move.ForeColor = Color.White;
             move.FlatAppearance.MouseOverBackColor = kindaDark;
-            move.FlatAppearance.MouseDownBackColor = kindaDark;
+            move.FlatAppearance.MouseDownBackColor = kindaDark;*/
 
             delete.BackColor = darkBackColor;
             delete.ForeColor = Color.White;
@@ -542,6 +546,7 @@ namespace MediaPlayer
             navController.ForeColor = Color.White;
             navController.FlatAppearance.MouseOverBackColor = kindaDark;
             navController.FlatAppearance.MouseDownBackColor = kindaDark;
+
 
             dashBoard.BackColor = darkBackColor;
             dashBoard.ForeColor = Color.White;
@@ -683,6 +688,7 @@ namespace MediaPlayer
             butt2.FlatAppearance.BorderSize = 0;
             butt2.MouseClick += (s, a) =>
             {
+                inDb = false;
                 if (Calculator.globalDirButton != null && isEnlarged[Calculator.globalDirButton.Text] && Calculator.globalDirButton.Text != butt2.Text)
                 {
                     Calculator.globalDirButton.ForeColor = Color.White;
@@ -696,6 +702,17 @@ namespace MediaPlayer
                 disposeAndLoad();
                 hoverPointer.Visible = false;
                 pointer.Location = new Point(0, butt2.Location.Y + ((butt2.Size.Height - pointer.Size.Height) / 2) - 43);
+
+                if (axWindowsMediaPlayer1.URL.Length != 0 && !flowLayoutPanel3.Controls.Contains(axWindowsMediaPlayer1))
+                {
+                    calcButton.Hide();
+                    axWindowsMediaPlayer1.Size = new Size(calcButton.Width + 24, calcButton.Height + 35);
+                    axWindowsMediaPlayer1.Margin = new Padding(0, 8, 0, 0);
+                    flowLayoutPanel3.Controls.Add(axWindowsMediaPlayer1);
+                    flowLayoutPanel3.Controls.SetChildIndex(axWindowsMediaPlayer1, flowLayoutPanel3.Controls.IndexOf(calcButton));
+                    axWindowsMediaPlayer1.Ctlcontrols.play();
+                    axWindowsMediaPlayer1.settings.rate = 1.40;
+                }
             };
             butt2.MouseEnter += (s, a) =>
             {
@@ -1568,14 +1585,14 @@ namespace MediaPlayer
                                     catch { }
 
                                     vidDetails.Text = vidDetText;
-                                    vidDetails.BackColor = lightBackColor;
+                                    vidDetails.BackColor = darkBackColor;
                                     vidDetails.ForeColor = Color.White;
                                     vidDetails.TextAlign = ContentAlignment.TopLeft;
                                     //vidDetails.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, vidDetails.Width, vidDetails.Height, 5, 5));
 
                                     //flowLayoutPanel1.Controls.Add(vidDetails);
                                     flowLayoutPanel.Controls.Add(vidDetails);
-                                    flowLayoutPanel.BackColor = lightBackColor;
+                                    flowLayoutPanel.BackColor = flowLayoutPanel1.BackColor;
                                     flowLayoutPanel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel.Width, flowLayoutPanel.Height, 30, 30));
                                     indFlowLayoutPanel.Controls.Add(flowLayoutPanel);
                                     grpLabels.Add(vidDetails);
@@ -1641,14 +1658,14 @@ namespace MediaPlayer
                                         flowLayoutPanel.Margin.Left:(flowLayoutPanel.Margin.Bottom-4);
                                         imgg = dirPb.Image;
                                         dirPb.SizeMode = PictureBoxSizeMode.CenterImage;
-                                        flowLayoutPanel.Region = null;
-                                        dirPb.Region = null;
                                         if (compact)
                                         {
                                             gif = arrGif.Count() != 0 ?
                                                 arrGif[r.Next(0, arrGif.Count())] : "";
                                             if (gif != "" && File.Exists(gif))
                                             {
+                                                dirPb.Region = null;
+                                                flowLayoutPanel.Region = null;
                                                 if (subDi.Name.Substring(0, 1).Equals("z") || subDi.Name.Substring(0, 1).Equals("0") || subDi.Name.Substring(0, 1).Equals("2") || subDi.Name.Substring(0, 1).Equals("3"))
                                                 {
                                                     for (int z = 0; z < dirPb.Parent.Parent.Controls.Count; z++)
@@ -1678,7 +1695,6 @@ namespace MediaPlayer
                                                     dirPb.Image = Image.FromFile(gif);
                                                     dirPb.Size = new Size(globalSizePanel.Width, globalSizePanel.Height + padding);
                                                     vidDetails.Hide();
-                                                    
                                                 }
                                             }
                                             else
@@ -1690,6 +1706,8 @@ namespace MediaPlayer
                                                 arrGif[r.Next(0, arrGif.Count())] : "";
                                             if (gif != "" && File.Exists(gif))
                                             {
+                                                dirPb.Region = null;
+                                                flowLayoutPanel.Region = null;
                                                 if (subDi.Name.Substring(0, 1).Equals("z") || subDi.Name.Substring(0, 1).Equals("0") || subDi.Name.Substring(0, 1).Equals("2") || subDi.Name.Substring(0, 1).Equals("3"))
                                                 {
                                                     for (int z = 0; z < dirPb.Parent.Parent.Controls.Count; z++)
@@ -1789,11 +1807,11 @@ namespace MediaPlayer
                                                     }
 
                                                 }
+                                                dirPb.Parent.Size = globalSizePanel;
+                                                dirPb.Size = globalSize;
+                                                dirPb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, dirPb.Width, dirPb.Height, 30, 30));
+                                                flowLayoutPanel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel.Width, flowLayoutPanel.Height, 30, 30));
                                             }
-                                            dirPb.Parent.Size = globalSizePanel;
-                                            dirPb.Size = globalSize;
-                                            dirPb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, dirPb.Width, dirPb.Height, 30, 30));
-                                            flowLayoutPanel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel.Width, flowLayoutPanel.Height, 30, 30));
                                             vidDetails.Show();
                                         }
                                         dirPb.SizeMode = PictureBoxSizeMode.Zoom;
@@ -1841,6 +1859,7 @@ namespace MediaPlayer
                 pointer.Visible = true;
                 if (flowLayoutPanel1.Controls.Count == 0)
                 {
+
                     hoverPointer.Visible = false;
                     pointer.Visible = false;
                     //flowLayoutPanel1.Size = new Size(flowLayoutPanel1.Size.Width+24, flowLayoutPanel1.Size.Height + flowLayoutPanel4.Size.Height+5 + flowLayoutPanel2.Height);
@@ -1848,130 +1867,131 @@ namespace MediaPlayer
                     flowLayoutPanel1.Location = stackedDb ? flowPanel1Loc : new Point(0, 44);
                     flowLayoutPanel1.BringToFront();
 
-                    button2.BackColor = lightBackColor;
-                    button3.BackColor = lightBackColor;
-                    button4.BackColor = lightBackColor;
-                    if(dupeLabel2==null) dupeLabel2 = new Label();
-                    dupeLabel2.Text = "Dashboard Refresh";
-                    dupeLabel2.Image = global::Calculator.Properties.Resources.icons8_dashboard_32;
-                    dupeLabel2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-                    dupeLabel2.Font = new Font("Consolas", 15, FontStyle.Bold);
-                    dupeLabel2.BackColor = lightBackColor;
-                    dupeLabel2.Size = stackedDb ? stackedSizeDbBtn : unStackedSizeDbBtn;
-                    dupeLabel2.ForeColor = Color.White;
-                    dupeLabel2.TextAlign = ContentAlignment.MiddleCenter;
-                    dupeLabel2.Margin = new Padding(8, 0, 0, 0);
-                    dupeLabel2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, dupeLabel2.Width, dupeLabel2.Height, 8, 8));
-                    dupeLabel2.MouseEnter += (s, args) =>
+
+                    if (useAndThrow)
                     {
-                        dupeLabel2.ForeColor = mouseClickColor;
-                        flowLayoutPanel1_MouseEnter(s, args);
-                    };
-                    dupeLabel2.MouseLeave += (s, args) =>
-                    {
+                        if (dupeLabel2 == null) dupeLabel2 = new Label();
+                        dupeLabel2.Text = "Dashboard Refresh";
+                        dupeLabel2.Image = global::Calculator.Properties.Resources.icons8_dashboard_32;
+                        dupeLabel2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+                        dupeLabel2.Font = new Font("Consolas", 15, FontStyle.Bold);
+                        dupeLabel2.BackColor = lightBackColor;
+                        dupeLabel2.Size = stackedDb ? stackedSizeDbBtn : unStackedSizeDbBtn;
                         dupeLabel2.ForeColor = Color.White;
-                    };
-                    dupeLabel2.MouseClick += (s, a) =>
-                    {
-                        dashBoard_Click(null, null);
-                    };
-                    //if (!stackedDb) flowLayoutPanel1.Controls.Add(menuBtn2);
-                    //flowLayoutPanel1.Controls.Add(dupeLabel2);
+                        dupeLabel2.TextAlign = ContentAlignment.MiddleCenter;
+                        dupeLabel2.Margin = new Padding(8, 0, 0, 0);
+                        dupeLabel2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, dupeLabel2.Width, dupeLabel2.Height, 8, 8));
+                        dupeLabel2.MouseEnter += (s, args) =>
+                        {
+                            dupeLabel2.ForeColor = mouseClickColor;
+                            flowLayoutPanel1_MouseEnter(s, args);
+                        };
+                        dupeLabel2.MouseLeave += (s, args) =>
+                        {
+                            dupeLabel2.ForeColor = Color.White;
+                        };
+                        dupeLabel2.MouseClick += (s, a) =>
+                        {
+                            dashBoard_Click(null, null);
+                        };
+                        //if (!stackedDb) flowLayoutPanel1.Controls.Add(menuBtn2);
+                        //flowLayoutPanel1.Controls.Add(dupeLabel2);
 
-                    if (playRandom == null) playRandom = new Label();
-                    playRandom.Text = "Play Something Random ";
-                    playRandom.Font = new Font("Consolas", 12, FontStyle.Bold);
-                    playRandom.BackColor = lightBackColor;
-                    playRandom.Size = stackedDb ? stackedSizeRandBtn : unStackedSizeRandBtn;
-                    playRandom.ForeColor = Color.White;
-                    playRandom.TextAlign = ContentAlignment.MiddleRight;
-                    playRandom.Margin = new Padding(25, 0, 25, 0);
-                    playRandom.Image = global::Calculator.Properties.Resources.random__1_;
-                    playRandom.ImageAlign = ContentAlignment.MiddleLeft;
-                    playRandom.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, playRandom.Width, playRandom.Height, 8, 8));
-                    playRandom.MouseEnter += (s, args) =>
-                    {
-                        playRandom.ForeColor = mouseClickColor;
-                        flowLayoutPanel1_MouseEnter(s, args);
-                    };
-                    playRandom.MouseLeave += (s, args) =>
-                    {
+                        if (playRandom == null) playRandom = new Label();
+                        playRandom.Text = "Play Something Random ";
+                        playRandom.Font = new Font("Consolas", 12, FontStyle.Bold);
+                        playRandom.BackColor = lightBackColor;
+                        playRandom.Size = stackedDb ? stackedSizeRandBtn : unStackedSizeRandBtn;
                         playRandom.ForeColor = Color.White;
-                    };
-                    playRandom.MouseClick += (s, a) =>
-                    {
-                        Random random = new Random();
-                        PictureBox pb = tempRandomFilesPreloaded.ElementAt(random.Next(tempRandomFilesPreloaded.Count));
-                        this.Hide();
-                        staticExp = this;
+                        playRandom.TextAlign = ContentAlignment.MiddleRight;
+                        playRandom.Margin = new Padding(25, 0, 25, 0);
+                        playRandom.Image = global::Calculator.Properties.Resources.random__1_;
+                        playRandom.ImageAlign = ContentAlignment.MiddleLeft;
+                        playRandom.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, playRandom.Width, playRandom.Height, 8, 8));
+                        playRandom.MouseEnter += (s, args) =>
+                        {
+                            playRandom.ForeColor = mouseClickColor;
+                            flowLayoutPanel1_MouseEnter(s, args);
+                        };
+                        playRandom.MouseLeave += (s, args) =>
+                        {
+                            playRandom.ForeColor = Color.White;
+                        };
+                        playRandom.MouseClick += (s, a) =>
+                        {
+                            Random random = new Random();
+                            PictureBox pb = tempRandomFilesPreloaded.ElementAt(random.Next(tempRandomFilesPreloaded.Count));
+                            this.Hide();
+                            staticExp = this;
 
-                        wmp.setRefPb(pb, tempRandomFilesPreloaded, null, false);
-                        wmp.axWindowsMediaPlayer1.URL = pb.Name;
-                        wmp.axWindowsMediaPlayer1.Name = pb.Name;
-                        wmp.Location = new Point(0, 28);
-                        wmp.calculateDuration(0);
-                        wmp.Show();
-                        this.backgroundWorker1.RunWorkerAsync(100);
-                    };
-                    //flowLayoutPanel1.Controls.Add(playRandom);
+                            wmp.setRefPb(pb, tempRandomFilesPreloaded, null, false);
+                            wmp.axWindowsMediaPlayer1.URL = pb.Name;
+                            wmp.axWindowsMediaPlayer1.Name = pb.Name;
+                            wmp.Location = new Point(0, 28);
+                            wmp.calculateDuration(0);
+                            wmp.Show();
+                            this.backgroundWorker1.RunWorkerAsync(100);
+                        };
+                        //flowLayoutPanel1.Controls.Add(playRandom);
 
-                    if (shorts == null) shorts = new Label();
-                    shorts.Text = "Play Shorts";
-                    shorts.Font = new Font("Consolas", 12, FontStyle.Bold);
-                    shorts.BackColor = lightBackColor;
-                    shorts.Size = stackedDb ? stackedSizeRandBtn : unStackedSizeRandBtn;
-                    shorts.ForeColor = Color.White;
-                    shorts.TextAlign = ContentAlignment.MiddleRight;
-                    shorts.Margin = new Padding(0, 0, 25, 0);
-                    shorts.Image = global::Calculator.Properties.Resources.random__1_;
-                    shorts.ImageAlign = ContentAlignment.MiddleLeft;
-                    shorts.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, shorts.Width, shorts.Height, 8, 8));
-                    shorts.MouseEnter += (s, args) =>
-                    {
-                        shorts.ForeColor = mouseClickColor;
-                        flowLayoutPanel1_MouseEnter(s,args);
-                    };
-                    shorts.MouseLeave += (s, args) =>
-                    {
+                        if (shorts == null) shorts = new Label();
+                        shorts.Text = "Play Shorts";
+                        shorts.Font = new Font("Consolas", 12, FontStyle.Bold);
+                        shorts.BackColor = lightBackColor;
+                        shorts.Size = stackedDb ? stackedSizeRandBtn : unStackedSizeRandBtn;
                         shorts.ForeColor = Color.White;
-                    };
-                    shorts.MouseClick += (s, a) =>
-                    {
-                        Random random = new Random();
+                        shorts.TextAlign = ContentAlignment.MiddleRight;
+                        shorts.Margin = new Padding(0, 0, 25, 0);
+                        shorts.Image = global::Calculator.Properties.Resources.random__1_;
+                        shorts.ImageAlign = ContentAlignment.MiddleLeft;
+                        shorts.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, shorts.Width, shorts.Height, 8, 8));
+                        shorts.MouseEnter += (s, args) =>
+                        {
+                            shorts.ForeColor = mouseClickColor;
+                            flowLayoutPanel1_MouseEnter(s, args);
+                        };
+                        shorts.MouseLeave += (s, args) =>
+                        {
+                            shorts.ForeColor = Color.White;
+                        };
+                        shorts.MouseClick += (s, a) =>
+                        {
+                            Random random = new Random();
 
-                        PictureBox pb = tempShortFilesPreloaded.ElementAt(random.Next(tempShortFilesPreloaded.Count));
-                        
-                        this.Hide();
-                        staticExp = this;
-                        wmp.setRefPb(pb, tempShortFilesPreloaded, null, false);
-                        wmp.axWindowsMediaPlayer1.URL = pb.Name;
-                        wmp.axWindowsMediaPlayer1.Name = pb.Name;
-                        wmp.Location = new Point(0, 28);
-                        wmp.repeat = false;
-                        wmp.calculateDuration(0);
-                        wmp.Show();
-                        this.backgroundWorker1.RunWorkerAsync(100);
-                    };
-                    //flowLayoutPanel1.Controls.Add(shorts);
+                            PictureBox pb = tempShortFilesPreloaded.ElementAt(random.Next(tempShortFilesPreloaded.Count));
 
-                    //flowLayoutPanel1.Controls.Add(button4);
-                    //flowLayoutPanel1.Controls.Add(button3);
-                    //flowLayoutPanel1.Controls.Add(button2);
+                            this.Hide();
+                            staticExp = this;
+                            wmp.setRefPb(pb, tempShortFilesPreloaded, null, false);
+                            wmp.axWindowsMediaPlayer1.URL = pb.Name;
+                            wmp.axWindowsMediaPlayer1.Name = pb.Name;
+                            wmp.Location = new Point(0, 28);
+                            wmp.repeat = false;
+                            wmp.calculateDuration(0);
+                            wmp.Show();
+                            this.backgroundWorker1.RunWorkerAsync(100);
+                        };
+                        //flowLayoutPanel1.Controls.Add(shorts);
 
-                    if(flowLayoutPanel == null) flowLayoutPanel = new FlowLayoutPanel();
-                    flowLayoutPanel.FlowDirection = FlowDirection.LeftToRight;
-                    flowLayoutPanel.BackColor = flowLayoutPanel1.BackColor;
-                    flowLayoutPanel.Margin = new Padding(0, 3, 0, 8);
-                    flowLayoutPanel.Size = new Size(flowLayoutPanel1.Width, shorts.Height + 2);
-                    flowLayoutPanel.Location = new Point(stackedDb?288:0, 0);
+                        //flowLayoutPanel1.Controls.Add(button4);
+                        //flowLayoutPanel1.Controls.Add(button3);
+                        //flowLayoutPanel1.Controls.Add(button2);
 
-                    if (!stackedDb)flowLayoutPanel.Controls.Add(menuBtn2);
-                    flowLayoutPanel.Controls.Add(dupeLabel2);
-                    flowLayoutPanel.Controls.Add(playRandom);
-                    flowLayoutPanel.Controls.Add(shorts);
-                    flowLayoutPanel.Controls.Add(button4);
-                    flowLayoutPanel.Controls.Add(button3);
-                    flowLayoutPanel.Controls.Add(button2);
+                        if (flowLayoutPanel == null) flowLayoutPanel = new FlowLayoutPanel();
+                        flowLayoutPanel.FlowDirection = FlowDirection.LeftToRight;
+                        flowLayoutPanel.BackColor = flowLayoutPanel1.BackColor;
+                        flowLayoutPanel.Margin = new Padding(0, 3, 0, 8);
+                        flowLayoutPanel.Size = new Size(flowLayoutPanel1.Width, shorts.Height + 2);
+                        flowLayoutPanel.Location = new Point(stackedDb ? 288 : 0, 0);
+
+                        if (!stackedDb) flowLayoutPanel.Controls.Add(menuBtn2);
+                        flowLayoutPanel.Controls.Add(dupeLabel2);
+                        flowLayoutPanel.Controls.Add(playRandom);
+                        flowLayoutPanel.Controls.Add(shorts);
+                        flowLayoutPanel.Controls.Add(button6);
+                        flowLayoutPanel.Controls.Add(button5);
+                        flowLayoutPanel.Controls.Add(button1);
+                    }
 
                     this.Controls.Add(flowLayoutPanel);
                     flowLayoutPanel.BringToFront();
@@ -2017,10 +2037,10 @@ namespace MediaPlayer
                     {
                         randomFiles = FilesDashboard(false, false);
                     }
-                    axWindowsMediaPlayer1.Size = new Size((stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width) + 74, (int)(((stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width) + 74) * 0.567));
-                    newProgressBar.Size = new Size((stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width) + 74, 3);
                     FillUpDashboard(randomFiles, false);
                     flowLayoutPanel1.Controls.Add(axWindowsMediaPlayer1);
+                    axWindowsMediaPlayer1.Size = new Size((stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width) + 74, (int)(((stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width) + 74) * 0.567));
+                    newProgressBar.Size = new Size((stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width) + 74, 3);
                     //videoHoverEnabler.Clear();
                     dashBoardRefresh = false;
 
@@ -2631,7 +2651,8 @@ namespace MediaPlayer
                         axWindowsMediaPlayer1.Ctlcontrols.currentPosition = currPosition;
                         newProgressBar.Value = (int)axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
 
-                    //VideoPlayer.axWindowsMediaPlayer1.URL = pb.Name;
+                        //VideoPlayer.axWindowsMediaPlayer1.URL = pb.Name;
+                        axWindowsMediaPlayer1.Margin = new Padding(0);
                     flowLayoutPanel.Controls.Add(axWindowsMediaPlayer1);
                         flowLayoutPanel.Controls.Add(newProgressBar);
                         flowLayoutPanel.Controls.Add(vidDetails);
@@ -2704,11 +2725,11 @@ namespace MediaPlayer
         private void disposeAndLoad()
         {
             flowLayoutPanel1.Controls.Clear();
-            flowLayoutPanel.Controls.Clear();
+            //flowLayoutPanel.Controls.Clear();
             this.Controls.Remove(flowLayoutPanel);
             flowLayoutPanel1.Size = new Size(1655, 988);
             flowLayoutPanel1.Location = new Point(288, 93);
-            button4.Location = new Point(1724, -1);
+            /*button4.Location = new Point(1724, -1);
             button3.Location = new Point(1791, -1);
             button2.Location = new Point(1858, -1);
 
@@ -2717,7 +2738,7 @@ namespace MediaPlayer
             button4.BackColor = darkBackColor;
             this.Controls.Add(button4);
             this.Controls.Add(button3);
-            this.Controls.Add(button2);
+            this.Controls.Add(button2);*/
             folders.Clear();
             selectedPb = null;
             grpLabels.Clear();
@@ -2732,22 +2753,11 @@ namespace MediaPlayer
                 }
                 catch { }
             }
-            foreach (PictureBox pb in videosPb)
-            {
-                try
-                {
-                    if (pb.Image != null)
-                        pb.Image.Dispose();
-                    pb.Dispose();
-                }
-                catch { }
-            }
             GC.Collect();
             disposableBoxes.Clear();
             viewMap.Clear();
             textBox3.Focus();
             textBox3.Select();
-            videosPb.Clear();
             vidDetailsStack.Clear();
             this.Explorer_Load(null, null);
         }
@@ -3287,6 +3297,18 @@ namespace MediaPlayer
             }
         }
 
+        private void Explorer_Deactivate(object sender, EventArgs e)
+        {
+            try
+            {
+                axWindowsMediaPlayer1.Ctlcontrols.pause();
+            }
+            catch
+            {
+
+            }
+        }
+
         private void button3_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
@@ -3322,7 +3344,8 @@ namespace MediaPlayer
             }
             VideoPlayer.toChangeTheme = false;
             textBox3.Focus();
-            flowLayoutPanel1.Controls.Add(axWindowsMediaPlayer1);
+            axWindowsMediaPlayer1.Ctlcontrols.play();
+            //flowLayoutPanel1.Controls.Add(axWindowsMediaPlayer1);
         }
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
@@ -3412,22 +3435,34 @@ namespace MediaPlayer
         {
             if (e.nButton == 2)
                 return;
+            /*if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPlaying)
+                axWindowsMediaPlayer1.Ctlcontrols.pause();
+            else
+                axWindowsMediaPlayer1.Ctlcontrols.play();*/
+            this.Hide();
+            staticExp = this;
+            wmp.Location = new Point(0, 28);
+            wmp.setRefPb(prevPb, videosPb, null);
+            wmp.axWindowsMediaPlayer1.URL = prevPb.Name;
+            wmp.axWindowsMediaPlayer1.Name = prevPb.Name;
+            wmp.calculateDuration(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
+            wmp.Show();
+            axWindowsMediaPlayer1.Ctlcontrols.pause();
             if (isHoveredOverPb)
             {
-                this.Hide();
-                staticExp = this;
-                wmp.Location = new Point(0, 28);
-                wmp.setRefPb(prevPb, videosPb, null);
-                wmp.axWindowsMediaPlayer1.URL = prevPb.Name;
-                wmp.axWindowsMediaPlayer1.Name = prevPb.Name;
-                wmp.calculateDuration(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
-                wmp.Show();
-                axWindowsMediaPlayer1.Ctlcontrols.pause();
             }
         }
 
         private void menuBtn1_Click(object sender, EventArgs e)
         {
+            /*calcButton.Show();
+            axWindowsMediaPlayer1.Ctlcontrols.pause();*/
+            if(!inDb)
+            {
+                dashBoard_Click(null, null);
+                inDb = true;
+            }
+
             Calculator.globalFilt = "";
             stackedDb = !stackedDb;
             dupeLabel2.Region = null;
@@ -3561,6 +3596,7 @@ namespace MediaPlayer
 
         private void dashBoard_Click(object sender, EventArgs e)
         {
+            inDb = true;
             Calculator.globalFilt = "";
             dashBoardRefresh = true;
             if (Calculator.globalDirButton != null && isEnlarged[Calculator.globalDirButton.Text])
@@ -3570,9 +3606,24 @@ namespace MediaPlayer
                 enlargeLeave(Calculator.globalDirButton, Calculator.globalDirButton.Text);
             }
             Calculator.globalFilt = "";
+            foreach (PictureBox pb in videosPb)
+            {
+                try
+                {
+                    if (pb.Image != null)
+                        pb.Image.Dispose();
+                    pb.Dispose();
+                }
+                catch { }
+            }
+
+            videosPb.Clear();
             disposeAndLoad();
+
             hoverPointer.Visible = false;
             pointer.Location = new Point(0, dashBoard.Location.Y + ((dashBoard.Size.Height - pointer.Size.Height) / 2) - 3);
+            calcButton.Show();
+            axWindowsMediaPlayer1.Ctlcontrols.pause();
         }
 
         private void toolStripMenuItem5_Click(object sender, EventArgs e)
@@ -3609,7 +3660,7 @@ namespace MediaPlayer
                 prevFlowLayoutPanel = null;
                 isHoveredOverPb = false;
                 timer1.Stop();
-
+                axWindowsMediaPlayer1.Ctlcontrols.pause();
             }
             GC.Collect();
         }

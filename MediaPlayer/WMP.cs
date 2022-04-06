@@ -36,6 +36,8 @@ namespace MediaPlayer
 
         WMP wmp = null;
         VideoPlayer videoPlayer = null;
+        public static String staticCurrURL;
+        public static Double staticCurrPos;
         public Boolean hoveredOver = true, hoveredOver2 = true, toggleFullScreen = true, saveResume = true, toAddMessageFilter = true,
             keyLock = false, playStatus = true, toMute = true, toRepeat = false, playable =true, pressedSpace = true, manualFrameChange = false, toAutoSkip = true;
         String directoryPath;
@@ -97,6 +99,19 @@ namespace MediaPlayer
         {
             this.timer3.Enabled = false;
             toAddMessageFilter = true;
+            if (Explorer.staticExp != null)
+            {
+                foreach(PictureBox pb in Explorer.staticExp.videosPb)
+                {
+                    if(pb.Name == axWindowsMediaPlayer1.URL)
+                    {
+                        Explorer.staticExp.prevPb = pb;
+                        Explorer.staticExp.axWindowsMediaPlayer1.URL = axWindowsMediaPlayer1.URL;
+                        Explorer.staticExp.axWindowsMediaPlayer1.Ctlcontrols.currentPosition = axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+                        break;
+                    }
+                }
+            }
             Application.RemoveMessageFilter(this);
             try
             {
@@ -262,6 +277,11 @@ namespace MediaPlayer
         private void flowLayoutPanel1_MouseEnter(object sender, EventArgs e)
         {
             overWmpSide = true;
+        }
+
+        private void timer4_Tick(object sender, EventArgs e)
+        {
+
         }
 
         private void flowLayoutPanel1_MouseLeave(object sender, EventArgs e)
@@ -772,15 +792,6 @@ namespace MediaPlayer
                         break;
 
                 }
-        }
-
-        private void timer4_Tick(object sender, EventArgs e)
-        {
-            if (miniPlayer.miniVidPlayer.currentMedia == null) return;
-            if (whereAt == 8.0) whereAt = 1.0;
-            double temp = (whereAt / 8.0) * hoverDuration;
-            miniPlayer.miniVidPlayer.Ctlcontrols.currentPosition = temp;
-            whereAt++;
         }
 
         private void clearAllToolStripMenuItem_Click(object sender, EventArgs e)

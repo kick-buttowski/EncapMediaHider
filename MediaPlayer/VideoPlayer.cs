@@ -6838,6 +6838,8 @@ namespace MediaPlayer
                 button4.Image.Dispose();
             Controls.Clear();
             controlDisposer();
+            axWindowsMediaPlayer1.Dispose();
+
             this.Dispose();
             GC.Collect();
             this.Close();

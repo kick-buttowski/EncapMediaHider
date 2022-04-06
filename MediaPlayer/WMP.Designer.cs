@@ -55,7 +55,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.skipFlowPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.autoSkip = new System.Windows.Forms.Button();
-            this.timer4 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -366,10 +365,6 @@
             this.autoSkip.UseVisualStyleBackColor = false;
             this.autoSkip.Click += new System.EventHandler(this.autoSkip_Click);
             // 
-            // timer4
-            // 
-            this.timer4.Interval = 3500;
-            // 
             // WMP
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -442,6 +437,5 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.FlowLayoutPanel skipFlowPanel;
         private System.Windows.Forms.Button autoSkip;
-        private System.Windows.Forms.Timer timer4;
     }
 }

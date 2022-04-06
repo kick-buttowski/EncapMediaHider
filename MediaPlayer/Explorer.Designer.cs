@@ -60,9 +60,7 @@
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.navController = new System.Windows.Forms.Button();
             this.newFolder = new System.Windows.Forms.Button();
-            this.move = new System.Windows.Forms.Button();
             this.refresh = new System.Windows.Forms.Button();
-            this.delete = new System.Windows.Forms.Button();
             this.theme = new System.Windows.Forms.Button();
             this.reset = new System.Windows.Forms.Button();
             this.stack = new System.Windows.Forms.Button();
@@ -72,8 +70,12 @@
             this.divider = new System.Windows.Forms.Panel();
             this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             this.menuBtn2 = new System.Windows.Forms.Button();
-            this.menuBtn1 = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.menuBtn1 = new System.Windows.Forms.Button();
+            this.delete = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -458,9 +460,9 @@
             // 
             // flowLayoutPanel2
             // 
+            this.flowLayoutPanel2.Controls.Add(this.dashBoard);
             this.flowLayoutPanel2.Controls.Add(this.navController);
             this.flowLayoutPanel2.Controls.Add(this.newFolder);
-            this.flowLayoutPanel2.Controls.Add(this.move);
             this.flowLayoutPanel2.Controls.Add(this.refresh);
             this.flowLayoutPanel2.Controls.Add(this.delete);
             this.flowLayoutPanel2.Controls.Add(this.theme);
@@ -484,10 +486,10 @@
             this.navController.ForeColor = System.Drawing.Color.White;
             this.navController.Image = global::Calculator.Properties.Resources.arrow;
             this.navController.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.navController.Location = new System.Drawing.Point(0, 0);
+            this.navController.Location = new System.Drawing.Point(235, 0);
             this.navController.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
             this.navController.Name = "navController";
-            this.navController.Size = new System.Drawing.Size(177, 41);
+            this.navController.Size = new System.Drawing.Size(169, 41);
             this.navController.TabIndex = 34;
             this.navController.Text = "Nav Cont";
             this.navController.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -507,39 +509,16 @@
             this.newFolder.ForeColor = System.Drawing.Color.White;
             this.newFolder.Image = ((System.Drawing.Image)(resources.GetObject("newFolder.Image")));
             this.newFolder.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.newFolder.Location = new System.Drawing.Point(179, 0);
+            this.newFolder.Location = new System.Drawing.Point(406, 0);
             this.newFolder.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
             this.newFolder.Name = "newFolder";
-            this.newFolder.Size = new System.Drawing.Size(177, 41);
+            this.newFolder.Size = new System.Drawing.Size(169, 41);
             this.newFolder.TabIndex = 22;
             this.newFolder.Text = "New Folder";
             this.newFolder.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.newFolder.UseVisualStyleBackColor = false;
             this.newFolder.Click += new System.EventHandler(this.newFolder_Click);
             this.newFolder.MouseEnter += new System.EventHandler(this.flowLayoutPanel1_MouseEnter);
-            // 
-            // move
-            // 
-            this.move.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.move.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.move.Enabled = false;
-            this.move.FlatAppearance.BorderSize = 0;
-            this.move.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.move.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.move.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.move.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.move.ForeColor = System.Drawing.Color.White;
-            this.move.Image = global::Calculator.Properties.Resources.icons8_move_32;
-            this.move.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.move.Location = new System.Drawing.Point(358, 0);
-            this.move.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.move.Name = "move";
-            this.move.Size = new System.Drawing.Size(177, 41);
-            this.move.TabIndex = 28;
-            this.move.Text = "Move";
-            this.move.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.move.UseVisualStyleBackColor = false;
-            this.move.MouseEnter += new System.EventHandler(this.flowLayoutPanel1_MouseEnter);
             // 
             // refresh
             // 
@@ -553,39 +532,16 @@
             this.refresh.ForeColor = System.Drawing.Color.White;
             this.refresh.Image = ((System.Drawing.Image)(resources.GetObject("refresh.Image")));
             this.refresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.refresh.Location = new System.Drawing.Point(537, 0);
+            this.refresh.Location = new System.Drawing.Point(577, 0);
             this.refresh.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
             this.refresh.Name = "refresh";
-            this.refresh.Size = new System.Drawing.Size(177, 41);
+            this.refresh.Size = new System.Drawing.Size(169, 41);
             this.refresh.TabIndex = 24;
             this.refresh.Text = "Refresh";
             this.refresh.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.refresh.UseVisualStyleBackColor = false;
             this.refresh.Click += new System.EventHandler(this.refresh_Click);
             this.refresh.MouseEnter += new System.EventHandler(this.flowLayoutPanel1_MouseEnter);
-            // 
-            // delete
-            // 
-            this.delete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
-            this.delete.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.delete.Enabled = false;
-            this.delete.FlatAppearance.BorderSize = 0;
-            this.delete.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.delete.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
-            this.delete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.delete.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.delete.ForeColor = System.Drawing.Color.White;
-            this.delete.Image = ((System.Drawing.Image)(resources.GetObject("delete.Image")));
-            this.delete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.delete.Location = new System.Drawing.Point(716, 0);
-            this.delete.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.delete.Name = "delete";
-            this.delete.Size = new System.Drawing.Size(177, 41);
-            this.delete.TabIndex = 25;
-            this.delete.Text = "Delete";
-            this.delete.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.delete.UseVisualStyleBackColor = false;
-            this.delete.MouseEnter += new System.EventHandler(this.flowLayoutPanel1_MouseEnter);
             // 
             // theme
             // 
@@ -599,10 +555,10 @@
             this.theme.ForeColor = System.Drawing.Color.White;
             this.theme.Image = global::Calculator.Properties.Resources.icons8_swatch_32__1_;
             this.theme.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.theme.Location = new System.Drawing.Point(895, 0);
+            this.theme.Location = new System.Drawing.Point(919, 0);
             this.theme.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
             this.theme.Name = "theme";
-            this.theme.Size = new System.Drawing.Size(177, 41);
+            this.theme.Size = new System.Drawing.Size(169, 41);
             this.theme.TabIndex = 27;
             this.theme.Text = "Theme";
             this.theme.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -622,10 +578,10 @@
             this.reset.ForeColor = System.Drawing.Color.White;
             this.reset.Image = global::Calculator.Properties.Resources.reset;
             this.reset.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.reset.Location = new System.Drawing.Point(1074, 0);
+            this.reset.Location = new System.Drawing.Point(1090, 0);
             this.reset.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
             this.reset.Name = "reset";
-            this.reset.Size = new System.Drawing.Size(177, 41);
+            this.reset.Size = new System.Drawing.Size(169, 41);
             this.reset.TabIndex = 32;
             this.reset.Text = "Reset";
             this.reset.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -645,10 +601,10 @@
             this.stack.ForeColor = System.Drawing.Color.White;
             this.stack.Image = global::Calculator.Properties.Resources.book_stack;
             this.stack.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.stack.Location = new System.Drawing.Point(1253, 0);
+            this.stack.Location = new System.Drawing.Point(1261, 0);
             this.stack.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
             this.stack.Name = "stack";
-            this.stack.Size = new System.Drawing.Size(177, 41);
+            this.stack.Size = new System.Drawing.Size(169, 41);
             this.stack.TabIndex = 33;
             this.stack.Text = "Un Stack";
             this.stack.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -659,7 +615,6 @@
             // flowLayoutPanel3
             // 
             this.flowLayoutPanel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(230)))), ((int)(((byte)(235)))));
-            this.flowLayoutPanel3.Controls.Add(this.dashBoard);
             this.flowLayoutPanel3.Controls.Add(this.calcButton);
             this.flowLayoutPanel3.Controls.Add(this.divider);
             this.flowLayoutPanel3.Controls.Add(this.axWindowsMediaPlayer1);
@@ -683,10 +638,10 @@
             this.dashBoard.ForeColor = System.Drawing.Color.White;
             this.dashBoard.Image = global::Calculator.Properties.Resources.icons8_dashboard_32;
             this.dashBoard.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.dashBoard.Location = new System.Drawing.Point(42, 5);
-            this.dashBoard.Margin = new System.Windows.Forms.Padding(42, 5, 2, 3);
+            this.dashBoard.Location = new System.Drawing.Point(0, 0);
+            this.dashBoard.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
             this.dashBoard.Name = "dashBoard";
-            this.dashBoard.Size = new System.Drawing.Size(225, 38);
+            this.dashBoard.Size = new System.Drawing.Size(233, 41);
             this.dashBoard.TabIndex = 35;
             this.dashBoard.Text = "Dashboard Refresh";
             this.dashBoard.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -704,8 +659,8 @@
             this.calcButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.calcButton.Font = new System.Drawing.Font("Consolas", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.calcButton.ForeColor = System.Drawing.Color.Black;
-            this.calcButton.Location = new System.Drawing.Point(13, 48);
-            this.calcButton.Margin = new System.Windows.Forms.Padding(13, 2, 10, 0);
+            this.calcButton.Location = new System.Drawing.Point(13, 15);
+            this.calcButton.Margin = new System.Windows.Forms.Padding(13, 15, 10, 0);
             this.calcButton.Name = "calcButton";
             this.calcButton.Size = new System.Drawing.Size(254, 122);
             this.calcButton.TabIndex = 0;
@@ -718,7 +673,7 @@
             // 
             // divider
             // 
-            this.divider.Location = new System.Drawing.Point(0, 175);
+            this.divider.Location = new System.Drawing.Point(0, 142);
             this.divider.Margin = new System.Windows.Forms.Padding(0, 5, 0, 1);
             this.divider.Name = "divider";
             this.divider.Size = new System.Drawing.Size(275, 8);
@@ -728,8 +683,8 @@
             // 
             this.axWindowsMediaPlayer1.ContextMenuStrip = this.contextMenuStrip1;
             this.axWindowsMediaPlayer1.Enabled = true;
-            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(275, 170);
-            this.axWindowsMediaPlayer1.Margin = new System.Windows.Forms.Padding(0,0,0,0);
+            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(275, 137);
+            this.axWindowsMediaPlayer1.Margin = new System.Windows.Forms.Padding(0);
             this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
             this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
             this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(0, 0);
@@ -739,7 +694,7 @@
             // menuBtn2
             // 
             this.menuBtn2.Image = global::Calculator.Properties.Resources.icons8_menu_40;
-            this.menuBtn2.Location = new System.Drawing.Point(0, 184);
+            this.menuBtn2.Location = new System.Drawing.Point(0, 151);
             this.menuBtn2.Margin = new System.Windows.Forms.Padding(0, 0, 16, 0);
             this.menuBtn2.Name = "menuBtn2";
             this.menuBtn2.Size = new System.Drawing.Size(41, 38);
@@ -747,20 +702,102 @@
             this.menuBtn2.UseVisualStyleBackColor = true;
             this.menuBtn2.Click += new System.EventHandler(this.menuBtn2_Click);
             // 
-            // menuBtn1
-            // 
-            this.menuBtn1.Image = global::Calculator.Properties.Resources.icons8_menu_40;
-            this.menuBtn1.Location = new System.Drawing.Point(0, 0);
-            this.menuBtn1.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.menuBtn1.Name = "menuBtn1";
-            this.menuBtn1.Size = new System.Drawing.Size(41, 38);
-            this.menuBtn1.TabIndex = 36;
-            this.menuBtn1.UseVisualStyleBackColor = true;
-            this.menuBtn1.Click += new System.EventHandler(this.menuBtn1_Click);
-            // 
             // backgroundWorker1
             // 
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Black;
+            this.button1.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Red;
+            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Consolas", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(427, 41);
+            this.button1.Margin = new System.Windows.Forms.Padding(0);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(66, 42);
+            this.button1.TabIndex = 24;
+            this.button1.Text = "X";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button5
+            // 
+            this.button5.BackColor = System.Drawing.Color.Black;
+            this.button5.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.button5.FlatAppearance.BorderSize = 0;
+            this.button5.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button5.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button5.Font = new System.Drawing.Font("Consolas", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button5.ForeColor = System.Drawing.Color.White;
+            this.button5.Location = new System.Drawing.Point(493, 41);
+            this.button5.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(67, 42);
+            this.button5.TabIndex = 25;
+            this.button5.Text = "-";
+            this.button5.UseVisualStyleBackColor = false;
+            this.button5.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button6
+            // 
+            this.button6.BackColor = System.Drawing.Color.Black;
+            this.button6.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.button6.FlatAppearance.BorderSize = 0;
+            this.button6.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button6.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button6.Font = new System.Drawing.Font("Consolas", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button6.ForeColor = System.Drawing.Color.White;
+            this.button6.Location = new System.Drawing.Point(562, 41);
+            this.button6.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(67, 42);
+            this.button6.TabIndex = 26;
+            this.button6.Text = "🡐";
+            this.button6.UseVisualStyleBackColor = false;
+            this.button6.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // menuBtn1
+            // 
+            this.menuBtn1.BackColor = System.Drawing.Color.Black;
+            this.menuBtn1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.menuBtn1.Image = global::Calculator.Properties.Resources.more__1_;
+            this.menuBtn1.Location = new System.Drawing.Point(-3, -2);
+            this.menuBtn1.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.menuBtn1.Name = "menuBtn1";
+            this.menuBtn1.Size = new System.Drawing.Size(17, 42);
+            this.menuBtn1.TabIndex = 36;
+            this.menuBtn1.UseVisualStyleBackColor = false;
+            this.menuBtn1.Click += new System.EventHandler(this.menuBtn1_Click);
+            // 
+            // delete
+            // 
+            this.delete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
+            this.delete.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.delete.Enabled = false;
+            this.delete.FlatAppearance.BorderSize = 0;
+            this.delete.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.delete.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(143)))), ((int)(((byte)(252)))));
+            this.delete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.delete.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.delete.ForeColor = System.Drawing.Color.White;
+            this.delete.Image = ((System.Drawing.Image)(resources.GetObject("delete.Image")));
+            this.delete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.delete.Location = new System.Drawing.Point(748, 0);
+            this.delete.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.delete.Name = "delete";
+            this.delete.Size = new System.Drawing.Size(169, 41);
+            this.delete.TabIndex = 25;
+            this.delete.Text = "Delete";
+            this.delete.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.delete.UseVisualStyleBackColor = false;
+            this.delete.MouseEnter += new System.EventHandler(this.flowLayoutPanel1_MouseEnter);
             // 
             // Explorer
             // 
@@ -769,7 +806,10 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(1902, 1033);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.button5);
             this.Controls.Add(this.menuBtn1);
+            this.Controls.Add(this.button6);
             this.Controls.Add(this.searchLabel);
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.button2);
@@ -788,6 +828,7 @@
             this.Text = "Explorer";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Activated += new System.EventHandler(this.Explorer_Activated);
+            this.Deactivate += new System.EventHandler(this.Explorer_Deactivate);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Explorer_FormClosing);
             this.Enter += new System.EventHandler(this.Explorer_Enter);
             this.contextMenuStrip1.ResumeLayout(false);
@@ -825,9 +866,7 @@
         private System.Windows.Forms.Label hoverPointer;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Button newFolder;
-        private System.Windows.Forms.Button move;
         private System.Windows.Forms.Button refresh;
-        private System.Windows.Forms.Button delete;
         private System.Windows.Forms.Button theme;
         private System.Windows.Forms.Button reset;
         private System.Windows.Forms.Button stack;
@@ -841,10 +880,14 @@
         private System.Windows.Forms.Panel divider;
         private System.Windows.Forms.Button dashBoard;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
-        private System.Windows.Forms.Button menuBtn1;
         private System.Windows.Forms.Button menuBtn2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
+        public AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button menuBtn1;
+        private System.Windows.Forms.Button delete;
     }
 }
