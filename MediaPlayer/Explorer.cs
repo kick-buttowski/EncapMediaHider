@@ -2128,6 +2128,9 @@ namespace MediaPlayer
             }
             else
             {
+                button1.Hide();
+                button5.Hide();
+                button6.Hide();
                 if (useAndThrow)
                 {
                     Label dirName = new Label();
@@ -3345,7 +3348,7 @@ namespace MediaPlayer
             VideoPlayer.toChangeTheme = false;
             textBox3.Focus();
             axWindowsMediaPlayer1.Ctlcontrols.play();
-            //flowLayoutPanel1.Controls.Add(axWindowsMediaPlayer1);
+            if(!flowLayoutPanel3.Controls.Contains(axWindowsMediaPlayer1))flowLayoutPanel1.Controls.Add(axWindowsMediaPlayer1);
         }
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e)

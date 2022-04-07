@@ -55,6 +55,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.skipFlowPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.autoSkip = new System.Windows.Forms.Button();
+            this.playListBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -365,6 +366,19 @@
             this.autoSkip.UseVisualStyleBackColor = false;
             this.autoSkip.Click += new System.EventHandler(this.autoSkip_Click);
             // 
+            // playListBtn
+            // 
+            this.playListBtn.BackColor = System.Drawing.Color.Black;
+            this.playListBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.playListBtn.Image = global::Calculator.Properties.Resources.more__1_;
+            this.playListBtn.Location = new System.Drawing.Point(-3, 507);
+            this.playListBtn.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.playListBtn.Name = "playListBtn";
+            this.playListBtn.Size = new System.Drawing.Size(17, 42);
+            this.playListBtn.TabIndex = 37;
+            this.playListBtn.UseVisualStyleBackColor = false;
+            this.playListBtn.Click += new System.EventHandler(this.playListBtn_Click);
+            // 
             // WMP
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -372,6 +386,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(1902, 1055);
+            this.Controls.Add(this.playListBtn);
             this.Controls.Add(this.autoSkip);
             this.Controls.Add(this.skipFlowPanel);
             this.Controls.Add(this.label1);
@@ -437,5 +452,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.FlowLayoutPanel skipFlowPanel;
         private System.Windows.Forms.Button autoSkip;
+        private System.Windows.Forms.Button playListBtn;
     }
 }

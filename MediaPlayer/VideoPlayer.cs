@@ -51,7 +51,7 @@ namespace MediaPlayer
         Dictionary<String, Double> timeSpan = new Dictionary<String, Double>();
         List<Image> videosImg = new List<Image>();
         public static List<String> videoUrls = new List<String>();
-        Explorer exp;
+        public static Explorer exp;
         int randNo = 0;
         public Label globalDetails = new Label();
         Double zoom = 1.0, loc = 0, prevX = -12, inWmpDuration = 0, whereAtMp = 1.0;
@@ -121,7 +121,7 @@ namespace MediaPlayer
                 Explorer.wmpOnTop = new WmpOnTop(this);
             }
             this.type = type;
-            this.exp = exp;
+            VideoPlayer.exp = exp;
             this.directoryPath = directoryPath;
             this.DoubleBuffered = true;
             Application.AddMessageFilter(this);
@@ -2009,10 +2009,55 @@ namespace MediaPlayer
                     }
                     GC.Collect();
                 };
-                if(playListDi.GetFiles().Length!=0) flowLayoutPanel1.Controls.Add(dupeLabel3);
+
+                if (Directory.Exists("E:\\Softwares\\Games\\0Games\\" + mainDi.Name))
+                {
+                    foreach (String di in Directory.GetDirectories("E:\\Softwares\\Games\\0Games\\" + mainDi.Name))
+                    {
+                        if (di.Contains("\\imgPB") || di.Contains("\\Online") || di.Contains("\\Pics") || di.Contains("\\PlayLists") ||
+                            File.Exists(playListDi.FullName + "\\" + di.Substring(di.LastIndexOf("\\") + 1) + ".txt"))
+                        {
+                            continue;
+                        }
+                        DirectoryInfo diInfo = new DirectoryInfo(di + "\\videos");
+                        List<FileInfo> filesList = diInfo.GetFiles().ToList().OrderBy(f => f.Name)
+                                                      .ToList();
+                        for (int k= 0;k < filesList.Count; k++)
+                        {
+                            FileInfo fiInfo = filesList[k];
+                            if (fiInfo.Name.EndsWith(".txt"))
+                                continue;
+
+                            String files = "";
+                            String keyWord = fiInfo.Name.Substring(0, fiInfo.Name.LastIndexOf("."));
+                            if (File.Exists(playListDi.FullName + "\\Games " + diInfo.Parent.Name + " " + keyWord + ".txt"))
+                            {
+                                while (k < filesList.Count && filesList[k].Name.StartsWith(keyWord))
+                                    k++;
+                                if (k == filesList.Count)
+                                    break;
+                                k--;
+                                continue;
+                            }
+                            while (filesList[k].Name.StartsWith(keyWord))
+                            {
+                                files = files + filesList[k].FullName + "\n";
+                                k++;
+                                if (k == filesList.Count)
+                                    break;
+                            }
+                            File.WriteAllText(playListDi.FullName + "\\Games " + diInfo.Parent.Name + " " + keyWord + ".txt", files);
+                            if (k == filesList.Count)
+                                break;
+                            k--;
+                        }
+                    }
+                }
+                if (playListDi.GetFiles().Length!=0) flowLayoutPanel1.Controls.Add(dupeLabel3);
 
                 int id = 0;
                 ToolStripMenuItem[] tempStripMenuItem = new ToolStripMenuItem[playListDi.GetFiles().Length];
+
                 for (int i = 0; i < playListDi.GetFiles().Count(); i++)
                 {
                     FlowLayoutPanel indFlowLayoutPanel = new FlowLayoutPanel();
@@ -2029,6 +2074,7 @@ namespace MediaPlayer
                             break;
                         FileInfo subDir = playListDi.GetFiles().ElementAt(i + j);
                         List<String> files = File.ReadAllLines(subDir.FullName).ToList();
+                        
                         this.toolStripMenuItem55.DropDownItems.Clear();
                         tempStripMenuItem[id] = new System.Windows.Forms.ToolStripMenuItem();
 
@@ -2073,7 +2119,10 @@ namespace MediaPlayer
                         Random random = new Random();
                         if (files.Count > 0)
                         {
-                            randNo = random.Next(files.Count);
+                            if (!subDir.Name.StartsWith("Games "))
+                                randNo = random.Next(files.Count);
+                            else
+                                randNo = 0;
                             pb.Image = setDefaultPic(new FileInfo(files.ElementAt(randNo)), pb);
                         }
                         pb.Margin = new Padding(0, 0, 0, 0);
@@ -2134,7 +2183,7 @@ namespace MediaPlayer
 
                                 if (pb.Name.EndsWith(".txt"))
                                 {
-                                    List<PictureBox> tempList = new List<PictureBox>();
+                                    List<PictureBox> tempList = new List<PictureBox>(), tempPlayListPb = new List<PictureBox>();
                                     List<String> dir = File.ReadAllLines(pb.Name).ToList();
                                     if (dir.Count == 0)
                                         return;
@@ -2148,9 +2197,32 @@ namespace MediaPlayer
                                         tempList.Add(tempPb);
                                     }
 
+                                    foreach (String file in Directory.GetFiles(pb.Name.Substring(0, pb.Name.LastIndexOf("\\"))))
+                                    {
+                                        PictureBox tempPb = new PictureBox();
+                                        String baseFile = "";
+                                        foreach (String str in File.ReadAllLines(file).ToList())
+                                        {
+                                            if (str.Trim().Length > 0)
+                                            {
+                                                baseFile = str.Trim();
+                                                break;
+                                            }
+                                        }
+                                        if (baseFile.Length == 0)
+                                            continue;
+                                        tempPb.Name = file;
+                                        tempPb.Image = setDefaultPic(new FileInfo(baseFile), tempPb);
+                                        if (tempPb.Image != null) tempPb.Image.Dispose();
+                                        tempPlayListPb.Add(tempPb);
+                                    }
+
                                     this.Hide();
                                     Explorer.wmp.Location = new Point(0, 28);
-                                    Explorer.wmp.setRefPb(pb, tempList, this);
+                                    if (prevPb.Name.Substring(prevPb.Name.LastIndexOf("\\") + 1).StartsWith("Games "))
+                                        Explorer.wmp.repeat = false;
+
+                                    Explorer.wmp.setRefPb(pb, tempList, this, tempPlayListPb);
                                     Explorer.wmp.axWindowsMediaPlayer1.URL = files.ElementAt(randNo);
                                     Explorer.wmp.axWindowsMediaPlayer1.Name = files.ElementAt(randNo);
                                     Explorer.wmp.calculateDuration(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
@@ -2328,12 +2400,14 @@ namespace MediaPlayer
                         Label vidDetails = new Label();
                         vidDetails.Text = vidDetText;
                         vidDetails.Font = new Font("Segoe UI", 9, FontStyle.Regular);
+                        vidDetails.Name = fileInfo.FullName;
                         vidDetails.BackColor = flowLayoutPanel2.BackColor;
                         vidDetails.Size = new Size(523, 48);
                         vidDetails.ForeColor = Color.White;
                         vidDetails.TextAlign = ContentAlignment.TopCenter;
                         vidDetails.Padding = new Padding(0, 3, 0, 0);
                         vidDetails.Margin = new Padding(0, 0, 0, 0);
+                        vidDetails.ContextMenuStrip = contextMenuStrip1;
                         allVidDet.Add(vidDetails);
                         /*vidDetails.MouseEnter += (s1, q1) =>
                         {
@@ -4375,6 +4449,8 @@ namespace MediaPlayer
                     vidDetails.TextAlign = ContentAlignment.TopCenter;
                     vidDetails.Padding = new Padding(0, 2, 0, 0);
                     vidDetails.Margin = new Padding(0, 0, 0, 0);
+                    vidDetails.Name = fileInfo.FullName;
+                    vidDetails.ContextMenuStrip = contextMenuStrip1;
                     allVidDet.Add(vidDetails);
 
                     FlowLayoutPanel flowLayoutPanel = new FlowLayoutPanel();
@@ -5360,7 +5436,7 @@ namespace MediaPlayer
 
         private void toolStripMenuItem42_Click(object sender, EventArgs e)
         {
-            PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+            Label pb = (Label)contextMenuStrip1.SourceControl;
             using (var fbd = new FolderBrowserDialog())
             {
                 fbd.SelectedPath = new FileInfo(pb.Name).DirectoryName;
@@ -5884,7 +5960,7 @@ namespace MediaPlayer
 
         private void toolStripMenuItem48_Click(object sender, EventArgs e)
         {
-            PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+            Label pb = (Label)contextMenuStrip1.SourceControl;
             Process.Start(Directory.GetParent(pb.Name).FullName);
         }
 
@@ -5981,7 +6057,7 @@ namespace MediaPlayer
         {
             try
             {
-                PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+                Label pb = (Label)contextMenuStrip1.SourceControl;
                 FileInfo fi = new FileInfo(pb.Name);
 
                 File.Move(fi.FullName, fi.DirectoryName + "\\Pics\\Affinity\\" + fi.Name);
@@ -6022,8 +6098,9 @@ namespace MediaPlayer
                 return;
 
             if (prevPb.Name.EndsWith(".txt"))
-            {Application.RemoveMessageFilter(this);
-                List<PictureBox> tempList = new List<PictureBox>();
+            {
+                Application.RemoveMessageFilter(this);
+                List<PictureBox> tempList = new List<PictureBox>(), tempPlayListPb = new List<PictureBox>();
                 List<String> dir = File.ReadAllLines(prevPb.Name).ToList();
                 if (dir.Count == 0)
                     return;
@@ -6037,10 +6114,32 @@ namespace MediaPlayer
                     tempList.Add(tempPb);
                 }
 
+                foreach (String file in Directory.GetFiles(prevPb.Name.Substring(0, prevPb.Name.LastIndexOf("\\"))))
+                {
+                    PictureBox tempPb = new PictureBox();
+                    String baseFile = "";
+                    foreach (String str in File.ReadAllLines(file).ToList())
+                    {
+                        if (str.Trim().Length > 0)
+                        {
+                            baseFile = str.Trim();
+                            break;
+                        }
+                    }
+                    if (baseFile.Length == 0)
+                        continue;
+                    tempPb.Name = file;
+                    tempPb.Image = setDefaultPic(new FileInfo(baseFile), tempPb);
+                    if (tempPb.Image != null) tempPb.Image.Dispose();
+                    tempPlayListPb.Add(tempPb);
+                }
+
                 this.Hide();
                 Explorer.wmp.Location = new Point(0, 28);
-                Explorer.wmp.setRefPb(prevPb, tempList, this);
+                if (prevPb.Name.Substring(prevPb.Name.LastIndexOf("\\") + 1).StartsWith("Games "))
+                    Explorer.wmp.repeat = false;
                 List<String> files = File.ReadAllLines(prevPb.Name).ToList();
+                Explorer.wmp.setRefPb(prevPb, tempList, this, tempPlayListPb);
                 Explorer.wmp.axWindowsMediaPlayer1.URL = files.ElementAt(randNo);
                 Explorer.wmp.axWindowsMediaPlayer1.Name = files.ElementAt(randNo);
                 Explorer.wmp.calculateDuration(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
@@ -6090,7 +6189,7 @@ namespace MediaPlayer
         {
             try
             {
-                PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+                Label pb = (Label)contextMenuStrip1.SourceControl;
                 FileInfo fi = new FileInfo(pb.Name);
 
                 File.Move(fi.FullName, fi.DirectoryName + "\\Pics\\GifVideos\\" + fi.Name);
@@ -6111,7 +6210,7 @@ namespace MediaPlayer
                 {
                     try
                     {
-                        PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+                        Label pb = (Label)contextMenuStrip1.SourceControl;
                         FileInfo file = new FileInfo(pb.Name);
                         var inputFile = new MediaFile { Filename = pb.Name };
                         var outputFile = new MediaFile { Filename = file.DirectoryName + "\\converted_" + file.Name.Substring(file.Name.IndexOf("placeholdeerr") + 13) };
@@ -6146,7 +6245,7 @@ namespace MediaPlayer
                     try
                     {
 
-                        PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+                        Label pb = (Label)contextMenuStrip1.SourceControl;
                         FileInfo file = new FileInfo(pb.Name);
                         var inputFile = new MediaFile { Filename = pb.Name };
                         var outputFile = new MediaFile { Filename = file.DirectoryName + "\\converted_" + file.Name.Substring(file.Name.IndexOf("placeholdeerr") + 13) };
@@ -6173,7 +6272,7 @@ namespace MediaPlayer
 
         private void toolStripMenuItem60_Click(object sender, EventArgs e)
         {
-            PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+            Label pb = (Label)contextMenuStrip1.SourceControl;
 
             FileInfo fi = new FileInfo(pb.Name);
 
@@ -6352,7 +6451,7 @@ namespace MediaPlayer
 
         private void toolStripMenuItem47_Click(object sender, EventArgs e)
         {
-            PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+            Label pb = (Label)contextMenuStrip1.SourceControl;
             if (File.Exists(mainDi.FullName + "\\resume.txt"))
             {
                 String[] resumeFile = File.ReadAllLines(mainDi.FullName + "\\resume.txt");
@@ -6365,7 +6464,7 @@ namespace MediaPlayer
 
                         this.Hide();
                         Explorer.wmp.Location = new Point(0, 28);
-                        Explorer.wmp.setRefPb(pb, videosPb, this);
+                        Explorer.wmp.setRefPb(prevPb, videosPb, this);
                         Explorer.wmp.axWindowsMediaPlayer1.URL = pb.Name;
                         Explorer.wmp.axWindowsMediaPlayer1.Name = pb.Name;
                         Explorer.wmp.calculateDuration(Double.Parse(str.Substring(str.IndexOf("@@!") + 3)));
@@ -6772,7 +6871,7 @@ namespace MediaPlayer
 
         private void convertToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PictureBox pb = (PictureBox)contextMenuStrip1.SourceControl;
+            Label pb = (Label)contextMenuStrip1.SourceControl;
 
             FileInfo fi = new FileInfo(pb.Name);
 
@@ -6891,7 +6990,7 @@ namespace MediaPlayer
             return true;
         }
 
-        private Image setDefaultPic(FileInfo fi, params PictureBox[] picBox)
+        public Image setDefaultPic(FileInfo fi, params PictureBox[] picBox)
         {
             System.IO.DirectoryInfo di = new DirectoryInfo(fi.DirectoryName + "\\imgPB");
 

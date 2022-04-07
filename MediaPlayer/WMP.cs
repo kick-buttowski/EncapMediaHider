@@ -42,7 +42,7 @@ namespace MediaPlayer
             keyLock = false, playStatus = true, toMute = true, toRepeat = false, playable =true, pressedSpace = true, manualFrameChange = false, toAutoSkip = true;
         String directoryPath;
         public static Boolean volumeLock = false;
-
+        List<PictureBox> playListVidPb = null;
         WindowsMediaPlayer wmpSmallPb = new WindowsMediaPlayerClass();
         FileInfo fileName = null;
         Dictionary<String, Double> timeSpan = new Dictionary<String, Double>();
@@ -98,17 +98,28 @@ namespace MediaPlayer
         public void formClosingDispoer()
         {
             this.timer3.Enabled = false;
-            toAddMessageFilter = true;
-            if (Explorer.staticExp != null)
+            if (Explorer.staticExp != null || VideoPlayer.exp!=null)
             {
-                foreach(PictureBox pb in Explorer.staticExp.videosPb)
+                foreach(PictureBox pb in videosPb)
                 {
                     if(pb.Name == axWindowsMediaPlayer1.URL)
                     {
-                        Explorer.staticExp.prevPb = pb;
-                        Explorer.staticExp.axWindowsMediaPlayer1.URL = axWindowsMediaPlayer1.URL;
-                        Explorer.staticExp.axWindowsMediaPlayer1.Ctlcontrols.currentPosition = axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
-                        break;
+                        if (Explorer.staticExp != null)
+                        {
+                            Explorer.staticExp.prevPb = pb;
+                            Explorer.staticExp.axWindowsMediaPlayer1.URL = axWindowsMediaPlayer1.URL;
+                            Explorer.staticExp.axWindowsMediaPlayer1.Ctlcontrols.currentPosition = axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+                            Explorer.staticExp.axWindowsMediaPlayer1.Ctlcontrols.pause();
+                            break;
+                        }
+                        else if (VideoPlayer.exp != null)
+                        {
+                            VideoPlayer.exp.prevPb = pb;
+                            VideoPlayer.exp.axWindowsMediaPlayer1.URL = axWindowsMediaPlayer1.URL;
+                            VideoPlayer.exp.axWindowsMediaPlayer1.Ctlcontrols.currentPosition = axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+                            VideoPlayer.exp.axWindowsMediaPlayer1.Ctlcontrols.pause();
+                            break;
+                        }
                     }
                 }
             }
@@ -263,6 +274,19 @@ namespace MediaPlayer
             this.refPb = refPb;
             this.videosPb = videosPb;
             this.videoPlayer = videoPlayer;
+            this.playListVidPb = null;
+
+            toAddMessageFilter = true;
+            saveResume = true;
+        }
+
+        public void setRefPb(PictureBox refPb, List<PictureBox> videosPb, VideoPlayer videoPlayer, List<PictureBox> playListVidPb)
+        {
+            this.refPb = refPb;
+            this.videosPb = videosPb;
+            this.videoPlayer = videoPlayer;
+            this.playListVidPb = playListVidPb;
+            toAddMessageFilter = true;
             saveResume = true;
         }
 
@@ -272,11 +296,167 @@ namespace MediaPlayer
             this.videosPb = videosPb;
             this.videoPlayer = videoPlayer;
             this.saveResume = saveResume;
+            toAddMessageFilter = true;
+            this.playListVidPb = null;
         }
 
         private void flowLayoutPanel1_MouseEnter(object sender, EventArgs e)
         {
             overWmpSide = true;
+        }
+
+        private void playListBtn_Click(object sender, EventArgs e)
+        {
+            controlDisposer();
+
+            if (playListVidPb == null)
+                return;
+            calcXY(playListVidPb.Count);
+            flowLayoutPanel1.Size = new Size(flowLayoutPanel1.Width, layout1Size);
+            flowLayoutPanel1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel1.Width, flowLayoutPanel1.Height, 15, 15));
+
+            for (int i = 0; i < playListVidPb.Count; i++)
+            {
+                String baseFile = "";
+                foreach (String str in File.ReadAllLines(playListVidPb[i].Name).ToList())
+                {
+                    if (str.Trim().Length > 0)
+                    {
+                        baseFile = str.Trim();
+                        break;
+                    }
+                }
+                if (baseFile.Length == 0)
+                    continue;
+                if (wmp != null && baseFile.Equals(videosPb.ElementAt(0).Name))
+                {
+                    List<int> seq = new List<int>();
+                    for (int j = i - topC; j < i; j++)
+                        seq.Add(j < 0 ? playListVidPb.Count + j : j);
+
+                    for (int j = i; j < i + botC; j++)
+                        seq.Add(j >= playListVidPb.Count ? j - playListVidPb.Count : j);
+
+                    for (int j = 0; j < seq.Count; j++)
+                    {
+                        if (seq[j] < 0)
+                        {
+                            seq.RemoveAt(j);
+                            seq.Insert(j, 0);
+                        }
+
+                        if (seq[j] >= playListVidPb.Count)
+                        {
+                            seq.RemoveAt(j);
+                            seq.Insert(j, playListVidPb.Count - 1);
+                        }
+                    }
+
+                    foreach (int j in seq)
+                    {
+                        PictureBox smallPb = new PictureBox();
+                        smallPb.Image = File.Exists(playListVidPb[j < 0 ? (playListVidPb.Count + j) : j].ImageLocation) ? Image.FromFile(playListVidPb[j < 0 ? (playListVidPb.Count + j) : j].ImageLocation) : null;
+                        if (playListVidPb[j < 0 ? (playListVidPb.Count + j) : j].Name.Equals(wmp.axWindowsMediaPlayer1.Name))
+                        {
+                            globalPb = smallPb;
+                            smallPb.Size = new Size(245, (int)(245 / 1.7777));
+                            smallPb.Margin = new Padding(25, 18, 0, 10);
+
+                            smallPb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, smallPb.Width, smallPb.Height, 12, 12));
+                        }
+                        else
+                        {
+                            smallPb.Size = new Size(275, (int)(275 / 1.7777));
+
+                            smallPb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, smallPb.Width, smallPb.Height, 14, 14));
+                            smallPb.Margin = new Padding(10, 8, 0, 0);
+                        }
+
+                        smallPb.SizeMode = PictureBoxSizeMode.Zoom;
+
+                        smallPb.Name = playListVidPb[j < 0 ? (playListVidPb.Count + j) : j].Name;
+
+                        smallPb.MouseEnter += (s, args) =>
+                        {
+                            overWmpSide = true;
+                        };
+
+
+                        smallPb.MouseLeave += (s, args) =>
+                        {
+                            overWmpSide = false;
+                        };
+
+                        smallPb.MouseClick += (s, args) =>
+                        {
+                            overWmpSide = false;
+                            if (vidPb.Count > 0)
+                            {
+                                foreach (PictureBox pb in vidPb)
+                                {
+                                    if (pb.Image != null)
+                                    {
+                                        pb.Image.Dispose();
+                                        pb.Dispose();
+                                    }
+                                }
+                            }
+                            vidPb.Clear();
+
+                            foreach (String file in File.ReadLines(smallPb.Name))
+                            {
+                                PictureBox tempPb = new PictureBox();
+                                tempPb.Name = file;
+                                tempPb.Image = videoPlayer.setDefaultPic(new FileInfo(file), tempPb);
+                                if (tempPb.Image != null) tempPb.Image.Dispose();
+                                vidPb.Add(tempPb);
+                            }
+
+                            refPb = smallPb;
+
+                            baseFile = "";
+                            foreach (String str in File.ReadAllLines(smallPb.Name).ToList())
+                            {
+                                if (str.Trim().Length > 0)
+                                {
+                                    baseFile = str.Trim();
+                                    break;
+                                }
+                            }
+                            if (baseFile.Length == 0)
+                                return;
+
+                            wmp.axWindowsMediaPlayer1.URL = baseFile;
+                            wmp.axWindowsMediaPlayer1.Name = baseFile;
+
+                            if (Path.GetFileName(axWindowsMediaPlayer1.Name).Contains("placeholdeerr"))
+                            {
+                                String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+
+                                textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                                    "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+
+                            }
+                            startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
+                            endTime = TimeSpan.FromSeconds((int)endRepeatTo);
+                            Double currPosition = 0;
+                            IWMPMedia mediainfo = wmpSmallPb.newMedia(smallPb.Name);
+                            this.hoverDuration = mediainfo.duration;
+                            currPosition = (1.0 / 8.0) * hoverDuration;
+
+                            wmp.calculateDuration(currPosition);
+
+                            controlDisposer();
+                            fillUpFP1(vidPb);
+                        };
+
+                        dispPb.Add(smallPb);
+                        flowLayoutPanel1.Controls.Add(smallPb);
+                    }
+
+                    //flowLayoutPanel1.Controls.Add(label1);
+                }
+            }
         }
 
         private void timer4_Tick(object sender, EventArgs e)
@@ -292,6 +472,7 @@ namespace MediaPlayer
         public WMP(PictureBox refPb, PicViewer picViewer, List<PictureBox> videosPb, VideoPlayer videoPlayer)
         {
             InitializeComponent();
+            
             wmp = this;
             this.videoPlayer = videoPlayer;
             this.picViewer = picViewer;
@@ -450,13 +631,17 @@ namespace MediaPlayer
                 refPb = smallPb;
                 wmp.axWindowsMediaPlayer1.URL = smallPb.Name;
                 wmp.axWindowsMediaPlayer1.Name = smallPb.Name;
-                String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
 
+                if (Path.GetFileName(axWindowsMediaPlayer1.Name).Contains("placeholdeerr"))
+                {
+                    String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+
+                    textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                        "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+
+                }
                 startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
                 endTime = TimeSpan.FromSeconds((int)endRepeatTo);
-                textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") + 
-                    "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
-
                 Double currPosition = 0;
                 IWMPMedia mediainfo = wmpSmallPb.newMedia(smallPb.Name);
                 this.hoverDuration = mediainfo.duration;
@@ -498,7 +683,7 @@ namespace MediaPlayer
 
         public void calcXY(int count)
         {
-            if(count == 4)
+            if (count == 4)
             {
                 topC = 1;
                 botC = 3;
@@ -526,6 +711,7 @@ namespace MediaPlayer
                 layout1Size = 181;
                 flowLayoutPanel1.Location = new Point(flowLayoutPanel1.Location.X, 114 + 302);
             }
+            else { topC = 2; botC = 3; layout1Size = 828; flowLayoutPanel1.Location = new Point(flowLayoutPanel1.Location.X, 114); }
         }
 
         public void fillUpFP1(List<PictureBox> vidPb, params Boolean[] typeImg)
@@ -717,12 +903,15 @@ namespace MediaPlayer
 
                                         wmp.axWindowsMediaPlayer1.URL = vidPb.ElementAt(i).Name;
                                         wmp.axWindowsMediaPlayer1.Name = vidPb.ElementAt(i).Name;
+                                    if (Path.GetFileName(wmp.axWindowsMediaPlayer1.Name).Contains("placeholdeerr"))
+                                    {
                                         String temp = Path.GetFileName(wmp.axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(wmp.axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
 
-                                        startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
-                                        endTime = TimeSpan.FromSeconds((int)endRepeatTo);
-                                    textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
-                    "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+                                        textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                        "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+                                    }
+                                    startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
+                                    endTime = TimeSpan.FromSeconds((int)endRepeatTo);
                                     wmp.calculateDuration(0);
 
                                         controlDisposer();
@@ -1522,12 +1711,15 @@ namespace MediaPlayer
                                 refPb = vidPb.ElementAt(i);
                                 wmp.axWindowsMediaPlayer1.URL = vidPb.ElementAt(i).Name;
                                 wmp.axWindowsMediaPlayer1.Name = vidPb.ElementAt(i).Name;
-                                String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+                                if (Path.GetFileName(axWindowsMediaPlayer1.Name).Contains("placeholdeerr"))
+                                {
+                                    String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
 
+                                    textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                                        "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+                                }
                                 startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
                                 endTime = TimeSpan.FromSeconds((int)endRepeatTo);
-                                textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
-                                    "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
 
                                 Double currPosition = 0;
                                 IWMPMedia mediainfo = wmpSmallPb.newMedia(vidPb.ElementAt(i).Name);
@@ -1580,12 +1772,16 @@ namespace MediaPlayer
                                 refPb = vidPb.ElementAt(i);
                                 wmp.axWindowsMediaPlayer1.URL = vidPb.ElementAt(i).Name;
                                 wmp.axWindowsMediaPlayer1.Name = vidPb.ElementAt(i).Name;
-                                String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+                                if (Path.GetFileName(axWindowsMediaPlayer1.Name).Contains("placeholdeerr"))
+                                {
+                                    String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+
+                                    textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                                        "               \t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+                                }
 
                                 startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
                                 endTime = TimeSpan.FromSeconds((int)endRepeatTo);
-                                textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
-                                    "               \t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
 
                                 Double currPosition = 0;
                                 IWMPMedia mediainfo = wmpSmallPb.newMedia(vidPb.ElementAt(i).Name);
@@ -2126,12 +2322,14 @@ namespace MediaPlayer
                                 refPb = vidPb.ElementAt(i);
                                 wmp.axWindowsMediaPlayer1.URL = vidPb.ElementAt(i).Name;
                                 wmp.axWindowsMediaPlayer1.Name = vidPb.ElementAt(i).Name;
+                                if (Path.GetFileName(axWindowsMediaPlayer1.Name).Contains("placeholdeerr")) { 
                                 String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
 
-                                startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
-                                endTime = TimeSpan.FromSeconds((int)endRepeatTo);
                                 textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
                     "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+                                }
+                                startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
+                                endTime = TimeSpan.FromSeconds((int)endRepeatTo);
 
                                 Double currPosition = 0;
                                 IWMPMedia mediainfo = wmpSmallPb.newMedia(vidPb.ElementAt(i).Name);
@@ -2206,13 +2404,16 @@ namespace MediaPlayer
                                 refPb = vidPb.ElementAt(i);
                                 wmp.axWindowsMediaPlayer1.URL = vidPb.ElementAt(i).Name;
                                 wmp.axWindowsMediaPlayer1.Name = vidPb.ElementAt(i).Name;
-                                String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+                                if (Path.GetFileName(axWindowsMediaPlayer1.Name).Contains("placeholdeerr"))
+                                {
+                                    String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+
+                                    textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                        "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+                                }
 
                                 startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
                                 endTime = TimeSpan.FromSeconds((int)endRepeatTo);
-                                textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
-                    "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
-
                                 Double currPosition = 0;
                                 IWMPMedia mediainfo = wmpSmallPb.newMedia(vidPb.ElementAt(i).Name);
                                 this.hoverDuration = mediainfo.duration;
