@@ -67,7 +67,7 @@ namespace MediaPlayer
         public Double startRepeatFrom = 0, duration = 0, currPos = 0, endRepeatTo = 0, hoverDuration = 0;
         double whereAt = 1;
         TimeSpan startTime, endTime;
-        Boolean overWmpSide = false;
+        Boolean overWmpSide = false, overPlSide = false;
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
@@ -94,6 +94,7 @@ namespace MediaPlayer
         PictureBox refPb = new PictureBox();
         Color mouseClickColor = Color.FromArgb(81, 160, 213);
         List<PictureBox> videosPb = null;
+        List<PictureBox> videosPbPl = new List<PictureBox>();
 
         public void formClosingDispoer()
         {
@@ -276,6 +277,7 @@ namespace MediaPlayer
             this.videoPlayer = videoPlayer;
             this.playListVidPb = null;
 
+            flowLayoutPanel2.Hide();
             toAddMessageFilter = true;
             saveResume = true;
         }
@@ -287,6 +289,7 @@ namespace MediaPlayer
             this.videoPlayer = videoPlayer;
             this.playListVidPb = playListVidPb;
             toAddMessageFilter = true;
+            flowLayoutPanel2.Hide();
             saveResume = true;
         }
 
@@ -297,6 +300,7 @@ namespace MediaPlayer
             this.videoPlayer = videoPlayer;
             this.saveResume = saveResume;
             toAddMessageFilter = true;
+            flowLayoutPanel2.Hide();
             this.playListVidPb = null;
         }
 
@@ -304,16 +308,14 @@ namespace MediaPlayer
         {
             overWmpSide = true;
         }
-
-        private void playListBtn_Click(object sender, EventArgs e)
+        
+        private void fillUpPl()
         {
-            controlDisposer();
-
             if (playListVidPb == null)
                 return;
-            calcXY(playListVidPb.Count);
-            flowLayoutPanel1.Size = new Size(flowLayoutPanel1.Width, layout1Size);
-            flowLayoutPanel1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel1.Width, flowLayoutPanel1.Height, 15, 15));
+            //calcXY(playListVidPb.Count);
+            //flowLayoutPanel1.Size = new Size(flowLayoutPanel1.Width, layout1Size);
+            //flowLayoutPanel1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel1.Width, flowLayoutPanel1.Height, 15, 15));
 
             for (int i = 0; i < playListVidPb.Count; i++)
             {
@@ -331,10 +333,10 @@ namespace MediaPlayer
                 if (wmp != null && baseFile.Equals(videosPb.ElementAt(0).Name))
                 {
                     List<int> seq = new List<int>();
-                    for (int j = i - topC; j < i; j++)
+                    for (int j = i - 2; j < i; j++)
                         seq.Add(j < 0 ? playListVidPb.Count + j : j);
 
-                    for (int j = i; j < i + botC; j++)
+                    for (int j = i; j < i + 3; j++)
                         seq.Add(j >= playListVidPb.Count ? j - playListVidPb.Count : j);
 
                     for (int j = 0; j < seq.Count; j++)
@@ -356,20 +358,33 @@ namespace MediaPlayer
                     {
                         PictureBox smallPb = new PictureBox();
                         smallPb.Image = File.Exists(playListVidPb[j < 0 ? (playListVidPb.Count + j) : j].ImageLocation) ? Image.FromFile(playListVidPb[j < 0 ? (playListVidPb.Count + j) : j].ImageLocation) : null;
-                        if (playListVidPb[j < 0 ? (playListVidPb.Count + j) : j].Name.Equals(wmp.axWindowsMediaPlayer1.Name))
+
+                        baseFile = "";
+                        foreach (String str in File.ReadAllLines(playListVidPb[j < 0 ? (playListVidPb.Count + j) : j].Name).ToList())
+                        {
+                            if (str.Trim().Length > 0)
+                            {
+                                baseFile = str.Trim();
+                                break;
+                            }
+                        }
+                        if (baseFile.Length == 0)
+                            continue;
+
+                        if (baseFile.Equals(videosPb.ElementAt(0).Name))
                         {
                             globalPb = smallPb;
-                            smallPb.Size = new Size(245, (int)(245 / 1.7777));
-                            smallPb.Margin = new Padding(25, 18, 0, 10);
+                            smallPb.Size = new Size(110, (int)(110 / 1.7777));
+                            smallPb.Margin = new Padding(10, 14, 0, 10);
 
-                            smallPb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, smallPb.Width, smallPb.Height, 12, 12));
+                            smallPb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, smallPb.Width, smallPb.Height, 8, 8));
                         }
                         else
                         {
-                            smallPb.Size = new Size(275, (int)(275 / 1.7777));
+                            smallPb.Size = new Size(127, (int)(127 / 1.7777));
 
-                            smallPb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, smallPb.Width, smallPb.Height, 14, 14));
-                            smallPb.Margin = new Padding(10, 8, 0, 0);
+                            smallPb.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, smallPb.Width, smallPb.Height, 10, 10));
+                            smallPb.Margin = new Padding(3, 8, 0, 0);
                         }
 
                         smallPb.SizeMode = PictureBoxSizeMode.Zoom;
@@ -378,21 +393,21 @@ namespace MediaPlayer
 
                         smallPb.MouseEnter += (s, args) =>
                         {
-                            overWmpSide = true;
+                            overPlSide = true;
                         };
 
 
                         smallPb.MouseLeave += (s, args) =>
                         {
-                            overWmpSide = false;
+                            overPlSide = false;
                         };
 
                         smallPb.MouseClick += (s, args) =>
                         {
-                            overWmpSide = false;
-                            if (vidPb.Count > 0)
+                            flowLayoutPanel2.Controls.Clear();
+                            if (videosPbPl.Count > 0)
                             {
-                                foreach (PictureBox pb in vidPb)
+                                foreach (PictureBox pb in videosPbPl)
                                 {
                                     if (pb.Image != null)
                                     {
@@ -401,18 +416,18 @@ namespace MediaPlayer
                                     }
                                 }
                             }
-                            vidPb.Clear();
+                            videosPbPl.Clear();
 
+                            controlDisposer();
+                            videosPb.Clear();
                             foreach (String file in File.ReadLines(smallPb.Name))
                             {
                                 PictureBox tempPb = new PictureBox();
                                 tempPb.Name = file;
                                 tempPb.Image = videoPlayer.setDefaultPic(new FileInfo(file), tempPb);
                                 if (tempPb.Image != null) tempPb.Image.Dispose();
-                                vidPb.Add(tempPb);
+                                videosPb.Add(tempPb);
                             }
-
-                            refPb = smallPb;
 
                             baseFile = "";
                             foreach (String str in File.ReadAllLines(smallPb.Name).ToList())
@@ -446,17 +461,32 @@ namespace MediaPlayer
 
                             wmp.calculateDuration(currPosition);
 
-                            controlDisposer();
-                            fillUpFP1(vidPb);
+                            fillUpPl();
+                            fillUpFP1(videosPb);
                         };
 
-                        dispPb.Add(smallPb);
-                        flowLayoutPanel1.Controls.Add(smallPb);
+                        videosPbPl.Add(smallPb);
+                        flowLayoutPanel2.Controls.Add(smallPb);
                     }
 
                     //flowLayoutPanel1.Controls.Add(label1);
                 }
             }
+        }
+
+        private void flowLayoutPanel2_MouseEnter(object sender, EventArgs e)
+        {
+            overPlSide = true;
+        }
+
+        private void flowLayoutPanel2_MouseLeave(object sender, EventArgs e)
+        {
+            overPlSide = false;
+        }
+
+        private void playListBtn_Click(object sender, EventArgs e)
+        {
+            //controlDisposer();
         }
 
         private void timer4_Tick(object sender, EventArgs e)
@@ -481,6 +511,7 @@ namespace MediaPlayer
             panel2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, panel2.Width, panel2.Height, 12, 12));
             keyS.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, keyS.Width, keyS.Height, 12, 12));
             label1.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, label1.Width, label1.Height, 9, 9));
+            flowLayoutPanel2.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel2.Width, flowLayoutPanel2.Height, 15, 15));
             this.refPb = refPb;
             mouseClickColor = Explorer.globColor;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -784,6 +815,21 @@ namespace MediaPlayer
                 pb.Tag = null;
             }
             disposePb.Clear();
+
+            flowLayoutPanel2.Controls.Clear();
+            if (videosPbPl.Count > 0)
+            {
+                foreach (PictureBox pb in videosPbPl)
+                {
+                    if (pb.Image != null)
+                    {
+                        pb.Image.Dispose();
+                        pb.Dispose();
+                    }
+                }
+            }
+            videosPbPl.Clear();
+
             controlDisposer();
             TranspBack.toTop = false;
             formClosingDispoer();
@@ -1004,7 +1050,7 @@ namespace MediaPlayer
         {
             if (e != null)
             {
-                if (e.Button == MouseButtons.Right)
+                /*if (e.Button == MouseButtons.Right)
                 {
                     FileInfo fi = new FileInfo(axWindowsMediaPlayer1.URL);
                     refPb.Image.Dispose();
@@ -1023,7 +1069,7 @@ namespace MediaPlayer
                     }
                     refPb.Image = Image.FromFile(fi.DirectoryName + "\\ImgPB\\" + fi.Name + ".jpg");
                     return;
-                }
+                }*/
             }
                 axWindowsMediaPlayer1.Ctlcontrols.play();
                 axWindowsMediaPlayer1.Ctlcontrols.currentPosition = miniPlayer.miniVidPlayer.Ctlcontrols.currentPosition;
@@ -1225,6 +1271,24 @@ namespace MediaPlayer
             }
             axWindowsMediaPlayer1.Select();
             fillUpFP1(videosPb);
+            flowLayoutPanel2.Controls.Clear();
+            if (videosPbPl.Count > 0)
+            {
+                foreach (PictureBox pb in videosPbPl)
+                {
+                    if (pb.Image != null)
+                    {
+                        pb.Image.Dispose();
+                        pb.Dispose();
+                    }
+                }
+            }
+            videosPbPl.Clear();
+            if (playListVidPb != null)
+            {
+                flowLayoutPanel2.Show();
+                fillUpPl();
+            }
 
             mainDi = Directory.GetParent(axWindowsMediaPlayer1.Name);
             if (!File.Exists(mainDi + "\\ToSkipParts.txt"))
@@ -1809,6 +1873,176 @@ namespace MediaPlayer
                     }
                     return true;
                 }
+                if (overPlSide)
+                {
+                    if (m.WParam.ToString() == "7864320")
+                    {
+                        for (int i = 0; i < videosPbPl.Count; i++)
+                        {
+                            String baseFile = "";
+                            foreach (String str in File.ReadAllLines(videosPbPl[i].Name).ToList())
+                            {
+                                if (str.Trim().Length > 0)
+                                {
+                                    baseFile = str.Trim();
+                                    break;
+                                }
+                            }
+                            if (baseFile.Length == 0)
+                                continue;
+                            if (baseFile.Equals(videosPb[0].Name))
+                            {
+                                if (i == 0) i = videosPbPl.Count - 1;
+                                else i = i - 1;
+                                controlDisposer();
+                                videosPb.Clear();
+                                foreach (String file in File.ReadLines(videosPbPl[i].Name))
+                                {
+                                    PictureBox tempPb = new PictureBox();
+                                    tempPb.Name = file;
+                                    tempPb.Image = videoPlayer.setDefaultPic(new FileInfo(file), tempPb);
+                                    if (tempPb.Image != null) tempPb.Image.Dispose();
+                                    videosPb.Add(tempPb);
+                                }
+
+                                baseFile = "";
+                                foreach (String str in File.ReadAllLines(videosPbPl[i].Name).ToList())
+                                {
+                                    if (str.Trim().Length > 0)
+                                    {
+                                        baseFile = str.Trim();
+                                        break;
+                                    }
+                                }
+                                if(baseFile.Length == 0)
+                                return true;
+
+                                wmp.axWindowsMediaPlayer1.URL = baseFile;
+                                wmp.axWindowsMediaPlayer1.Name = baseFile;
+
+                                if (Path.GetFileName(axWindowsMediaPlayer1.Name).Contains("placeholdeerr"))
+                                {
+                                    String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+
+                                    textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                                        "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+
+                                }
+                                startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
+                                endTime = TimeSpan.FromSeconds((int)endRepeatTo);
+                                Double currPosition = 0;
+                                IWMPMedia mediainfo = wmpSmallPb.newMedia(videosPbPl[i].Name);
+                                this.hoverDuration = mediainfo.duration;
+                                currPosition = (1.0 / 8.0) * hoverDuration;
+
+                                wmp.calculateDuration(currPosition);
+
+
+                                flowLayoutPanel2.Controls.Clear();
+                                if (videosPbPl.Count > 0)
+                                {
+                                    foreach (PictureBox pb in videosPbPl)
+                                    {
+                                        if (pb.Image != null)
+                                        {
+                                            pb.Image.Dispose();
+                                            pb.Dispose();
+                                        }
+                                    }
+                                }
+                                videosPbPl.Clear();
+
+                                fillUpFP1(videosPb);
+                                fillUpPl();
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < videosPbPl.Count; i++)
+                        {
+                            String baseFile = "";
+                            foreach (String str in File.ReadAllLines(videosPbPl[i].Name).ToList())
+                            {
+                                if (str.Trim().Length > 0)
+                                {
+                                    baseFile = str.Trim();
+                                    break;
+                                }
+                            }
+                            if (baseFile.Length == 0)
+                                continue;
+                            if (baseFile.Equals(videosPb[0].Name))
+                            {
+                                if (i == videosPbPl.Count - 1) i = 0;
+                                else i = i + 1;
+                                controlDisposer();
+                                videosPb.Clear();
+                                foreach (String file in File.ReadLines(videosPbPl[i].Name))
+                                {
+                                    PictureBox tempPb = new PictureBox();
+                                    tempPb.Name = file;
+                                    tempPb.Image = videoPlayer.setDefaultPic(new FileInfo(file), tempPb);
+                                    if (tempPb.Image != null) tempPb.Image.Dispose();
+                                    videosPb.Add(tempPb);
+                                }
+
+                                baseFile = "";
+                                foreach (String str in File.ReadAllLines(videosPbPl[i].Name).ToList())
+                                {
+                                    if (str.Trim().Length > 0)
+                                    {
+                                        baseFile = str.Trim();
+                                        break;
+                                    }
+                                }
+                                if (baseFile.Length == 0)
+                                    return true;
+
+                                wmp.axWindowsMediaPlayer1.URL = baseFile;
+                                wmp.axWindowsMediaPlayer1.Name = baseFile;
+
+                                if (Path.GetFileName(axWindowsMediaPlayer1.Name).Contains("placeholdeerr"))
+                                {
+                                    String temp = Path.GetFileName(axWindowsMediaPlayer1.Name).Substring(0, Path.GetFileName(axWindowsMediaPlayer1.Name).IndexOf("placeholdeerr")).Replace("Reso^ ", "Reso:").Replace("Dura^ ", "Dura:").Replace("Size^ ", "Size:");
+
+                                    textBox5.Text = (temp.Substring(0, temp.IndexOf("  ")) + temp.Substring(temp.IndexOf("Size"))).Replace("Size", "\t      Size") +
+                                        "\t[: " + startTime.ToString(@"hh\:mm\:ss") + "\t]: " + endTime.ToString(@"hh\:mm\:ss");
+
+                                }
+                                startTime = TimeSpan.FromSeconds((int)startRepeatFrom);
+                                endTime = TimeSpan.FromSeconds((int)endRepeatTo);
+                                Double currPosition = 0;
+                                IWMPMedia mediainfo = wmpSmallPb.newMedia(videosPbPl[i].Name);
+                                this.hoverDuration = mediainfo.duration;
+                                currPosition = (1.0 / 8.0) * hoverDuration;
+
+                                wmp.calculateDuration(currPosition);
+
+
+                                flowLayoutPanel2.Controls.Clear();
+                                if (videosPbPl.Count > 0)
+                                {
+                                    foreach (PictureBox pb in videosPbPl)
+                                    {
+                                        if (pb.Image != null)
+                                        {
+                                            pb.Image.Dispose();
+                                            pb.Dispose();
+                                        }
+                                    }
+                                }
+                                videosPbPl.Clear();
+
+                                fillUpFP1(videosPb);
+                                fillUpPl();
+                                break;
+                            }
+                        }
+                    }
+                    return true;
+                }
                 if (volumeLock)
                     return true;
                 if(m.WParam.ToString() == "7864320")
@@ -1877,6 +2111,21 @@ namespace MediaPlayer
                         pb.Tag = null;
                     }
                     disposePb.Clear();
+
+                    flowLayoutPanel2.Controls.Clear();
+                    if (videosPbPl.Count > 0)
+                    {
+                        foreach (PictureBox pb in videosPbPl)
+                        {
+                            if (pb.Image != null)
+                            {
+                                pb.Image.Dispose();
+                                pb.Dispose();
+                            }
+                        }
+                    }
+                    videosPbPl.Clear();
+
                     controlDisposer();
                     TranspBack.toTop = keyCode == Keys.Back?true:false;
                     formClosingDispoer();

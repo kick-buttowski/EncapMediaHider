@@ -2030,7 +2030,7 @@ namespace MediaPlayer
 
                             String files = "";
                             String keyWord = fiInfo.Name.Substring(0, fiInfo.Name.LastIndexOf("."));
-                            if (File.Exists(playListDi.FullName + "\\Games " + diInfo.Parent.Name + " " + keyWord + ".txt"))
+                            if (File.Exists(playListDi.FullName + "\\Games " + diInfo.Parent.Name + "~" + keyWord + ".txt"))
                             {
                                 while (k < filesList.Count && filesList[k].Name.StartsWith(keyWord))
                                     k++;
@@ -2046,7 +2046,7 @@ namespace MediaPlayer
                                 if (k == filesList.Count)
                                     break;
                             }
-                            File.WriteAllText(playListDi.FullName + "\\Games " + diInfo.Parent.Name + " " + keyWord + ".txt", files);
+                            File.WriteAllText(playListDi.FullName + "\\Games " + diInfo.Parent.Name + "~" + keyWord + ".txt", files);
                             if (k == filesList.Count)
                                 break;
                             k--;
@@ -2057,6 +2057,7 @@ namespace MediaPlayer
 
                 int id = 0;
                 ToolStripMenuItem[] tempStripMenuItem = new ToolStripMenuItem[playListDi.GetFiles().Length];
+                String prevPl = playListDi.GetFiles().ElementAt(0).Name, currPl = "";
 
                 for (int i = 0; i < playListDi.GetFiles().Count(); i++)
                 {
@@ -2072,7 +2073,19 @@ namespace MediaPlayer
                     {
                         if (i + j == playListDi.GetFiles().Count())
                             break;
+
                         FileInfo subDir = playListDi.GetFiles().ElementAt(i + j);
+                        if (subDir.Name.StartsWith("Games "))
+                        {
+                            currPl = playListDi.GetFiles().ElementAt(i + j).Name;
+                            if (prevPl.Split('~')[0] != currPl.Split('~')[0])
+                            {
+                                prevPl = currPl;
+                                max = j;
+                                continue;
+                            }
+                            prevPl = currPl;
+                        }
                         List<String> files = File.ReadAllLines(subDir.FullName).ToList();
                         
                         this.toolStripMenuItem55.DropDownItems.Clear();
@@ -2130,7 +2143,7 @@ namespace MediaPlayer
 
                         Label vidDetails = new Label();
                         vidDetails.Text = subDir.Name.Replace(subDir.Extension, "") + "\n" + "No of Files: " + files.Count;
-                        vidDetails.Font = new Font("Arial", 8, FontStyle.Bold);
+                        vidDetails.Font = new Font("Arial", 8, FontStyle.Regular);
                         vidDetails.BackColor = flowLayoutPanel2.BackColor;
                         vidDetails.Size = new Size(391, 40);
                         vidDetails.ForeColor = Color.White;
@@ -2183,6 +2196,7 @@ namespace MediaPlayer
 
                                 if (pb.Name.EndsWith(".txt"))
                                 {
+                                    String folderName = pb.Name.Substring(pb.Name.LastIndexOf("\\")+1).Replace(".txt", "");
                                     List<PictureBox> tempList = new List<PictureBox>(), tempPlayListPb = new List<PictureBox>();
                                     List<String> dir = File.ReadAllLines(pb.Name).ToList();
                                     if (dir.Count == 0)
@@ -2214,7 +2228,15 @@ namespace MediaPlayer
                                         tempPb.Name = file;
                                         tempPb.Image = setDefaultPic(new FileInfo(baseFile), tempPb);
                                         if (tempPb.Image != null) tempPb.Image.Dispose();
-                                        tempPlayListPb.Add(tempPb);
+
+                                        if (file.Substring(file.LastIndexOf("\\") + 1).StartsWith("Games "))
+                                        {
+                                            if (file.Substring(file.LastIndexOf("\\") + 1).Split('~')[0].Equals(pb.Name.Substring(pb.Name.LastIndexOf("\\") + 1).Split('~')[0]))
+                                                tempPlayListPb.Add(tempPb);
+                                        }
+                                        else
+                                            if(!pb.Name.Substring(pb.Name.LastIndexOf("\\") + 1).StartsWith("Games "))
+                                            tempPlayListPb.Add(tempPb);
                                     }
 
                                     this.Hide();
@@ -2316,11 +2338,14 @@ namespace MediaPlayer
                             timer1.Start();
                         };
                     }
-                    i = i + 3;
-                    flowLayoutPanel1.Controls.Add(indFlowLayoutPanel);
+                    i = i + (max-1);
+                    if(indFlowLayoutPanel.Controls.Count!=0)flowLayoutPanel1.Controls.Add(indFlowLayoutPanel);
                 }
-
-                this.toolStripMenuItem55.DropDownItems.AddRange(tempStripMenuItem);
+                foreach(ToolStripMenuItem c in tempStripMenuItem)
+                {
+                    if(c!=null)
+                        this.toolStripMenuItem55.DropDownItems.Add(c);
+                }
 
                 Label dupeLabel2 = new Label();
                 dupeLabel2.Text = "Local Videos";
@@ -6131,7 +6156,15 @@ namespace MediaPlayer
                     tempPb.Name = file;
                     tempPb.Image = setDefaultPic(new FileInfo(baseFile), tempPb);
                     if (tempPb.Image != null) tempPb.Image.Dispose();
-                    tempPlayListPb.Add(tempPb);
+
+                    if (file.Substring(file.LastIndexOf("\\") + 1).StartsWith("Games "))
+                    {
+                        if (file.Substring(file.LastIndexOf("\\") + 1).Split('~')[0].Equals(prevPb.Name.Substring(prevPb.Name.LastIndexOf("\\") + 1).Split('~')[0]))
+                            tempPlayListPb.Add(tempPb);
+                    }
+                    else
+                        if (!prevPb.Name.Substring(prevPb.Name.LastIndexOf("\\") + 1).StartsWith("Games "))
+                        tempPlayListPb.Add(tempPb);
                 }
 
                 this.Hide();

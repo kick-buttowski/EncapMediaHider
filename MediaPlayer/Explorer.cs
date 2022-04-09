@@ -2549,7 +2549,7 @@ namespace MediaPlayer
                             wmp.axWindowsMediaPlayer1.Name = pb.Name;
                             wmp.calculateDuration(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
                             wmp.Show();
-                            axWindowsMediaPlayer1.Ctlcontrols.pause();
+                            axWindowsMediaPlayer1.Ctlcontrols.pause(); flowLayoutPanel1_MouseEnter(null, null);
                         }
                     };
 
@@ -3451,9 +3451,7 @@ namespace MediaPlayer
             wmp.calculateDuration(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
             wmp.Show();
             axWindowsMediaPlayer1.Ctlcontrols.pause();
-            if (isHoveredOverPb)
-            {
-            }
+            flowLayoutPanel1_MouseEnter(null, null);
         }
 
         private void menuBtn1_Click(object sender, EventArgs e)
