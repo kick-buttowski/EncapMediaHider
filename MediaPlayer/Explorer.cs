@@ -220,10 +220,6 @@ namespace MediaPlayer
             {
                 directory2 = new DirectoryInfo("H:\\vivado\\rand_name\\rand_name.ir");
             }
-            if (Directory.Exists(Explorer.directory3.FullName) && !File.Exists(Explorer.directory3.FullName + "\\resumeDbBest.txt"))
-            {
-                File.Create(Explorer.directory3.FullName + "\\resumeDbBest.txt");
-            }
             if (Directory.Exists(Explorer.directory3.FullName) && !File.Exists(Explorer.directory3.FullName + "\\resumeDb.txt"))
             {
                 File.Create(Explorer.directory3.FullName + "\\resumeDb.txt");
@@ -2014,12 +2010,8 @@ namespace MediaPlayer
                         {
                             resumeFiles = File.ReadAllLines(Explorer.directory3.FullName + "\\resumeDb.txt").ToList();
                         }
-                        if (File.Exists(Explorer.directory3.FullName + "\\resumeDbBest.txt"))
-                        {
-                            resumeFilesBest = File.ReadAllLines(Explorer.directory3.FullName + "\\resumeDbBest.txt").ToList();
-                        }
                     }
-                    FillUpDashboard(resumeFilesBest.Concat(resumeFiles).ToList(), true);
+                    FillUpDashboard(resumeFiles, true);
 
                     Label DashboardLabel = new Label();
                     DashboardLabel.Text = "Dashboard";
@@ -2615,12 +2607,11 @@ namespace MediaPlayer
                         axWindowsMediaPlayer1.settings.rate = 1.35;
                         newProgressBar.Maximum = (int)inWmpDuration;
                         FileInfo fi = new FileInfo(pb.Name);
-                        if (File.Exists(Explorer.directory3.FullName + "\\resumeDb.txt") && File.Exists(Explorer.directory3.FullName + "\\resumeDbBest.txt"))
+                        if (File.Exists(Explorer.directory3.FullName + "\\resumeDb.txt"))
                         {
-                            List<String> tempBest = File.ReadAllLines(Explorer.directory3.FullName + "\\resumeDbBest.txt").ToList();
                             List<String> temp = File.ReadAllLines(Explorer.directory3.FullName + "\\resumeDb.txt").ToList();
 
-                            foreach (String str in temp.Concat(tempBest))
+                            foreach (String str in temp)
                             {
                                 if (str.Contains(pb.Name))
                                 {
@@ -3513,19 +3504,10 @@ namespace MediaPlayer
             try
             {
                 Label pb = (Label)contextMenuStrip1.SourceControl;
-                if (File.Exists(Explorer.directory3.FullName + "\\resumeDbBest.txt") && File.Exists(Explorer.directory3.FullName + "\\resumeDb.txt"))
+                if (File.Exists(Explorer.directory3.FullName + "\\resumeDb.txt"))
                 {
-                    String[] resumeFile = File.ReadAllLines(Explorer.directory3.FullName + "\\resumeDbBest.txt");
+                    String[] resumeFile = File.ReadAllLines(Explorer.directory3.FullName + "\\resumeDb.txt");
                     String fileStr = "";
-                    foreach (String str in resumeFile)
-                    {
-                        if (!str.Contains(pb.Name + "@@!"))
-                            fileStr = fileStr + str + "\n";
-                    }
-                    File.WriteAllText(Explorer.directory3.FullName + "\\resumeDbBest.txt", fileStr);
-
-                    resumeFile = File.ReadAllLines(Explorer.directory3.FullName + "\\resumeDb.txt");
-                    fileStr = "";
                     foreach (String str in resumeFile)
                     {
                         if (!str.Contains(pb.Name + "@@!"))

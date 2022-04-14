@@ -152,12 +152,8 @@ namespace MediaPlayer
                         File.WriteAllText(fi.DirectoryName + "\\resume.txt", fileStr);
                     }
 
-                    if (!Explorer.wmpOnTop.axWindowsMediaPlayer1.URL.Contains("\\Pics\\") && File.Exists(Explorer.directory3.FullName + "\\resumeDb.txt")
-                         && File.Exists(Explorer.directory3.FullName + "\\resumeDbBest.txt") && saveResume)
+                    if (!Explorer.wmpOnTop.axWindowsMediaPlayer1.URL.Contains("\\Pics\\") && File.Exists(Explorer.directory3.FullName + "\\resumeDb.txt") && saveResume)
                     {
-                        if (!Directory.GetParent(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL).FullName.Contains("\\zBest of the Best")
-                            && !Directory.GetParent(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL).FullName.Contains("\\xdm\\"))
-                        {
                             String[] resumeFile = File.ReadAllLines(Explorer.directory3.FullName + "\\resumeDb.txt");
                             Boolean doesExist = false;
                             String fileStr = "";
@@ -180,7 +176,7 @@ namespace MediaPlayer
                             }
                             if (!doesExist)
                             {
-                                int max = resumeFile.Length >= 5 ? 4 : resumeFile.Length;
+                                int max = resumeFile.Length >= 8 ? 7 : resumeFile.Length;
                                 fileStr = Explorer.wmpOnTop.axWindowsMediaPlayer1.URL +
                                     "@@!" + Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
 
@@ -190,42 +186,6 @@ namespace MediaPlayer
                                 }
                             }
                             File.WriteAllText(Explorer.directory3.FullName + "\\resumeDb.txt", fileStr);
-                        }
-                        else
-                        {
-                            String[] resumeFile = File.ReadAllLines(Explorer.directory3.FullName + "\\resumeDbBest.txt");
-                            Boolean doesExist = false;
-                            String fileStr = "";
-                            foreach (String str in resumeFile)
-                            {
-                                if (str.Contains(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL + "@@!"))
-                                {
-                                    doesExist = true;
-                                    fileStr = fileStr + Explorer.wmpOnTop.axWindowsMediaPlayer1.URL + "@@!" +
-                                        Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
-                                    break;
-                                }
-                            }
-                            foreach (String str in resumeFile)
-                            {
-                                if (!str.Contains(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL + "@@!"))
-                                {
-                                    fileStr = fileStr + str + "\n";
-                                }
-                            }
-                            if (!doesExist)
-                            {
-                                int max = resumeFile.Length >= 3 ? 2 : resumeFile.Length;
-                                fileStr = Explorer.wmpOnTop.axWindowsMediaPlayer1.URL +
-                                    "@@!" + Explorer.wmpOnTop.axWindowsMediaPlayer1.Ctlcontrols.currentPosition + "\n";
-
-                                for (int i = 0; i < max; i++)
-                                {
-                                    fileStr = fileStr + resumeFile[i] + "\n";
-                                }
-                            }
-                            File.WriteAllText(Explorer.directory3.FullName + "\\resumeDbBest.txt", fileStr);
-                        }
                     }
 
                     //Application.AddMessageFilter(videoPlayer);

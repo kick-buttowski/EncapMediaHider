@@ -2057,7 +2057,7 @@ namespace MediaPlayer
 
                 int id = 0;
                 ToolStripMenuItem[] tempStripMenuItem = new ToolStripMenuItem[playListDi.GetFiles().Length];
-                String prevPl = playListDi.GetFiles().ElementAt(0).Name, currPl = "";
+                String prevPl = playListDi.GetFiles().Length>0?playListDi.GetFiles().ElementAt(0).Name:"", currPl = "";
 
                 for (int i = 0; i < playListDi.GetFiles().Count(); i++)
                 {
