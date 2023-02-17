@@ -373,16 +373,13 @@ namespace MediaPlayer
 
                     foreach (String fi in ofd.FileNames)
                     {
-                        WMP wmp = new WMP(null, null, null, null);
                         FileInfo fileInfo = new FileInfo(fi);
-                        wmp.axWindowsMediaPlayer1.URL = fileInfo.FullName;
-                        wmp.axWindowsMediaPlayer1.Name = fileInfo.FullName;
-                        wmp.Location = new Point(298, 50);
-                        wmp.calculateDuration(0);
-
-                        TranspBack transpBack = new TranspBack(wmp, null, null);
-                        transpBack.Show();
-                        wmp.Show();
+                        Explorer.wmp.setRefPb(null, null, null, false);
+                        Explorer.wmp.axWindowsMediaPlayer1.URL = fileInfo.FullName;
+                        Explorer.wmp.axWindowsMediaPlayer1.Name = fileInfo.FullName;
+                        Explorer.wmp.Location = new Point(0, 28);
+                        Explorer.wmp.calculateDuration(0);
+                        Explorer.wmp.Show();
                     }
                 }
             }

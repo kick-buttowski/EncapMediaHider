@@ -1499,11 +1499,14 @@ namespace MediaPlayer
         }
 
 
-        public void renameVideoFiles(String filePath, String destPath)
+        public void renameVideoFiles(String filePath, String destPath, List<String> fileStr)
         {
             FileInfo fi = new FileInfo(filePath);
-                if (fi.Name.Contains("placeholdeerr") || fi.Name.ToLower().EndsWith(".txt"))
-                    return;
+            if (fi.Name.Contains("placeholdeerr") || fi.Name.ToLower().EndsWith(".txt"))
+            {
+                if(globalBtn.Text.Equals("Videos") && fi.Name.Contains("placeholdeerr")) fileStr.Add(fi.Name + "@@!0");
+                return;
+            }
                 var inputFile = new MediaFile { Filename = fi.FullName };
                 engine.GetMetadata(inputFile);
                 int seconds = inputFile.Metadata.Duration.Seconds;
@@ -1567,7 +1570,8 @@ namespace MediaPlayer
                         if (!File.Exists(destPath + "\\" + vidDetText + "placeholdeerr" + o + fi.Name))
                         {
                             File.Move(fi.FullName, destPath + "\\" + vidDetText + "placeholdeerr" + o + fi.Name);
-                            fileName = fi.Name;
+                        if (globalBtn.Text.Equals("Videos")) fileStr.Add(destPath + "\\" + vidDetText + "placeholdeerr" + o + fi.Name + "@@!0");
+                        fileName = fi.Name;
                             break;
                         }
                     }
@@ -1946,6 +1950,8 @@ namespace MediaPlayer
 
                 foreach (FileInfo fi in tempFi)
                 {
+                    if (fi.Name.EndsWith(".txt"))
+                        continue;
                     priorityList.Add("0@" + fi.FullName);
                 }
                 toSort = false;
@@ -2101,7 +2107,7 @@ namespace MediaPlayer
                         {
                             if (contextMenuStrip1.SourceControl == null)
                                 return;
-                            PictureBox clickedPb = (PictureBox)contextMenuStrip1.SourceControl;
+                            Label clickedPb = (Label)contextMenuStrip1.SourceControl;
                             FileInfo fi = new FileInfo(clickedPb.Name);
                             files = File.ReadAllLines(subDir.FullName).ToList();
                             try
@@ -3669,6 +3675,7 @@ namespace MediaPlayer
 
             ofd.InitialDirectory = dirPath;
             ofd.Multiselect = true;
+            List<String> fileStr = new List<string>();
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 foreach (String fi in ofd.FileNames)
@@ -3676,7 +3683,7 @@ namespace MediaPlayer
                     FileInfo fileInfo = new FileInfo(fi);
                     if (globalBtn.Text.Equals("Videos") || globalBtn.Text.Equals("Gif Vid") || globalBtn.Text.Equals("Affinity"))
                     {
-                        renameVideoFiles(fi, dirPath);
+                        renameVideoFiles(fi, dirPath, fileStr);
                         continue;
                     }
                     for (int k = 0; k < 50; k++)
@@ -3690,6 +3697,20 @@ namespace MediaPlayer
 
                 if (globalBtn.Text.Equals("Videos"))
                 {
+                    String files = "";
+                    if (File.Exists(Explorer.directory3.FullName + "\\newFiles.txt"))
+                    {
+                        foreach (String str in File.ReadAllLines(Explorer.directory3.FullName + "\\newFiles.txt"))
+                            fileStr.Add(str);
+                        int max = fileStr.Count >= 4 ? 4 : fileStr.Count;
+
+                        for (int i = 0; i < max; i++)
+                        {
+                            files = files + fileStr.ElementAt(i) + "\n";
+                        }
+                        File.WriteAllText(Explorer.directory3.FullName + "\\newFiles.txt", files);
+                    }
+
                     videosBtn_Click(null, null);
                 }
                 else if (globalBtn.Text.Equals("Pictures"))

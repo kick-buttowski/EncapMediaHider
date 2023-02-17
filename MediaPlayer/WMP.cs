@@ -169,7 +169,7 @@ namespace MediaPlayer
                             }
                             foreach (String str in resumeFile)
                             {
-                                if (!str.Contains(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL + "@@!"))
+                                if (!str.Contains(Explorer.wmpOnTop.axWindowsMediaPlayer1.URL + "@@!") && File.Exists(str.Substring(0,str.IndexOf("@@!"))))
                                 {
                                     fileStr = fileStr + str + "\n";
                                 }
@@ -182,6 +182,7 @@ namespace MediaPlayer
 
                                 for (int i = 0; i < max; i++)
                                 {
+                                if (File.Exists(resumeFile[i].Substring(0,resumeFile[i].IndexOf("@@!"))))
                                     fileStr = fileStr + resumeFile[i] + "\n";
                                 }
                             }
@@ -1466,6 +1467,8 @@ namespace MediaPlayer
 
         private void ResizeImage(string SoucePath, string DestPath, params int[] numbers)
         {
+            if (!File.Exists(SoucePath))
+                return;
             System.Drawing.Image img = System.Drawing.Image.FromFile(SoucePath);
 
             int width = img.Width, destWidth;

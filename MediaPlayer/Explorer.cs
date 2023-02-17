@@ -52,7 +52,7 @@ namespace MediaPlayer
 
         public static Explorer staticExp = null;
         FlowLayoutPanel flowLayoutPanel = null;
-        Label dupeLabel2 = null, playRandom = null, shorts = null;
+        Label dupeLabel2 = null, playRandom = null, shorts = null, affLbl = null;
         List<FlowLayoutPanel> flowLayoutPanels = new List<FlowLayoutPanel>();
         public String searchText = "";
         CustomToolTip tip = null;
@@ -62,13 +62,13 @@ namespace MediaPlayer
         Calculator calc;
         //System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         private Point flowPanel1Loc = new Point(288,44);
-        private Size stackedSizePbDb = new Size(386, 219), unStackedSizePbDb = new Size(458, 260), stackedSizeDbBtn = new Size(773, 44), unStackedSizeDbBtn = new Size(880, 44)
-            , stackedSizeRandBtn = new Size(288, 44), unStackedSizeRandBtn = new Size(348, 44);
+        private Size stackedSizePbDb = new Size(386, 219), unStackedSizePbDb = new Size(458, 260), stackedSizeDbBtn = new Size(673, 44), unStackedSizeDbBtn = new Size(780, 44)
+            , stackedSizeRandBtn = new Size(217, 44), unStackedSizeRandBtn = new Size(258, 44);
         public static Boolean stackedDb = false, isHoveredOverPb = false, playedRandom = false, playedShorts = false, inDb = true;
-        List<String> randomFilesPreloaded, shortFilesPreloaded;
-        List <PictureBox> tempRandomFilesPreloaded, tempShortFilesPreloaded;
+        List<String> randomFilesPreloaded, shortFilesPreloaded, affinityFilePreloaded;
+        List <PictureBox> tempRandomFilesPreloaded, tempShortFilesPreloaded, tempAffinityFilesPreloaded;
         public Button butt1 = new Button(), globalTypeButton = null;
-        List<String> resumeFiles = new List<string>(), resumeFilesBest = new List<string>();
+        List<String> resumeFiles = new List<string>(), newFilesDb = new List<string>();
         public List<String> typeList = new List<String>();
         public static int globalVol = 15;
         public static List<String> dirs = new List<string>();
@@ -121,6 +121,7 @@ namespace MediaPlayer
 
         DirectoryInfo gamesDirectory = new DirectoryInfo("E:\\Softwares\\Games");
         public static DirectoryInfo directory3 = new DirectoryInfo("I:\\ubuntu\\home\\xdm\\bin\\build");
+        public static DirectoryInfo directory4 = new DirectoryInfo("G:\\softwares\\proteous\\DEMO to PRO\\BIN\\ETC\\build");
         ComponentResourceManager resources = null;
         private void enlargeEnter(Button b)
         {
@@ -223,6 +224,10 @@ namespace MediaPlayer
             if (Directory.Exists(Explorer.directory3.FullName) && !File.Exists(Explorer.directory3.FullName + "\\resumeDb.txt"))
             {
                 File.Create(Explorer.directory3.FullName + "\\resumeDb.txt");
+            }
+            if (Directory.Exists(Explorer.directory3.FullName) && !File.Exists(Explorer.directory3.FullName + "\\newFiles.txt"))
+            {
+                File.Create(Explorer.directory3.FullName + "\\newFiles.txt");
             }
             pardirectory[1] = directory1;
             pardirectory[0] = directory2;
@@ -1055,20 +1060,39 @@ namespace MediaPlayer
             VideoPlayer.miniVideoPlayer.newProgressBar.Value = (int)VideoPlayer.miniVideoPlayer.axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
         }*/
 
-        public List<String> FilesDashboard(Boolean allFiles, Boolean isShort)
+        public List<String> FilesDashboard(Boolean allFiles, Boolean isShort, Boolean isAff)
         {
             List<String> priorList = new List<string>();
             DirectoryInfo parDir = new DirectoryInfo("F:\\Calculator");
             DirectoryInfo directory2 = new DirectoryInfo("H:\\vivado\\rand_name\\rand_name.ir");
+            DirectoryInfo directory3 = new DirectoryInfo("G:\\projects");
             List<DirectoryInfo> supPar = new List<DirectoryInfo>();
 
             DirectoryInfo directory22 = new DirectoryInfo("C:\\Users\\Harsha Vardhan\\Downloads\\Video");
             DirectoryInfo directory11 = new DirectoryInfo("E:\\VS Code\\CSS");
-            if (Directory.Exists("I:\\ubuntu\\home\\xdm\\bin")) supPar.Add(new DirectoryInfo("I:\\ubuntu\\home\\xdm\\bin"));
-            else supPar.Add(directory22);
-            if (Directory.Exists(parDir.FullName)) supPar.Add(directory2);
-            else supPar.Add(directory11);
-            if (Directory.Exists(directory2.FullName)) supPar.Add(parDir);
+
+            if (Directory.Exists("I:\\ubuntu\\home\\xdm\\bin")) 
+                supPar.Add(new DirectoryInfo("I:\\ubuntu\\home\\xdm\\bin"));
+            else 
+                supPar.Add(directory22);
+
+            if (Directory.Exists(parDir.FullName)) 
+                supPar.Add(directory2);
+            else 
+                supPar.Add(directory11);
+
+            if (Directory.Exists(directory2.FullName)) 
+                supPar.Add(parDir);
+
+            if (Directory.Exists(directory3.FullName))
+                supPar.Add(directory3);
+
+            if (Directory.Exists(directory3.FullName))
+                supPar.Add(directory3);
+
+            if (Directory.Exists("G:\\softwares\\proteous\\DEMO to PRO\\BIN\\ETC"))
+                supPar.Add(new DirectoryInfo("G:\\softwares\\proteous\\DEMO to PRO\\BIN\\ETC"));
+
             if (supPar.Count == 0)
                 return null;
             List<String> files = new List<string>();
@@ -1084,6 +1108,12 @@ namespace MediaPlayer
                             if (!Directory.Exists(di2.FullName + "\\Pics\\GifVideos"))
                                 continue;
                             di3 = new DirectoryInfo(di2.FullName + "\\Pics\\GifVideos");
+                        }
+                        if (isAff)
+                        {
+                            if (!Directory.Exists(di2.FullName + "\\Pics\\Affinity"))
+                                continue;
+                            di3 = new DirectoryInfo(di2.FullName + "\\Pics\\Affinity");
                         }
                         Random r = new Random();
                         List<FileInfo> tempFileList = di3.GetFiles().ToList();
@@ -1101,30 +1131,9 @@ namespace MediaPlayer
                                 tempFileList.Remove(fiii);
                         }
 
-                        if (isShort)
-                        {
-                            if (!Directory.Exists(di2.FullName + "\\Pics\\Affinity"))
-                                continue;
-                            di3 = new DirectoryInfo(di2.FullName + "\\Pics\\Affinity");
-                            r = new Random();
-                            tempFileList = di3.GetFiles().ToList();
-                            foreach (FileInfo fiii in di3.GetFiles())
-                            {
-                                if (!fiii.FullName.EndsWith(".txt"))
-                                {
-                                    String temp = tempFileList.ElementAt(r.Next(tempFileList.Count)).FullName;
-                                    while (temp.EndsWith(".txt"))
-                                        temp = tempFileList.ElementAt(r.Next(tempFileList.Count)).FullName;
-                                    files.Add(temp + "@@!0");
-                                    break;
-                                }
-                                else
-                                    tempFileList.Remove(fiii);
-                            }
-                        }
-
                     }
                 }
+
             if (allFiles)
                 return files;
 
@@ -1276,8 +1285,42 @@ namespace MediaPlayer
                             }
                             if (subDi.Name.Contains("Best of the Best") && Directory.Exists(directory3.FullName))
                             {
-
                                 foreach (DirectoryInfo di in directory3.GetDirectories().OrderByDescending(f => f.GetFiles().Sum(k => k.Length)).ToList())
+                                {
+                                    if (!File.Exists(di.FullName + "\\disPic.txt"))
+                                    {
+                                        FileStream fs = File.Create(di.FullName + "\\disPic.txt");
+                                        fs.Close();
+                                    }
+                                    if (!File.Exists(di.FullName + "\\disGifPic.txt"))
+                                    {
+                                        FileStream fs = File.Create(di.FullName + "\\disGifPic.txt");
+                                        fs.Close();
+                                    }
+
+                                    if (!File.Exists(di.FullName + "\\links.txt"))
+                                    {
+                                        FileStream fi = File.Create(di.FullName + "\\links.txt");
+                                        fi.Close();
+                                    }
+
+                                    int priority = 0;
+                                    String singLine = "";
+                                    while ((singLine = sr1.ReadLine()) != null)
+                                    {
+                                        if (singLine.Contains(di.FullName))
+                                        {
+                                            priority = int.Parse(singLine.Replace("-" + di.FullName, ""));
+                                            break;
+                                        }
+                                    }
+                                    writePriorStr = writePriorStr + priority + "-" + di.FullName + "\n";
+                                    namePriorityPairs.Add(di.FullName, priority);
+                                }
+                            }
+                            else if (subDi.Name.Contains("Channels") && Directory.Exists(directory4.FullName))
+                            {
+                                foreach (DirectoryInfo di in directory4.GetDirectories().OrderByDescending(f => f.GetFiles().Sum(k => k.Length)).ToList())
                                 {
                                     if (!File.Exists(di.FullName + "\\disPic.txt"))
                                     {
@@ -1469,6 +1512,9 @@ namespace MediaPlayer
                                     }*/
 
                                     Label vidDetails = new Label();
+                                    dirPb.BackColor = lightBackColor;
+                                    vidDetails.BackColor = lightBackColor;
+                                    flowLayoutPanel.BackColor = lightBackColor;
                                     if (subDi.Name.Substring(0, 1).Equals("z") || subDi.Name.Substring(0, 1).Equals("0") || subDi.Name.Substring(0, 1).Equals("2") || subDi.Name.Substring(0, 1).Equals("3"))
                                     {
                                         if (compact)
@@ -1500,6 +1546,9 @@ namespace MediaPlayer
                                     }
                                     else
                                     {
+                                        dirPb.BackColor = lightBackColor;
+                                        vidDetails.BackColor = darkBackColor;
+                                        flowLayoutPanel.BackColor = darkBackColor;
                                         if (compact)
                                         {
                                             dirPb.Size = new Size(380, 246);
@@ -1528,7 +1577,6 @@ namespace MediaPlayer
                                         }
                                     }
 
-                                    dirPb.BackColor = lightBackColor;
                                     dirPb.SizeMode = PictureBoxSizeMode.Zoom;
                                     dirPb.Cursor = Cursors.Arrow;
                                     dirPb.ContextMenuStrip = contextMenuStrip1;
@@ -1581,14 +1629,12 @@ namespace MediaPlayer
                                     catch { }
 
                                     vidDetails.Text = vidDetText;
-                                    vidDetails.BackColor = darkBackColor;
                                     vidDetails.ForeColor = Color.White;
                                     vidDetails.TextAlign = ContentAlignment.TopLeft;
                                     //vidDetails.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, vidDetails.Width, vidDetails.Height, 5, 5));
 
                                     //flowLayoutPanel1.Controls.Add(vidDetails);
                                     flowLayoutPanel.Controls.Add(vidDetails);
-                                    flowLayoutPanel.BackColor = flowLayoutPanel1.BackColor;
                                     flowLayoutPanel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, flowLayoutPanel.Width, flowLayoutPanel.Height, 30, 30));
                                     indFlowLayoutPanel.Controls.Add(flowLayoutPanel);
                                     grpLabels.Add(vidDetails);
@@ -1894,7 +1940,7 @@ namespace MediaPlayer
                         //flowLayoutPanel1.Controls.Add(dupeLabel2);
 
                         if (playRandom == null) playRandom = new Label();
-                        playRandom.Text = "Play Something Random ";
+                        playRandom.Text = "Play Random ";
                         playRandom.Font = new Font("Consolas", 12, FontStyle.Bold);
                         playRandom.BackColor = lightBackColor;
                         playRandom.Size = stackedDb ? stackedSizeRandBtn : unStackedSizeRandBtn;
@@ -1962,11 +2008,51 @@ namespace MediaPlayer
                             wmp.axWindowsMediaPlayer1.URL = pb.Name;
                             wmp.axWindowsMediaPlayer1.Name = pb.Name;
                             wmp.Location = new Point(0, 28);
-                            wmp.repeat = false;
+                            wmp.repeat = true;
                             wmp.calculateDuration(0);
                             wmp.Show();
                             this.backgroundWorker1.RunWorkerAsync(100);
                         };
+
+
+                        if (affLbl == null) affLbl = new Label();
+                        affLbl.Text = "Play Best";
+                        affLbl.Font = new Font("Consolas", 12, FontStyle.Bold);
+                        affLbl.BackColor = lightBackColor;
+                        affLbl.Size = stackedDb ? stackedSizeRandBtn : unStackedSizeRandBtn;
+                        affLbl.ForeColor = Color.White;
+                        affLbl.TextAlign = ContentAlignment.MiddleRight;
+                        affLbl.Margin = new Padding(0, 0, 25, 0);
+                        affLbl.Image = global::Calculator.Properties.Resources.random__1_;
+                        affLbl.ImageAlign = ContentAlignment.MiddleLeft;
+                        affLbl.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, affLbl.Width, affLbl.Height, 8, 8));
+                        affLbl.MouseEnter += (s, args) =>
+                        {
+                            affLbl.ForeColor = mouseClickColor;
+                            flowLayoutPanel1_MouseEnter(s, args);
+                        };
+                        affLbl.MouseLeave += (s, args) =>
+                        {
+                            affLbl.ForeColor = Color.White;
+                        };
+                        affLbl.MouseClick += (s, a) =>
+                        {
+                            Random random = new Random();
+
+                            PictureBox pb = tempAffinityFilesPreloaded.ElementAt(random.Next(tempShortFilesPreloaded.Count));
+
+                            this.Hide();
+                            staticExp = this;
+                            wmp.setRefPb(pb, tempAffinityFilesPreloaded, null, false);
+                            wmp.axWindowsMediaPlayer1.URL = pb.Name;
+                            wmp.axWindowsMediaPlayer1.Name = pb.Name;
+                            wmp.Location = new Point(0, 28);
+                            wmp.repeat = true;
+                            wmp.calculateDuration(0);
+                            wmp.Show();
+                            this.backgroundWorker1.RunWorkerAsync(100);
+                        };
+
                         //flowLayoutPanel1.Controls.Add(shorts);
 
                         //flowLayoutPanel1.Controls.Add(button4);
@@ -1983,6 +2069,7 @@ namespace MediaPlayer
                         if (!stackedDb) flowLayoutPanel.Controls.Add(menuBtn2);
                         flowLayoutPanel.Controls.Add(dupeLabel2);
                         flowLayoutPanel.Controls.Add(playRandom);
+                        flowLayoutPanel.Controls.Add(affLbl);
                         flowLayoutPanel.Controls.Add(shorts);
                         flowLayoutPanel.Controls.Add(button6);
                         flowLayoutPanel.Controls.Add(button5);
@@ -2002,7 +2089,6 @@ namespace MediaPlayer
                     resumeLabel.Margin = new Padding(15, 10, 0, 15);
                     resumeLabel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, resumeLabel.Width, resumeLabel.Height, 8, 8));
                     resumeLabel.MouseEnter += new EventHandler(flowLayoutPanel1_MouseEnter);
-                    flowLayoutPanel1.Controls.Add(resumeLabel);
 
                     if (dashBoardRefresh)
                     {
@@ -2011,6 +2097,31 @@ namespace MediaPlayer
                             resumeFiles = File.ReadAllLines(Explorer.directory3.FullName + "\\resumeDb.txt").ToList();
                         }
                     }
+                    Label newLabel = new Label();
+                    newLabel.Text = "Newly Added";
+                    newLabel.Font = new Font("Consolas", 26, FontStyle.Bold);
+                    newLabel.BackColor = flowLayoutPanel1.BackColor;
+                    newLabel.Size = new Size(flowLayoutPanel1.Size.Width - 50, 44);
+                    newLabel.ForeColor = Color.White;
+                    newLabel.TextAlign = ContentAlignment.MiddleLeft;
+                    newLabel.Margin = new Padding(15, 10, 0, 15);
+                    newLabel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, resumeLabel.Width, resumeLabel.Height, 8, 8));
+                    newLabel.MouseEnter += new EventHandler(flowLayoutPanel1_MouseEnter);
+
+                    if (dashBoardRefresh)
+                    {
+                        if (File.Exists(Explorer.directory3.FullName + "\\newFiles.txt"))
+                        {
+                            newFilesDb = File.ReadAllLines(Explorer.directory3.FullName + "\\newFiles.txt").ToList();
+                        }
+                    }
+                    if (newFilesDb.Count > 0)
+                    {
+                        flowLayoutPanel1.Controls.Add(newLabel);
+                        FillUpDashboard(newFilesDb, true);
+                    }
+
+                    flowLayoutPanel1.Controls.Add(resumeLabel);
                     FillUpDashboard(resumeFiles, true);
 
                     Label DashboardLabel = new Label();
@@ -2027,7 +2138,7 @@ namespace MediaPlayer
 
                     if (dashBoardRefresh)
                     {
-                        randomFiles = FilesDashboard(false, false);
+                        randomFiles = FilesDashboard(false, false, false);
                     }
                     FillUpDashboard(randomFiles, false);
                     flowLayoutPanel1.Controls.Add(axWindowsMediaPlayer1);
@@ -3388,9 +3499,9 @@ namespace MediaPlayer
         {
             Random random = new Random();
 
-            randomFilesPreloaded = FilesDashboard(true, false);
+            randomFilesPreloaded = FilesDashboard(true, false, false);
             tempRandomFilesPreloaded = new List<PictureBox>();
-            int theme = 15;
+            int theme = 20;
             while (theme > 0)
             {
                 int rand = random.Next(randomFilesPreloaded.Count);
@@ -3403,7 +3514,7 @@ namespace MediaPlayer
                 theme--;
             }
 
-            shortFilesPreloaded = FilesDashboard(true, true);
+            shortFilesPreloaded = FilesDashboard(true, true, false);
 
             tempShortFilesPreloaded = new List<PictureBox>();
             theme = 30;
@@ -3416,6 +3527,23 @@ namespace MediaPlayer
                 if (tempPb.Image != null) tempPb.Image.Dispose();
                 tempShortFilesPreloaded.Add(tempPb);
                 shortFilesPreloaded.RemoveAt(rand);
+                theme--;
+            }
+
+
+            affinityFilePreloaded = FilesDashboard(true, false, true);
+
+            tempAffinityFilesPreloaded = new List<PictureBox>();
+            theme = 30;
+            while (theme > 0)
+            {
+                int rand = random.Next(affinityFilePreloaded.Count);
+                PictureBox tempPb = new PictureBox();
+                tempPb.Name = affinityFilePreloaded.ElementAt(rand).Substring(0, affinityFilePreloaded.ElementAt(rand).IndexOf("@@!"));
+                tempPb.Image = setDefaultPic(new FileInfo(tempPb.Name), tempPb);
+                if (tempPb.Image != null) tempPb.Image.Dispose();
+                tempAffinityFilesPreloaded.Add(tempPb);
+                affinityFilePreloaded.RemoveAt(rand);
                 theme--;
             }
         }
@@ -3470,6 +3598,7 @@ namespace MediaPlayer
             dupeLabel2.Size = stackedDb ? stackedSizeDbBtn : unStackedSizeDbBtn;
             playRandom.Size = stackedDb ? stackedSizeRandBtn : unStackedSizeRandBtn;
             shorts.Size = stackedDb ? stackedSizeRandBtn : unStackedSizeRandBtn;
+            affLbl.Size = stackedDb ? stackedSizeRandBtn : unStackedSizeRandBtn;
             flowLayoutPanel.Location = new Point(stackedDb ? 288 : 0, 0);
             flowLayoutPanel1.Location = stackedDb ? flowPanel1Loc : new Point(0, 44);
             flowLayoutPanel.Size = new Size(flowLayoutPanel1.Width, shorts.Height + 2);
