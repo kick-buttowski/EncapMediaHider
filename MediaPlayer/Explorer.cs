@@ -916,6 +916,16 @@ namespace MediaPlayer
 
             if (File.Exists(di.FullName + "\\resized_" + fi.Name + ".jpg"))
             {
+                if (File.Exists(di.FullName + "\\" + fi.Name + "_1.jpg") && !File.Exists(di.FullName + "\\resized_" + fi.Name + "_1.jpg"))
+                {
+                    ResizeImage(di.FullName + "\\" + fi.Name + "_1.jpg", di.FullName + "\\resized_" + fileName + "_1.jpg", 0, 292, 515, 0); 
+                    try
+                    {
+                        File.Delete(di.FullName + "\\" + fi.Name + "_1.jpg");
+                    }
+                    catch { }
+                }
+
                 if (File.Exists(di.FullName + "\\" + fi.Name + ".jpg"))
                 {
                     try
@@ -926,9 +936,14 @@ namespace MediaPlayer
                 }
                 else
                 {
+                    bool hasSecPic = false;
+                    if (File.Exists(di.FullName + "\\resized_" + fi.Name + "_1.jpg"))
+                        hasSecPic = true;
+                    Random r = new Random();
+                    int temp = r.Next(2);
                     if (picBox.Length > 0)
-                        picBox[0].ImageLocation = di.FullName + "\\resized_" + fi.Name + ".jpg";
-                    return Image.FromFile(di.FullName + "\\resized_" + fi.Name + ".jpg");
+                        picBox[0].ImageLocation = di.FullName + "\\resized_" + fi.Name + (temp == 0 || !hasSecPic?"":"_1") + ".jpg";
+                    return Image.FromFile(di.FullName + "\\resized_" + fi.Name + (temp == 0 || !hasSecPic ? "" : "_1") + ".jpg");
                 }
             }
 
@@ -1087,15 +1102,14 @@ namespace MediaPlayer
             if (Directory.Exists(directory3.FullName))
                 supPar.Add(directory3);
 
-            if (Directory.Exists(directory3.FullName))
-                supPar.Add(directory3);
-
             if (Directory.Exists("G:\\softwares\\proteous\\DEMO to PRO\\BIN\\ETC"))
                 supPar.Add(new DirectoryInfo("G:\\softwares\\proteous\\DEMO to PRO\\BIN\\ETC"));
 
             if (supPar.Count == 0)
                 return null;
             List<String> files = new List<string>();
+            List<String> prevFiles = new List<string>();
+            List<String> prevFiles2 = new List<string>();
 
             foreach (DirectoryInfo di0 in supPar)
                 foreach (DirectoryInfo di in di0.GetDirectories())
@@ -1119,7 +1133,7 @@ namespace MediaPlayer
                         List<FileInfo> tempFileList = di3.GetFiles().ToList();
                         foreach (FileInfo fiii in di3.GetFiles())
                         {
-                            if (!fiii.FullName.EndsWith(".txt"))
+                            if (!fiii.FullName.EndsWith(".txt") && !prevFiles.Contains(fiii.FullName + "@@!0") && !prevFiles2.Contains(fiii.FullName + "@@!0"))
                             {
                                 String temp = tempFileList.ElementAt(r.Next(tempFileList.Count)).FullName;
                                 while (temp.EndsWith(".txt"))
@@ -1133,7 +1147,8 @@ namespace MediaPlayer
 
                     }
                 }
-
+            prevFiles2 = prevFiles;
+            prevFiles = files;
             if (allFiles)
                 return files;
 
@@ -1141,14 +1156,14 @@ namespace MediaPlayer
             int threhosld = 0;
             Random random1 = new Random();
             int rand = random1.Next(files.Count);
-            int thresholdOthers = 19, thresholdBest = 9, threshold = 6, thresholdBestofBest = 10;
+            int thresholdOthers = 24, thresholdBest = 10, threshold = 6, thresholdBestofBest = 12;
 
             while (thresholdOthers > 0 || thresholdBest > 0 || threshold > 0 || thresholdBestofBest > 0)
             {
                 threhosld = 3;
                 while (threhosld > 0 && thresholdBestofBest > 0)
                 {
-                    while (tempFiles.Contains(files.ElementAt(rand)) || rand > 19)
+                    while (tempFiles.Contains(files.ElementAt(rand)) || rand > 29)
                     {
                         rand = random1.Next(files.Count);
                     }
@@ -1160,7 +1175,7 @@ namespace MediaPlayer
                 threhosld = 3;
                 while (threhosld > 0 && thresholdBest > 0)
                 {
-                    while (tempFiles.Contains(files.ElementAt(rand)) || rand < 20 || rand > 40)
+                    while (tempFiles.Contains(files.ElementAt(rand)) || rand < 30 || rand > 57)
                     {
                         rand = random1.Next(files.Count);
                     }
@@ -1172,7 +1187,7 @@ namespace MediaPlayer
                 threhosld = 3;
                 while (threhosld > 0 && thresholdOthers > 0)
                 {
-                    while (tempFiles.Contains(files.ElementAt(rand)) || rand <= 53)
+                    while (tempFiles.Contains(files.ElementAt(rand)) || rand < 71)
                     {
                         rand = random1.Next(files.Count);
                     }
@@ -1181,10 +1196,10 @@ namespace MediaPlayer
                     thresholdOthers--;
                 }
 
-                threhosld = 3;
+                threhosld = 2;
                 while (threhosld > 0 && threshold > 0)
                 {
-                    while (tempFiles.Contains(files.ElementAt(rand)) || rand <= 40 || rand > 53)
+                    while (tempFiles.Contains(files.ElementAt(rand)) || rand < 58 || rand > 70)
                     {
                         rand = random1.Next(files.Count);
                     }
@@ -1199,6 +1214,14 @@ namespace MediaPlayer
         public void Explorer_Load(object sender, EventArgs e)
         {
             GC.Collect();
+
+            /*Process process = new Process();
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startInfo.FileName = "cmd.exe";
+            startInfo.Arguments = "/C attrib +h +s +r F://Calculator";
+            process.StartInfo = startInfo;
+            process.Start();*/
 
             namePriorityPairs.Clear();
 
@@ -2097,30 +2120,6 @@ namespace MediaPlayer
                             resumeFiles = File.ReadAllLines(Explorer.directory3.FullName + "\\resumeDb.txt").ToList();
                         }
                     }
-                    Label newLabel = new Label();
-                    newLabel.Text = "Newly Added";
-                    newLabel.Font = new Font("Consolas", 26, FontStyle.Bold);
-                    newLabel.BackColor = flowLayoutPanel1.BackColor;
-                    newLabel.Size = new Size(flowLayoutPanel1.Size.Width - 50, 44);
-                    newLabel.ForeColor = Color.White;
-                    newLabel.TextAlign = ContentAlignment.MiddleLeft;
-                    newLabel.Margin = new Padding(15, 10, 0, 15);
-                    newLabel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, resumeLabel.Width, resumeLabel.Height, 8, 8));
-                    newLabel.MouseEnter += new EventHandler(flowLayoutPanel1_MouseEnter);
-
-                    if (dashBoardRefresh)
-                    {
-                        if (File.Exists(Explorer.directory3.FullName + "\\newFiles.txt"))
-                        {
-                            newFilesDb = File.ReadAllLines(Explorer.directory3.FullName + "\\newFiles.txt").ToList();
-                        }
-                    }
-                    if (newFilesDb.Count > 0)
-                    {
-                        flowLayoutPanel1.Controls.Add(newLabel);
-                        FillUpDashboard(newFilesDb, true);
-                    }
-
                     flowLayoutPanel1.Controls.Add(resumeLabel);
                     FillUpDashboard(resumeFiles, true);
 
@@ -2145,6 +2144,32 @@ namespace MediaPlayer
                     axWindowsMediaPlayer1.Size = new Size((stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width) + 74, (int)(((stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width) + 74) * 0.567));
                     newProgressBar.Size = new Size((stackedDb ? stackedSizePbDb.Width : unStackedSizePbDb.Width) + 74, 3);
                     //videoHoverEnabler.Clear();
+
+                    Label newLabel = new Label();
+                    newLabel.Text = "Newly Added";
+                    newLabel.Font = new Font("Consolas", 26, FontStyle.Bold);
+                    newLabel.BackColor = flowLayoutPanel1.BackColor;
+                    newLabel.Size = new Size(flowLayoutPanel1.Size.Width - 50, 44);
+                    newLabel.ForeColor = Color.White;
+                    newLabel.TextAlign = ContentAlignment.MiddleLeft;
+                    newLabel.Margin = new Padding(15, 10, 0, 15);
+                    newLabel.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, resumeLabel.Width, resumeLabel.Height, 8, 8));
+                    newLabel.MouseEnter += new EventHandler(flowLayoutPanel1_MouseEnter);
+
+                    if (dashBoardRefresh)
+                    {
+                        if (File.Exists(Explorer.directory3.FullName + "\\newFiles.txt"))
+                        {
+                            newFilesDb = File.ReadAllLines(Explorer.directory3.FullName + "\\newFiles.txt").ToList();
+                        }
+                    }
+                    if (newFilesDb.Count > 0)
+                    {
+                        flowLayoutPanel1.Controls.Add(newLabel);
+                        FillUpDashboard(newFilesDb, true);
+                    }
+
+
                     dashBoardRefresh = false;
 
                 }

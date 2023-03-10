@@ -7054,6 +7054,16 @@ namespace MediaPlayer
 
             if (File.Exists(di.FullName + "\\resized_" + fi.Name + ".jpg"))
             {
+                if (File.Exists(di.FullName + "\\" + fi.Name + "_1.jpg") && !File.Exists(di.FullName + "\\resized_" + fi.Name + "_1.jpg"))
+                {
+                    ResizeImage(di.FullName + "\\" + fi.Name + "_1.jpg", di.FullName + "\\resized_" + fileName + "_1.jpg", 0, 292, 515, 0);
+                    try
+                    {
+                        File.Delete(di.FullName + "\\" + fi.Name + "_1.jpg");
+                    }
+                    catch { }
+                }
+
                 if (File.Exists(di.FullName + "\\" + fi.Name + ".jpg"))
                 {
                     try
@@ -7064,9 +7074,14 @@ namespace MediaPlayer
                 }
                 else
                 {
+                    bool hasSecPic = false;
+                    if (File.Exists(di.FullName + "\\resized_" + fi.Name + "_1.jpg"))
+                        hasSecPic = true;
+                    Random r = new Random();
+                    int temp = r.Next(2);
                     if (picBox.Length > 0)
-                        picBox[0].ImageLocation = di.FullName + "\\resized_" + fi.Name + ".jpg";
-                    return Image.FromFile(di.FullName + "\\resized_" + fi.Name + ".jpg");
+                        picBox[0].ImageLocation = di.FullName + "\\resized_" + fi.Name + (temp == 0 || !hasSecPic ? "" : "_1") + ".jpg";
+                    return Image.FromFile(di.FullName + "\\resized_" + fi.Name + (temp == 0 || !hasSecPic ? "" : "_1") + ".jpg");
                 }
             }
 

@@ -2356,7 +2356,6 @@ namespace MediaPlayer
 
                     if (keyCode == Keys.D)
                     {
-                        
                         FileInfo fi = new FileInfo(refPb.Name);
                         Image img = null;
                         if (refPb.Image != null)
@@ -2409,6 +2408,61 @@ namespace MediaPlayer
                         }
                         catch { }
 
+                    }
+
+                    if (keyCode == Keys.U)
+                    {
+                        FileInfo fi = new FileInfo(refPb.Name);
+                        Image img = null;
+                        if (refPb.Image != null)
+                        {
+                            img = refPb.Image;
+                            refPb.Image = null;
+                            img.Dispose();
+                        }
+                        if (globalPb.Image != null)
+                        {
+                            img = globalPb.Image;
+                            globalPb.Image = null;
+                            img.Dispose();
+                        }
+                        GC.Collect();
+
+
+                        if (File.Exists(fi.DirectoryName + "\\ImgPB\\" + fi.Name + "_1.jpg"))
+                            try
+                            {
+                                File.Delete(fi.DirectoryName + "\\ImgPB\\" + fi.Name + "_1.jpg");
+                            }
+                            catch { Calculator.staleDeletes.Add(fi.DirectoryName + "\\ImgPB\\" + fi.Name + "_1.jpg"); }
+
+
+                        if (File.Exists(fi.DirectoryName + "\\ImgPB\\resized_" + fi.Name + "_1.jpg"))
+                            try
+                            {
+                                File.Delete(fi.DirectoryName + "\\ImgPB\\resized_" + fi.Name + "_1.jpg");
+                            }
+                            catch { Calculator.staleDeletes.Add(fi.DirectoryName + "\\ImgPB\\resized_" + fi.Name + "_1.jpg"); }
+
+                        Double dur = 0;
+                        dur = axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+
+                        var inputFile = new MediaFile { Filename = axWindowsMediaPlayer1.currentMedia.sourceURL };
+                        var outputFile = new MediaFile { Filename = fi.DirectoryName + "\\ImgPB\\" + fi.Name + "_1.jpg" };
+                        using (var engine = new Engine())
+                        {
+                            engine.GetMetadata(inputFile);
+                            var options = new ConversionOptions { Seek = TimeSpan.FromMilliseconds(dur * 1000) };
+                            engine.GetThumbnail(inputFile, outputFile, options);
+                        }
+
+                        try
+                        {
+                            refPb.Image = Image.FromFile(fi.DirectoryName + "\\ImgPB\\" + fi.Name + "_1.jpg");
+                            refPb.ImageLocation = fi.DirectoryName + "\\ImgPB\\" + fi.Name + "_1.jpg";
+                            globalPb.Image = Image.FromFile(fi.DirectoryName + "\\ImgPB\\" + fi.Name + "_1.jpg");
+                        }
+                        catch { }
                     }
 
                     if (keyCode == Keys.Enter)
