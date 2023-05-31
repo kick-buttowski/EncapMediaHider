@@ -2567,7 +2567,7 @@ namespace MediaPlayer
                             {
                                 tempPanel1.Margin = new Padding(2, 0, 0, 0);
                             }
-                            flowLayoutPanel.Parent.Size = new Size(flowLayoutPanel1.Width-23, 381);
+                            flowLayoutPanel.Parent.Size = new Size(flowLayoutPanel1.Width - 23, 381);
                             vidDetails.Size = new Size(axWindowsMediaPlayer1.Width, 48);
                             vidDetails.Padding = new Padding(0, 1, 0, 0);
                             flowLayoutPanel.Region = null;
@@ -2606,7 +2606,14 @@ namespace MediaPlayer
                                 whereAtMp++;
                             }
                             axWindowsMediaPlayer1.Ctlcontrols.currentPosition = currPosition;
-                            newProgressBarNew.Value = (int)axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+                            try
+                            {
+                                newProgressBarNew.Value = (int)axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+                            }
+                            catch
+                            {
+                                newProgressBarNew.Value = 0;
+                            }
 
                         //VideoPlayer.axWindowsMediaPlayer1.URL = pb.Name;
                         flowLayoutPanel.Controls.Add(axWindowsMediaPlayer1);
@@ -2829,7 +2836,7 @@ namespace MediaPlayer
 
                 pb.MouseClick += (s, args) =>
                 {
-                    Process.Start("firefox.exe", videoUrl);
+                    Process.Start("chrome.exe", videoUrl);
                     /*Browser browser = new Browser();
                     //browser.webBrowser1.Navigate(new Uri(splitted[1]));
                     //browser.axWindowsMediaPlayer1.Visible = false;// = splitted[1];
@@ -6050,7 +6057,7 @@ namespace MediaPlayer
         {
             PictureBox pb = null;
             try {
-                pb = (PictureBox)(contextMenuStrip1.SourceControl);
+                pb = (PictureBox)(contextMenuStrip4.SourceControl);
             }
             catch {}
 
@@ -6065,9 +6072,9 @@ namespace MediaPlayer
                     FileInfo fileInfo = new FileInfo(fi);
                     for (int k = 0; k < 50; k++)
                     {
-                        if (File.Exists(mainDi + "\\Online\\" + k + fileInfo.Name))
+                        if (File.Exists(mainDi + "\\Online\\" + pb.Name + "\\" + k + fileInfo.Name))
                             continue;
-                        File.Move(fi, mainDi + "\\Online\\" + k +fileInfo.Name);
+                        File.Move(fi, mainDi + "\\Online\\" + pb.Name + "\\" + k +fileInfo.Name);
                         break;
                     }
                 }
